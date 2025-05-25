@@ -12,6 +12,6 @@
 
 {% embed url="https://84z2h.gitbook.io/selfnote" %}
 
-{% embed url="https://www.exploit-db.com/" fullWidth="true" %}
+{% embed url="https://www.exploit-db.com/" fullWidth="false" %}
 
 {% embed url="https://pentestmonkey.net/" %}
