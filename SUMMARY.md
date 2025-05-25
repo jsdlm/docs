@@ -30,12 +30,14 @@
 * [Hashcat](passcracking-hash-and-files/hashcat.md)
 * [John](passcracking-hash-and-files/john.md)
 * [Cracking files](passcracking-hash-and-files/cracking-files.md)
+* [Tools](passcracking-hash-and-files/tools.md)
 
 ## Misc
 
 * [Kali](misc/kali.md)
 * [Regex](misc/regex.md)
 * [PowerShell](misc/powershell.md)
+* [Tools](misc/tools.md)
 
 ## System
 
