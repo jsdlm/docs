@@ -17,8 +17,8 @@
 * [Reconnaissance](active-directory/reconnaissance.md)
 * [AS-REP roasting](active-directory/as-rep-roasting.md)
 * [Kerberoasting](active-directory/kerberoasting.md)
-* [Poison and Relay](active-directory/poison-and-relay.md)
 * [Password Spraying](active-directory/password-spraying.md)
+* [Poison and Relay](active-directory/poison-and-relay.md)
 
 ## Privesc
 
