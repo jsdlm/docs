@@ -10,7 +10,7 @@
 * [SQL Injection (SQLi)](web/publish-your-docs.md)
 * [Webshells / revshells](web/webshells-revshells.md)
 * [Authentification bruteforce](web/authentification-bruteforce.md)
-* [Utils](web/utils.md)
+* [Ressources](web/ressources.md)
 
 ## Active Directory
 
@@ -30,19 +30,18 @@
 * [Hashcat](passcracking-hash-and-files/hashcat.md)
 * [John](passcracking-hash-and-files/john.md)
 * [Cracking files](passcracking-hash-and-files/cracking-files.md)
-* [Tools](passcracking-hash-and-files/tools.md)
+* [Ressources](passcracking-hash-and-files/ressources.md)
 
 ## Misc
 
-* [Kali](misc/kali.md)
-* [Regex](misc/regex.md)
-* [PowerShell](misc/powershell.md)
-* [Tools](misc/tools.md)
+* [Misc](misc/misc.md)
+* [Ressources](misc/ressources.md)
 
 ## System
 
-* [Linux Boot repair](system/linux-boot-repair.md)
-* [Update Debian](system/update-debian.md)
+* [Kali](system/kali.md)
+* [Linux boot repair](system/linux-boot-repair.md)
+* [Debian distro upgrade](system/debian-distro-upgrade.md)
 * [LVM](system/lvm.md)
 * [Setup Docker CyberLab](system/setup-docker-cyberlab.md)
 * [UFW](system/ufw.md)
