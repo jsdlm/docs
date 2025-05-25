@@ -6,25 +6,19 @@
 
 * [Reconnaissance](web/quickstart.md)
 * [File Inclusion](web/file-inclusion.md)
-* [SQL Injection (SQLi)](web/publish-your-docs.md)
 * [XSS Injection](web/xss-injection.md)
+* [SQL Injection (SQLi)](web/publish-your-docs.md)
 * [Webshells / revshells](web/webshells-revshells.md)
-
-***
-
-* [Authentification bruteforce](authentification-bruteforce.md)
-* [Utils](utils.md)
+* [Authentification bruteforce](web/authentification-bruteforce.md)
+* [Utils](web/utils.md)
 
 ## Active Directory
 
 * [Reconnaissance](active-directory/reconnaissance.md)
-
-***
-
-* [AS-REP roasting](as-rep-roasting.md)
-* [Kerberoasting](kerberoasting.md)
-* [Password Spraying](password-spraying.md)
-* [Poison and Relay](poison-and-relay.md)
+* [AS-REP roasting](active-directory/as-rep-roasting.md)
+* [Kerberoasting](active-directory/kerberoasting.md)
+* [Poison and Relay](active-directory/poison-and-relay.md)
+* [Password Spraying](active-directory/password-spraying.md)
 
 ## Privesc
 
