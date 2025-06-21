@@ -15,9 +15,8 @@
 ## Active Directory
 
 * [Reconnaissance](active-directory/reconnaissance.md)
-* [AS-REP roasting](active-directory/as-rep-roasting.md)
-* [Kerberoasting](active-directory/kerberoasting.md)
 * [Password Spraying](active-directory/password-spraying.md)
+* [Roasting](active-directory/roasting.md)
 * [Poison and Relay](active-directory/poison-and-relay.md)
 * [SamAccountName (nopac)](active-directory/samaccountname-nopac.md)
 * [ADCS](active-directory/adcs.md)

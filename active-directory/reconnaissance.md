@@ -18,10 +18,6 @@ nxc smb 192.168.56.0/24
 nxc smb 192.168.56.10-23 --users
 nxc smb 192.168.56.10-23 -u 'a' -p '' --users
 
-# Voir la politique de mot de passe
-nxc smb 192.168.56.11 --pass-pol
-nxc smb 192.168.56.11 -u 'a' -p '' --pass-pol
-
 # Lister les shares
 nxc smb 192.168.56.10-23 --shares
 nxc smb 192.168.56.10-23 -u 'a' -p '' --shares
