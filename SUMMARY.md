@@ -19,6 +19,8 @@
 * [Kerberoasting](active-directory/kerberoasting.md)
 * [Password Spraying](active-directory/password-spraying.md)
 * [Poison and Relay](active-directory/poison-and-relay.md)
+* [SamAccountName (nopac)](active-directory/samaccountname-nopac.md)
+* [ADCS](active-directory/adcs.md)
 
 ## Privesc
 
