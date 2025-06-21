@@ -16,7 +16,7 @@ The ability to edit a machine account's sAMAccountName and servicePrincipalName 
 nxc ldap winterfell.north.sevenkingdoms.local -u jon.snow -p iknownothing -d north.sevenkingdoms.local -M daclread -o TARGET='testj$'
 ```
 
-Or the ability to add computers. Validate by check the machine account quota.
+Or the ability to add computers. Validate by checking the machine account quota.
 
 ```bash
 nxc ldap winterfell.north.sevenkingdoms.local -u jon.snow -p iknownothing -d north.sevenkingdoms.local -M maq

