@@ -20,6 +20,7 @@
 * [Poison and Relay](active-directory/poison-and-relay.md)
 * [SamAccountName (nopac)](active-directory/samaccountname-nopac.md)
 * [ADCS](active-directory/adcs.md)
+* [Ressources](active-directory/ressources.md)
 
 ## Privesc
 
