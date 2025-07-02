@@ -15,11 +15,12 @@
 ## Active Directory
 
 * [Reconnaissance](active-directory/reconnaissance.md)
-* [Password Spraying](active-directory/password-spraying.md)
-* [Roasting](active-directory/roasting.md)
+* [Initial access](active-directory/initial-access.md)
+* [Kerberoasting](active-directory/kerberoasting.md)
 * [Poison and Relay](active-directory/poison-and-relay.md)
 * [SamAccountName (nopac)](active-directory/samaccountname-nopac.md)
 * [ADCS](active-directory/adcs.md)
+* [ACL](active-directory/acl.md)
 * [Ressources](active-directory/ressources.md)
 
 ## Privesc
