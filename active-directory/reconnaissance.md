@@ -23,6 +23,14 @@ Faire un Wireshark ou tcpdump pour identifier les différents réseaux / adresse
 tcpdump -i eth0 -n -vvv -A not port 22 and not port 53
 ```
 
+Quelques protocoles intéressants
+
+* Traffic ARP : Trouver des adresses IP valides
+* Bails DHCP/DHCPv6 : Trouver les serveurs DNS/configuraon réseau
+* Mulcast LLMNR : Découvrir des noms d'hôtes/adresses IP valides
+* Mulcast mDNS : Découvrir des noms d'hôtes/adresses IP valides
+* Broadcast NBNS : Découvrir des noms d'hôtes/adresses IP valides
+
 ## Reconaissance active
 
 ### Nmap
