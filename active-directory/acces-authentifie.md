@@ -90,6 +90,10 @@ When requesting a Service Ticket, presenting a TGT is required first. When the s
 
 ### Pré-requis
 
+* A domain controller which is missing the KB5008380 and KB5008602 security patches
+* A valid domain user account
+* The machine account quota to be above 0
+
 The ability to edit a machine account's sAMAccountName and servicePrincipalName attributes is a requirement to the attack chain. Check with Bloodhound or NetExec :
 
 ```bash
