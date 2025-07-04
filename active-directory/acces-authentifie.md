@@ -78,6 +78,9 @@ pipx install bloodhound-ce
 bloodhound-ce-python --zip -c All -d north.sevenkingdoms.local -u brandon.stark -p iseedeadpeople -dc winterfell.north.sevenkingdoms.local -ns 192.168.56.11
 ```
 
+Visualisation des droits dans bloodhound, check "outbound control rights" depuis notre USER et les ACL.\
+[https://jsdlm.gitbook.io/docs/active-directory/acl](https://jsdlm.gitbook.io/docs/active-directory/acl)
+
 ## SamAccountName
 
 #### CVE-2021-42278 - Name impersonation <a href="#cve-2021-42278-name-impersonation" id="cve-2021-42278-name-impersonation"></a>
