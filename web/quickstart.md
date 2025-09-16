@@ -55,14 +55,16 @@ nmap -p80 --script http-waf-detect --script-args="http-waf-detect.aggro,http-waf
 
 ```bash
 # Techno detection
-whatweb -a 4 {IP}
-wapiti -u <URL>
-webtech -u <URL>
-webanalyze -host https://google.com -crawl 2
+whatweb [options] <URLs>
 
-# Scan basiques
+# Nikto
 nikto -host {Web_Proto}://{IP}:{Web_Port}
-nuclei -target <URL>
+
+# Nuclei
+go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
+export PATH=$PATH:/home/pentester/go/bin
+nuclei -ut
+nuclei -u <URL>
 
 # Headers
 curl -I http://target.com
@@ -72,7 +74,7 @@ curl -I http://target.com
 
 ```bash
 sslscan target.com
-testssl.sh target.com
+testssl target.com
 sslyse target.com
 ```
 
