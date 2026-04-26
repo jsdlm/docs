@@ -25,6 +25,7 @@ nmap --flags <host>
 # -sC: Performs a script scan using the default set of scripts - equivalent to --script=default.
 ```
 
+
 ### NSE
 
 ```bash

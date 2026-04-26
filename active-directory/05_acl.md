@@ -18,8 +18,8 @@
 ## Exploitation de droits spécifiques
 
 * **Shadow Credentials** : si `GenericWrite` sur un compte → injection de clé PKINIT (via `Whisker`, `ForgeCert`, etc.).
-  * [https://jsdlm.gitbook.io/docs/active-directory/adcs#shadow-credentials](https://jsdlm.gitbook.io/docs/active-directory/adcs#shadow-credentials)
+  * [ADCS - Shadow Credentials](06_adcs.md#shadow-credentials)
 * **sAMAccountName Spoofing** : si droit de **joindre une machine** (10 par défaut), et DC vulnérable.
-  * [https://jsdlm.gitbook.io/docs/active-directory/acces-authentifie#samaccountname](https://jsdlm.gitbook.io/docs/active-directory/acces-authentifie#samaccountname)
+  * [Accès authentifié - sAMAccountName](04_acces-authentifie.md#samaccountname)
 * **Resource-Based Constrained Delegation (RBCD)** : si contrôle sur un objet machine.
 * **DCSync** : si accès à `Replicating Directory Changes (All)` sur le domaine.
