@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "misc/02_AI.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "02_AI"
+              "title": "README"
             }
           }
         ]
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "misc/02_AI.md",
+                "file": "README.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Plan de 02_AI"
+              "title": "Plan de README"
             }
           }
         ],
@@ -185,12 +185,23 @@
   },
   "active": "d4c70e79fb9a2559",
   "lastOpenFiles": [
+    "redteam/02_macro.md",
+    "redteam/01_reverse-shells.md",
+    "redteam/03_phishing.md",
     "misc/01_misc.md",
+    "web/05_webshells.md",
+    "README.md.tmp.7904.1777237086991",
+    "README.md.tmp.7904.1777237079670",
+    "web/05_webshells-revshells.md",
+    "misc/03_macro.md",
+    "redteam",
+    "README.md",
+    "README.md.tmp.7904.1777236550320",
+    "active-directory/01_reconnaissance.md",
     "misc/02_AI.md",
     "osint/02_emails.md",
     "README.md.tmp.7904.1777235509229",
     "osint/01_dns.md",
-    "active-directory/01_reconnaissance.md",
     "web/01_reconnaissance.md",
     "active-directory/02_initial-access.md",
     "misc/99_ressources.md",
@@ -199,7 +210,6 @@
     "web/04_sql-injection.md",
     "web/99_ressources.md",
     "web/06_authentification-bruteforce.md",
-    "web/05_webshells-revshells.md",
     "README.md.tmp.7904.1777233721827",
     "osint",
     "active-directory/04_acces-authentifie.md",
@@ -207,16 +217,8 @@
     "active-directory/06_adcs.md",
     "active-directory/99_ressources.md",
     "passcracking-hash-and-files/99_ressources.md",
-    "passcracking-hash-and-files/03_cracking-files.md",
-    "passcracking-hash-and-files/02_john.md",
-    "passcracking-hash-and-files/01_hashcat.md",
-    "privesc/02_windows.md",
-    "privesc/01_linux.md",
-    "system/ufw.md",
-    "system/setup-docker-cyberlab.md",
     "README.md.tmp.10000.1777225165883",
     "README.md.tmp.10000.1777225124763",
-    "README.md.tmp.10000.1777224957797",
-    "SUMMARY.md.tmp.10000.1777224561922"
+    "README.md.tmp.10000.1777224957797"
   ]
 }

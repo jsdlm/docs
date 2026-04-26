@@ -94,6 +94,7 @@ ffuf -u <url> -w /usr/share/seclists/Discovery/Web-Content/common.txt -r -t 7 -r
 ```
 https://www.exploit-db.com/
 searchsploit
+searchsploit -m <EDB-ID>
 ```
 
 ## Plugins browsers

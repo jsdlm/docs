@@ -11,7 +11,7 @@
 * [File Inclusion](web/02_file-inclusion.md)
 * [XSS Injection](web/03_xss-injection.md)
 * [SQL Injection (SQLi)](web/04_sql-injection.md)
-* [Webshells / revshells](web/05_webshells-revshells.md)
+* [Webshells](web/05_webshells.md)
 * [Authentification bruteforce](web/06_authentification-bruteforce.md)
 * [Ressources](web/99_ressources.md)
 
@@ -37,9 +37,16 @@
 * [Cracking files](passcracking-hash-and-files/03_cracking-files.md)
 * [Ressources](passcracking-hash-and-files/99_ressources.md)
 
+## Red Team
+
+* [Reverse Shells](redteam/01_reverse-shells.md)
+* [Macro Office](redteam/02_macro.md)
+* [Phishing](redteam/03_phishing.md)
+
 ## Misc
 
 * [Misc](misc/01_misc.md)
+* [AI](misc/02_AI.md)
 * [Ressources](misc/99_ressources.md)
 
 ## System
