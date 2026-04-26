@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "osint/02_emails.md",
+                "file": "misc/02_AI.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "02_emails"
+              "title": "02_AI"
             }
           }
         ]
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "osint/02_emails.md",
+                "file": "misc/02_AI.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Plan de 02_emails"
+              "title": "Plan de 02_AI"
             }
           }
         ],
@@ -185,10 +185,11 @@
   },
   "active": "d4c70e79fb9a2559",
   "lastOpenFiles": [
+    "misc/01_misc.md",
+    "misc/02_AI.md",
+    "osint/02_emails.md",
     "README.md.tmp.7904.1777235509229",
     "osint/01_dns.md",
-    "misc/01_misc.md",
-    "osint/02_emails.md",
     "active-directory/01_reconnaissance.md",
     "web/01_reconnaissance.md",
     "active-directory/02_initial-access.md",
