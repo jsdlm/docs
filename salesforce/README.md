@@ -1,4 +1,4 @@
-# Revue360 - Audit de sécurité Salesforce
+# Salesforce
 
 Documentation méthodologique pour la réalisation d'un audit de sécurité Salesforce couvrant cinq axes : tests d'intrusion, revue de code source, revue de configuration, audit d'architecture et revue des accès.
 

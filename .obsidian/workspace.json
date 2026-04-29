@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "salesforce/02_code-review.md",
+                "file": "salesforce/README.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "02_code-review"
+              "title": "README"
             }
           }
         ]
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "salesforce/02_code-review.md",
+                "file": "salesforce/README.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Plan de 02_code-review"
+              "title": "Plan de README"
             }
           }
         ],
@@ -186,13 +186,14 @@
   "active": "d4c70e79fb9a2559",
   "lastOpenFiles": [
     "README.md",
-    "salesforce/03_config-review.md",
+    "salesforce/README.md",
+    "system/README.md",
     "salesforce/01_pentest.md",
     "salesforce/02_code-review.md",
-    "salesforce/README.md",
-    "salesforce/06_extractions.md",
-    "salesforce/05_access-review.md",
+    "salesforce/03_config-review.md",
     "salesforce/04_architecture.md",
+    "salesforce/05_access-review.md",
+    "salesforce/06_extractions.md",
     "salesforce/extractions.md",
     "salesforce/pentest.md",
     "salesforce/code-review.md",
@@ -215,7 +216,6 @@
     "README.md.tmp.7904.1777235509229",
     "osint/01_dns.md",
     "web/01_reconnaissance.md",
-    "active-directory/02_initial-access.md",
     "README.md.tmp.7904.1777233721827",
     "osint",
     "README.md.tmp.10000.1777225165883",
