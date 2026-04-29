@@ -49,6 +49,15 @@
 * [AI](misc/02_AI.md)
 * [Ressources](misc/99_ressources.md)
 
+## Salesforce
+
+* [Tests d'intrusion](salesforce/01_pentest.md)
+* [Revue de code source](salesforce/02_code-review.md)
+* [Revue de configuration](salesforce/03_config-review.md)
+* [Audit d'architecture](salesforce/04_architecture.md)
+* [Revue des accès](salesforce/05_access-review.md)
+* [Extractions](salesforce/06_extractions.md)
+
 ## System
 
 * [Kali](system/kali.md)
