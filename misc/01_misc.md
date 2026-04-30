@@ -7,7 +7,7 @@
 find / -name "flag.txt" 2>/dev/null
 
 # Windows
-Get-ChildItem -Path C:\ -Filter "flag.txt" -Recurse -ErrorAction SilentlyContinue
+Get-ChildItem -Path C:\ -Filter "flag.txt" -Recurse -Force -ErrorAction SilentlyContinue
 ```
 
 **Connexions distantes**

