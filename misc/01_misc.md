@@ -1,23 +1,23 @@
 # Misc
 
-**Trouver un flag**
+### Trouver un flag
 
 ```bash
 # Linux
 find / -name "flag.txt" 2>/dev/null
 
 # Windows
-Get-ChildItem -Path C:\ -Filter "flag.txt" -Recurse -ErrorAction SilentlyContinue
+Get-ChildItem -Path C:\ -Filter "flag.txt" -Recurse -Force -ErrorAction SilentlyContinue
 ```
 
-**Connexions distantes**
+### Connexions distantes
 
 ```bash
 # RDP
 xfreerdp /u:student /p:lab /v:192.168.151.152
 ```
 
-**Host un serveur web pour dl des fichiers**
+### Host un serveur web pour dl des fichiers
 
 ```bash
 python3 -m http.server 80 -d <chemin> 
@@ -25,13 +25,13 @@ curl http://>
 wget http://>
 ```
 
-**Tunnels SSH**
+### Tunnels SSH
 
 ```bash
 sh -f -NL 1234:localhost:5432 user@IP
 ```
 
-**ExecutionPolicy**
+### ExecutionPolicy
 
 ```powershell
 Get-ExecutionPolicy
@@ -39,20 +39,20 @@ Set-ExecutionPolicy Unrestricted -Scope Process
 ```
 
 
-**Remove empty lines**
+### Remove empty lines
 
 ```regex
 ^[ \t]*$\r?\n
 ```
 
-**Latence VMware**
+## VMware
+### Latence
 
 ```bash
 # mettre dans le .vmx
 keyboard.vusb.enable = "TRUE"
 ```
-
-**NAT VMware**
+### NAT
 
 ```bash
 C:\ProgramData\VMware\vmnetnat.conf
@@ -62,3 +62,19 @@ C:\ProgramData\VMware\vmnetnat.conf
 net stop "VMware NAT Service" && net start "VMware NAT Service"
 ```
 
+## Tools
+### Cyberchef
+
+```bash
+docker run -d -p 8000:8000 mpepping/cyberchef
+```
+### SysReptor
+
+https://docs.sysreptor.com/setup/installation/
+```
+sudo apt update
+sudo apt install -y sed curl openssl uuid-runtime coreutils
+cd /opt/tools
+bash <(curl -s https://docs.sysreptor.com/install.sh)
+```
+Access your application at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
