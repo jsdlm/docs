@@ -8,5 +8,3 @@
 - [Selfnote](https://84z2h.gitbook.io/selfnote)
 - [Exploit-DB](https://www.exploit-db.com/)
 - [PentestMonkey](https://pentestmonkey.net/)
-
-test
