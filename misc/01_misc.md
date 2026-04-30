@@ -51,3 +51,14 @@ Set-ExecutionPolicy Unrestricted -Scope Process
 # mettre dans le .vmx
 keyboard.vusb.enable = "TRUE"
 ```
+
+**NAT VMware**
+
+```bash
+C:\ProgramData\VMware\vmnetnat.conf
+[incomingtcp]
+<port_hote> = <ip_vm>:<port_vm>
+
+net stop "VMware NAT Service" && net start "VMware NAT Service"
+```
+
