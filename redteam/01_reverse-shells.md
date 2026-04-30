@@ -6,6 +6,7 @@
 * [pentestmonkey - reverse shell cheatsheet](https://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet)
 * [InternalAllTheThings - shell reverse cheatsheet](https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/)
 * [shellerator](https://github.com/ShutdownRepo/shellerator)
+* [revshellgen](https://github.com/t0thkr1s/revshellgen)
 
 ## Linux
 

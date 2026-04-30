@@ -62,3 +62,11 @@ C:\ProgramData\VMware\vmnetnat.conf
 net stop "VMware NAT Service" && net start "VMware NAT Service"
 ```
 
+**Logs parsing**
+
+```bash
+less -R session.log > clean.log
+
+sudo apt install colorized-logs
+cat session.log | ansi2txt > clean.log
+```
