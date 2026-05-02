@@ -5,6 +5,7 @@
 ```bash
 # Mettre en azerty de manière permanente sur XFCE:
 sudo dpkg-reconfigure keyboard-configuration
+sudo systemctl restart keyboard-setup
 sudo reboot
 
 # Ajouter un utilisateur pentester en sudoer

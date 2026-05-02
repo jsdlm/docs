@@ -6,8 +6,11 @@
 # Linux
 find / -name "flag.txt" 2>/dev/null
 
-# Windows
+# Powershell
 Get-ChildItem -Path C:\ -Filter "flag.txt" -Recurse -Force -ErrorAction SilentlyContinue
+
+# CMD
+dir /s /b /a C:\flag.txt
 ```
 
 ### Connexions distantes
@@ -15,6 +18,7 @@ Get-ChildItem -Path C:\ -Filter "flag.txt" -Recurse -Force -ErrorAction Silently
 ```bash
 # RDP
 xfreerdp /u:student /p:lab /v:192.168.151.152
+rdesktop -u offsec -p lab 192.168.212.10
 ```
 
 ### Host un serveur web pour dl des fichiers

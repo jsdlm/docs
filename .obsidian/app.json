@@ -2,5 +2,6 @@
   "useMarkdownLinks": true,
   "newLinkFormat": "relative",
   "showInlineTitle": false,
-  "foldHeading": true
+  "foldHeading": true,
+  "alwaysUpdateLinks": true
 }

@@ -89,14 +89,6 @@ ffuf -u http://target.com/FUZZ -w /path/to/wordlist.txt
 ffuf -u <url> -w /usr/share/seclists/Discovery/Web-Content/common.txt -r -t 7 -rate 70 -H “User-Agent:
 ```
 
-## Recherche de vulnérabilités
-
-```
-https://www.exploit-db.com/
-searchsploit
-searchsploit -m <EDB-ID>
-```
-
 ## Plugins browsers
 
 * Wappalyzer
