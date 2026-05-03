@@ -90,3 +90,16 @@ cd /opt/tools
 bash <(curl -s https://docs.sysreptor.com/install.sh)
 ```
 Access your application at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
+
+## FTP Upload
+
+```bash
+ftp <IP>
+# login anonyme
+Username: anonymous
+Password: (vide)
+
+passive      # désactiver le mode passif si besoin
+binary       # obligatoire pour les exécutables
+put file.exe
+```

@@ -12,7 +12,7 @@
 * [XSS Injection](web/03_xss-injection.md)
 * [SQL Injection (SQLi)](web/04_sql-injection.md)
 * [Webshells](web/05_webshells.md)
-* [Authentification bruteforce](web/06_authentification-bruteforce.md)
+* [Authentification bruteforce](bruteforce/00_online_bruteforce.md)
 * [Ressources](web/99_ressources.md)
 
 ## Active Directory
@@ -32,10 +32,10 @@
 
 ## Passcracking Hash & Files
 
-* [Hashcat](passcracking-hash-and-files/01_hashcat.md)
-* [John](passcracking-hash-and-files/02_john.md)
-* [Cracking files](passcracking-hash-and-files/03_cracking-files.md)
-* [Ressources](passcracking-hash-and-files/99_ressources.md)
+* [Hashcat](bruteforce/01_hashcat.md)
+* [John](bruteforce/02_john.md)
+* [Cracking files](bruteforce/03_cracking-files.md)
+* [Ressources](bruteforce/99_ressources.md)
 
 ## Red Team
 

@@ -1,7 +1,5 @@
 # John
 
-> [Offensive Security Cheatsheet](https://cheatsheet.haax.fr/passcracking-hashfiles/john_cheatsheet/)
-
 ## Cracking Modes <a href="#cracking-modes" id="cracking-modes"></a>
 
 ```bash

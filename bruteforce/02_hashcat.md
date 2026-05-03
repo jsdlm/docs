@@ -1,7 +1,5 @@
 # Hashcat
 
-> [Offensive Security Cheatsheet](https://cheatsheet.haax.fr/passcracking-hashfiles/hashcat_cheatsheet/)
-
 ## Usage
 
 ```
