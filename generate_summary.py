@@ -31,7 +31,7 @@ def build_summary():
     vault_title = get_first_h1(root_readme) or "Vault"
 
     lines.append(f"# {vault_title}\n")
-    lines.append("---\n")
+    lines.append("\n")
 
     # Parcours des dossiers de premier niveau
     entries = sorted(os.listdir(VAULT_ROOT))
@@ -48,8 +48,7 @@ def build_summary():
         dir_readme = os.path.join(dir_path, "README.md")
         if os.path.exists(dir_readme):
             section_title = get_first_h1(dir_readme) or entry
-            rel_readme = get_relative_path(dir_readme)
-            lines.append(f"## [{section_title}]({rel_readme})\n")
+            lines.append(f"## {section_title}\n")
         else:
             lines.append(f"## {entry}\n")
 
