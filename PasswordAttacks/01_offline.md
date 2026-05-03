@@ -62,6 +62,13 @@ find / \( -name "*.kdbx" -o -name "*.db" -o -name "*.agilekeychain" -o -name "*.
 
 ## Exemples
 
+## MD5
+
+```bash
+echo -n 'f621b6c9eab51a3e2f4e167fee4c6860' > hash.txt
+hashcat -m 0 hash.txt /usr/share/wordlists/rockyou.txt -r -r /usr/share/hashcat/rules/best66.rule
+```
+
 ### KeePass
 
 1. Localiser le fichier → [[01_offline#Chercher des fichiers de gestionnaires de mots de passe]]

@@ -22,8 +22,7 @@ dir /s /b /a C:\flag.txt
 
 ```bash
 # RDP
-xfreerdp /u:student /p:lab /v:192.168.151.152
-rdesktop -u offsec -p lab 192.168.212.10
+xfreerdp /u:student /p:lab /v:192.168.151.152 /dynamic-resolution
 ```
 
 ## Host un serveur web pour dl des fichiers
