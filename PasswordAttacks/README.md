@@ -1,4 +1,4 @@
-# Bruteforce & Password Cracking
+# Password Attacks
 
 ## Ressources
 

@@ -8,26 +8,26 @@
 - [ACL](ActiveDirectory/05_acl.md)
 - [ADCS](ActiveDirectory/06_adcs.md)
 
-## Bruteforce & Password Cracking
-- [Online bruteforce](bruteforce/00_online.md)
-- [Offline Password Cracking](bruteforce/01_offline.md)
-- [Hashcat](bruteforce/02_hashcat.md)
-- [John](bruteforce/03_john.md)
-- [Mutating wordlists](bruteforce/04_wordlists.md)
-
 ## Exploits
 - [Recherche de vulnérabilités](Exploits/01_recherche.md)
 - [Buffer Overflow](Exploits/02_BoF.md)
 - [Web](Exploits/03_web.md)
 - [Metasploit](Exploits/04_metasploit.md)
 
-## Misc
+## MISC
 - [Misc](MISC/01_misc.md)
 - [AI](MISC/02_AI.md)
 
 ## OSINT
 - [DNS](OSINT/01_dns.md)
 - [Emails](OSINT/02_emails.md)
+
+## Password Attacks
+- [Online bruteforce](PasswordAttacks/00_online.md)
+- [Offline Password Cracking](PasswordAttacks/01_offline.md)
+- [Hashcat](PasswordAttacks/02_hashcat.md)
+- [John](PasswordAttacks/03_john.md)
+- [Mutating wordlists](PasswordAttacks/04_wordlists.md)
 
 ## Privilege Escalation
 - [Linux](PrivilegeEscalation/01_linux.md)
@@ -48,12 +48,12 @@
 - [06_extractions](Salesforce/06_extractions.md)
 
 ## System
-- [Update Debian](System/debian-distro-upgrade.md)
-- [Kali](System/kali.md)
-- [Linux Boot repair](System/linux-boot-repair.md)
-- [LVM](System/lvm.md)
-- [Setup Docker CyberLab](System/setup-docker-cyberlab.md)
-- [UFW](System/ufw.md)
+- [Kali](System/01_kali.md)
+- [Linux Boot repair](System/02_linux_boot_repair.md)
+- [Update Debian](System/03_debian_distro_upgrade.md)
+- [LVM](System/04_lvm.md)
+- [Setup Docker CyberLab](System/05_docker_setup_cyberlab.md)
+- [UFW](System/06_ufw.md)
 
 ## Web
 - [Reconnaissance](Web/01_reconnaissance.md)
