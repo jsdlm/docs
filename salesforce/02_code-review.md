@@ -1,4 +1,4 @@
-# 2. Revue de code source
+# Revue de code source
 
 ## Procédure
 1. Télécharger [PMD](https://pmd.github.io/) - Néccéssite Java (Oracle.JDK.21 OK)

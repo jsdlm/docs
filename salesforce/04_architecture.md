@@ -1,4 +1,4 @@
-# 4. Audit d'architecture
+# Audit d'architecture
 
 ## Entretiens et revue de schéma
 

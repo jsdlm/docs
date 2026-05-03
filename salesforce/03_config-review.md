@@ -1,8 +1,8 @@
-## 3. Revue de configuration
+# Revue de configuration
 
-### Revue via l'interface web
+## Revue via l'interface web
 
-#### Politiques de mot de passe
+### Politiques de mot de passe
 - Accéder aux paramètres (Setup > Security > Password Policies)
 - Vérifier :
   - Longueur minimale ≥ 12 caractères
@@ -12,14 +12,14 @@
   - Historique ≥ 10 mots de passe
 - Toute déviation → **FINDING**
 
-#### Authentification multi-facteurs (MFA)
+### Authentification multi-facteurs (MFA)
 - Accéder à (Setup > Identity > Identity Verification)
 - Vérifier que MFA est :
   - Obligatoire pour tous les utilisateurs → sinon **FINDING**
   - Activé au niveau de l’organisation (et non optionnel)
 - Vérifier que les administrateurs utilisent des méthodes fortes
 
-#### Single Sign-On (SSO)
+### Single Sign-On (SSO)
 - Accéder à (Setup > Identity > Single Sign-On Settings)
 - Vérifier :
   - Certificat IdP valide (non expiré)
@@ -27,17 +27,17 @@
   - Provisioning JIT avec permissions minimales
 - Mauvaise configuration → **FINDING**
 
-#### Organisation-Wide Defaults (OWD)
+### Organisation-Wide Defaults (OWD)
 - Accéder à (Setup > Security > Sharing Settings)
 - Vérifier que les objets sensibles sont en **Private**
 - Si accès trop ouvert par défaut → **FINDING**
 
-#### Règles de partage
+### Règles de partage
 - Accéder à (Setup > Security > Sharing Settings > Sharing Rules)
 - Identifier les règles trop larges :
   - Partage global avec tous les utilisateurs → **FINDING**
   
-#### API
+### API
 - Vérifier les profils avec permission **API Enabled**
 - Restreindre aux comptes nécessaires uniquement
 - Vérifier :
@@ -45,7 +45,7 @@
   - Utilisation de **Named Credentials**
 - Non conformité → **FINDING**
 
-#### Paramètres de session
+### Paramètres de session
 - Accéder à (Setup > Security > Session Settings)
 - Vérifier :
   - Timeout ≤ 2h
@@ -54,19 +54,19 @@
   - Protection clickjack activée
 - Sinon → **FINDING**
 
-#### Certificats
+### Certificats
 - Accéder à (Setup > Security > Certificate and Key Management)
 - Vérifier :
   - Certificats expirés → **FINDING**
   - Certificats auto-signés en production → **FINDING**
   
-#### Flows & automatisations
+### Flows & automatisations
 - Accéder à (Setup > Process Automation > Flows)
 - Identifier :
   - Flows actifs avec accès système
 - Vérifier contrôles d’accès → sinon **FINDING**
 
-#### Packages installés
+### Packages installés
 - Accéder à (Setup > Apps > Installed Packages)
 - Vérifier :
   - Utilisation réelle
@@ -74,14 +74,14 @@
   - Statut sécurité AppExchange
 - Package obsolète → **FINDING**
 
-#### Chiffrement (Shield)
+### Chiffrement (Shield)
 - Accéder à (Setup > Security > Platform Encryption)
 - Vérifier :
   - Données sensibles chiffrées
   - Gestion des clés (rotation, stockage)
 - Sinon → **FINDING**
 
-#### Chiffrement classique
+### Chiffrement classique
 - Vérifier utilisation du type **Encrypted**
 - Identifier limites → recommander Shield si nécessaire
 ```
@@ -89,17 +89,17 @@ SELECT QualifiedApiName, DataType
 FROM FieldDefinition 
 WHERE DataType = 'EncryptedText'
 ```
-#### Données en transit
+### Données en transit
 - Vérifier TLS 1.2+ sur toutes les intégrations (HTTP/HTTPS)
 - openssl s_client -connect yourInstance.salesforce.com:443 -tls1_2
 - Non conformité → **FINDING**
 
-#### Health Check
+### Health Check
 - Accéder au **Health Check** natif Salesforce (Setup > Health Check)
 - Prendre des captures d'écran de chaque paramètre non conforme
 - Documenter l'écart par rapport au score recommandé par Salesforce
 
-#### Connected Apps
+### Connected Apps
 - Recenser les **Connected Apps** managées (Setup > Connected Apps > Manage Connected Apps)
   - Lignes avec `Permitted Users = All users may self-authorize` -> **FINDING**
   - Lignes avec `Permitted Users = 	Admin approved users are pre-authorized` -> Ok whitelist par profil
@@ -123,7 +123,7 @@ SELECT Id, Name, OptionsAllowAdminApprovedUsersOnly, RefreshTokenValidityPeriod,
   - `OptionsAllowAdminApprovedUsersOnly = false` → tout utilisateur peut autoriser l'app - **FINDING potentiel**
 
 
-### Revue via les métadonnées
+## Revue via les métadonnées
 
 Le code source est exporté via la [Salesforce CLI](06_extractions.md).
 Utiliser `package-ConfigurationReview.xml`.

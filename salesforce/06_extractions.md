@@ -1,4 +1,4 @@
-## Exporter des metadata
+# Extractions
 
 1. Télécharger la [Salesforce cli](https://developer.salesforce.com/tools/salesforcecli)
 2. Ajouter dans le PATH : `export PATH=$PATH:/home/pentester/Downloads/sf/bin`
