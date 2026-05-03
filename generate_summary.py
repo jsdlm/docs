@@ -33,10 +33,8 @@ def build_summary():
     lines.append(f"# {vault_title}\n")
     lines.append("\n")
 
-    # Parcours des dossiers de premier niveau
-    entries = sorted(os.listdir(VAULT_ROOT))
-
-    for entry in entries:
+    # Parcours des dossiers de premier niveau, triés par nom de dossier
+    for entry in sorted(os.listdir(VAULT_ROOT), key=str.lower):
         dir_path = os.path.join(VAULT_ROOT, entry)
 
         if not os.path.isdir(dir_path):
@@ -48,9 +46,9 @@ def build_summary():
         dir_readme = os.path.join(dir_path, "README.md")
         if os.path.exists(dir_readme):
             section_title = get_first_h1(dir_readme) or entry
-            lines.append(f"## {section_title}\n")
         else:
-            lines.append(f"## {entry}\n")
+            section_title = entry
+        lines.append(f"## {section_title}\n")
 
         # Fichiers .md dans le dossier (hors README.md)
         try:
