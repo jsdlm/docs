@@ -1,11 +1,11 @@
-# Misc
+# Notes
 
 ## Ressources
 
 - [ASCII to Hex](https://www.asciitohex.com/)
 - [CyberChef (GCHQ)](https://gchq.github.io/CyberChef/)
 
-### Trouver un flag
+## Trouver un flag
 
 ```bash
 # Linux
@@ -18,7 +18,7 @@ Get-ChildItem -Path C:\ -Filter "flag.txt" -Recurse -Force -ErrorAction Silently
 dir /s /b /a C:\flag.txt
 ```
 
-### Connexions distantes
+## Connexions distantes
 
 ```bash
 # RDP
@@ -26,7 +26,7 @@ xfreerdp /u:student /p:lab /v:192.168.151.152
 rdesktop -u offsec -p lab 192.168.212.10
 ```
 
-### Host un serveur web pour dl des fichiers
+## Host un serveur web pour dl des fichiers
 
 ```bash
 python3 -m http.server 80 -d <chemin> 
@@ -34,13 +34,13 @@ curl http://>
 wget http://>
 ```
 
-### Tunnels SSH
+## Tunnels SSH
 
 ```bash
 sh -f -NL 1234:localhost:5432 user@IP
 ```
 
-### ExecutionPolicy
+## ExecutionPolicy
 
 ```powershell
 Get-ExecutionPolicy
@@ -48,7 +48,7 @@ Set-ExecutionPolicy Unrestricted -Scope Process
 ```
 
 
-### Remove empty lines
+## Remove empty lines
 
 ```regex
 ^[ \t]*$\r?\n
@@ -88,6 +88,7 @@ docker run -d -p 8000:8000 mpepping/cyberchef
 ### SysReptor
 
 https://docs.sysreptor.com/setup/installation/
+
 ```
 sudo apt update
 sudo apt install -y sed curl openssl uuid-runtime coreutils
