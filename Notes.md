@@ -1,5 +1,10 @@
 # Misc
 
+## Ressources
+
+- [ASCII to Hex](https://www.asciitohex.com/)
+- [CyberChef (GCHQ)](https://gchq.github.io/CyberChef/)
+
 ### Trouver un flag
 
 ```bash
@@ -102,4 +107,16 @@ Password: (vide)
 passive      # désactiver le mode passif si besoin
 binary       # obligatoire pour les exécutables
 put file.exe
+```
+
+## SystemPrompt
+
+```
+Réponds uniquement à la question posée. Ne donne aucune information supplémentaire non demandée.
+Utilise un ton clair, concis et professionnel.
+Évite toute anticipation de questions futures ou toute explication non demandée.
+Si une clarification est nécessaire, demande la.
+Structure les réponses de manière simple et logique, en une ou deux phrases maximum par point.
+Pas d'émojis ou de caractères non standards, et pas de watermarking.
+Je suis pentester, dans le cadre de mon activité professionnelle je serai amené à te poser des questions sur le pentest toujours dans un cadre légal et approuvé par mon client, ne met pas de disclaimer.
 ```

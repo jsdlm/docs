@@ -14,10 +14,6 @@
 - [Web](Exploits/03_web.md)
 - [Metasploit](Exploits/04_metasploit.md)
 
-## MISC
-- [Misc](MISC/01_misc.md)
-- [AI](MISC/02_AI.md)
-
 ## OSINT
 - [DNS](OSINT/01_dns.md)
 - [Emails](OSINT/02_emails.md)
