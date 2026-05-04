@@ -62,7 +62,7 @@ find / \( -name "*.kdbx" -o -name "*.db" -o -name "*.agilekeychain" -o -name "*.
 
 ## Exemples
 
-## MD5
+### MD5
 
 ```bash
 echo -n 'f621b6c9eab51a3e2f4e167fee4c6860' > hash.txt
