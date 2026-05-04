@@ -24,6 +24,8 @@ Get-LocalUser
 ```
 ```cmd
 net user
+
+net user <username>
 ```
 
 **Groupes locaux**
@@ -61,11 +63,25 @@ netstat -ano
 
 **Applications installées (32-bit et 64-bit)**
 ```powershell
+# 32bits
 Get-ItemProperty "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
+
+# 64bits
 Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
+```
+```cmd
+dir "C:\Program Files"
+dir "C:\Program Files (x86)"
+dir C:\Users\<user>\Downloads
 ```
 
 **Processus en cours d'exécution**
 ```powershell
 Get-Process
+
+# Process non standard Windows
+Get-Process | Where-Object {$_.Path -notlike "C:\Windows\*" -and $_.Path -ne $null} | Select-Object Id, Name, Path, CPU, WS
+
+# Path du binaire derrière le process
+Get-Process NonStandardProcess | Select-Object Path
 ```

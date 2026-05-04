@@ -22,7 +22,7 @@ dir /s /b /a C:\flag.txt
 
 ```bash
 # RDP
-xfreerdp /u:student /p:lab /v:192.168.151.152 /dynamic-resolution
+xfreerdp /dynamic-resolution /u:'student' /p:'lab' /v:192.168.151.152
 ```
 
 ## Host un serveur web pour dl des fichiers
