@@ -22,6 +22,7 @@ whoami /groups
 ```powershell
 Get-LocalUser
 ```
+
 ```cmd
 net user
 
@@ -32,6 +33,7 @@ net user <username>
 ```powershell
 Get-LocalGroup
 ```
+
 ```cmd
 net localgroup
 ```
@@ -69,6 +71,7 @@ Get-ItemProperty "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Un
 # 64bits
 Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
 ```
+
 ```cmd
 dir "C:\Program Files"
 dir "C:\Program Files (x86)"
@@ -84,4 +87,41 @@ Get-Process | Where-Object {$_.Path -notlike "C:\Windows\*" -and $_.Path -ne $nu
 
 # Path du binaire derrière le process
 Get-Process NonStandardProcess | Select-Object Path
+```
+
+**Recherche de fichiers sensibles par extension**
+```powershell
+# Password manager databases
+Get-ChildItem -Path C:\ -Include *.kdbx -File -Recurse -ErrorAction SilentlyContinue
+
+# Fichiers de config et texte dans un répertoire applicatif
+Get-ChildItem -Path C:\xampp -Include *.txt,*.ini -File -Recurse -ErrorAction SilentlyContinue
+
+# Documents dans le home de l'utilisateur
+Get-ChildItem -Path C:\Users\<user>\ -Include *.txt,*.pdf,*.xls,*.xlsx,*.doc,*.docx -File -Recurse -ErrorAction SilentlyContinue
+
+Get-ChildItem -Path C:\Users\ -Include *.ini -File -Recurse -ErrorAction SilentlyContinue
+
+# CMD
+dir /s /b /a C:\*.txt
+```
+
+**Lire un fichier**
+```powershell
+# Aliases pour Get-Content
+cat C:\path\to\file.txt
+type C:\path\to\file.txt
+gc C:\path\to\file.txt
+Get-Content C:\path\to\file.txt
+```
+```cmd
+type C:\path\to\file.txt
+```
+
+**Exécuter une commande en tant qu'un autre utilisateur**
+
+Nécessite un accès GUI (RDP ou session physique) - le prompt de mot de passe n'accepte pas l'input depuis un bind shell ou WinRM.
+
+```cmd
+runas /user:<username> cmd
 ```
