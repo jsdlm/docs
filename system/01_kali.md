@@ -21,6 +21,10 @@ su root
 chmod +x full-deploy.sh
 find ./* -exec chmod +x {} \;
 ./full-deploy.sh
+
+# Network reset
+sudo ip neigh flush all        # ARP
+sudo ip route flush cache      # routes
 ```
 
 ## Before starting pentest
