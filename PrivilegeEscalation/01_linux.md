@@ -269,3 +269,23 @@ sudo -l
 sudo -i
 ```
 
+### Inspecting service footprints
+
+**Surveiller les processus en temps réel pour détecter des credentials**
+
+Contrairement à Windows, on peut inspecter les processus des autres utilisateurs, y compris root.
+
+```bash
+watch -n 1 "ps -aux | grep pass"
+```
+
+**Sniffer le trafic loopback avec tcpdump**
+
+Nécessite sudo ou les droits explicites sur tcpdump. Utile si des services internes échangent des credentials en clair sur localhost.
+
+```bash
+sudo tcpdump -i lo -A | grep "pass"
+```
+
+## Insecure file permissions
+
