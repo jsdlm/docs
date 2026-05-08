@@ -29,37 +29,6 @@ Exemples de formats courants :
 
 > `hashid` ne distingue pas toujours MD2/MD4/MD5 sur un hash de 32 chars - croiser avec [https://hashcat.net/wiki/doku.php?id=example_hashes](https://hashcat.net/wiki/doku.php?id=example_hashes)
 
-## Chercher des fichiers de gestionnaires de mots de passe
-
-Extensions ciblées → voir [[01_offline#Exemples]] pour le crack. : `.kdbx` (KeePass), `.db` (1Password legacy), `.agilekeychain`, `.opvault`, `.dashlane`, `.psafe3` (Password Safe), `.kwallet`
-
-**PowerShell**
-```powershell
-# KeePass uniquement
-Get-ChildItem -Path C:\ -Include *.kdbx -File -Recurse -ErrorAction SilentlyContinue
-
-# Tous les gestionnaires
-Get-ChildItem -Path C:\ -Include *.kdbx,*.db,*.agilekeychain,*.opvault,*.dashlane,*.psafe3,*.kwallet -File -Recurse -ErrorAction SilentlyContinue
-```
-
-**CMD**
-```powershell
-# KeePass uniquement
-dir /s /b C:\*.kdbx 2>nul
-
-# Tous les gestionnaires
-dir /s /b C:\*.kdbx C:\*.db C:\*.agilekeychain C:\*.opvault C:\*.dashlane C:\*.psafe3 C:\*.kwallet 2>nul
-```
-
-**Linux**
-```bash
-# KeePass uniquement
-find / -name "*.kdbx" 2>/dev/null
-
-# Tous les gestionnaires
-find / \( -name "*.kdbx" -o -name "*.db" -o -name "*.agilekeychain" -o -name "*.opvault" -o -name "*.dashlane" -o -name "*.psafe3" -o -name "*.kwallet" \) 2>/dev/null
-```
-
 ## Exemples
 
 ### MD5
@@ -71,8 +40,7 @@ hashcat -m 0 hash.txt /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rul
 
 ### KeePass
 
-1. Localiser le fichier → [[01_offline#Chercher des fichiers de gestionnaires de mots de passe]]
-
+1. Localiser le fichier
 ```bash
 # 2. Convertir en hash crackable
 keepass2john Database.kdbx > keepass.hash
@@ -80,9 +48,7 @@ keepass2john Database.kdbx > keepass.hash
 # Supprimer le préfixe "Database:" ajouté par keepass2john
 sed -i 's/^[^:]*://' keepass.hash
 ```
-
 3. Identifier le mode → https://hashcat.net/wiki/doku.php?id=example_hashes
-
 ```bash
 # 4. Cracker
 hashcat -m 13400 keepass.hash /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/rockyou-30000.rule --force

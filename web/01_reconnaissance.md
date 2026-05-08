@@ -86,7 +86,7 @@ gobuster dir -u http://target.com -w /path/to/wordlist.txt -f
 gobuster dir -u <url> -w /usr/share/wordlists/dirb/<wordlistsouhaité> -f
 
 ffuf -u http://target.com/FUZZ -w /path/to/wordlist.txt
-ffuf -u <url> -w /usr/share/seclists/Discovery/Web-Content/common.txt -r -t 7 -rate 70 -H “User-Agent:
+ffuf -u <url> -w /usr/share/seclists/Discovery/Web-Content/common.txt -r -t 7 -rate 70
 ```
 
 ## Plugins browsers

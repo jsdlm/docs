@@ -64,21 +64,6 @@ Get-LocalGroupMember <groupname>
 systeminfo
 ```
 
-**Interfaces réseau**
-```cmd
-ipconfig /all
-```
-
-**Table de routage**
-```cmd
-route print
-```
-
-**Connexions réseau actives**
-```cmd
-netstat -ano
-```
-
 **Applications installées (32-bit et 64-bit)**
 ```powershell
 # 32bits
@@ -133,6 +118,8 @@ Get-ChildItem -Path C:\Users\ -Include *.ini -File -Recurse -ErrorAction Silentl
 
 # CMD
 dir /s /b /a C:\*.txt
+
+dir /s /b /a C:\*.kdbx 2>nul
 ```
 
 **Lire un fichier**
