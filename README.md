@@ -8,11 +8,26 @@
 - [ACL](ActiveDirectory/05_acl.md)
 - [ADCS](ActiveDirectory/06_adcs.md)
 
+## Database
+- [MongoDB](Database/mongodb.md)
+- [MSSQL](Database/mssql.md)
+- [MySQL / MariaDB](Database/mysql.md)
+- [Oracle](Database/oracle.md)
+- [PostgreSQL](Database/postgresql.md)
+- [Redis](Database/redis.md)
+- [Snowflake](Database/snowflake.md)
+- [SQLite](Database/sqlite.md)
+
 ## Exploits
 - [Recherche de vulnérabilités](Exploits/01_recherche.md)
 - [Buffer Overflow](Exploits/02_BoF.md)
 - [Web](Exploits/03_web.md)
 - [Metasploit](Exploits/04_metasploit.md)
+
+## Network
+- [Pivoting checklist](Network/00_pivoting_checklist.md)
+- [Port Forwarding](Network/01_port_forwarding.md)
+- [Tunnel SSH](Network/02_tunnel_ssh.md)
 
 ## OSINT
 - [DNS](OSINT/01_dns.md)
@@ -31,7 +46,6 @@
 - [Windows](PrivilegeEscalation/02_windows.md)
 
 ## RedTeam
-- [Reverse Shells](RedTeam/01_reverse-shells.md)
 - [Macro Office (VBA)](RedTeam/02_macro.md)
 - [Phishing](RedTeam/03_phishing.md)
 - [Antivirus Evasion](RedTeam/04_antivirus_evasion.md)
@@ -43,6 +57,11 @@
 - [Audit d'architecture](Salesforce/04_architecture.md)
 - [Revue des accès](Salesforce/05_access-review.md)
 - [Extractions](Salesforce/06_extractions.md)
+
+## Shells
+- [Reverse Shells](Shells/01_reverse_shells.md)
+- [Upgrade to Fully Interactive TTYs](Shells/02_upgrade_to_full_TTY.md)
+- [Escape from Restricted Shells](Shells/03_escape_from_restricted_shells.md)
 
 ## System
 - [Kali](System/01_kali.md)
