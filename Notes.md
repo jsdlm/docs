@@ -12,12 +12,6 @@
 xfreerdp /dynamic-resolution /cert:ignore /u:'student' /p:'lab' /v:192.168.151.152
 ```
 
-## Host un serveur web pour dl des fichiers
-
-```bash
-python3 -m http.server 80
-```
-
 Tunnels SSH
 
 ```bash

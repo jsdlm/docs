@@ -8,22 +8,6 @@
 find / -name "flag.txt" 2>/dev/null
 ```
 
-**Transfert de fichiers avec nc**
-
-```bash
-# On your receiver:
-nc -l -p 4444 -q 1 > something.zip < /dev/null
-
-# On your sender:
-cat something.zip | netcat <IP> 4444
-```
-
-**Télécharger un fichier depuis HTTP**
-```bash
-wget http://<ip>/script.exe
-curl -O http://<ip>/script.exe
-```
-
 **Exécuter un script Bash**
 
 ```bash
