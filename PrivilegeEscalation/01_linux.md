@@ -354,7 +354,7 @@ id
 
 ## Insecure system components
 
-### Abusing SUID binaries and capabilities
+### Abusing SUID binaries 
 
 **Trouver les binaires avec le bit SUID**
 
@@ -368,6 +368,8 @@ grep Uid /proc/<pid>/status
 
 Pour l'exploitation des binaires SUID, chercher le binaire sur [GTFOBins](https://gtfobins.github.io/) → onglet **SUID**.
 
+### Abusing binaries capabilities
+
 **Lister les capabilities des binaires**
 
 ```bash
@@ -375,3 +377,23 @@ Pour l'exploitation des binaires SUID, chercher le binaire sur [GTFOBins](https:
 ```
 
 Les binaires avec `cap_setuid+ep` permettent d'usurper l'identité de root. Chercher le binaire sur [GTFOBins](https://gtfobins.github.io/) → onglet **Capabilities**.
+
+### Abusing sudo
+
+**Lister les commandes autorisées en sudo**
+
+```bash
+sudo -l
+```
+
+Chercher chaque binaire autorisé sur [GTFOBins](https://gtfobins.github.io/) → onglet **Sudo**.
+
+**Vérifier si AppArmor bloque l'exploitation**
+
+Si une tentative échoue avec "Permission denied", vérifier les logs et le statut AppArmor.
+
+```bash
+cat /var/log/syslog | grep <binaire>
+# En tant que root :
+aa-status
+```
