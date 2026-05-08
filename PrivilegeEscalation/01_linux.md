@@ -135,6 +135,12 @@ rpm -qa
 find / -writable -type d 2>/dev/null
 ```
 
+**Fichiers accessibles en écriture**
+
+```bash
+find / -writable -not -path "/proc/*" 2>/dev/null
+```
+
 **Trouver des fichiers avec permissions spéciales**
 
 ```bash
@@ -271,6 +277,12 @@ sudo tcpdump -i lo -A | grep "pass"
 **Lister les jobs cron**
 
 ```bash
+ls -lah /etc/cron*
+
+crontab -l
+
+sudo crontab -l
+
 cat /etc/crontab; ls -la /etc/cron.*/ ; crontab -l 2>/dev/null
 ```
 
