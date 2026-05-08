@@ -321,7 +321,7 @@ nc -lnvp 4444
 
 ### Abusing password authentication
 
-Si `/etc/passwd` est world-writable, on peut y ajouter un compte root arbitraire — le hash dans la deuxième colonne prend la priorité sur `/etc/shadow`.
+Si `/etc/passwd` est world-writable, on peut y ajouter un compte root arbitraire - le hash dans la deuxième colonne prend la priorité sur `/etc/shadow`.
 
 **Vérifier que /etc/passwd est writable**
 
@@ -353,3 +353,25 @@ id
 
 
 ## Insecure system components
+
+### Abusing SUID binaries and capabilities
+
+**Trouver les binaires avec le bit SUID**
+
+```bash
+find / -perm -u=s -type f 2>/dev/null
+
+# Inspecter les UIDs d'un processus (real / effective)
+ps aux | grep passwd
+grep Uid /proc/<pid>/status
+```
+
+Pour l'exploitation des binaires SUID, chercher le binaire sur [GTFOBins](https://gtfobins.github.io/) → onglet **SUID**.
+
+**Lister les capabilities des binaires**
+
+```bash
+/usr/sbin/getcap -r / 2>/dev/null
+```
+
+Les binaires avec `cap_setuid+ep` permettent d'usurper l'identité de root. Chercher le binaire sur [GTFOBins](https://gtfobins.github.io/) → onglet **Capabilities**.
