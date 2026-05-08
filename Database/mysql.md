@@ -1,6 +1,11 @@
 # MySQL / MariaDB
 
 ```bash
+# Installation client
+sudo apt install default-mysql-client
+```
+
+```bash
 # Connexion
 mysql -h <ip> -P 3306 -u <user> -p
 ```

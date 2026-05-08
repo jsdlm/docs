@@ -1,6 +1,11 @@
 # PostgreSQL
 
 ```bash
+# Installation client
+sudo apt install postgresql-client
+```
+
+```bash
 # Connexion
 psql -h <ip> -p 5432 -U <user> -d <database>
 ```

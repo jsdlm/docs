@@ -1,11 +1,8 @@
 # Snowflake
 
+https://docs.snowflake.com/fr/user-guide/snowsql-install-config
 ```bash
-# Connexion via SnowSQL
 snowsql -a <account>.snowflakecomputing.com -u <user>
-
-# Connexion via Python (si SnowSQL absent)
-pip install snowflake-connector-python
 ```
 
 **Navigation**

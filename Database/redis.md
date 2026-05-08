@@ -1,6 +1,11 @@
 # Redis
 
 ```bash
+# Installation client
+sudo apt install redis-tools
+```
+
+```bash
 # Connexion
 redis-cli -h <ip> -p 6379
 redis-cli -h <ip> -p 6379 -a <password>

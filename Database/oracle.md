@@ -1,14 +1,5 @@
 # Oracle
 
-```bash
-# Connexion depuis Kali
-sqlplus <user>/<password>@<ip>:1521/<sid>
-sqlplus <user>/<password>@<ip>:1521/<service_name>
-
-# Trouver le SID/service name
-impacket-oracletnt <ip>
-```
-
 **Navigation**
 
 ```sql

@@ -1,6 +1,13 @@
 # MongoDB
 
 ```bash
+# Installation client
+sudo apt install mongodb-clients         # legacy mongo shell
+# ou mongosh (shell moderne)
+npm install -g mongosh
+```
+
+```bash
 # Connexion
 mongosh <ip>:27017
 mongosh "mongodb://<user>:<password>@<ip>:27017/<database>"

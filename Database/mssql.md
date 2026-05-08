@@ -1,8 +1,12 @@
 # MSSQL
 
 ```bash
+# Installation clients
+sudo apt install sqsh freetds-bin        # sqsh + tsql
+```
+
+```bash
 # Connexion depuis Kali
-impacket-mssqlclient <user>@<ip> -windows-auth
 sqsh -S <ip> -U <user> -P <password>
 ```
 

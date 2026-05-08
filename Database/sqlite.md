@@ -1,6 +1,11 @@
 # SQLite
 
 ```bash
+# Installation client
+sudo apt install sqlite3
+```
+
+```bash
 # Ouvrir un fichier
 sqlite3 <fichier.db>
 ```
