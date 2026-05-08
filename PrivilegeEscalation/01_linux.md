@@ -75,36 +75,6 @@ uname -a
 ps aux
 ```
 
-**Interfaces réseau**
-
-```bash
-ip a
-```
-
-**Table de routage**
-
-```bash
-routel
-# ou
-route
-```
-
-**Connexions réseau actives**
-
-```bash
-ss -anp
-ss -tln
-netstat -taupen
-```
-
-**Règles firewall**
-
-Nécessite root pour `iptables`, mais les fichiers de config sont souvent lisibles :
-
-```bash
-cat /etc/iptables/rules.v4
-```
-
 Chercher aussi les fichiers générés par `iptables-save` :
 
 ```bash
