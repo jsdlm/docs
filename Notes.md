@@ -18,34 +18,15 @@ xfreerdp /dynamic-resolution /cert:ignore /u:'student' /p:'lab' /v:192.168.151.1
 python3 -m http.server 80
 ```
 
-## Shell Handler
-
-```bash
-pipx install git+https://github.com/brightio/penelope
-
-penelope --oscp-safe
-
-penelope                          # Listening for reverse shells on 0.0.0.0:4444
-penelope -p 5555                  # Listening for reverse shells on 0.0.0.0:5555
-penelope -p 4444,5555             # Listening for reverse shells on 0.0.0.0:4444 and 0.0.0.0:5555
-penelope -i eth0 -p 5555          # Listening for reverse shells on eth0:5555
-```
-## Tunnels SSH
+Tunnels SSH
 
 ```bash
 sh -f -NL 1234:localhost:5432 user@IP
 ```
 
-## ExecutionPolicy
-
-```powershell
-powershell -ep bypass
-Get-ExecutionPolicy
-Set-ExecutionPolicy Unrestricted -Scope Process
-```
 
 
-## Remove empty lines
+## Remove empty lines (NP++)
 
 ```regex
 ^[ \t]*$\r?\n
