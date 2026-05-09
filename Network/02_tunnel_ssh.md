@@ -28,7 +28,7 @@ ss -ntplu
 Accéder depuis sa propre machine à un service qui écoute uniquement sur `localhost` côté serveur distant (ex: PostgreSQL sur 5432) :
 
 ```bash
-ssh -f -N -L 1234:localhost:5432 user@<ip>
+ssh -f -N -L 1234:localhost:5432 user@Y.Y.Y.Y
 ```
 
 Se connecter ensuite avec `psql -h localhost -p 1234`.
@@ -55,3 +55,46 @@ ssh <user>@<IP_PIVOT> -p 4455
 # PostgreSQL
 psql -h <IP_PIVOT> -p 4455 -U <user>
 ```
+
+## Dynamic Port Forwarding + Proxychains
+
+Un seul port local (proxy SOCKS) peut forwarder vers **n'importe quel socket** accessible par le serveur SSH, sans avoir à définir une destination à l'avance.
+
+```bash
+ssh -f -N -D [LOCAL_IP:]LOCAL_PORT user@Y.Y.Y.Y
+```
+
+> Le port local devient un serveur SOCKS. Les paquets doivent être encapsulés au format SOCKS, c'est Proxychains qui s'en charge côté client.
+
+### Ouvrir le tunnel depuis la machine pivot
+
+```bash
+# Exposer le proxy SOCKS sur toutes les interfaces, port 9999
+ssh -N -D 0.0.0.0:9999 database_admin@Y.Y.Y.Y
+```
+
+### Configurer Proxychains
+
+Éditer `/etc/proxychains4.conf` et remplacer la dernière ligne de `[ProxyList]` :
+
+```
+socks5 <IP_PIVOT> 9999
+```
+
+> `socks5` supporte IPv6, UDP et l'authentification. Utiliser `socks4` si le serveur ne supporte pas SOCKS5.
+
+### Utiliser le tunnel depuis Kali
+
+Préfixer n'importe quelle commande avec `proxychains`, elle sera routée via le proxy SOCKS :
+
+```bash
+# SMB
+proxychains smbclient -L //<IP_CIBLE>/ -U <user> --password=<password>
+
+# Scan Nmap (TCP connect uniquement, -sT obligatoire)
+sudo proxychains nmap -sT -n -Pn --top-ports=20 <IP_CIBLE>
+```
+
+> Nmap : utiliser `-sT` (TCP connect), jamais `-sS` (raw packets incompatibles SOCKS). Passer `-n -Pn` pour éviter les résolutions DNS/ping qui ne passent pas via SOCKS.
+>
+> Le scan est lent par défaut — réduire `tcp_read_time_out` et `tcp_connect_time_out` dans `/etc/proxychains4.conf` pour accélérer.
