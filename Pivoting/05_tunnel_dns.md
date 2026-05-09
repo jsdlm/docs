@@ -81,4 +81,4 @@ nslookup www.feline.corp <IP_DNS_RESOLVER>
 resolvectl flush-caches
 ```
 
-![](../Pasted%20image%2020260509215800.png)
+![](assets/Pasted%20image%2020260509215800.png)
