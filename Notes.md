@@ -12,14 +12,6 @@
 xfreerdp /dynamic-resolution /cert:ignore /u:'student' /p:'lab' /v:192.168.151.152
 ```
 
-Tunnels SSH
-
-```bash
-sh -f -NL 1234:localhost:5432 user@IP
-```
-
-
-
 ## Remove empty lines (NP++)
 
 ```regex

@@ -6,7 +6,7 @@
 2. **Identifier le type de hash** - voir section ci-dessous
 3. **Formater le hash** - vérifier que le format correspond à ce qu'attend l'outil (ex: `user:hash` vs hash seul)
 4. **Estimer le temps de crack** - keyspace / hash rate. Si trop long → changer d'approche (cloud, règles ciblées)
-5. **Préparer la wordlist** - muter la wordlist, appliquer des règles, chercher des leaks en ligne → [[04_wordlists]]
+5. **Préparer la wordlist** - muter la wordlist, appliquer des règles, chercher des leaks en ligne → [[02_hashcat_rules]]
 6. **Lancer l'attaque** - copier le hash avec soin (pas d'espace ou newline parasite) → [[02_hashcat]] / [[03_john]]
 
 ## Identifier un hash

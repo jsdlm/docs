@@ -34,12 +34,12 @@
 - [Emails](OSINT/02_emails.md)
 
 ## Password Attacks
-- [Online bruteforce](PasswordAttacks/00_online.md)
+- [Online bruteforce](PasswordAttacks/00_bruteforce.md)
 - [Offline Password Cracking](PasswordAttacks/01_offline.md)
 - [Hashcat](PasswordAttacks/02_hashcat.md)
 - [John](PasswordAttacks/03_john.md)
-- [Mutating wordlists](PasswordAttacks/04_wordlists.md)
-- [NTLM](PasswordAttacks/05_NTLM.md)
+- [Mutating wordlists](PasswordAttacks/02_hashcat_rules.md)
+- [NTLM](PasswordAttacks/04_NTLM.md)
 
 ## Privilege Escalation
 - [Linux](PrivilegeEscalation/01_linux.md)

