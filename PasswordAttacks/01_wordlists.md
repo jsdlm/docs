@@ -28,6 +28,14 @@ sudo gzip -d rockyou.txt.gz
 - [Google Fuzzing Forum](https://github.com/google/fuzzing)
 - [CrackStation’s Password Cracking Dictionary](https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm)
 
+## Default Credentials
+
+- [DefaultPassword](https://default-password.info/)
+- [CIRT.net Password DB](https://www.cirt.net/passwords)
+- [Default Router Passwords List](https://192-168-1-1ip.mobi/default-router-passwords-list/)
+
+**Note:** [SecLists](https://github.com/danielmiessler/SecLists) and [WordList Compendium](https://github.com/Dormidera/WordList-Compendium) also include default passwords lists.
+
 ## Wordlist Generation
 
 #### CeWL
