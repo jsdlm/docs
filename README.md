@@ -24,22 +24,26 @@
 - [Web](Exploits/03_web.md)
 - [Metasploit](Exploits/04_metasploit.md)
 
-## Network
-- [Pivoting checklist](Network/00_pivoting_checklist.md)
-- [Port Forwarding](Network/01_port_forwarding.md)
-- [Tunnel SSH](Network/02_tunnel_ssh.md)
-
 ## OSINT
 - [DNS](OSINT/01_dns.md)
 - [Emails](OSINT/02_emails.md)
 
 ## Password Attacks
-- [Online bruteforce](PasswordAttacks/00_bruteforce.md)
+- [Bruteforce](PasswordAttacks/00_bruteforce.md)
 - [Offline Password Cracking](PasswordAttacks/01_offline.md)
+- [Wordlists](PasswordAttacks/01_wordlists.md)
 - [Hashcat](PasswordAttacks/02_hashcat.md)
+- [Hashcat Rules](PasswordAttacks/02_hashcat_rules.md)
 - [John](PasswordAttacks/03_john.md)
-- [Mutating wordlists](PasswordAttacks/02_hashcat_rules.md)
 - [NTLM](PasswordAttacks/04_NTLM.md)
+
+## Pivoting
+- [Pivoting checklist](Pivoting/00_pivoting_checklist.md)
+- [Port Forwarding](Pivoting/01_port_forwarding.md)
+- [Tunnel SSH](Pivoting/02_tunnel_ssh.md)
+- [Port Forwarding with Windows Tools](Pivoting/03_windows_portfwd.md)
+- [HTTP Tunneling](Pivoting/04_tunnel_http.md)
+- [DNS Tunneling](Pivoting/05_tunnel_dns.md)
 
 ## Privilege Escalation
 - [Linux](PrivilegeEscalation/01_linux.md)
