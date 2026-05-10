@@ -10,6 +10,18 @@ python3 -m http.server 80
 pipx install updog
 updog
 ```
+
+Upload via Updog
+
+```bash
+curl http://<ip:port>/upload -F 'file=@/path/to/file' -F 'path=<remote-directory>'
+
+# Upload to root directory
+curl http://localhost:9090/upload -F 'file=@myfile.txt' -F 'path=/tmp/uploads'
+
+# With password authentication
+curl -u :password http://localhost:9090/upload -F 'file=@myfile.txt' -F 'path=/tmp/uploads'
+```
 ## FTP Server
 
 ```sh
