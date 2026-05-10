@@ -38,6 +38,11 @@ sudo ip route flush cache      # routes
 ## Misc
 
 ```bash
+# Backgroung
+# Ctrl + Z
+jobs
+fg %<numéro_job>
+
 # Neo4j
 neo4j://127.0.0.1:7687
 neo4j:neo4j
