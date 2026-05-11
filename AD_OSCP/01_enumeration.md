@@ -274,3 +274,31 @@ net group "Management Department" stephanie /del /domain
 
 > Un user standard avec `GenericAll` sur un objet est une misconfiguration — permet d'ajouter des membres à des groupes, de reset des mots de passe, etc. Toujours nettoyer après exploitation.
 
+### Partages du domaine
+
+```powershell
+Find-DomainShare                    # tous les partages du domaine
+Find-DomainShare -CheckShareAccess  # uniquement ceux accessibles par l'utilisateur courant
+```
+
+**Cibles prioritaires**
+
+```powershell
+# SYSVOL — accessible par tous les users du domaine, contient scripts et GPO
+ls \\dc1.corp.com\sysvol\corp.com\
+ls \\dc1.corp.com\sysvol\corp.com\Policies\
+
+# Lire un fichier de politique
+cat \\dc1.corp.com\sysvol\corp.com\Policies\oldpolicy\old-policy-backup.xml
+```
+
+> Les fichiers XML de Group Policy Preferences (GPP) peuvent contenir des mots de passe chiffrés (`cpassword`). La clé AES-256 est publique — déchiffrer avec `gpp-decrypt` :
+
+```bash
+gpp-decrypt "<cpassword_value>"
+```
+
+**Explorer les partages non-standard** (ex: `docshare`, `backup`, `docs`…) — les admins y laissent souvent des fichiers sensibles (emails, mots de passe en clair, scripts).
+
+## Enumération automatique
+
