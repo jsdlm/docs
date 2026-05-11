@@ -55,3 +55,73 @@ $LDAP
 
 > `([adsi]'').distinguishedName` retourne le DN au bon format LDAP directement (`DC=corp,DC=com`), sans manipulation manuelle de la chaîne.
 
+### Recherche LDAP avec DirectorySearcher
+
+**Script de base — lister tous les objets**
+
+```powershell
+$PDC  = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
+$DN   = ([adsi]'').distinguishedName
+$LDAP = "LDAP://$PDC/$DN"
+
+$direntry    = New-Object System.DirectoryServices.DirectoryEntry($LDAP)
+$dirsearcher = New-Object System.DirectoryServices.DirectorySearcher($direntry)
+$dirsearcher.FindAll()
+```
+
+**Filtrer par type d'objet (`samAccountType`)**
+
+```powershell
+$dirsearcher.filter = "samAccountType=805306368"   # utilisateurs du domaine
+$result = $dirsearcher.FindAll()
+
+Foreach($obj in $result) {
+    Foreach($prop in $obj.Properties) { $prop }
+    Write-Host "-------------------------------"
+}
+```
+
+| Valeur `samAccountType` | Objets retournés |
+|---|---|
+| `805306368` (`0x30000000`) | Utilisateurs |
+| `805306369` | Machines |
+| `268435456` | Groupes |
+
+**Fonction réutilisable (`function.ps1`)**
+
+```powershell
+function LDAPSearch {
+    param ([string]$LDAPQuery)
+    $PDC = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
+    $DN  = ([adsi]'').distinguishedName
+    $DirectoryEntry    = New-Object System.DirectoryServices.DirectoryEntry("LDAP://$PDC/$DN")
+    $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher($DirectoryEntry, $LDAPQuery)
+    return $DirectorySearcher.FindAll()
+}
+```
+
+```powershell
+Import-Module .\function.ps1
+
+# Tous les utilisateurs
+LDAPSearch -LDAPQuery "(samAccountType=805306368)"
+
+# Tous les groupes
+LDAPSearch -LDAPQuery "(objectclass=group)"
+
+# Membres de tous les groupes (CN + member)
+foreach ($group in $(LDAPSearch -LDAPQuery "(objectCategory=group)")) {
+    $group.properties | select {$_.cn}, {$_.member}
+}
+
+# Membres d'un groupe spécifique
+$sales = LDAPSearch -LDAPQuery "(&(objectCategory=group)(cn=Sales Department))"
+$sales.properties.member
+
+# Tous les attributs d'un utilisateur spécifique
+$user = LDAPSearch -LDAPQuery "(&(objectCategory=user)(cn=<username>))"
+$user.properties
+```
+
+> **Groupes imbriqués (nested groups)** : `net.exe` n'affiche que les utilisateurs directs. LDAP/DirectorySearcher retourne aussi les groupes membres — ce qui peut révéler des héritages de privilèges non intentionnels.
+
