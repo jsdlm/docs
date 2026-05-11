@@ -326,3 +326,30 @@ Invoke-BloodHound -CollectionMethod All -OutputDirectory C:\Users\stephanie\Desk
 Invoke-BloodHound -CollectionMethod All -Loop -LoopDuration 02:00:00 -LoopInterval 00:05:00
 ```
 
+### BloodHound
+**Démarrer BloodHound (Docker)**
+
+```bash
+cd /opt/tools/bloodhound
+docker compose up -d
+
+# Récupérer le mot de passe initial dans les logs
+docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password"
+```
+
+Se connecter sur `http://127.0.0.1:8080` avec `admin` / `<initial_password>`.
+
+**Importer le ZIP SharpHound** — glisser-déposer le fichier dans l'interface ou utiliser le bouton Upload.
+
+**Requêtes utiles (onglet Analysis)**
+
+| Requête | Utilité |
+|---|---|
+| Find all Domain Admins | Lister les DA et leurs relations |
+| Find Shortest Paths to Domain Admins | Chemin d'attaque le plus court vers DA |
+| Shortest Paths to Domain Admins from Owned Principals | Chemin depuis les objets qu'on contrôle |
+
+**Marquer des objets comme "owned"** — clic droit sur un nœud → *Mark as Owned* (icône crâne). À faire pour chaque user/machine compromis afin d'affiner les chemins d'attaque.
+
+> Cliquer sur une arête entre deux nœuds → **? Help** → onglet *Abuse* : explique comment exploiter la relation concrètement.
+
