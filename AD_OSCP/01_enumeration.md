@@ -302,3 +302,27 @@ gpp-decrypt "<cpassword_value>"
 
 ## Enumération automatique
 
+### SharpHound
+
+SharpHound collecte les données AD (LDAP, NetSessionEnum, Remote Registry…) et les exporte dans un ZIP analysable par BloodHound.
+
+**Collecte depuis la machine compromise**
+
+```powershell
+powershell -ep bypass
+Import-Module .\Sharphound.ps1
+
+Invoke-BloodHound -CollectionMethod All -OutputDirectory C:\Users\stephanie\Desktop\ -OutputPrefix "corp audit"
+```
+
+- `All` : collecte tout sauf les GPO locales (groupes, sessions, ACLs, SPNs, trusts…)
+- Le résultat est un fichier ZIP à transférer sur Kali pour analyse dans BloodHound
+
+> SharpHound crée aussi un fichier `.bin` (cache) — inutile pour l'analyse, peut être supprimé.
+
+**Option looping** — relancer la collecte en boucle pour capturer les sessions qui changent :
+
+```powershell
+Invoke-BloodHound -CollectionMethod All -Loop -LoopDuration 02:00:00 -LoopInterval 00:05:00
+```
+
