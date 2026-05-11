@@ -125,3 +125,40 @@ $user.properties
 
 > **Groupes imbriqués (nested groups)** : `net.exe` n'affiche que les utilisateurs directs. LDAP/DirectorySearcher retourne aussi les groupes membres — ce qui peut révéler des héritages de privilèges non intentionnels.
 
+### PowerView
+
+```bash
+sudo apt install powersploit
+powersploit -h
+/usr/share/windows-resources/powersploit/Recon/PowerView.ps1
+```
+
+```powershell
+Import-Module .\PowerView.ps1
+```
+
+**Domaine et utilisateurs**
+
+```powershell
+Get-NetDomain                                        # infos domaine (PDC, DC…)
+Get-NetUser                                          # tous les attributs de tous les utilisateurs
+Get-NetUser | select cn                              # liste des usernames
+Get-NetUser | select cn,pwdlastset,lastlogon         # dernière MAJ mdp + dernière connexion
+```
+
+**Groupes**
+
+```powershell
+Get-NetGroup | select cn                             # liste de tous les groupes
+Get-NetGroup "Sales Department" | select member      # membres d'un groupe (inclut les groupes imbriqués)
+Get-NetGroupMember "Domain Admins" | select MemberName  # membres directs d'un groupe
+
+# Attributs utilisateur (ex: whencreated) pour les membres d'un groupe
+# Get-NetGroupMember ne retourne pas les attributs user — passer par Get-NetUser :
+Get-NetGroupMember "Domain Admins" | ForEach-Object {
+    Get-NetUser $_.MemberName | select cn, whencreated
+}
+```
+
+> Chercher des comptes avec `pwdlastset` ancien ou `lastlogon` jamais utilisé → cibles idéales pour password attacks (politique plus laxiste, moins de surveillance).
+
