@@ -162,3 +162,74 @@ Get-NetGroupMember "Domain Admins" | ForEach-Object {
 
 > Chercher des comptes avec `pwdlastset` ancien ou `lastlogon` jamais utilisé → cibles idéales pour password attacks (politique plus laxiste, moins de surveillance).
 
+**Machines**
+
+```powershell
+Get-NetComputer | select operatingsystem,dnshostname   # OS + hostname de toutes les machines
+Get-NetComputer | select dnshostname,operatingsystem,operatingsystemversion
+```
+
+> Repérer les OS anciens (Windows 10, Server 2016…) — plus susceptibles d'avoir des vulnérabilités non patchées. Noter également les serveurs web/fichiers comme cibles prioritaires.
+
+**Droits admin locaux sur les machines du domaine**
+
+```powershell
+Find-LocalAdminAccess    # machines où l'utilisateur courant est admin local
+```
+
+**Sessions actives / utilisateurs connectés**
+
+```powershell
+# Fonctionne seulement si le user courant a des droits admin sur la machine cible
+# (accès refusé sur Windows 11 / Server 2019+ pour les non-admins)
+Get-NetSession -ComputerName <hostname> -Verbose
+```
+
+> `Get-NetSession` utilise `NetSessionEnum` — bloqué par défaut depuis Windows 11 build 1709 et Server 2019 build 1809 (changement des permissions sur la clé `SrvsvcSessionInfo` dans `HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\DefaultSecurity`).
+
+**PsLoggedOn (SysInternals) — alternative fiable**
+
+Se connecte à distance via **SMB (port 445)** avec deux mécanismes :
+- **Remote Registry** → lit `HKEY_USERS` → users connectés localement
+- **NetSessionEnum** → users connectés via partages réseau
+
+Nécessite que le service **Remote Registry** soit actif sur la cible :
+- Activé par défaut sur Windows Server
+- Désactivé par défaut sur les workstations depuis Windows 8 (mais peut être activé par un admin)
+
+Pas besoin d'être admin local sur la cible — juste que Remote Registry soit accessible.
+
+```cmd
+.\PsLoggedon.exe \\<hostname>
+```
+
+```
+Users logged on locally:
+    CORP\jeff
+Users logged on via resource shares:
+    CORP\stephanie
+```
+
+> Si un utilisateur à hauts privilèges (ex: `jeffadmin`) est connecté sur une machine où on a des droits admin locaux → vecteur d'attaque pour vol de credentials.
+
+### Service Principal Names (SPN)
+
+Un SPN associe un service (IIS, MSSQL, Exchange…) à un compte de service AD. Énumérer les SPNs permet de découvrir les services et leurs IP/ports sans port scan.
+
+```cmd
+:: Lister les SPNs d'un compte spécifique
+setspn -L <username>
+```
+
+```powershell
+:: Lister tous les comptes avec SPN dans le domaine
+Get-NetUser -SPN | select samaccountname,serviceprincipalname
+```
+
+```powershell
+:: Résoudre le hostname associé
+nslookup.exe web04.corp.com
+```
+
+> Les comptes de service ont généralement plus de privilèges qu'un user standard. Un SPN de type `HTTP/web04.corp.com` indique un serveur web — vecteur pour Kerberoasting (voir modules suivants).
+
