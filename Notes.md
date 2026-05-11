@@ -5,13 +5,15 @@
 - [ASCII to Hex](https://www.asciitohex.com/)
 - [CyberChef (GCHQ)](https://gchq.github.io/CyberChef/)
 
-## Connexions distantes
+## RDP
 
 ```bash
-# RDP
-xfreerdp /dynamic-resolution /cert:ignore /u:'student' /p:'lab' /v:192.168.151.152
+xfreerdp /dynamic-resolution /cert:ignore /u:'user' /p:'pass' /v:<IP>
 ```
 
+```bash
+xfreerdp /dynamic-resolution /d:corp.com /u:'user' /p:'pass' /v:<IP>
+```
 ## Remove empty lines (NP++)
 
 ```regex
