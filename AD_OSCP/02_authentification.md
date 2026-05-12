@@ -253,6 +253,8 @@ Requiert `GenericAll`, `GenericWrite`, `WriteProperty` ou `Validated-SPN` sur la
 **Depuis Kali — targetedKerberoast.py (recommandé, gère tout automatiquement)**
 
 ```bash
+git clone https://github.com/ShutdownRepo/targetedKerberoast.git
+cd targetedKerberoast
 targetedKerberoast.py -v -d <domain> -u <user> -p <password>
 ```
 

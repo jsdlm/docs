@@ -3,13 +3,13 @@
 https://github.com/stealthsploit/OneRuleToRuleThemStill
 ## Rule Functions
 
-|Fonction|Description|Exemple|
-|---|---|---|
-|`$X`|Ajoute le caractère X en fin de mot|`$1` → `password1`|
-|`^X`|Ajoute le caractère X en début de mot|`^3` → `3password`|
-|`c`|Capitalise la première lettre, met le reste en minuscule|`c` → `Password`|
-|`u`|Met tous les caractères en majuscule|`u` → `PASSWORD`|
-|`d`|Duplique le mot|`d` → `passwordpassword`|
+| Fonction | Description                                              | Exemple                  |
+| -------- | -------------------------------------------------------- | ------------------------ |
+| `$X`     | Ajoute le caractère X en fin de mot                      | `$1` → `password1`       |
+| `^X`     | Ajoute le caractère X en début de mot                    | `^3` → `3password`       |
+| `c`      | Capitalise la première lettre, met le reste en minuscule | `c` → `Password`         |
+| `u`      | Met tous les caractères en majuscule                     | `u` → `PASSWORD`         |
+| `d`      | Duplique le mot                                          | `d` → `passwordpassword` |
 
 ---
 
