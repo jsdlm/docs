@@ -11,7 +11,7 @@ pipx install updog
 updog
 ```
 
-Upload via Updog
+**Upload via Updog**
 
 ```bash
 curl http://<ip:port>/upload -F 'file=@/path/to/file' -F 'path=<remote-directory>'
