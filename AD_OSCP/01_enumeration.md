@@ -1,4 +1,4 @@
-﻿# Enumération
+# Enumération
 ## Enumération manuelle
 
 ### Outils legacy Windows (net.exe)
@@ -306,6 +306,12 @@ gpp-decrypt "<CPASSWORD_VALUE>"
 
 SharpHound collecte les données AD (LDAP, NetSessionEnum, Remote Registry…) et les exporte dans un ZIP analysable par BloodHound.
 
+```bash
+sudo apt install sharphound
+sharphound -h
+/usr/share/sharphound
+```
+
 **Collecte depuis la machine compromise**
 
 ```powershell
@@ -326,8 +332,21 @@ Invoke-BloodHound -CollectionMethod All -OutputDirectory C:\Users\stephanie\Desk
 Invoke-BloodHound -CollectionMethod All -Loop -LoopDuration 02:00:00 -LoopInterval 00:05:00
 ```
 
-### BloodHound
-**Démarrer BloodHound (Docker)**
+### Netexec
+
+```bash
+nxc ldap 192.168.1.10 -u 'USER' -p 'PASSWORD' -d 'DOMAIN.COM' --bloodhound -c All --dns-server 192.168.1.10
+```
+
+### BloodHound-ce python
+
+```bash
+# https://github.com/dirkjanm/BloodHound.py
+pipx install bloodhound-ce
+bloodhound-ce-python --zip -c All -u 'USER' -p 'PASSWORD' -d 'DOMAIN.COM' -dc 'DC_FQDN' -ns 192.168.1.10
+```
+
+### BloodHound (Server)
 
 ```bash
 cd /opt/tools/bloodhound

@@ -8,6 +8,12 @@
 - [ACL](ActiveDirectory/05_acl.md)
 - [ADCS](ActiveDirectory/06_adcs.md)
 
+## AD_OSCP
+- [Enumération](AD_OSCP/01_enumeration.md)
+- [Depuis un PowerShell élevé (admin)](AD_OSCP/02_authentification.md)
+- [nxc](AD_OSCP/03_lateral_movement.md)
+- [Depuis Kali via DCSync](AD_OSCP/04_persistence.md)
+
 ## Database
 - [MongoDB](Database/mongodb.md)
 - [MSSQL](Database/mssql.md)
@@ -22,7 +28,8 @@
 - [Recherche de vulnérabilités](Exploits/01_recherche.md)
 - [Buffer Overflow](Exploits/02_BoF.md)
 - [Web](Exploits/03_web.md)
-- [Metasploit](Exploits/04_metasploit.md)
+- [Metasploit (1/2)](Exploits/04_metasploit.md)
+- [Metasploit (2/2)](Exploits/05_metasploit.md)
 
 ## OSINT
 - [DNS](OSINT/01_dns.md)
