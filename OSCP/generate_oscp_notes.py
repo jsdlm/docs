@@ -76,6 +76,8 @@ TODO further enumeration results
 def create_machine_folder(base: str, machine: str) -> None:
     machine_path = os.path.join(base, machine)
     os.makedirs(machine_path, exist_ok=True)
+    os.makedirs(os.path.join(machine_path, "screenshots"), exist_ok=True)
+    os.makedirs(os.path.join(machine_path, "trophies"), exist_ok=True)
     for name in MD_FILES:
         with open(os.path.join(machine_path, f"{name}.md"), "w", encoding="utf-8") as f:
             f.write(TEMPLATES[name])
