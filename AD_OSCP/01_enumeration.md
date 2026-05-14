@@ -1,4 +1,4 @@
-# Enumération
+﻿# Enumération
 ## Enumération manuelle
 
 ### Outils legacy Windows (net.exe)
@@ -14,7 +14,7 @@ xfreerdp /u:stephanie /d:corp.com /v:<IP>
 
 ```cmd
 net user /domain                     :: lister tous les utilisateurs du domaine
-net user <username> /domain          :: détails d'un utilisateur (groupes, dernière connexion…)
+net user <USERNAME> /domain          :: détails d'un utilisateur (groupes, dernière connexion…)
 ```
 
 **Groupes**
@@ -119,7 +119,7 @@ $sales = LDAPSearch -LDAPQuery "(&(objectCategory=group)(cn=Sales Department))"
 $sales.properties.member
 
 # Tous les attributs d'un utilisateur spécifique
-$user = LDAPSearch -LDAPQuery "(&(objectCategory=user)(cn=<username>))"
+$user = LDAPSearch -LDAPQuery "(&(objectCategory=user)(cn=<USERNAME>))"
 $user.properties
 ```
 
@@ -182,7 +182,7 @@ Find-LocalAdminAccess    # machines où l'utilisateur courant est admin local
 ```powershell
 # Fonctionne seulement si le user courant a des droits admin sur la machine cible
 # (accès refusé sur Windows 11 / Server 2019+ pour les non-admins)
-Get-NetSession -ComputerName <hostname> -Verbose
+Get-NetSession -ComputerName <HOSTNAME> -Verbose
 ```
 
 > `Get-NetSession` utilise `NetSessionEnum` -  bloqué par défaut depuis Windows 11 build 1709 et Server 2019 build 1809 (changement des permissions sur la clé `SrvsvcSessionInfo` dans `HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\DefaultSecurity`).
@@ -200,7 +200,7 @@ Nécessite que le service **Remote Registry** soit actif sur la cible :
 Pas besoin d'être admin local sur la cible -  juste que Remote Registry soit accessible.
 
 ```cmd
-.\PsLoggedon.exe \\<hostname>
+.\PsLoggedon.exe \\<HOSTNAME>
 ```
 
 ```
@@ -218,7 +218,7 @@ Un SPN associe un service (IIS, MSSQL, Exchange…) à un compte de service AD. 
 
 ```cmd
 :: Lister les SPNs d'un compte spécifique
-setspn -L <username>
+setspn -L <USERNAME>
 ```
 
 ```powershell
@@ -295,7 +295,7 @@ cat \\dc1.corp.com\sysvol\corp.com\Policies\oldpolicy\old-policy-backup.xml
 > Les fichiers XML de Group Policy Preferences (GPP) peuvent contenir des mots de passe chiffrés (`cpassword`). La clé AES-256 est publique -  déchiffrer avec `gpp-decrypt` :
 
 ```bash
-gpp-decrypt "<cpassword_value>"
+gpp-decrypt "<CPASSWORD_VALUE>"
 ```
 
 **Explorer les partages non-standard** (ex: `docshare`, `backup`, `docs`…) -  les admins y laissent souvent des fichiers sensibles (emails, mots de passe en clair, scripts).
@@ -337,7 +337,7 @@ docker compose up -d
 docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password"
 ```
 
-Se connecter sur `http://127.0.0.1:8080` avec `admin` / `<initial_password>`.
+Se connecter sur `http://127.0.0.1:8080` avec `admin` / `<INITIAL_PASSWORD>`.
 
 **Importer le ZIP SharpHound** -  glisser-déposer le fichier dans l'interface ou utiliser le bouton Upload.
 

