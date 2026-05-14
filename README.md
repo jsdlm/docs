@@ -10,7 +10,7 @@
 
 ## AD_OSCP
 - [Enumération](AD_OSCP/01_enumeration.md)
-- [Depuis un PowerShell élevé (admin)](AD_OSCP/02_authentification.md)
+- [Authentification](AD_OSCP/02_authentification.md)
 - [nxc](AD_OSCP/03_lateral_movement.md)
 - [Depuis Kali via DCSync](AD_OSCP/04_persistence.md)
 
