@@ -18,9 +18,9 @@ nslookup -type=TXT info.megacorptwo.com 192.168.50.151   # interroger un DNS sp�
 ## Enumération automatisée
 
 ```bash
-# dnsrecon — énumère les enregistrements, tente le transfert de zone, brute-force sous-domaines
+# dnsrecon -  énumère les enregistrements, tente le transfert de zone, brute-force sous-domaines
 dnsrecon -d megacorpone.com
 
-# dnsenum — similaire, aussi transfert de zone + brute-force
+# dnsenum -  similaire, aussi transfert de zone + brute-force
 dnsenum megacorpone.com
 ```

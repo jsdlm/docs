@@ -27,7 +27,7 @@ SELECT @@version;
 SELECT name, type_desc FROM sys.server_principals;
 ```
 
-**xp_cmdshell — exécution de commandes système**
+**xp_cmdshell -  exécution de commandes système**
 
 ```sql
 -- Activer

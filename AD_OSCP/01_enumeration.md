@@ -8,7 +8,7 @@
 xfreerdp /u:stephanie /d:corp.com /v:<IP>
 ```
 
-> Préférer RDP à WinRM/PSRemoting pour l'énumération AD — PSRemoting entraîne le **Kerberos Double Hop** qui bloque les outils de domaine.
+> Préférer RDP à WinRM/PSRemoting pour l'énumération AD -  PSRemoting entraîne le **Kerberos Double Hop** qui bloque les outils de domaine.
 
 **Utilisateurs**
 
@@ -45,7 +45,7 @@ LDAP://HostName/DistinguishedName
 # Bypasser l'execution policy
 powershell -ep bypass
 
-# Script complet — génère le chemin LDAP
+# Script complet -  génère le chemin LDAP
 $PDC = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
 $DN  = ([adsi]'').distinguishedName
 $LDAP = "LDAP://$PDC/$DN"
@@ -57,7 +57,7 @@ $LDAP
 
 ### Recherche LDAP avec DirectorySearcher
 
-**Script de base — lister tous les objets**
+**Script de base -  lister tous les objets**
 
 ```powershell
 $PDC  = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
@@ -123,7 +123,7 @@ $user = LDAPSearch -LDAPQuery "(&(objectCategory=user)(cn=<username>))"
 $user.properties
 ```
 
-> **Groupes imbriqués (nested groups)** : `net.exe` n'affiche que les utilisateurs directs. LDAP/DirectorySearcher retourne aussi les groupes membres — ce qui peut révéler des héritages de privilèges non intentionnels.
+> **Groupes imbriqués (nested groups)** : `net.exe` n'affiche que les utilisateurs directs. LDAP/DirectorySearcher retourne aussi les groupes membres -  ce qui peut révéler des héritages de privilèges non intentionnels.
 
 ### PowerView
 
@@ -154,7 +154,7 @@ Get-NetGroup "Sales Department" | select member      # membres d'un groupe (incl
 Get-NetGroupMember "Domain Admins" | select MemberName  # membres directs d'un groupe
 
 # Attributs utilisateur (ex: whencreated) pour les membres d'un groupe
-# Get-NetGroupMember ne retourne pas les attributs user — passer par Get-NetUser :
+# Get-NetGroupMember ne retourne pas les attributs user -  passer par Get-NetUser :
 Get-NetGroupMember "Domain Admins" | ForEach-Object {
     Get-NetUser $_.MemberName | select cn, whencreated
 }
@@ -169,7 +169,7 @@ Get-NetComputer | select operatingsystem,dnshostname   # OS + hostname de toutes
 Get-NetComputer | select dnshostname,operatingsystem,operatingsystemversion
 ```
 
-> Repérer les OS anciens (Windows 10, Server 2016…) — plus susceptibles d'avoir des vulnérabilités non patchées. Noter également les serveurs web/fichiers comme cibles prioritaires.
+> Repérer les OS anciens (Windows 10, Server 2016…) -  plus susceptibles d'avoir des vulnérabilités non patchées. Noter également les serveurs web/fichiers comme cibles prioritaires.
 
 **Droits admin locaux sur les machines du domaine**
 
@@ -185,9 +185,9 @@ Find-LocalAdminAccess    # machines où l'utilisateur courant est admin local
 Get-NetSession -ComputerName <hostname> -Verbose
 ```
 
-> `Get-NetSession` utilise `NetSessionEnum` — bloqué par défaut depuis Windows 11 build 1709 et Server 2019 build 1809 (changement des permissions sur la clé `SrvsvcSessionInfo` dans `HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\DefaultSecurity`).
+> `Get-NetSession` utilise `NetSessionEnum` -  bloqué par défaut depuis Windows 11 build 1709 et Server 2019 build 1809 (changement des permissions sur la clé `SrvsvcSessionInfo` dans `HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\DefaultSecurity`).
 
-**PsLoggedOn (SysInternals) — alternative fiable**
+**PsLoggedOn (SysInternals) -  alternative fiable**
 
 Se connecte à distance via **SMB (port 445)** avec deux mécanismes :
 - **Remote Registry** → lit `HKEY_USERS` → users connectés localement
@@ -197,7 +197,7 @@ Nécessite que le service **Remote Registry** soit actif sur la cible :
 - Activé par défaut sur Windows Server
 - Désactivé par défaut sur les workstations depuis Windows 8 (mais peut être activé par un admin)
 
-Pas besoin d'être admin local sur la cible — juste que Remote Registry soit accessible.
+Pas besoin d'être admin local sur la cible -  juste que Remote Registry soit accessible.
 
 ```cmd
 .\PsLoggedon.exe \\<hostname>
@@ -231,7 +231,7 @@ Get-NetUser -SPN | select samaccountname,serviceprincipalname
 nslookup.exe web04.corp.com
 ```
 
-> Les comptes de service ont généralement plus de privilèges qu'un user standard. Un SPN de type `HTTP/web04.corp.com` indique un serveur web — vecteur pour Kerberoasting (voir modules suivants).
+> Les comptes de service ont généralement plus de privilèges qu'un user standard. Un SPN de type `HTTP/web04.corp.com` indique un serveur web -  vecteur pour Kerberoasting (voir modules suivants).
 
 ### Permissions sur les objets AD (ACL/ACE)
 
@@ -272,7 +272,7 @@ net group "Management Department" stephanie /add /domain
 net group "Management Department" stephanie /del /domain
 ```
 
-> Un user standard avec `GenericAll` sur un objet est une misconfiguration — permet d'ajouter des membres à des groupes, de reset des mots de passe, etc. Toujours nettoyer après exploitation.
+> Un user standard avec `GenericAll` sur un objet est une misconfiguration -  permet d'ajouter des membres à des groupes, de reset des mots de passe, etc. Toujours nettoyer après exploitation.
 
 ### Partages du domaine
 
@@ -284,7 +284,7 @@ Find-DomainShare -CheckShareAccess  # uniquement ceux accessibles par l'utilisat
 **Cibles prioritaires**
 
 ```powershell
-# SYSVOL — accessible par tous les users du domaine, contient scripts et GPO
+# SYSVOL -  accessible par tous les users du domaine, contient scripts et GPO
 ls \\dc1.corp.com\sysvol\corp.com\
 ls \\dc1.corp.com\sysvol\corp.com\Policies\
 
@@ -292,13 +292,13 @@ ls \\dc1.corp.com\sysvol\corp.com\Policies\
 cat \\dc1.corp.com\sysvol\corp.com\Policies\oldpolicy\old-policy-backup.xml
 ```
 
-> Les fichiers XML de Group Policy Preferences (GPP) peuvent contenir des mots de passe chiffrés (`cpassword`). La clé AES-256 est publique — déchiffrer avec `gpp-decrypt` :
+> Les fichiers XML de Group Policy Preferences (GPP) peuvent contenir des mots de passe chiffrés (`cpassword`). La clé AES-256 est publique -  déchiffrer avec `gpp-decrypt` :
 
 ```bash
 gpp-decrypt "<cpassword_value>"
 ```
 
-**Explorer les partages non-standard** (ex: `docshare`, `backup`, `docs`…) — les admins y laissent souvent des fichiers sensibles (emails, mots de passe en clair, scripts).
+**Explorer les partages non-standard** (ex: `docshare`, `backup`, `docs`…) -  les admins y laissent souvent des fichiers sensibles (emails, mots de passe en clair, scripts).
 
 ## Enumération automatique
 
@@ -318,9 +318,9 @@ Invoke-BloodHound -CollectionMethod All -OutputDirectory C:\Users\stephanie\Desk
 - `All` : collecte tout sauf les GPO locales (groupes, sessions, ACLs, SPNs, trusts…)
 - Le résultat est un fichier ZIP à transférer sur Kali pour analyse dans BloodHound
 
-> SharpHound crée aussi un fichier `.bin` (cache) — inutile pour l'analyse, peut être supprimé.
+> SharpHound crée aussi un fichier `.bin` (cache) -  inutile pour l'analyse, peut être supprimé.
 
-**Option looping** — relancer la collecte en boucle pour capturer les sessions qui changent :
+**Option looping** -  relancer la collecte en boucle pour capturer les sessions qui changent :
 
 ```powershell
 Invoke-BloodHound -CollectionMethod All -Loop -LoopDuration 02:00:00 -LoopInterval 00:05:00
@@ -339,7 +339,7 @@ docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password"
 
 Se connecter sur `http://127.0.0.1:8080` avec `admin` / `<initial_password>`.
 
-**Importer le ZIP SharpHound** — glisser-déposer le fichier dans l'interface ou utiliser le bouton Upload.
+**Importer le ZIP SharpHound** -  glisser-déposer le fichier dans l'interface ou utiliser le bouton Upload.
 
 **Requêtes utiles (onglet Analysis)**
 
@@ -349,7 +349,7 @@ Se connecter sur `http://127.0.0.1:8080` avec `admin` / `<initial_password>`.
 | Find Shortest Paths to Domain Admins | Chemin d'attaque le plus court vers DA |
 | Shortest Paths to Domain Admins from Owned Principals | Chemin depuis les objets qu'on contrôle |
 
-**Marquer des objets comme "owned"** — clic droit sur un nœud → *Mark as Owned* (icône crâne). À faire pour chaque user/machine compromis afin d'affiner les chemins d'attaque.
+**Marquer des objets comme "owned"** -  clic droit sur un nœud → *Mark as Owned* (icône crâne). À faire pour chaque user/machine compromis afin d'affiner les chemins d'attaque.
 
 > Cliquer sur une arête entre deux nœuds → **? Help** → onglet *Abuse* : explique comment exploiter la relation concrètement.
 

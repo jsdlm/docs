@@ -53,7 +53,7 @@ nmap --flags <host>
 **Network sweep + output grepable**
 
 ```bash
-# Ping sweep — lister les hôtes actifs, sortie grepable
+# Ping sweep -  lister les hôtes actifs, sortie grepable
 nmap -v -sn 192.168.50.1-253 -oG ping-sweep.txt
 
 # SYN scan sur tout un subnet, sortie grepable
@@ -93,14 +93,14 @@ nslookup -type=srv _ldap._tcp.dc._msdcs.sevenkingdoms.local 192.168.56.10
 ### Autres scanners
 
 ```bash
-# Port scan TCP avec netcat — utile quand nmap n'est pas dispo
+# Port scan TCP avec netcat -  utile quand nmap n'est pas dispo
 nc -nvz -w 1 192.168.50.151 1-1024
 
-# SNMP scan — découverte d'équipements réseau exposant SNMP (community string par défaut : public)
+# SNMP scan -  découverte d'équipements réseau exposant SNMP (community string par défaut : public)
 onesixtyone -c community 192.168.127.0/24
 ```
 
 ```powershell
-# Port scan PowerShell — sans nmap sur Windows
+# Port scan PowerShell -  sans nmap sur Windows
 1..1024 | % {echo ((New-Object Net.Sockets.TcpClient).Connect("192.168.151.151", $_)) "TCP port $_ is open"} 2>$null
 ```

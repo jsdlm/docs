@@ -9,7 +9,7 @@ where ssh
 ssh -V   # doit être >= 7.6 pour le remote dynamic port forwarding
 ```
 
-La syntaxe est identique au client Linux — on peut donc créer les mêmes tunnels (remote, remote dynamic, local…).
+La syntaxe est identique au client Linux -  on peut donc créer les mêmes tunnels (remote, remote dynamic, local…).
 
 **Remote Dynamic Port Forwarding depuis Windows**
 

@@ -4,7 +4,7 @@
 
 ### Socat
 
-**Port forward simple — rediriger un port local vers une cible distante**
+**Port forward simple -  rediriger un port local vers une cible distante**
 
 ```bash
 socat -ddd TCP-LISTEN:<port_local>,fork TCP:<ip_cible>:<port_cible>

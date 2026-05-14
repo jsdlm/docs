@@ -41,8 +41,8 @@ Recherche globale dans VS Code sur les fichiers `.page` pour identifier les cont
 | `<apex:actionSupport` | Déclenche une action sur un événement DOM (onclick, onchange…) |
 | `<apex:actionFunction` | Définit une fonction JavaScript qui appelle une action |
 | `<apex:page action=` | Action appelée au chargement de la page |
-| `<apex:inputField` | Champ lié au modèle — vérifier les droits FLS |
-| `{!` | Expression Visualforce — identifier les propriétés et méthodes exposées |
+| `<apex:inputField` | Champ lié au modèle -  vérifier les droits FLS |
+| `{!` | Expression Visualforce -  identifier les propriétés et méthodes exposées |
 
 Pour chaque contrôleur identifié, ouvrir la classe Apex correspondante et appliquer les contrôles de la section **Points à check** ci-dessus.
 

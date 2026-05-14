@@ -11,22 +11,22 @@ Exécute des processus à distance via `Win32_Process.Create`. Nécessite d'êtr
 nxc smb <IP_CIBLE> -u <user> -p <password> -x "whoami"
 nxc smb <IP_CIBLE> -u <user> -p <password> -x "whoami" --exec-method wmiexec
 
-# impacket — shell interactif
+# impacket -  shell interactif
 impacket-wmiexec corp.com/<user>:<password>@<IP_CIBLE>
 ```
 
 Ports utilisés par `wmiexec` :
-- **135** (DCOM/RPC) — exécution de la commande via WMI
-- **445** (SMB/ADMIN$) — récupération de l'output (fichier temporaire sur le partage admin)
+- **135** (DCOM/RPC) -  exécution de la commande via WMI
+- **445** (SMB/ADMIN$) -  récupération de l'output (fichier temporaire sur le partage admin)
 
-Si seul le port **445** est disponible, utiliser `smbexec` — crée un service temporaire via SCM, sans passer par WMI : 
+Si seul le port **445** est disponible, utiliser `smbexec` -  crée un service temporaire via SCM, sans passer par WMI : 
 ```bash
 nxc smb <IP_CIBLE> -u <user> -p <password> -x "whoami" --exec-method smbexec
 ```
 
 **PowerShell (Windows)** : `Get-WmiObject`, `Invoke-WmiMethod`
 
-> Les processus WMI sont créés en **session 0** (isolation système) — invisibles dans la session utilisateur active.
+> Les processus WMI sont créés en **session 0** (isolation système) -  invisibles dans la session utilisateur active.
 
 ## WinRM
 
@@ -46,7 +46,7 @@ nxc winrm <IP_CIBLE> -u <user> -p <password> -X "whoami"
 
 **PowerShell (Windows)** : `Enter-PSSession`, `Invoke-Command`, `New-PSSession`
 
-> WinRM souffre du **Kerberos Double Hop** — les credentials ne se propagent pas aux ressources réseau distantes depuis la session. Préférer WMI pour éviter ce problème.
+> WinRM souffre du **Kerberos Double Hop** -  les credentials ne se propagent pas aux ressources réseau distantes depuis la session. Préférer WMI pour éviter ce problème.
 
 ## PsExec
 
@@ -54,7 +54,7 @@ Protocole : **SMB uniquement, port 445**. Nécessite admin local sur la cible + 
 
 Fonctionnement : copie un binaire service (`PSEXESVC.exe`) sur ADMIN$, le démarre via le SCM (Service Control Manager), puis communique via un named pipe dédié.
 
-> Très bruyant : écrit sur le disque, crée un service — détecté par presque tous les EDR. Préférer WMI pour la discrétion.
+> Très bruyant : écrit sur le disque, crée un service -  détecté par presque tous les EDR. Préférer WMI pour la discrétion.
 
 **impacket-psexec (depuis Kali)**
 
@@ -71,7 +71,7 @@ nxc smb <IP_CIBLE> -u <user> -p <password> -x "whoami" --exec-method smbexec
 
 > nxc tente les méthodes dans cet ordre si aucune n'est forcée : `wmiexec` → `atexec` → `smbexec`
 
-**PsExec64.exe Windows — [Sysinternals](https://learn.microsoft.com/en-us/sysinternals/)**
+**PsExec64.exe Windows -  [Sysinternals](https://learn.microsoft.com/en-us/sysinternals/)**
 
 ```cmd
 .\PsExec64.exe -i \\<HOSTNAME> -u corp\<user> -p <password> cmd
@@ -79,7 +79,7 @@ nxc smb <IP_CIBLE> -u <user> -p <password> -x "whoami" --exec-method smbexec
 
 ## Pass the Hash (PtH)
 
-Authentification avec le hash NTLM directement, sans le mot de passe en clair. Fonctionne uniquement avec **NTLM** — pas avec Kerberos.
+Authentification avec le hash NTLM directement, sans le mot de passe en clair. Fonctionne uniquement avec **NTLM** -  pas avec Kerberos.
 
 > Limitation : depuis le patch 2014, PtH ne fonctionne qu'avec le compte **Administrator local intégré** (RID 500) et les comptes de domaine. Les autres comptes admin locaux sont bloqués par défaut.
 
@@ -177,7 +177,7 @@ klist                  # vérifier
 
 ## Pass the Ticket (PtT)
 
-Voler un TGT ou TGS depuis la mémoire LSASS d'une machine et l'utiliser dans une autre session. Contrairement à PtH et Overpass the Hash, on réutilise un **ticket déjà émis** — utile quand on n'a pas le hash du compte cible.
+Voler un TGT ou TGS depuis la mémoire LSASS d'une machine et l'utiliser dans une autre session. Contrairement à PtH et Overpass the Hash, on réutilise un **ticket déjà émis** -  utile quand on n'a pas le hash du compte cible.
 
 > Le TGT est réutilisable pour n'importe quel service pendant ~10h. Le TGS est limité au service pour lequel il a été émis.
 

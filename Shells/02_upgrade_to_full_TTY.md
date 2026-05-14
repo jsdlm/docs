@@ -22,16 +22,16 @@ python -c 'import pty; pty.spawn("/bin/bash")'
 Background the current remote shell (`^Z`), update the **local** terminal line settings with `stty` bring the remote shell back.
 
 ```sh
-# Étape 1 — dans le reverse shell
+# Étape 1 -  dans le reverse shell
 python -c 'import pty; pty.spawn("/bin/bash")'
 
-# Étape 2 — mettre en arrière-plan
+# Étape 2 -  mettre en arrière-plan
 Ctrl-Z
 
-# Étape 3 — sur Kali
+# Étape 3 -  sur Kali
 stty raw -echo && fg
 
-# Étape 4 — dans le reverse shell
+# Étape 4 -  dans le reverse shell
 reset
 ```
 

