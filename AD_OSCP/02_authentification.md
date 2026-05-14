@@ -61,6 +61,12 @@ Protocole par défaut depuis Windows Server 2003. Basé sur un système de **tic
 6. Le client envoie un **AP-REQ** au serveur applicatif : username + timestamp chiffrés avec la session key + service ticket
 7. Le serveur déchiffre le ticket avec son propre hash, vérifie le username, lit les groupes → accorde l'accès
 
+| Ticket | Hash requis | Forgé offline | Scope | Usage offensif |
+|---|---|---|---|---|
+| **TGT normal** | Hash user (légitime) | Non | Tous les services | Overpass the Hash |
+| **Silver Ticket** | Hash compte de service | Oui | Un seul service | Accès furtif, ne contacte pas le DC |
+| **Golden Ticket** | Hash `krbtgt` | Oui | Tout le domaine | Persistence totale, impersonate n'importe quel user |
+
 ### Credentials mis en cache (LSASS)
 
 Les hashes Kerberos (TGT, session keys) et NTLM sont stockés en mémoire dans le processus **LSASS** pour le SSO. Nécessite des droits **SYSTEM ou admin local** pour y accéder.
