@@ -11,7 +11,7 @@
 ## AD_OSCP
 - [Enumération](AD_OSCP/01_enumeration.md)
 - [Authentification](AD_OSCP/02_authentification.md)
-- [nxc](AD_OSCP/03_lateral_movement.md)
+- [Lateral Movement](AD_OSCP/03_lateral_movement.md)
 - [Depuis Kali via DCSync](AD_OSCP/04_persistence.md)
 
 ## Database
@@ -30,6 +30,15 @@
 - [Web](Exploits/03_web.md)
 - [Metasploit (1/2)](Exploits/04_metasploit.md)
 - [Metasploit (2/2)](Exploits/05_metasploit.md)
+
+## OSCP
+- [Standalone Machine Methodology](OSCP/01_standalone.md)
+- [Active Directory Methodology](OSCP/02_active-directory.md)
+- [Enumeration](OSCP/03_enumeration.md)
+- [Initial Access](OSCP/04_initial-access.md)
+- [STUCK](OSCP/97_stuck.md)
+- [Flags](OSCP/98_flags.md)
+- [Pre-Exam](OSCP/99_pre-exam.md)
 
 ## OSINT
 - [DNS](OSINT/01_dns.md)
@@ -51,6 +60,7 @@
 - [Port Forwarding with Windows Tools](Pivoting/03_windows_portfwd.md)
 - [HTTP Tunneling](Pivoting/04_tunnel_http.md)
 - [DNS Tunneling](Pivoting/05_tunnel_dns.md)
+- [Ligolo](Pivoting/06_ligolo.md)
 
 ## Privilege Escalation
 - [Linux](PrivilegeEscalation/01_linux.md)
