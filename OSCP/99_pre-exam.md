@@ -76,7 +76,7 @@ tar xvfj exam-connection.tar.bz2
 sudo openvpn OS-XXXXXX-OSCP.ovpn
 ```
 
-### Troubleshooting VPN
+## Troubleshooting VPN
 
 ```shell
 # Vérifier les interfaces réseau en conflit
@@ -86,22 +86,4 @@ ip addr
 sudo killall openvpn
 
 # Si toujours des problèmes : re-télécharger un pack VPN frais depuis le panel
-```
-
----
-
-## Structure de Dossiers Recommandée
-
-```
-exam/
-├── 192.168.x.10/          # Machine 1 (WS - AD)
-│   ├── nmap/
-│   ├── screenshots/
-│   └── loot/
-├── 192.168.x.20/          # Machine 2 (SRV - AD)
-├── 192.168.x.30/          # Machine 3 (DC - AD)
-├── 192.168.x.40/          # Standalone 1
-├── 192.168.x.50/          # Standalone 2
-├── 192.168.x.60/          # Standalone 3
-└── report/
 ```

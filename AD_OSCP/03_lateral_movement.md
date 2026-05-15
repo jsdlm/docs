@@ -1,4 +1,4 @@
-﻿# Lateral Movement
+# Lateral Movement
 
 ## WMI
 

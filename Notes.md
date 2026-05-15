@@ -14,6 +14,10 @@ xfreerdp /dynamic-resolution /cert:ignore /u:'user' /p:'pass' /v:<IP>
 ```bash
 xfreerdp /dynamic-resolution /d:corp.com /u:'user' /p:'pass' /v:<IP>
 ```
+
+```bash
+sudo apt install remmina
+```
 ## Remove empty lines (NP++)
 
 ```regex
