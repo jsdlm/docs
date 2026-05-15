@@ -760,6 +760,7 @@ hashcat -m 1000 hashes.txt /usr/share/wordlists/rockyou.txt
 
 https://github.com/SnaffCon/Snaffler
 https://github.com/zh54321/SnafflerParser
+https://github.com/jsdlm/SnafflerParser
 
 ```bash
 wget https://github.com/SnaffCon/Snaffler/releases/download/1.0.244/Snaffler.exe
