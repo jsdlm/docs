@@ -93,33 +93,10 @@ wmic service get name,state,startmode,pathname
 
 **Recherche de fichiers sensibles par extension**
 ```powershell
-# Password manager databases
-Get-ChildItem -Path C:\ -Include *.kdbx -File -Recurse -ErrorAction SilentlyContinue
-
-# Fichiers de config et texte dans un répertoire applicatif
-Get-ChildItem -Path C:\xampp -Include *.txt,*.ini -File -Recurse -ErrorAction SilentlyContinue
-
-# Documents dans le home de l'utilisateur
-Get-ChildItem -Path C:\Users\<user>\ -Include *.txt,*.pdf,*.xls,*.xlsx,*.doc,*.docx -File -Recurse -ErrorAction SilentlyContinue
-
-Get-ChildItem -Path C:\Users\ -Include *.ini -File -Recurse -ErrorAction SilentlyContinue
-
-Get-ChildItem -Path C:\ -Recurse -ErrorAction SilentlyContinue | Select-String -Pattern "password" 2>$null
+Get-ChildItem -Path C:\Users\ -Include *.ini,*.kdbx,*.txt,*.pdf,*.xls,*.xlsx,*.doc,*.docx,*.rar,*.zip,*.7z,*.rdp,*.rdg,*.ssetting,*.settings,*.log,*.config -File -Recurse -ErrorAction SilentlyContinue
 
 # CMD
-dir /s /b /a C:\*.txt 2>nul
-
 dir /s /b /a C:\*.kdbx 2>nul
-
-dir /s /b /a C:\*.settings 2>nul
-
-dir /s /b /a C:\Users\*.ini 2>nul
-
-# Par extension
-Get-ChildItem -Path C:\ -File -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Extension -match '\.(rdp|rdg|kdbx|settings)$' }
-
-# Par nom
-Get-ChildItem -Path C:\ -File -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Name -match 'password|credential|cred|secret|login' }
 ```
 
 **Lire un fichier**
