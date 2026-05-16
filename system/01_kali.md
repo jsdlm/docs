@@ -35,6 +35,16 @@ sudo ip route flush cache      # routes
 * Lancer ktrace : /opt/ktrace/bin/ktrace-screen enable 5
 * Les screens sont dans : /opt/ktrace/log/screenshots
 
+## zsh corrupt history
+
+```bash
+zsh: corrupt history file /home/kali/.zsh_history
+
+cd ~
+mv .zsh_history .zsh_history.bak
+strings .zsh_history.bak > .zsh_history
+```
+
 ## Misc
 
 ```bash

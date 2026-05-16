@@ -36,12 +36,6 @@ nxc smb ip.txt --generate-hosts-file ./hosts
 sudo tee -a /etc/hosts < hosts
 ```
 
-## Snaffler
-
-```bash
-wget https://github.com/SnaffCon/Snaffler/releases/download/1.0.244/Snaffler.exe
-```
-
 ## Exploits 
 
 ```bash
