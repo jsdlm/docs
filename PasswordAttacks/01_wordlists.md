@@ -1,24 +1,25 @@
 # Wordlists
 
 ```bash
+sudo apt install seclists
+
 cd /usr/share/wordlists/
 sudo gzip -d rockyou.txt.gz
 /usr/share/wordlists/rockyou.txt
    
-/usr/share/wordlists
-├── dirb -> /usr/share/dirb/wordlists
-├── dirbuster -> /usr/share/dirbuster/wordlists
-├── dnsmap.txt -> /usr/share/dnsmap/wordlist_TLAs.txt
-├── fasttrack.txt -> /usr/share/set/src/fasttrack/wordlist.txt
-├── fern-wifi -> /usr/share/fern-wifi-cracker/extras/wordlists
-├── john.lst -> /usr/share/john/password.lst
-├── legion -> /usr/share/legion/wordlists
-├── metasploit -> /usr/share/metasploit-framework/data/wordlists
-├── nmap.lst -> /usr/share/nmap/nselib/data/passwords.lst
-├── rockyou.txt
-├── sqlmap.txt -> /usr/share/sqlmap/data/txt/wordlist.txt
-├── wfuzz -> /usr/share/wfuzz/wordlist
-└── wifite.txt -> /usr/share/dict/wordlist-probable.txt
+# Password bruteforcing
+/usr/share/wordlists/rockyou.txt
+/usr/share/seclists/Passwords/darkweb2017-top10.txt
+/usr/share/seclists/Passwords/darkweb2017-top100.txt
+/usr/share/seclists/Passwords/darkweb2017-top1000.txt
+/usr/share/seclists/Passwords/darkweb2017-top10000.txt
+/usr/share/seclists/Passwords/darc0de.txt
+
+# Username bruteforcing
+/usr/share/seclists/Usernames/Names/names.txt
+/usr/share/seclists/Usernames/Names/femalenames-usa-top1000.txt
+/usr/share/seclists/Usernames/Names/malenames-usa-top1000.txt
+/usr/share/seclists/Usernames/Names/familynames-usa-top1000.txt
 ```
 
 - [SecLists - The Pentester’s Companion](https://github.com/danielmiessler/SecLists)

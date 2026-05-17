@@ -83,12 +83,22 @@ sslyse target.com
 
 ```bash
 gobuster dir -u http://target.com -w /path/to/wordlist.txt -f
-gobuster dir -u <url> -w /usr/share/wordlists/dirb/<wordlistsouhaité> -f
+gobuster dir -u <url> -w /path/to/wordlist.txt -f
 
 ffuf -u http://target.com/FUZZ -w /path/to/wordlist.txt
-ffuf -u <url> -w /usr/share/seclists/Discovery/Web-Content/common.txt -r -t 7 -rate 70
+ffuf -u <url> -w /path/to/wordlist.txt -r -t 7 -rate 70
 ```
 
+Wordlists
+```
+/usr/share/dirb/wordlists/common.txt
+/usr/share/dirb/wordlists/big.txt
+
+/usr/share/dirbuster/wordlists/directory-list-lowercase-2.3-small.txt
+/usr/share/dirbuster/wordlists/directory-list-lowercase-2.3-medium.txt
+
+/usr/share/seclists/Discovery/Web-Content/common.txt
+```
 ## Plugins browsers
 
 * Wappalyzer

