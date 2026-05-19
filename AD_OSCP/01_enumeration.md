@@ -300,6 +300,17 @@ gpp-decrypt "<CPASSWORD_VALUE>"
 
 **Explorer les partages non-standard** (ex: `docshare`, `backup`, `docs`…) -  les admins y laissent souvent des fichiers sensibles (emails, mots de passe en clair, scripts).
 
+### LDAP Enumeration
+
+```shell
+# Null bind
+ldapsearch -h $rhost -x -b "DC=domain,DC=local"
+
+# Zone transfer DNS
+dig @$rhost axfr
+dig -x $rhost
+```
+
 ## Enumération automatique
 
 ### SharpHound
@@ -371,4 +382,13 @@ Se connecter sur `http://127.0.0.1:8080` avec `admin` / `<INITIAL_PASSWORD>`.
 **Marquer des objets comme "owned"** -  clic droit sur un nœud → *Mark as Owned* (icône crâne). À faire pour chaque user/machine compromis afin d'affiner les chemins d'attaque.
 
 > Cliquer sur une arête entre deux nœuds → **? Help** → onglet *Abuse* : explique comment exploiter la relation concrètement.
+
+Chercher :
+- **Shortest path to Domain Admins**
+- **Users with DCSync rights**
+- **Kerberoastable users**
+- **ASREPRoastable users**
+- **ACL abuse paths** (AllExtendedRights, GenericAll, WriteDacl)
+- **GPO abuse paths**
+
 
