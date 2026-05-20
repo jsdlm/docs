@@ -183,7 +183,10 @@ Logs les scripts PowerShell exécutés. Dans l'Event Viewer : `Applications and 
 Get-WinEvent -LogName "Microsoft-Windows-PowerShell/Operational" | Where-Object {$_.Id -eq 4104} | Select-Object TimeCreated, Message | Format-List
 ```
 
-
+**Chercher des creds**
+  - Historique PowerShell : `Get-History`
+  - Vault Windows : `cmdkey /list`
+  - Notes / sticky notes : `C:\Users\*\AppData\Local\...`
 ### Enumération automatique
 
 #### PrivescCheck

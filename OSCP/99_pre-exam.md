@@ -4,8 +4,6 @@
 
 - [ ] Kali Linux VM (x86-64, dernière image VMware)
 - [ ] Webcam fonctionnelle
-- [ ] Navigateur : Chrome/Firefox/Brave/Edge avec plugin Janus
-- [ ] Screen sharing configuré — utiliser **Xorg/X11**, PAS Wayland
 - [ ] Connexion internet stable
 - [ ] OSID et hash MD5 reçus
 
@@ -13,35 +11,28 @@
 
 ## Checklist Logiciels
 
-```bash
-# Vérifier tous les outils d'un coup
-for tool in nmap rustscan feroxbuster nxc impacket-psexec bloodhound chisel ligolo-ng; do
-  which $tool && echo "[+] $tool OK" || echo "[-] $tool MISSING"
-done
-```
-
-- [ ] Chisel / Ligolo-ng binaries (Kali + Windows)
+- [ ] Ligolo-ng binaries (Kali + Windows)
+- [ ] NetExec
+- [ ] Nmap
 - [ ] Mimikatz / Rubeus
-- [ ] Impacket tools (secretsdump, psexec, wmiexec, mssqlclient, GetUserSPNs, GetNPUsers)
+- [ ] Impacket
 - [ ] PowerView / SharpHound
-- [ ] LinPEAS / WinPEAS téléchargés
+- [ ] LinPEAS / WinPEAS
 - [ ] SigmaPotato / PrintSpoofer binaries
 - [ ] Webshells prêts (PHP, ASPX)
-- [ ] Burp Suite Community ou Pro
+- [ ] Burp Suite Community
 - [ ] BloodHound + Neo4j
 
 ---
 
 ## Checklist Documentation
 
-- [ ] Outil de notes prêt (Obsidian, CherryTree, VS Code)
-- [ ] Outil screenshot configuré (Flameshot ou équivalent)
+- [ ] Outil de notes
+- [ ] Outil screenshot
 - [ ] Dossier screenshots organisé par machine
-- [ ] Template rapport téléchargé (OffSec template)
 - [ ] Accès au panel de contrôle OSCP vérifié
 
 ---
-
 ## La Veille
 
 - ✅ Dormir 7-8h minimum
@@ -52,7 +43,6 @@ done
 - ❌ Ne pas rester tard à réviser
 
 ---
-
 ## Le Matin
 
 - ✅ Manger un bon repas (pas de crash caféine)
@@ -63,7 +53,6 @@ done
 - ✅ Désactiver notifications téléphone/Discord
 
 ---
-
 ## Connexion VPN Exam
 
 > Le pack VPN est envoyé au **moment du démarrage** de l'exam, pas avant.
