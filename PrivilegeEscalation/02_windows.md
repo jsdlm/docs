@@ -2,16 +2,18 @@
 
 ## Chemins Courants
 
-| Finding | Attaque |
-| :--- | :--- |
-| SeImpersonatePrivilege | SigmaPotato / GodPotato |
-| SeBackupPrivilege | Dump SAM/SYSTEM |
-| AutoLogon credentials dans le registre | WinPEAS trouve automatiquement |
-| Saved credentials | `cmdkey /list` + RunAs |
-| Unquoted service path | Service hijacking |
-| DLL Hijacking | Remplacer la DLL vulnérable |
-| AllExtendedRights sur user | Reset password |
-| Stored credentials | LaZagne |
+| Check                      | Commande                         | Escalade                           |
+| :------------------------- | :------------------------------- | :--------------------------------- |
+| SeImpersonatePrivilege     | `whoami /priv`                   | SigmaPotato / PrintSpoofer         |
+| SeBackupPrivilege          | `whoami /priv`                   | SAM/SYSTEM dump → secretsdump      |
+| Scheduled Tasks            | `schtasks /query /fo LIST /v`    | Task hijack                        |
+| Unquoted Service           | `wmic service get name,pathname` | Binary replace / Service hijacking |
+| DLL Hijacking              | Process Monitor analysis         | DLL malveillante                   |
+| AlwaysInstallElevated      | `reg query HKLM\...\Installer`   | MSI payload                        |
+| AutoLogon                  | Registry Winlogon                | WinPEAS trouve automatiquement     |
+| Saved credentials          | `cmdkey /list` + RunAs           |                                    |
+| AllExtendedRights sur user | Reset password                   |                                    |
+
 ## Commandes utiles
 
 **ExecutionPolicy**
@@ -786,3 +788,6 @@ SQL> EXEC sp_configure 'show advanced options', 1; RECONFIGURE;
 SQL> EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;
 SQL> EXEC xp_cmdshell 'whoami';
 ```
+
+## LaZagne
+https://github.com/AlessandroZ/LaZagne

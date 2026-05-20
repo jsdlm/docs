@@ -1,6 +1,6 @@
 # Active Directory Methodology
 
-## Flowchart AD
+## Flowchart
 
 ```text
 ┌─────────────────────────────────────────────────────────────────┐
@@ -53,7 +53,7 @@
 
 ---
 
-## Kill Chains AD
+## Kill Chains
 
 ### Chain 1 : ACL Abuse
 

