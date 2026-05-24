@@ -25,16 +25,16 @@ MD_FILES = [
 
 TEMPLATES = {
     "01_service_enumeration": """\
-# TODO Target Name (TODO IP Address)
+# Service Enumeration
 
-## Service Enumeration
+TODO Target Name (TODO IP Address)
 
 TODO Port Scan Results (NMAP / NXC)
 
 TODO further enumeration results
 """,
     "02_initial_access": """\
-## Initial Access
+# Initial Access
 
 **Vulnerability Explanation:** TODO
 
@@ -47,7 +47,7 @@ TODO further enumeration results
 **User local Screenshot:** TODO
 """,
     "03_privilege_escalation": """\
-## Privilege Escalation
+# Privilege Escalation
 
 **Vulnerability Explanation:** TODO
 
@@ -58,7 +58,7 @@ TODO further enumeration results
 **Proof of Concept Code:** TODO
 """,
     "04_post_exploitation": """\
-## Post-Exploitation
+# Post-Exploitation
 
 **System Proof Screenshot:** TODO
 """,
@@ -94,6 +94,11 @@ def generate(exam_name: str, output_path: str) -> None:
 
     for machine in AD_MACHINES:
         create_machine_folder(ad_path, machine)
+
+    obsidian_path = os.path.join(root, ".obsidian")
+    os.makedirs(obsidian_path, exist_ok=True)
+    with open(os.path.join(obsidian_path, "app.json"), "w", encoding="utf-8") as f:
+        f.write('{\n  "attachmentFolderPath": "./screenshots",\n  "showInlineTitle": false\n}\n')
 
     print(f"[+] Notes generated at: {root}")
 
