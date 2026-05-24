@@ -10,7 +10,7 @@
 socat -ddd TCP-LISTEN:<port_local>,fork TCP:<ip_cible>:<port_cible>
 ```
 
-![](assets/Pasted%20image%2020260509180627.png)
+![](img/Pasted%20image%2020260509180627.png)
 
 Exemple : écouter sur le port 2345 et forwarder vers PostgreSQL sur une machine interne :
 

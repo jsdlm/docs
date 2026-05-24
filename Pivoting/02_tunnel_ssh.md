@@ -41,7 +41,7 @@ Depuis une machine pivot qui a accès à un réseau interne inaccessible directe
 ssh -f -N -L 0.0.0.0:4455:<IP_MACHINE_DISTANTE>:445 user@<IP_PIVOT>
 ```
 
-![](assets/Pasted%20image%2020260509180728.png)
+![](img/Pasted%20image%2020260509180728.png)
 
 **Utiliser le tunnel depuis Kali**
 
@@ -67,7 +67,7 @@ ssh -f -N -D [LOCAL_IP:]LOCAL_PORT user@Y.Y.Y.Y
 
 > Le port local devient un serveur SOCKS. Les paquets doivent être encapsulés au format SOCKS, c'est Proxychains qui s'en charge côté client.
 
-![](assets/Pasted%20image%2020260509180821.png)
+![](img/Pasted%20image%2020260509180821.png)
 ### Ouvrir le tunnel depuis la machine pivot
 
 ```bash
@@ -111,7 +111,7 @@ Le port d'écoute est ouvert côté **serveur SSH** (Kali), pas côté client. L
 ssh -N -R [REMOTE_IP:]REMOTE_PORT:DEST_IP:DEST_PORT user@kali
 ```
 
-![](assets/Pasted%20image%2020260509180904.png)
+![](img/Pasted%20image%2020260509180904.png)
 ### Prérequis côté Kali
 
 ```bash
@@ -157,7 +157,7 @@ ssh -N -R REMOTE_PORT user@kali
 
 > Seul le port est spécifié (pas de destination) -  le proxy SOCKS s'ouvre sur le loopback de Kali.
 
-![](assets/Pasted%20image%2020260509180938.png)
+![](img/Pasted%20image%2020260509180938.png)
 ### Ouvrir le tunnel depuis la machine compromise
 
 ```bash

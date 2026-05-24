@@ -4,5 +4,6 @@
   "showInlineTitle": false,
   "foldHeading": true,
   "alwaysUpdateLinks": true,
-  "defaultViewMode": "preview"
+  "defaultViewMode": "preview",
+  "attachmentFolderPath": "./img"
 }

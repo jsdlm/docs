@@ -19,7 +19,7 @@ Utilisé quand :
 6. Le DC chiffre le nonce avec le hash NTLM stocké et compare à la response
 7. Si égaux → authentification réussie
 
-![](assets/Pasted%20image%2020260512145336.png)
+![](img/Pasted%20image%2020260512145336.png)
 
 > NTLM est non-réversible mais rapide à craquer (jusqu'à 600 milliards de hash/s avec GPU haut de gamme). Un mot de passe de 8 caractères peut être cracké en ~2,5h.
 
@@ -27,7 +27,7 @@ Utilisé quand :
 
 Protocole par défaut depuis Windows Server 2003. Basé sur un système de **tickets** -  le client s'authentifie auprès du **KDC** (Key Distribution Center, rôle tenu par le DC), pas directement auprès du serveur applicatif.
 
-![](assets/Pasted%20image%2020260512145508.png)
+![](img/Pasted%20image%2020260512145508.png)
 
 | Acronyme | Signification                   |
 | -------- | ------------------------------- |

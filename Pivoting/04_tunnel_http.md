@@ -6,7 +6,7 @@ Encapsule le trafic dans HTTP (avec chiffrement SSH à l'intérieur). Utile quan
 
 Modèle client/serveur : le serveur tourne sur Kali, le client sur la machine compromise. Le trafic sortant de la cible est du HTTP valide.
 
-![](assets/Pasted%20image%2020260509213344.png)
+![](img/Pasted%20image%2020260509213344.png)
 ## Déployer Chisel sur la cible
 
 ```bash

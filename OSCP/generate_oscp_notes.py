@@ -27,19 +27,9 @@ TEMPLATES = {
     "01_service_enumeration": """\
 # TODO Target Name (TODO IP Address)
 
-**Severity:**
-
 ## Service Enumeration
 
-### Port Scan Results
-
-```bash
-# comma-separated TCP ports
-nmap -Pn -n <IP> | grep open | cut -d/ -f1 | sed 'N;s/\\n/, /g'
-
-# comma-separated UDP ports
-nmap -sU -Pn -n <IP> | grep open | cut -d/ -f1 | sed 'N;s/\\n/, /g'
-```
+TODO Port Scan Results (NMAP / NXC)
 
 TODO further enumeration results
 """,
@@ -53,6 +43,8 @@ TODO further enumeration results
 **Steps to reproduce the attack:** TODO
 
 **Proof of Concept Code:** TODO
+
+**User local Screenshot:** TODO
 """,
     "03_privilege_escalation": """\
 ## Privilege Escalation
