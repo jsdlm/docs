@@ -99,6 +99,26 @@ Get-CimInstance Win32_Service | Select-Object Name, State, StartMode, PathName
 
 # Ancienne méthode
 Get-WmiObject Win32_Service | Select-Object Name, State, StartMode, PathName
+
+# Via registre
+Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\*" | Select-Object PSChildName, Start, ImagePath
+
+Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\*" |
+Where-Object { $_.ImagePath -notmatch "^$|system32|syswow64|SystemRoot|MsMpEng"} |
+Select-Object PSChildName, ImagePath, Start
+
+# Start values in registry (HKLM:\SYSTEM\CurrentControlSet\Services)
+# 0 - Boot     : chargé par le bootloader avant le noyau
+# 1 - System   : chargé par le noyau au démarrage
+# 2 - Automatic: démarré automatiquement par le SCM au boot
+# 3 - Manual   : démarré sur demande
+# 4 - Disabled : désactivé
+
+# Via sc.exe
+sc.exe query type= all state= all
+
+# Autre
+Get-Service | Select-Object Name, Status, StartType
 ```
 
 ```cmd
@@ -149,6 +169,13 @@ Non effacé par `Clear-History` - contient l'historique persistant entre les ses
 ```powershell
 (Get-PSReadlineOption).HistorySavePath
 type C:\Users\<user>\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+
+PS C:\Users\Administrator\Documents> (Get-PSReadlineOption).HistorySavePath
+C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+PS C:\Users\Administrator\Documents> cd C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\
+PS C:\Users\Administrator\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine> type *
+C:\users\support\admintool.exe hghgib6vHT3bVWf cmd
+<SNIP>
 ```
 
 **Transcripts PowerShell**
@@ -561,6 +588,8 @@ Get-ScheduledTask | Select-Object URI, @{Name="Execute";Expression={$_.Actions.E
 
 ```cmd
 schtasks /query /fo LIST /v
+
+schtasks /query /fo LIST /v | Select-String -Pattern "\.exe" -Context 5,0
 
 schtasks /query /fo LIST /v /tn "URIDeLaTache"
 ```

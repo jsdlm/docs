@@ -358,6 +358,7 @@ bloodhound-ce-python --zip -c All -u 'USER' -p 'PASSWORD' -d 'DOMAIN.COM' -dc 'D
 ```
 
 ### BloodHound (Server)
+https://github.com/SpecterOps/BloodHoundQueryLibrary
 
 ```bash
 cd /opt/tools/bloodhound
