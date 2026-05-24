@@ -91,6 +91,8 @@ ffuf -u <url> -w /path/to/wordlist.txt -r -t 7 -rate 70
 
 Wordlists
 ```
+/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+
 /usr/share/dirb/wordlists/common.txt
 /usr/share/dirb/wordlists/big.txt
 
@@ -98,6 +100,7 @@ Wordlists
 /usr/share/dirbuster/wordlists/directory-list-lowercase-2.3-medium.txt
 
 /usr/share/seclists/Discovery/Web-Content/common.txt
+/usr/share/seclists/Discovery/Web-Content/api/
 ```
 ## Plugins browsers
 

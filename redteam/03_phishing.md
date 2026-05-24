@@ -12,4 +12,6 @@
 # -nd : pas de sous-dossiers, tout à plat
 
 wget -E -k -K -p -e robots=off -H -Dzoom.us -nd "https://zoom.us/signin#/login"
+
+wget --mirror -p --convert-links -P ./local https://현진.com/OSCP/Challenge-Labs/
 ```
