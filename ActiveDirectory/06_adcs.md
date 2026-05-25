@@ -1,5 +1,38 @@
 # ADCS
 
+https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adcs-certificate-services/
+## Enumeration
+
+**Sans credentials (réseau) :**
+```bash
+# ADCS expose des interfaces web par défaut
+curl -k https://dc.domain.local/certsrv
+nmap -p 443,80 --script http-title <dc_ip>
+```
+
+**Avec credentials (LDAP) :**
+```bash
+certipy find -u user@domain.local -p 'Password' -dc-ip 192.168.1.1
+```
+
+Certipy interroge LDAP et cherche des objets dans :
+
+```
+CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=Configuration,DC=domain,DC=local
+```
+
+Si un objet `pKIEnrollmentService` existe → ADCS est présent.
+
+**NetExec**
+```bash
+netexec ldap domain.lab -u username -p password -M adcs
+```
+
+**ldapsearch**
+```bash
+ldapsearch -H ldap://dc_IP -x -LLL -D 'CN=<user>,OU=Users,DC=domain,DC=local' -w '<password>' -b "CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=CONFIGURATION,DC=domain,DC=local" dNSHostName
+```
+
 ## ESC8 - coerce to domain admin
 
 Pré-requis :
