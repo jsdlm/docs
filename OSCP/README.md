@@ -52,7 +52,8 @@ gcc 50808.c -static -o CVE-2022-0847
 sudo apt install default-jdk -y
 ```
 
-- chercher direct sur github si les exploits de exploits-db / msf marchent pas
+- chercher direct sur github si les exploits de exploits-db / msf marchent pas 
+- https://github.com/CSpanias
 ## Misc
 
 ```powershell
