@@ -80,6 +80,16 @@ binary       # obligatoire pour les exécutables
 put file.exe
 ```
 
+## FTP Download folder
+
+```bash
+ftp <IP>
+cd folder
+mget *
+
+wget -r ftp://anonymous:anonymous@192.168.189.157/backup/
+```
+
 ## SystemPrompt
 
 ```

