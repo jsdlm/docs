@@ -1,5 +1,3 @@
-# Web
-
 # Ressources
 
 - [PayloadsAllTheThings](https://swisskyrepo.github.io/PayloadsAllTheThings/)

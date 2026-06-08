@@ -38,6 +38,43 @@ sudo tee -a /etc/hosts < hosts
 sed 's/ .*//' hosts > ips.txt
 ```
 
+# RDP
+
+```bash
+xfreerdp /dynamic-resolution /cert:ignore /u:'user' /p:'pass' /v:<IP>
+```
+
+```bash
+xfreerdp /dynamic-resolution /d:corp.com /u:'user' /p:'pass' /v:<IP>
+```
+
+```bash
+sudo apt install remmina
+```
+
+# FTP
+
+**Upload**
+```bash
+ftp <IP>
+# login anonyme
+Username: anonymous
+Password: (vide)
+
+passive      # désactiver le mode passif si besoin
+binary       # obligatoire pour les exécutables
+put file.exe
+```
+
+**Download folder**
+```bash
+ftp <IP>
+cd folder
+mget *
+
+wget -r ftp://anonymous:anonymous@192.168.189.157/backup/
+```
+
 # Exploits 
 
 - Prendre le temps de bien lire les messages d'erreurs

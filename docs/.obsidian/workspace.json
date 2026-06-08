@@ -8,49 +8,35 @@
         "type": "tabs",
         "children": [
           {
-            "id": "6bcf0afe2e8e340a",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Notes.md",
-                "mode": "preview",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Notes"
-            }
-          },
-          {
-            "id": "d9ee56ff331a6d3f",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "OSCP/README.md",
-                "mode": "preview",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "README"
-            }
-          },
-          {
             "id": "c902bf1aae0196f3",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "PrivilegeEscalation/02_windows.md",
+                "file": "Misc/Misc.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "02_windows"
+              "title": "Misc"
+            }
+          },
+          {
+            "id": "36e4818a35f62019",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Web/99_ressources.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "99_ressources"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -185,13 +171,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "PrivilegeEscalation/02_windows.md",
+                "file": "Web/99_ressources.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Plan de 02_windows"
+              "title": "Plan de 99_ressources"
             }
           },
           {
@@ -223,34 +209,36 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "c32586a17ee9d3b6",
+  "active": "c8129b7b104d4472",
   "lastOpenFiles": [
-    "_config.yml",
-    "PrivilegeEscalation/01_linux.md",
-    "Shells/01_reverse_shells.md",
-    "Notes.md",
-    "PasswordAttacks/00_bruteforce.md",
-    "OSCP/README.md",
-    "Wi-Fi.md",
-    "PasswordAttacks/05_cyberlab.md",
-    "Exploits/05_metasploit.md",
-    "OSCP/98_flags.md",
-    "Shells/02_upgrade_to_full_TTY.md",
-    "OSCP/03_initial_access.md",
-    "AD_OSCP/02_authentification.md",
-    "Pivoting/06_ligolo.md",
-    "PrivilegeEscalation/02_windows.md",
-    "Database/mssql.md",
-    "AD_OSCP/01_enumeration.md",
-    "PasswordAttacks/02_hashcat.md",
-    "PasswordAttacks/01_wordlists.md",
+    "PasswordAttacks/99_ressources.md",
+    "System/README.md",
+    "Salesforce/README.md",
+    "RedTeam/README.md",
+    "PrivilegeEscalation/README.md",
+    "Pivoting/README.md",
+    "OSINT/README.md",
+    "Exploits/01_recherche.md",
+    "ActiveDirectory/99_ressources.md",
+    "OSCP/00_Méthodologie.md",
+    "Database/mongodb.md",
     "Database/sqlite.md",
-    "Web/01_reconnaissance.md",
-    "ActiveDirectory/06_adcs.md",
-    "ActiveDirectory/05_acl.md",
-    "ActiveDirectory/04_acces-authentifie.md",
-    "Pivoting/02_tunnel_ssh.md",
-    "Pivoting/00_pivoting_checklist.md",
+    "Database/snowflake.md",
+    "Database/redis.md",
+    "Database/postgresql.md",
+    "Database/mysql.md",
+    "Database/mssql.md",
+    "Exploits/README.md",
+    "OSCP/03_initial_access.md",
+    "OSCP/01_standalone.md",
+    "OSCP/02_active-directory.md",
+    "OSCP/97_stuck.md",
+    "OSCP/98_flags.md",
+    "OSCP/99_pre-exam.md",
+    "Misc/Misc.md",
+    "Misc/Wi-Fi.md",
+    "Misc",
+    "_config.yml",
     "OSCP/pre-exam.md.tmp.15528.b2855c18409a",
     "OSCP/generate_oscp_notes.py",
     "OSCP",
@@ -268,8 +256,6 @@
     "Pivoting/img/Pasted image 20260509180904.png",
     "Pivoting/img/Pasted image 20260509180821.png",
     "Pivoting/img/Pasted image 20260509180728.png",
-    "Network/02_tunnel_ssh.md.tmp.16168.1778278661249",
-    "DataExfiltration.md.tmp.16168.1778278351861",
-    "DataExfiltration.md.tmp.16168.1778278247161"
+    "Network/02_tunnel_ssh.md.tmp.16168.1778278661249"
   ]
 }

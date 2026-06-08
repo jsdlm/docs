@@ -1,23 +1,5 @@
 # Notes
 
-# Ressources
-
-- [ASCII to Hex](https://www.asciitohex.com/)
-- [CyberChef (GCHQ)](https://gchq.github.io/CyberChef/)
-
-# RDP
-
-```bash
-xfreerdp /dynamic-resolution /cert:ignore /u:'user' /p:'pass' /v:<IP>
-```
-
-```bash
-xfreerdp /dynamic-resolution /d:corp.com /u:'user' /p:'pass' /v:<IP>
-```
-
-```bash
-sudo apt install remmina
-```
 # Remove empty lines (NP++)
 
 ```regex
@@ -66,29 +48,6 @@ cd /opt/tools
 bash <(curl -s https://docs.sysreptor.com/install.sh)
 ```
 Access your application at [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
-
-# FTP Upload
-
-```bash
-ftp <IP>
-# login anonyme
-Username: anonymous
-Password: (vide)
-
-passive      # désactiver le mode passif si besoin
-binary       # obligatoire pour les exécutables
-put file.exe
-```
-
-# FTP Download folder
-
-```bash
-ftp <IP>
-cd folder
-mget *
-
-wget -r ftp://anonymous:anonymous@192.168.189.157/backup/
-```
 
 # SystemPrompt
 

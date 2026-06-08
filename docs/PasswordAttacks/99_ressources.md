@@ -1,5 +1,3 @@
-# Password Attacks
-
 # Ressources
 
 - [crack.sh](https://crack.sh/get-cracking/)

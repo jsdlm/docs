@@ -2,55 +2,53 @@
 
 # Checklist Technique
 
-- [ ] Kali Linux VM (x86-64, dernière image VMware)
-- [ ] Webcam fonctionnelle
-- [ ] Connexion internet stable
-- [ ] OSID et hash MD5 reçus
+- Kali Linux VM (x86-64, dernière image VMware)
+- Webcam fonctionnelle
+- Connexion internet stable
+- OSID et hash MD5 reçus
 
 ---
 
 # Checklist Logiciels
 
-- [ ] Ligolo-ng binaries (Kali + Windows)
-- [ ] NetExec
-- [ ] Nmap
-- [ ] Mimikatz / Rubeus
-- [ ] Impacket
-- [ ] PowerView / SharpHound
-- [ ] LinPEAS / WinPEAS
-- [ ] SigmaPotato / PrintSpoofer binaries
-- [ ] Webshells prêts (PHP, ASPX)
-- [ ] Burp Suite Community
-- [ ] BloodHound + Neo4j
+- Ligolo-ng binaries (Kali + Windows)
+- NetExec
+- Nmap
+- Mimikatz / Rubeus
+- Impacket
+- PowerView / SharpHound
+- LinPEAS / WinPEAS
+- SigmaPotato / PrintSpoofer binaries
+- Webshells prêts (PHP, ASPX)
+- Burp Suite Community
+- BloodHound + Neo4j
 
 ---
 
 # Checklist Documentation
 
-- [ ] Outil de notes
-- [ ] Outil screenshot
-- [ ] Dossier screenshots organisé par machine
-- [ ] Accès au panel de contrôle OSCP vérifié
+- Outil de notes
+- Outil screenshot
+- Dossier screenshots organisé par machine
+- Accès au panel de contrôle OSCP vérifié
 
 ---
 # La Veille
 
-- ✅ Dormir 7-8h minimum
-- ✅ Préparer les outils (VPN, VM Kali, monitors)
-- ✅ Tester la connexion au VPN exam
-- ✅ Créer la structure de dossiers exam
-- ✅ Backup des scripts importants sur USB
-- ❌ Ne pas rester tard à réviser
+- Dormir 7-8h minimum
+- Préparer les outils (VPN, VM Kali, monitors)
+- Tester la connexion au VPN exam
+- Créer la structure de dossiers exam
 
 ---
 # Le Matin
 
-- ✅ Manger un bon repas (pas de crash caféine)
-- ✅ S'hydrater
-- ✅ Aller aux toilettes avant de commencer
-- ✅ Vider le bureau des distractions
-- ✅ Avoir eau et snacks à portée
-- ✅ Désactiver notifications téléphone/Discord
+- Manger un bon repas (pas de crash caféine)
+- S'hydrater
+- Aller aux toilettes avant de commencer
+- Vider le bureau des distractions
+- Avoir eau et snacks à portée
+- Désactiver notifications téléphone/Discord
 
 ---
 # Connexion VPN Exam
