@@ -1,0 +1,5 @@
+site_name: Documentation
+site_url: https://jsdlm.github.io/docs
+theme:
+  name: material
+use_directory_urls: false
