@@ -27,7 +27,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Web/99_ressources.md",
+                "file": "PasswordAttacks/99_ressources.md",
                 "mode": "source",
                 "source": false
               },
@@ -171,7 +171,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Web/99_ressources.md",
+                "file": "PasswordAttacks/99_ressources.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
@@ -211,6 +211,8 @@
   },
   "active": "c8129b7b104d4472",
   "lastOpenFiles": [
+    "ActiveDirectory/99_ressources.md",
+    "Web/99_ressources.md",
     "PasswordAttacks/99_ressources.md",
     "System/README.md",
     "Salesforce/README.md",
@@ -219,7 +221,6 @@
     "Pivoting/README.md",
     "OSINT/README.md",
     "Exploits/01_recherche.md",
-    "ActiveDirectory/99_ressources.md",
     "OSCP/00_Méthodologie.md",
     "Database/mongodb.md",
     "Database/sqlite.md",
@@ -236,7 +237,6 @@
     "OSCP/98_flags.md",
     "OSCP/99_pre-exam.md",
     "Misc/Misc.md",
-    "Misc/Wi-Fi.md",
     "Misc",
     "_config.yml",
     "OSCP/pre-exam.md.tmp.15528.b2855c18409a",
