@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OSCP/00_Méthodologie.md",
+                "file": "MDI_Evasion/001_Introduction.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "00_Méthodologie"
+              "title": "001_Introduction"
             }
           }
         ],
@@ -171,13 +171,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Database/README.md",
+                "file": "MDI_Evasion/001_Introduction.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Plan de README"
+              "title": "Plan de 001_Introduction"
             }
           },
           {
@@ -211,6 +211,17 @@
   },
   "active": "c8129b7b104d4472",
   "lastOpenFiles": [
+    "MDI_Evasion/002_Opsec Recon.md",
+    "MDI_Evasion/005_MDI NaaS.md",
+    "MDI_Evasion/003_OPSEC Kerberos Requests.md",
+    "MDI_Evasion/001_Introduction.md",
+    "MDI_Evasion/999_ToDo.md",
+    "MDI_Evasion/010_References.md",
+    "MDI_Evasion/009_Conclusion.md",
+    "MDI_Evasion/008_OPSEC Golden Ticket.md",
+    "MDI_Evasion/007_OPSEC DCSync.md",
+    "MDI_Evasion/006_Opsec Logon script abuse.md",
+    "RedTeam/05_Coerce_and_relay.md",
     "OSCP/00_Méthodologie.md",
     "PrivilegeEscalation/02_windows.md",
     "PasswordAttacks/01_offline.md",
@@ -226,17 +237,6 @@
     "PasswordAttacks/99_ressources.md",
     "ActiveDirectory/99_ressources.md",
     "System/README.md",
-    "Salesforce/README.md",
-    "RedTeam/README.md",
-    "PrivilegeEscalation/README.md",
-    "Pivoting/README.md",
-    "OSINT/README.md",
-    "Exploits/01_recherche.md",
-    "Database/mongodb.md",
-    "Database/sqlite.md",
-    "Database/snowflake.md",
-    "Database/redis.md",
-    "Database/postgresql.md",
     "Misc",
     "_config.yml",
     "OSCP/pre-exam.md.tmp.15528.b2855c18409a",

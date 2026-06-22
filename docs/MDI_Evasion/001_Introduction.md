@@ -11,11 +11,11 @@ https://learn.microsoft.com/en-us/defender-for-identity/what-is
 	- Exfiltration
 - MDI evasion techniques tend to avoid talking to the DC as long as possible and make appear the traffic we generate as attacker normal by emulating genuine legitimate kerberos requests.
 
-![](imgachments/MDIAlerts.png)
+![](img/MDIAlerts.png)
 
-![](imgachments/Pasted%20image%2020260423104305.png)
+![](img/Pasted%20image%2020260423104305.png)
 
 # Kerberos requests – AS-REQ
-![](imgachments/ASREQ.png)
+![](img/ASREQ.png)
 # Kerberos requests – TGS-REQ
-![](imgachments/TGSREQ.png)
+![](img/TGSREQ.png)

