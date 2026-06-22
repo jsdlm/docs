@@ -33,7 +33,7 @@ Une fois connecté avec le client tester en se rendant sur ce site : http://zero
 
 **PSK**
 ```bash
-sudo ./eaphammer  -i wlan0 -e testpsk --auth wpa-psk
+sudo ./eaphammer -i wlan0 -e testpsk --auth wpa-psk
 ```
 
 ```bash
@@ -61,8 +61,30 @@ sudo ./eaphammer --delete-template --name nom_template
 ```bash
 sudo ./eaphammer -i wlan0 -e hostile-portal --auth open --hostile-portal
 ```
+
+**Reproduire le réseau Wi-Fi**
+
+```bash
+sudo iwlist wlan0 scan 
+```
+
+| Paramètre     | Option CLI          | Description                |
+| ------------- | ------------------- | -------------------------- |
+| Interface     | `-i`, `--interface` | Interface Wi-Fi            |
+| ESSID         | `-e`, `--essid`     | Nom du réseau              |
+| BSSID         | `-b`, `--bssid`     | Adresse MAC de l'AP        |
+| Canal         | `-c`, `--channel`   | Canal Wi-Fi                |
+| Mode matériel | `--hw-mode`         | `g` (2.4GHz) ou `a` (5GHz) |
 ## PMKID Attacks
 https://github.com/s0lst1c3/eaphammer/wiki/XII.-PMKID-Attacks-Against-WPA-PSK-and-WPA2-PSK-Networks
 
 ## PSK attacks
 https://github.com/v1s1t0r1sh3r3/airgeddon
+https://github.com/v1s1t0r1sh3r3/airgeddon/wiki/Cards%20and%20Chipsets
+
+## Settings
+
+```bash
+iw dev wlan0 info        # puissance actuelle (txpower)
+iw phy phy2 info         # puissance max (sous "max TX power")
+```
