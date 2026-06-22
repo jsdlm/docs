@@ -38,7 +38,7 @@
 - [Wi-Fi](Misc/Wi-Fi.md)
 
 ## OSCP
-- [OSCP](OSCP/00_Méthodologie.md)
+- [Méthodologie](OSCP/00_Méthodologie.md)
 - [Standalone Machine Methodology](OSCP/01_standalone.md)
 - [Active Directory Methodology](OSCP/02_active-directory.md)
 - [Initial Access](OSCP/03_initial_access.md)
