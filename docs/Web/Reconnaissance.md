@@ -1,5 +1,3 @@
-# Reconnaissance
-
 # Techniques
 
 * Analyse des headers (faiblesses + technical information disclosure)

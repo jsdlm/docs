@@ -1,5 +1,3 @@
-# Kali
-
 # Setup
 
 ```bash

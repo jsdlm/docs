@@ -1,5 +1,3 @@
-# John
-
 # Cracking Modes <a href="#cracking-modes" id="cracking-modes"></a>
 
 ```bash

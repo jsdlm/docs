@@ -1,5 +1,3 @@
-# Revue de code source
-
 # Procédure
 1. Télécharger [PMD](https://pmd.github.io/) - Néccéssite Java (Oracle.JDK.21 OK)
 2. Télécharger le [ruleset Apex](https://github.com/pmd/pmd/tree/main/pmd-apex/src/main/resources/rulesets/apex).

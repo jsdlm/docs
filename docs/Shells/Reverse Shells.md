@@ -1,5 +1,3 @@
-# Reverse Shells
-
 # Ressources
 
 * [revshells.com](https://www.revshells.com/)

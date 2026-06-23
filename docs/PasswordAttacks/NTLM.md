@@ -1,5 +1,3 @@
-# NTLM
-
 # Cracking NTLM
 
 > We use "NTLM hash" to refer to the formally correct _NTHash_. Since "NTLM hash" is more commonly used in our industry, we use it in this course to avoid confusion.

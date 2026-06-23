@@ -1,5 +1,3 @@
-# Initial Access
-
 # Workflow Général
 
 ```text

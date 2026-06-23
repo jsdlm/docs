@@ -1,5 +1,3 @@
-# Linux
-
 # Chemins Courants
 
 | Check | Commande | Escalade |

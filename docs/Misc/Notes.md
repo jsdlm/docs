@@ -1,5 +1,3 @@
-# Notes
-
 # Remove empty lines (NP++)
 
 ```regex

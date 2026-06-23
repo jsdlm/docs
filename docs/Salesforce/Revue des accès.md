@@ -1,5 +1,3 @@
-# Revue des accès
-
 # USERS
 Champ FederationIdentifier :
 - Renseigné → user fédéré via IdP (SSO/SAML)

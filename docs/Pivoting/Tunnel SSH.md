@@ -1,5 +1,3 @@
-# Tunnel SSH
-
 # Local Port Forwarding
 
 Écoute sur un port du client SSH, forward les paquets via le tunnel vers une destination choisie côté serveur SSH.

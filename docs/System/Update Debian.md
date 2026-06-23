@@ -1,5 +1,3 @@
-# Update Debian
-
 # 1. Mettre à jour Debian 11 (bullseye)
 
 ```bash

@@ -1,5 +1,3 @@
-# Emails
-
 # Vérifier une adresse email sans envoyer de mail
 
 > Utiliser [Google Cloud Shell](https://shell.cloud.google.com) pour éviter que votre IP soit blacklistée.

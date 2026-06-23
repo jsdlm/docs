@@ -1,5 +1,3 @@
-# Wi-Fi
-
 # Sniffer le traffic
 
 **Setup**

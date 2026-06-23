@@ -1,5 +1,3 @@
-# Hashcat
-
 # Usage
 
 ```

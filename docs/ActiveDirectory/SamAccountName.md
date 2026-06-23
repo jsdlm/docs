@@ -1,6 +1,4 @@
 
-# SamAccountName
-
 # CVE-2021-42278 - Name impersonation
 
 Computer accounts should have a trailing `$` in their name (i.e. `sAMAccountName` attribute) but no validation process existed to make sure of it. Abused in combination with CVE-2021-42287, it allowed attackers to impersonate domain controller accounts.

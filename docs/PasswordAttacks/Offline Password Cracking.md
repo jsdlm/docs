@@ -1,5 +1,3 @@
-# Offline Password Cracking
-
 # Méthodologie
 
 1. **Extraire les hashes** - dump DB, fichiers SAM/NTDS, fichiers de config, etc.

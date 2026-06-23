@@ -1,5 +1,3 @@
-# Pivoting checklist
-
 # Linux
 
 **Interfaces réseau**

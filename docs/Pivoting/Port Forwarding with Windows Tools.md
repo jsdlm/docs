@@ -1,5 +1,3 @@
-# Port Forwarding with Windows Tools
-
 # ssh.exe (OpenSSH natif Windows)
 
 OpenSSH est inclus par défaut depuis Windows 1803 (avril 2018). L'exécutable est dans `%SystemRoot%\System32\OpenSSH\ssh.exe`.

@@ -1,5 +1,3 @@
-# HTTP Tunneling
-
 # Chisel
 
 Encapsule le trafic dans HTTP (avec chiffrement SSH à l'intérieur). Utile quand un DPI bloque tout sauf HTTP -  les tunnels SSH classiques sont alors inopérants.

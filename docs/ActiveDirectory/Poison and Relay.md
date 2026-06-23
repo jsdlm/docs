@@ -1,5 +1,3 @@
-# Poison and Relay
-
 # Responder
 
 Répondre aux requêtes LLMNR et NETBIOS pour récupérer les hash net-ntlm

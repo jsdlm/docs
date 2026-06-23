@@ -1,5 +1,3 @@
-# Windows
-
 # Chemins Courants
 
 | Check                      | Commande                         | Escalade                           |

@@ -1,5 +1,3 @@
-# Macro Office (VBA)
-
 # Payload PowerShell encodé en base64
 
 > UTF-16LE est le charset par défaut pour l'encodage base64 de PowerShell - tout autre charset cassera le payload.

@@ -1,5 +1,3 @@
-# Standalone Machine Methodology
-
 # Flowchart
 
 ```text

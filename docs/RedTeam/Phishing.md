@@ -1,5 +1,3 @@
-# Phishing
-
 # Cloner une page web
 
 ```bash

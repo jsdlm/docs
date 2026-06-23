@@ -1,5 +1,3 @@
-# Audit d'architecture
-
 # Entretiens et revue de schéma
 
 La majorité de cet axe repose sur des entretiens avec les équipes techniques et la revue de schémas d'architecture fournis par le client.

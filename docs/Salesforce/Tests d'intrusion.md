@@ -1,5 +1,3 @@
-# Tests d'intrusion
-
 # Grey box
 
 ## Vue d'ensemble

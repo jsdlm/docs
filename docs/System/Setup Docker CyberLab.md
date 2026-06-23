@@ -1,5 +1,3 @@
-# Setup Docker CyberLab
-
 # Création d'une partition sur le disque /dev/xvdb
 
 ```bash

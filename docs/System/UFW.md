@@ -1,5 +1,3 @@
-# UFW
-
 # Tutoriel UFW (Uncomplicated Firewall)
 
 ## 1. Installation d'ufw

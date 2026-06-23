@@ -1,5 +1,3 @@
-# Bruteforce
-
 # SSH
 
 ```bash

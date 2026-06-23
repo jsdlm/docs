@@ -1,5 +1,3 @@
-# DNS
-
 # Résolution basique
 
 ```bash

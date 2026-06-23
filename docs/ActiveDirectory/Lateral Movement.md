@@ -1,5 +1,3 @@
-# Lateral Movement
-
 # WMI
 
 Exécute des processus à distance via `Win32_Process.Create`. Nécessite d'être membre du groupe **Administrators local** sur la cible (les domain users ne sont pas soumis aux restrictions UAC distantes).

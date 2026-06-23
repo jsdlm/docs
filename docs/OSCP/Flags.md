@@ -1,5 +1,3 @@
-# Flags
-
 # Trouver les Flags
 
 ## Windows CMD

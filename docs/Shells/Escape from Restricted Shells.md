@@ -1,5 +1,3 @@
-# Escape from Restricted Shells
-
 # Reconnaissance
 
 **Identifier le shell et le PATH courants**

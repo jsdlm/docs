@@ -1,5 +1,3 @@
-# Antivirus Evasion
-
 # Théorie
 ## On-disk Evasion
 

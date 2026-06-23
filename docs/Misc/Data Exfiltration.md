@@ -1,5 +1,3 @@
-# Data Exfiltration
-
 # Web Server
 
 ```sh

@@ -1,5 +1,3 @@
-# Active Directory Methodology
-
 # Flowchart
 
 ```text

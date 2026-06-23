@@ -1,5 +1,3 @@
-# Authentification
-
 # Théorie
 
 ## NTLM

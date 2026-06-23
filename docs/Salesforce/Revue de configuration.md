@@ -1,5 +1,3 @@
-# Revue de configuration
-
 # Revue via l'interface web
 
 ## Politiques de mot de passe

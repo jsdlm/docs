@@ -1,5 +1,3 @@
-# LVM
-
 # Partitionner le disque
 
 ```bash
