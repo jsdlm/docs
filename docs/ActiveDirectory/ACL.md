@@ -1,5 +1,17 @@
 # ACL
 
+Chaque objet AD a une ACL (Access Control List) composée d'ACEs (Access Control Entries). Permissions intéressantes pour un attaquant :
+
+|Permission|Effet|
+|---|---|
+|`GenericAll`|Contrôle total sur l'objet|
+|`GenericWrite`|Modifier certains attributs|
+|`WriteOwner`|Changer le propriétaire|
+|`WriteDACL`|Modifier les ACEs|
+|`AllExtendedRights`|Reset de mot de passe, etc.|
+|`ForceChangePassword`|Forcer le changement de mdp|
+|`Self`|S'ajouter soi-même (ex: à un groupe)|
+
 # Exploitation des droits/ACLs
 
 ## ForceChangePassword
@@ -89,10 +101,8 @@ nxc ldap <DC_IP> -u attacker -p ‘Password123’ -M laps
 
 # Exploitation de droits spécifiques
 
-* **Shadow Credentials** : si `GenericWrite` sur un compte → injection de clé PKINIT (via `Whisker`, `ForgeCert`, etc.).
-  * [ADCS - Shadow Credentials](06_adcs.md#shadow-credentials)
-* **sAMAccountName Spoofing** : si droit de **joindre une machine** (10 par défaut), et DC vulnérable.
-  * [Accès authentifié - sAMAccountName](04_acces-authentifie.md#samaccountname)
+* **Shadow Credentials** : si `GenericWrite` sur un compte → injection de clé PKINIT (via `Whisker`, `ForgeCert`, etc.). [ADCS - Shadow Credentials](ADCS.md#shadow-credentials)
+* **sAMAccountName Spoofing** : si droit de **joindre une machine** (10 par défaut), et DC vulnérable. [Accès authentifié - sAMAccountName](04_acces-authentifie.md#samaccountname)
 * **Resource-Based Constrained Delegation (RBCD)** : si contrôle sur un objet machine.
 * **DCSync** : si accès à `Replicating Directory Changes (All)` sur le domaine.
 * SeEnableDelegationPrivilege : délégation de contrainte.

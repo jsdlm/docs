@@ -19,7 +19,7 @@ Utilisé quand :
 6. Le DC chiffre le nonce avec le hash NTLM stocké et compare à la response
 7. Si égaux → authentification réussie
 
-![](img/Pasted%20image%2020260512145336.png)
+![](../ActiveDirectory/img/Pasted%20image%2020260512145336.png)
 
 > NTLM est non-réversible mais rapide à craquer (jusqu'à 600 milliards de hash/s avec GPU haut de gamme). Un mot de passe de 8 caractères peut être cracké en ~2,5h.
 
@@ -27,7 +27,7 @@ Utilisé quand :
 
 Protocole par défaut depuis Windows Server 2003. Basé sur un système de **tickets** -  le client s'authentifie auprès du **KDC** (Key Distribution Center, rôle tenu par le DC), pas directement auprès du serveur applicatif.
 
-![](img/Pasted%20image%2020260512145508.png)
+![](../ActiveDirectory/img/Pasted%20image%2020260512145508.png)
 
 | Acronyme | Signification                   |
 | -------- | ------------------------------- |
@@ -133,24 +133,6 @@ go build -o kerbrute .
 ```
 
 > Utilise uniquement AS-REQ/AS-REP -  moins de trafic que SMB, pas de connexion complète établie.
-
-**LDAP/ADSI (PowerShell, low and slow)**
-
-```powershell
-# Tester un mot de passe pour un user via DirectoryEntry
-$domainObj = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
-$PDC = ($domainObj.PdcRoleOwner).Name
-$DN  = "DC=$($domainObj.Name.Replace('.', ',DC='))"
-$SearchString = "LDAP://$PDC/$DN"
-New-Object System.DirectoryServices.DirectoryEntry($SearchString, "pete", "Nexus123!")
-# Si OK → retourne l'objet. Si KO → exception "username or password is incorrect"
-```
-
-```powershell
-# Script automatisé (respecte le lockout)
-.\Spray-Passwords.ps1 -Pass Nexus123! -Admin
-```
-
 ## AS-REP Roasting
 
 Si un compte AD a l'option **"Do not require Kerberos preauthentication"** activée, un attaquant peut demander un AS-REP sans s'authentifier → la réponse contient un hash crackable offline.
@@ -191,6 +173,14 @@ sudo hashcat -m 18200 hashes.asreproast /usr/share/wordlists/rockyou.txt -r /usr
 > **Targeted AS-REP Roasting** : si on a `GenericWrite` ou `GenericAll` sur un compte, on peut modifier son `UserAccountControl` pour désactiver la pré-authentification, récupérer le hash, puis remettre la valeur d'origine. En pratique, **Targeted Kerberoasting** est préféré pour le même prérequis -  il suffit d'ajouter un SPN sans toucher au `userAccountControl`.
 
 ## Kerberoasting
+
+
+> Attaque sur l’étape **KRB\_TGS\_REP**\
+> Nécessite un compte utilisateur sans privilèges particulier\
+> Basé sur le mécanisme de ticket de service\
+> N’importe quel utilisateur du domaine peut demander un ticket de service pour un compte possédant un SPN (Service Principal Name) à partir de son TGT\
+> Le KDC va alors vérifier la validité du TGT en le déchiffrant et répondre avec un message KRB\_TGS\_REP dont une partie de la réponse est chiffrée avec le hash du compte de service.\
+> La réponse peut être ensuite cassée hors-ligne.
 
 Attaque sur l'étape **KRB_TGS_REP**. N'importe quel utilisateur du domaine (sans privilèges particuliers) peut demander un service ticket (TGS) pour n'importe quel compte possédant un SPN. Le KDC vérifie la validité du TGT mais **ne vérifie pas les permissions** de l'utilisateur sur le service. Il répond avec un TGS-REP dont une partie est chiffrée avec le hash du compte de service → crackable offline.
 

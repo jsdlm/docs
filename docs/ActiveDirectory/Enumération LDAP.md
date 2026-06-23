@@ -1,14 +1,7 @@
-# Enumération
+# Enumération LDAP
 # Enumération manuelle
 
-## Outils legacy Windows (net.exe)
-
-```cmd
-:: Connexion RDP initiale (assumed breach)
-xfreerdp /u:stephanie /d:corp.com /v:<IP>
-```
-
-> Préférer RDP à WinRM/PSRemoting pour l'énumération AD -  PSRemoting entraîne le **Kerberos Double Hop** qui bloque les outils de domaine.
+## Users et Groupes
 
 **Utilisateurs**
 
@@ -23,107 +16,6 @@ net user <USERNAME> /domain          :: détails d'un utilisateur (groupes, dern
 net group /domain                    :: lister tous les groupes du domaine
 net group "Sales Department" /domain :: membres d'un groupe spécifique
 ```
-
-Points à noter lors de l'énumération :
-- Noms d'utilisateurs avec suffixes admin (ex: `jeffadmin`) → vérifier l'appartenance à `Domain Admins`
-- Groupes personnalisés (Development Department, Management Department…) → souvent plus intéressants que les groupes par défaut
-
-## PowerShell + .NET / LDAP
-
-AD s'énumère via LDAP. Le chemin LDAP requis a la forme :
-
-```
-LDAP://HostName/DistinguishedName
-```
-
-- **HostName** : le PDC (Primary Domain Controller, seul DC avec `PdcRoleOwner`)
-- **DistinguishedName** : ex. `DC=corp,DC=com`
-
-**Construire le chemin LDAP dynamiquement**
-
-```powershell
-# Bypasser l'execution policy
-powershell -ep bypass
-
-# Script complet -  génère le chemin LDAP
-$PDC = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
-$DN  = ([adsi]'').distinguishedName
-$LDAP = "LDAP://$PDC/$DN"
-$LDAP
-# → LDAP://DC1.corp.com/DC=corp,DC=com
-```
-
-> `([adsi]'').distinguishedName` retourne le DN au bon format LDAP directement (`DC=corp,DC=com`), sans manipulation manuelle de la chaîne.
-
-## Recherche LDAP avec DirectorySearcher
-
-**Script de base -  lister tous les objets**
-
-```powershell
-$PDC  = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
-$DN   = ([adsi]'').distinguishedName
-$LDAP = "LDAP://$PDC/$DN"
-
-$direntry    = New-Object System.DirectoryServices.DirectoryEntry($LDAP)
-$dirsearcher = New-Object System.DirectoryServices.DirectorySearcher($direntry)
-$dirsearcher.FindAll()
-```
-
-**Filtrer par type d'objet (`samAccountType`)**
-
-```powershell
-$dirsearcher.filter = "samAccountType=805306368"   # utilisateurs du domaine
-$result = $dirsearcher.FindAll()
-
-Foreach($obj in $result) {
-    Foreach($prop in $obj.Properties) { $prop }
-    Write-Host "-------------------------------"
-}
-```
-
-| Valeur `samAccountType` | Objets retournés |
-|---|---|
-| `805306368` (`0x30000000`) | Utilisateurs |
-| `805306369` | Machines |
-| `268435456` | Groupes |
-
-**Fonction réutilisable (`function.ps1`)**
-
-```powershell
-function LDAPSearch {
-    param ([string]$LDAPQuery)
-    $PDC = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().PdcRoleOwner.Name
-    $DN  = ([adsi]'').distinguishedName
-    $DirectoryEntry    = New-Object System.DirectoryServices.DirectoryEntry("LDAP://$PDC/$DN")
-    $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher($DirectoryEntry, $LDAPQuery)
-    return $DirectorySearcher.FindAll()
-}
-```
-
-```powershell
-Import-Module .\function.ps1
-
-# Tous les utilisateurs
-LDAPSearch -LDAPQuery "(samAccountType=805306368)"
-
-# Tous les groupes
-LDAPSearch -LDAPQuery "(objectclass=group)"
-
-# Membres de tous les groupes (CN + member)
-foreach ($group in $(LDAPSearch -LDAPQuery "(objectCategory=group)")) {
-    $group.properties | select {$_.cn}, {$_.member}
-}
-
-# Membres d'un groupe spécifique
-$sales = LDAPSearch -LDAPQuery "(&(objectCategory=group)(cn=Sales Department))"
-$sales.properties.member
-
-# Tous les attributs d'un utilisateur spécifique
-$user = LDAPSearch -LDAPQuery "(&(objectCategory=user)(cn=<USERNAME>))"
-$user.properties
-```
-
-> **Groupes imbriqués (nested groups)** : `net.exe` n'affiche que les utilisateurs directs. LDAP/DirectorySearcher retourne aussi les groupes membres -  ce qui peut révéler des héritages de privilèges non intentionnels.
 
 ## PowerView
 
@@ -233,48 +125,7 @@ nslookup.exe web04.corp.com
 
 > Les comptes de service ont généralement plus de privilèges qu'un user standard. Un SPN de type `HTTP/web04.corp.com` indique un serveur web -  vecteur pour Kerberoasting (voir modules suivants).
 
-## Permissions sur les objets AD (ACL/ACE)
-
-Chaque objet AD a une ACL (Access Control List) composée d'ACEs (Access Control Entries). Permissions intéressantes pour un attaquant :
-
-| Permission | Effet |
-|---|---|
-| `GenericAll` | Contrôle total sur l'objet |
-| `GenericWrite` | Modifier certains attributs |
-| `WriteOwner` | Changer le propriétaire |
-| `WriteDACL` | Modifier les ACEs |
-| `AllExtendedRights` | Reset de mot de passe, etc. |
-| `ForceChangePassword` | Forcer le changement de mdp |
-| `Self` | S'ajouter soi-même (ex: à un groupe) |
-
-**Énumérer les ACEs d'un objet**
-
-```powershell
-Get-ObjectAcl -Identity "Management Department" | ? {$_.ActiveDirectoryRights -eq "GenericAll"} | select SecurityIdentifier,ActiveDirectoryRights
-```
-
-**Convertir un SID en nom lisible**
-
-```powershell
-Convert-SidToName S-1-5-21-1987370270-658905905-1781884369-1104
-
-# Convertir plusieurs SIDs d'un coup
-"S-1-5-...-512","S-1-5-...-1104" | Convert-SidToName
-```
-
-**Exploiter un GenericAll sur un groupe**
-
-```cmd
-:: Ajouter un utilisateur au groupe
-net group "Management Department" stephanie /add /domain
-
-:: Retirer l'utilisateur (cleanup)
-net group "Management Department" stephanie /del /domain
-```
-
-> Un user standard avec `GenericAll` sur un objet est une misconfiguration -  permet d'ajouter des membres à des groupes, de reset des mots de passe, etc. Toujours nettoyer après exploitation.
-
-## Partages du domaine
+## Shares
 
 ```powershell
 Find-DomainShare                    # tous les partages du domaine
@@ -313,40 +164,25 @@ dig -x $rhost
 
 # Enumération automatique
 
-## SharpHound
-
-SharpHound collecte les données AD (LDAP, NetSessionEnum, Remote Registry…) et les exporte dans un ZIP analysable par BloodHound.
-
-```bash
-sudo apt install sharphound
-sharphound -h
-/usr/share/sharphound
-```
-
-**Collecte depuis la machine compromise**
-
-```powershell
-powershell -ep bypass
-Import-Module .\Sharphound.ps1
-
-Invoke-BloodHound -CollectionMethod All -OutputDirectory C:\Users\stephanie\Desktop\ -OutputPrefix "corp audit"
-```
-
-- `All` : collecte tout sauf les GPO locales (groupes, sessions, ACLs, SPNs, trusts…)
-- Le résultat est un fichier ZIP à transférer sur Kali pour analyse dans BloodHound
-
-> SharpHound crée aussi un fichier `.bin` (cache) -  inutile pour l'analyse, peut être supprimé.
-
-**Option looping** -  relancer la collecte en boucle pour capturer les sessions qui changent :
-
-```powershell
-Invoke-BloodHound -CollectionMethod All -Loop -LoopDuration 02:00:00 -LoopInterval 00:05:00
-```
-
 ## Netexec
 
 ```bash
+# Export bloodhound
 nxc ldap 192.168.1.10 -u 'USER' -p 'PASSWORD' -d 'DOMAIN.COM' --bloodhound -c All --dns-server 192.168.1.10
+
+# share enum with user
+nxc smb 192.168.56.10-23 -u 'jon.snow' -p 'iknownothing' --shares
+
+# Get DC ip
+nxc ldap 192.168.56.11 -u 'brandon.stark' -p 'iseedeadpeople' --dc-list
+
+# Get all users from all DCs
+nxc ldap 192.168.56.10-23 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users
+
+# Export users to file for each DCs
+nxc ldap 192.168.56.10 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users-export KINGSLANDING_USERS.txt
+nxc ldap 192.168.56.11 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users-export WINTERFELL_USERS.txt
+nxc ldap 192.168.56.12 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users-export MEEREEN_USERS.txt
 ```
 
 ## BloodHound-ce python
@@ -392,4 +228,34 @@ Chercher :
 - **ACL abuse paths** (AllExtendedRights, GenericAll, WriteDacl)
 - **GPO abuse paths**
 
+Visualisation des droits dans bloodhound, check "outbound control rights" depuis notre USER et les [ACL](ACL.md).
 
+## SharpHound
+
+SharpHound collecte les données AD (LDAP, NetSessionEnum, Remote Registry…) et les exporte dans un ZIP analysable par BloodHound.
+
+```bash
+sudo apt install sharphound
+sharphound -h
+/usr/share/sharphound
+```
+
+**Collecte depuis la machine compromise**
+
+```powershell
+powershell -ep bypass
+Import-Module .\Sharphound.ps1
+
+Invoke-BloodHound -CollectionMethod All -OutputDirectory C:\Users\stephanie\Desktop\ -OutputPrefix "corp audit"
+```
+
+- `All` : collecte tout sauf les GPO locales (groupes, sessions, ACLs, SPNs, trusts…)
+- Le résultat est un fichier ZIP à transférer sur Kali pour analyse dans BloodHound
+
+> SharpHound crée aussi un fichier `.bin` (cache) -  inutile pour l'analyse, peut être supprimé.
+
+**Option looping** -  relancer la collecte en boucle pour capturer les sessions qui changent :
+
+```powershell
+Invoke-BloodHound -CollectionMethod All -Loop -LoopDuration 02:00:00 -LoopInterval 00:05:00
+```

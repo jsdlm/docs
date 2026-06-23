@@ -4,39 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "49d0b9702dd932ac",
+        "id": "2571d9a165ebd906",
         "type": "tabs",
         "children": [
           {
-            "id": "b5419599a250efbc",
+            "id": "c91c9c40aa73b887",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OSCP/00_Méthodologie.md",
+                "file": "ActiveDirectory/Enumération LDAP.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "00_Méthodologie"
-            }
-          },
-          {
-            "id": "521a243c41410932",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "MDI_Evasion/001_Introduction.md",
-                "mode": "preview",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "001_Introduction"
+              "title": "Enumération LDAP"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -171,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "MDI_Evasion/001_Introduction.md",
+                "file": "ActiveDirectory/Enumération LDAP.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Plan de 001_Introduction"
+              "title": "Plan de Enumération LDAP"
             }
           },
           {
@@ -209,42 +194,42 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "c8129b7b104d4472",
+  "active": "c91c9c40aa73b887",
   "lastOpenFiles": [
-    "MDI_Evasion/002_Opsec Recon.md",
-    "MDI_Evasion/005_MDI NaaS.md",
-    "MDI_Evasion/003_OPSEC Kerberos Requests.md",
-    "MDI_Evasion/001_Introduction.md",
-    "MDI_Evasion/999_ToDo.md",
-    "MDI_Evasion/010_References.md",
-    "MDI_Evasion/009_Conclusion.md",
-    "MDI_Evasion/008_OPSEC Golden Ticket.md",
-    "MDI_Evasion/007_OPSEC DCSync.md",
-    "MDI_Evasion/006_Opsec Logon script abuse.md",
-    "RedTeam/05_Coerce_and_relay.md",
-    "OSCP/00_Méthodologie.md",
-    "PrivilegeEscalation/02_windows.md",
-    "PasswordAttacks/01_offline.md",
-    "AD_OSCP/03_lateral_movement.md",
-    "AD_OSCP/02_authentification.md",
-    "AD_OSCP/01_enumeration.md",
-    "OSCP/98_flags.md",
+    "Shells/03_escape_from_restricted_shells.md",
+    "Shells/02_upgrade_to_full_TTY.md",
     "Shells/01_reverse_shells.md",
-    "Web/05_webshells.md",
-    "Exploits/05_metasploit.md",
-    "Web/99_ressources.md",
+    "Misc/Wi-Fi.md",
     "Misc/Misc.md",
-    "PasswordAttacks/99_ressources.md",
-    "ActiveDirectory/99_ressources.md",
-    "System/README.md",
+    "Misc/DataExfiltration.md",
+    "Exploits/03_web.md",
+    "PasswordAttacks/05_cyberlab.md",
+    "ActiveDirectory/Lateral Movement.md",
+    "ActiveDirectory/Authentification.md",
+    "ActiveDirectory/No Account.md",
+    "ActiveDirectory/ADCS.md",
+    "ActiveDirectory/Reconnaissance.md",
+    "ActiveDirectory/Enumération LDAP.md",
+    "ActiveDirectory/Poison and Relay.md",
+    "ActiveDirectory/Ressources.md",
+    "ActiveDirectory/ACL.md",
+    "ActiveDirectory/04_acces-authentifie.md",
+    "ActiveDirectory/DNS.md",
+    "ActiveDirectory/Persistence.md",
+    "ActiveDirectory/SamAccountName.md",
+    "OSCP/00_Méthodologie.md",
+    "OSCP/98_flags.md",
+    "OSCP/97_stuck.md",
+    "OSCP/02_active-directory.md",
+    "OSCP/03_initial_access.md",
+    "ActiveDirectory/img/Pasted image 20260512145336.png",
     "Misc",
     "_config.yml",
     "OSCP/pre-exam.md.tmp.15528.b2855c18409a",
     "OSCP/generate_oscp_notes.py",
     "OSCP",
-    "AD_OSCP/img/Pasted image 20260512145508.png",
+    "ActiveDirectory/img/Pasted image 20260512145508.png",
     "AD_OSCP/img",
-    "AD_OSCP/img/Pasted image 20260512145336.png",
     "AD_OSCP",
     "Exploits/05_metasploit.md.tmp.19272.3bf49802b079",
     "Pivoting/img/Pasted image 20260509213344.png",

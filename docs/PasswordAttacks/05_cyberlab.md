@@ -1,7 +1,7 @@
 
-# Cassage de mots de passe
+# TMUX
 
-Se connecter à la crackstation @IP : 172.18.126.20
+Se connecter à la crackstation @IP
 Ouvrir un terminal virtuel sur la crackstation
 https://tmuxcheatsheet.com/
 
