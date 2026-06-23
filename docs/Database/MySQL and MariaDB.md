@@ -1,4 +1,4 @@
-# MySQL / MariaDB
+# MySQL and MariaDB
 
 ```bash
 # Installation client
