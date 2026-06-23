@@ -1,7 +1,4 @@
-# No Account
-
 > L'objectif est d'obtenir un premier compte ou un premier accès sur une machine
-
 # Scan de protocoles
 
 Commencer par faire un scan avec les différents protocoles supportés par Netexec (Netexec donne certaines informations pour certains protocoles comme par exemple le NLA sur RDP)

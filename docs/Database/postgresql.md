@@ -1,4 +1,4 @@
-# PostgreSQL
+## Installation
 
 ```bash
 # Installation client
@@ -10,7 +10,7 @@ sudo apt install postgresql-client
 psql -h <ip> -p 5432 -U <user> -d <database>
 ```
 
-**Navigation**
+## Navigation
 
 ```sql
 \l                  -- lister les bases
@@ -21,7 +21,7 @@ psql -h <ip> -p 5432 -U <user> -d <database>
 \q                  -- quitter
 ```
 
-**Enumération**
+## Enumération
 
 ```sql
 SELECT version();

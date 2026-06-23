@@ -1,4 +1,4 @@
-# SQLite
+## Installation
 
 ```bash
 # Installation client
@@ -10,7 +10,7 @@ sudo apt install sqlite3
 sqlite3 <fichier.db>
 ```
 
-**Navigation**
+## Navigation
 
 ```sql
 .tables             -- lister les tables

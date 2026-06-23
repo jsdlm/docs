@@ -1,11 +1,12 @@
-# Snowflake
+## Installation
 
 https://docs.snowflake.com/fr/user-guide/snowsql-install-config
+
 ```bash
 snowsql -a <account>.snowflakecomputing.com -u <user>
 ```
 
-**Navigation**
+## Navigation
 
 ```sql
 -- Lister les bases
@@ -28,7 +29,7 @@ DESC TABLE <table>;
 SELECT * FROM <table> LIMIT 10;
 ```
 
-**Enumération**
+## Enumération
 
 ```sql
 SELECT CURRENT_VERSION();

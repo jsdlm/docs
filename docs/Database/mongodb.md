@@ -1,4 +1,4 @@
-# MongoDB
+## Installation
 
 ```bash
 # Installation client
@@ -13,7 +13,7 @@ mongosh <ip>:27017
 mongosh "mongodb://<user>:<password>@<ip>:27017/<database>"
 ```
 
-**Navigation**
+## Navigation
 
 ```js
 show dbs
@@ -24,7 +24,7 @@ db.<collection>.find({ "key": "value" })
 exit
 ```
 
-**Enumération**
+## Enumération
 
 ```js
 db.version()

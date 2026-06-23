@@ -6,6 +6,9 @@ HEADING_RE = re.compile(r'^(#{1,6}) (.+)')
 
 
 def on_page_markdown(markdown, page, **_kwargs):
+    if os.path.basename(page.file.src_path).lower() == 'readme.md':
+        return markdown
+
     lines = markdown.split('\n')
     result = []
     in_code = False

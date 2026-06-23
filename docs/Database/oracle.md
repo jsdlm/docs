@@ -1,6 +1,4 @@
-# Oracle
-
-**Navigation**
+## Navigation
 
 ```sql
 -- Lister les bases (PDBs en 12c+)
@@ -19,7 +17,7 @@ DESC <table>;
 SELECT * FROM <table> WHERE ROWNUM <= 10;
 ```
 
-**Enumération**
+## Enumération
 
 ```sql
 SELECT * FROM v$version;

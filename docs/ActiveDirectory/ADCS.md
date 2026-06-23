@@ -1,5 +1,3 @@
-# ADCS
-
 https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adcs-certificate-services/
 # Enumeration
 

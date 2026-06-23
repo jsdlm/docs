@@ -1,4 +1,4 @@
-# MSSQL
+## Installation
 
 ```bash
 # Installation clients
@@ -10,7 +10,7 @@ sudo apt install sqsh freetds-bin        # sqsh + tsql
 sqsh -S <ip> -U <user> -P <password>
 ```
 
-**Navigation**
+## Navigation
 
 ```sql
 SELECT name FROM sys.databases;
@@ -20,14 +20,14 @@ SELECT column_name, data_type FROM information_schema.columns WHERE table_name =
 SELECT TOP 10 * FROM <table>;
 ```
 
-**Enumération**
+## Enumération
 
 ```sql
 SELECT @@version;
 SELECT name, type_desc FROM sys.server_principals;
 ```
 
-**xp_cmdshell -  exécution de commandes système**
+## xp_cmdshell - exécution de commandes système
 
 ```sql
 -- Activer

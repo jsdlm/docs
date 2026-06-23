@@ -1,5 +1,3 @@
-# DNS
-
 ```bash
 # https://github.com/dirkjanm/adidnsdump
 pipx install adidnsdump

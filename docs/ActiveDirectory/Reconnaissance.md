@@ -1,5 +1,3 @@
-# Reconnaissance
-
 > L'objectif est d'identifier :
 >
 > * La ou les plages réseaux

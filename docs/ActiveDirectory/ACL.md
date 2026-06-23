@@ -1,5 +1,3 @@
-# ACL
-
 Chaque objet AD a une ACL (Access Control List) composée d'ACEs (Access Control Entries). Permissions intéressantes pour un attaquant :
 
 |Permission|Effet|

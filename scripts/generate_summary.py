@@ -1,5 +1,4 @@
 import os
-import re
 
 VAULT_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "docs")
 VAULT_ROOT = os.path.normpath(VAULT_ROOT)
@@ -8,16 +7,8 @@ OUTPUT_FILE = os.path.join(VAULT_ROOT, "README.md")
 EXCLUDED_DIRS = {".obsidian", ".git"}
 
 
-def get_first_h1(filepath):
-    try:
-        with open(filepath, "r", encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line.startswith("# "):
-                    return line[2:].strip()
-    except Exception:
-        pass
-    return None
+def stem(filename):
+    return os.path.splitext(filename)[0]
 
 
 def get_relative_path(path):
@@ -27,14 +18,9 @@ def get_relative_path(path):
 def build_summary():
     lines = []
 
-    # Titre principal depuis le README.md racine
-    root_readme = os.path.join(VAULT_ROOT, "README.md")
-    vault_title = get_first_h1(root_readme) or "Vault"
-
-    lines.append(f"# {vault_title}\n")
+    lines.append("# Table of Content\n")
     lines.append("\n")
 
-    # Parcours des dossiers de premier niveau, triés par nom de dossier
     for entry in sorted(os.listdir(VAULT_ROOT), key=str.lower):
         dir_path = os.path.join(VAULT_ROOT, entry)
 
@@ -43,15 +29,8 @@ def build_summary():
         if entry in EXCLUDED_DIRS or entry.startswith("."):
             continue
 
-        # Titre de la section = H1 du README.md du dossier
-        dir_readme = os.path.join(dir_path, "README.md")
-        if os.path.exists(dir_readme):
-            section_title = get_first_h1(dir_readme) or entry
-        else:
-            section_title = entry
-        lines.append(f"## {section_title}\n")
+        lines.append(f"## {entry}\n")
 
-        # Fichiers .md dans le dossier (hors README.md)
         try:
             files = sorted(os.listdir(dir_path))
         except Exception:
@@ -67,9 +46,8 @@ def build_summary():
             if not os.path.isfile(filepath):
                 continue
 
-            file_title = get_first_h1(filepath) or filename.replace(".md", "")
             rel_path = get_relative_path(filepath)
-            lines.append(f"- [{file_title}]({rel_path})\n")
+            lines.append(f"- [{stem(filename)}]({rel_path})\n")
 
         lines.append("\n")
 

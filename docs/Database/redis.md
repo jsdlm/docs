@@ -1,4 +1,4 @@
-# Redis
+## Installation
 
 ```bash
 # Installation client
@@ -11,7 +11,7 @@ redis-cli -h <ip> -p 6379
 redis-cli -h <ip> -p 6379 -a <password>
 ```
 
-**Navigation**
+## Navigation
 
 ```bash
 # Infos générales
@@ -33,7 +33,7 @@ HGETALL <key>          # hash
 ZRANGE <key> 0 -1      # sorted set
 ```
 
-**Enumération**
+## Enumération
 
 ```bash
 INFO server             # version, OS, config file
@@ -43,7 +43,7 @@ CONFIG GET dir          # répertoire de travail
 CONFIG GET dbfilename   # nom du fichier RDB
 ```
 
-**Ecriture de fichier (si accès en écriture)**
+## Ecriture de fichier (si accès en écriture)
 
 ```bash
 CONFIG SET dir /tmp
