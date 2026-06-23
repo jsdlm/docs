@@ -1,7 +1,8 @@
 import os
 import re
 
-VAULT_ROOT = os.path.dirname(os.path.abspath(__file__))
+VAULT_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "docs")
+VAULT_ROOT = os.path.normpath(VAULT_ROOT)
 OUTPUT_FILE = os.path.join(VAULT_ROOT, "README.md")
 
 EXCLUDED_DIRS = {".obsidian", ".git"}

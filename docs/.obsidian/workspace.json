@@ -196,6 +196,7 @@
   },
   "active": "c91c9c40aa73b887",
   "lastOpenFiles": [
+    "README.md",
     "Web/SQL Injection.md",
     "Database/MySQL and MariaDB.md",
     "Privilege Escalation/01_linux.md",
@@ -221,7 +222,6 @@
     "Pivoting/Tunnel SSH.md",
     "Pivoting/Port Forwarding.md",
     "Pivoting/Pivoting checklist.md",
-    "PasswordAttacks/Wordlists.md",
     "PasswordAttacks",
     "MDI_Evasion/img/TGSREQ.png",
     "MDI_Evasion/img/TGS-REQForForwardable.png",
