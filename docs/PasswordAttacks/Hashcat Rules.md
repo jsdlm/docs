@@ -1,4 +1,3 @@
-# Hashcat Rules
 
 https://github.com/stealthsploit/OneRuleToRuleThemStill
 # Rule Functions

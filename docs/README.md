@@ -15,21 +15,19 @@
 - [SamAccountName](ActiveDirectory/SamAccountName.md)
 
 ## Database
+- [MSSQL](Database/MSSQL.md)
 - [MongoDB](Database/MongoDB.md)
 - [MySQL and MariaDB](Database/MySQL and MariaDB.md)
-- [mssql](Database/mssql.md)
-- [oracle](Database/oracle.md)
-- [postgresql](Database/postgresql.md)
-- [redis](Database/redis.md)
-- [snowflake](Database/snowflake.md)
-- [sqlite](Database/sqlite.md)
+- [Oracle](Database/Oracle.md)
+- [PostgreSQL](Database/PostgreSQL.md)
+- [Redis](Database/Redis.md)
+- [Snowflake](Database/Snowflake.md)
+- [Sqlite](Database/Sqlite.md)
 
 ## Exploits
 - [Buffer Overflow](Exploits/Buffer Overflow.md)
-- [Metasploit (12)](Exploits/Metasploit (12).md)
-- [Metasploit (22)](Exploits/Metasploit (22).md)
+- [Metasploit](Exploits/Metasploit.md)
 - [Recherche d'exploit](Exploits/Recherche d'exploit.md)
-- [Web](Exploits/Web.md)
 
 ## MDI_Evasion
 - [001_Introduction](MDI_Evasion/001_Introduction.md)
@@ -76,7 +74,6 @@
 - [HTTP Tunneling](Pivoting/HTTP Tunneling.md)
 - [Ligolo](Pivoting/Ligolo.md)
 - [Pivoting checklist](Pivoting/Pivoting checklist.md)
-- [Port Forwarding with Windows Tools](Pivoting/Port Forwarding with Windows Tools.md)
 - [Port Forwarding](Pivoting/Port Forwarding.md)
 - [Tunnel SSH](Pivoting/Tunnel SSH.md)
 
@@ -86,7 +83,7 @@
 
 ## RedTeam
 - [Antivirus Evasion](RedTeam/Antivirus Evasion.md)
-- [Coerce & Relay tunneling  binding](RedTeam/Coerce & Relay tunneling  binding.md)
+- [Coerce & Relay tunneling](RedTeam/Coerce & Relay tunneling.md)
 - [Macro Office (VBA)](RedTeam/Macro Office (VBA).md)
 - [Phishing](RedTeam/Phishing.md)
 
@@ -107,7 +104,7 @@
 - [Kali](System/Kali.md)
 - [LVM](System/LVM.md)
 - [Linux Boot repair](System/Linux Boot repair.md)
-- [Setup Docker CyberLab](System/Setup Docker CyberLab.md)
+- [Setup Docker Lab](System/Setup Docker Lab.md)
 - [UFW](System/UFW.md)
 - [Update Debian](System/Update Debian.md)
 

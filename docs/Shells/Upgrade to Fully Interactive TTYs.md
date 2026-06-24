@@ -1,4 +1,3 @@
-# Upgrade to Fully Interactive TTYs
 
 **Note:** To check if the shell is a TTY shell use the `tty` command.
 # Shell to Bash

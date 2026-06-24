@@ -1,8 +1,7 @@
-# File Inclusion
 
 > [PayloadsAllTheThings](https://swisskyrepo.github.io/PayloadsAllTheThings/File%20Inclusion/)
 
-**LFI** → exécution de code arbitraire via inclusion d'un fichier local.\
+**LFI** → exécution de code arbitraire via inclusion d'un fichier local.
 **Path Traversal** → lecture d'un fichier arbitraire (pas d'exécution).
 
 # LFI

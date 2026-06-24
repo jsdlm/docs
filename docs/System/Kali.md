@@ -13,25 +13,10 @@ sudo usermod -aG sudo pentester
 # Monter le dossier partagé VMWare 'share' dans /mnt:
 sudo /usr/bin/vmhgfs-fuse .host:/_share /mnt/_share -o subtype=vmhgfs-fuse,allow_other
 
-# Install tools
-unzip ImageKali-master.zip
-su root 
-chmod +x full-deploy.sh
-find ./* -exec chmod +x {} \;
-./full-deploy.sh
-
 # Network reset
 sudo ip neigh flush all        # ARP
 sudo ip route flush cache      # routes
 ```
-
-# Before starting pentest
-
-* Lancer le VPN si à distance
-* Vérifier l'heure de la VM
-* Vérifier que le terminal n'a pas de fond transparent
-* Lancer ktrace : /opt/ktrace/bin/ktrace-screen enable 5
-* Les screens sont dans : /opt/ktrace/log/screenshots
 
 # zsh corrupt history
 

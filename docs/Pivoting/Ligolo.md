@@ -1,4 +1,3 @@
-# Ligolo
 
 https://github.com/nicocha30/ligolo-ng
 https://docs.ligolo.ng/

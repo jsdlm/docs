@@ -1,4 +1,4 @@
-# MySQL and MariaDB
+## Installation
 
 ```bash
 # Installation client
@@ -10,7 +10,7 @@ sudo apt install default-mysql-client
 mysql -h <ip> -P 3306 -u <user> -p
 ```
 
-**Navigation**
+## Navigation
 
 ```sql
 SHOW DATABASES;
@@ -20,7 +20,7 @@ DESCRIBE <table>;
 EXIT
 ```
 
-**Enumération**
+## Enumération
 
 ```sql
 SELECT version();

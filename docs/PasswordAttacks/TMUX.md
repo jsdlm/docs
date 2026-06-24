@@ -1,6 +1,4 @@
 
-# TMUX
-
 Se connecter à la crackstation @IP
 Ouvrir un terminal virtuel sur la crackstation
 https://tmuxcheatsheet.com/

@@ -1,5 +1,3 @@
-# Ressources
-
 - [PayloadsAllTheThings](https://swisskyrepo.github.io/PayloadsAllTheThings/)
 - [InternalAllTheThings](https://swisskyrepo.github.io/InternalAllTheThings/)
 - [Haax Cheatsheet](https://cheatsheet.haax.fr/)

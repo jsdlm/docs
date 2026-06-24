@@ -1,4 +1,3 @@
-# Webshells
 
 ```bash
 sudo apt install webshells

@@ -1,4 +1,3 @@
-# XSS Injection
 
 > [PayloadsAllTheThings](https://swisskyrepo.github.io/PayloadsAllTheThings/XSS%20Injection/)
 

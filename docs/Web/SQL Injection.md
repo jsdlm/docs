@@ -1,4 +1,3 @@
-# SQL Injection
 
 > [PayloadsAllTheThings](https://swisskyrepo.github.io/PayloadsAllTheThings/SQL%20Injection/)
 

@@ -1,4 +1,3 @@
-# Wordlists
 
 ```bash
 sudo apt install seclists

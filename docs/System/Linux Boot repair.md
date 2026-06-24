@@ -1,4 +1,3 @@
-# Linux Boot repair
 
 > This guide outlines the steps needed to troubleshoot and repair a Linux system that fails to boot. It includes using a bootable USB, chrooting into the system, repairing GRUB, and regenerating initramfs.
 

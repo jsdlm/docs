@@ -1,4 +1,3 @@
-# DNS Tunneling
 
 Exfiltre des données via des requêtes DNS (sous-domaines) et infiltre via des enregistrements TXT/CNAME/MX. Fonctionne même quand la machine compromise n'a aucune connectivité sortante directe -  les requêtes DNS passent par le resolver interne, qui les transmet à notre serveur autoritaire externe.
 

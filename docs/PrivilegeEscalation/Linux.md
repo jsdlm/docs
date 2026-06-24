@@ -8,10 +8,6 @@
 | Groupe : docker | `id` | `docker run -v /:/mnt --rm -it alpine chroot /mnt bash` |
 | Cron jobs | `cat /etc/crontab` | Script writable / Path hijack |
 | /etc/passwd writable | `ls -la /etc/passwd` | Ajouter utilisateur root |
-
-# Tips
-
-Toujours fouiller dans `/opt` et `/home`
 # Commandes utiles
 
 **Exécuter un script Bash**

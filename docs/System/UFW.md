@@ -1,6 +1,4 @@
-# Tutoriel UFW (Uncomplicated Firewall)
-
-## 1. Installation d'ufw
+## 1. Installation 
 
 ```bash
 sudo apt update
