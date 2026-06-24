@@ -29,19 +29,6 @@
 - [Metasploit](Exploits/Metasploit.md)
 - [Recherche d'exploit](Exploits/Recherche d'exploit.md)
 
-## MDI_Evasion
-- [001_Introduction](MDI_Evasion/001_Introduction.md)
-- [002_Opsec Recon](MDI_Evasion/002_Opsec Recon.md)
-- [003_OPSEC Kerberos Requests](MDI_Evasion/003_OPSEC Kerberos Requests.md)
-- [004_OPSEC Kerberoasting](MDI_Evasion/004_OPSEC Kerberoasting.md)
-- [005_MDI NaaS](MDI_Evasion/005_MDI NaaS.md)
-- [006_Opsec Logon script abuse](MDI_Evasion/006_Opsec Logon script abuse.md)
-- [007_OPSEC DCSync](MDI_Evasion/007_OPSEC DCSync.md)
-- [008_OPSEC Golden Ticket](MDI_Evasion/008_OPSEC Golden Ticket.md)
-- [009_Conclusion](MDI_Evasion/009_Conclusion.md)
-- [010_References](MDI_Evasion/010_References.md)
-- [999_ToDo](MDI_Evasion/999_ToDo.md)
-
 ## Misc
 - [Data Exfiltration](Misc/Data Exfiltration.md)
 - [Notes](Misc/Notes.md)
@@ -84,6 +71,7 @@
 ## RedTeam
 - [Antivirus Evasion](RedTeam/Antivirus Evasion.md)
 - [Coerce & Relay tunneling](RedTeam/Coerce & Relay tunneling.md)
+- [MDI](RedTeam/MDI.md)
 - [Macro Office (VBA)](RedTeam/Macro Office (VBA).md)
 - [Phishing](RedTeam/Phishing.md)
 
