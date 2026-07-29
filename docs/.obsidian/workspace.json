@@ -8,31 +8,45 @@
         "type": "tabs",
         "children": [
           {
-            "id": "56035b1e9976a9e3",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "ActiveDirectory/Lateral Movement.md",
-                "mode": "preview",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Lateral Movement"
-            }
-          },
-          {
             "id": "7e326e8915f875ce",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ActiveDirectory/User Impersonation.md",
+                "file": "RedTeam/Composants de sécurité Windows.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "User Impersonation"
+              "title": "Composants de sécurité Windows"
+            }
+          },
+          {
+            "id": "88dea781cd2bcee0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "CRTO/Discovery.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Discovery"
+            }
+          },
+          {
+            "id": "75a02fa36bf75d32",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ActiveDirectory/Enumération LDAP.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Enumération LDAP"
             }
           }
         ]
@@ -170,13 +184,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "ActiveDirectory/Lateral Movement.md",
+                "file": "RedTeam/Composants de sécurité Windows.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Plan de Lateral Movement"
+              "title": "Plan de Composants de sécurité Windows"
             }
           },
           {
@@ -208,23 +222,30 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "56035b1e9976a9e3",
+  "active": "7e326e8915f875ce",
   "lastOpenFiles": [
-    "ActiveDirectory/Lateral Movement.md",
+    "ActiveDirectory/MSSQL.md",
+    "ActiveDirectory/Enumération LDAP.md",
+    "CRTO/Discovery.md",
+    "CRTO/Defense Evasion.md",
+    "CRTO/Persistance.md",
+    "CRTO/Misc.md",
+    "CRTO/Initial access.md",
+    "CRTO/GPO.md",
+    "RedTeam/Composants de sécurité Windows.md",
+    "RedTeam/img/Pasted image 20260729235535.png",
+    "RedTeam/img/Pasted image 20260729235423.png",
+    "ActiveDirectory/Coerce.md",
     "ActiveDirectory/User Impersonation.md",
+    "PrivilegeEscalation/Windows.md",
+    "ActiveDirectory/Ressources.md",
+    "ActiveDirectory/Lateral Movement.md",
     "ActiveDirectory/GPO.md",
     "ActiveDirectory/Forest & Domain Trusts.md",
     "ActiveDirectory/img/6e2d2d2de4a3668a1e8fea99314d9667 1.jpg",
     "ActiveDirectory/img/6e2d2d2de4a3668a1e8fea99314d9667.jpg",
     "ActiveDirectory/SamAccountName.md",
-    "CRTO/GPO.md",
-    "CRTO/Initial access.md",
     "ActiveDirectory/img/Pasted image 20260729221809.png",
-    "CRTO/Defense Evasion.md",
-    "CRTO/Discovery.md",
-    "CRTO/Persistance.md",
-    "CRTO/Misc.md",
-    "PrivilegeEscalation/Windows.md",
     "Salesforce/Revue des accès.md",
     "CRTO",
     "Salesforce/Revue de code source.md",
@@ -235,18 +256,11 @@
     "Web/SQL Injection.md",
     "Web/Ressources.md",
     "Web/Reconnaissance.md",
-    "Web/File Inclusion.md",
-    "System/Update Debian.md",
-    "System/UFW.md",
-    "System/Setup Docker Lab.md",
-    "System/Linux Boot repair.md",
     "RedTeam/img/TGSREQGenuineVsTools.png",
     "RedTeam/img/tunnel_cloudflare_kali.png",
     "RedTeam/img/TGSREQ.png",
     "RedTeam/img/TGSREQGenuineVsRubeus.png",
     "RedTeam/img/TGSRepUnc.png",
-    "RedTeam/img/TGS-REQForForwardable.png",
-    "RedTeam/img/socks_proxy.png",
     "RedTeam/img",
     "Misc",
     "_config.yml",

