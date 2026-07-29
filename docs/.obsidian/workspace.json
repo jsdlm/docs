@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ActiveDirectory/GPO.md",
+                "file": "ActiveDirectory/Lateral Movement.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "GPO"
+              "title": "Lateral Movement"
             }
           },
           {
@@ -27,16 +27,15 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ActiveDirectory/Forest & Domain Trusts.md",
-                "mode": "preview",
+                "file": "ActiveDirectory/User Impersonation.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Forest & Domain Trusts"
+              "title": "User Impersonation"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -171,13 +170,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "ActiveDirectory/Forest & Domain Trusts.md",
+                "file": "ActiveDirectory/Lateral Movement.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Plan de Forest & Domain Trusts"
+              "title": "Plan de Lateral Movement"
             }
           },
           {
@@ -209,13 +208,15 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "7e326e8915f875ce",
+  "active": "56035b1e9976a9e3",
   "lastOpenFiles": [
+    "ActiveDirectory/Lateral Movement.md",
+    "ActiveDirectory/User Impersonation.md",
+    "ActiveDirectory/GPO.md",
+    "ActiveDirectory/Forest & Domain Trusts.md",
     "ActiveDirectory/img/6e2d2d2de4a3668a1e8fea99314d9667 1.jpg",
     "ActiveDirectory/img/6e2d2d2de4a3668a1e8fea99314d9667.jpg",
     "ActiveDirectory/SamAccountName.md",
-    "ActiveDirectory/Forest & Domain Trusts.md",
-    "ActiveDirectory/GPO.md",
     "CRTO/GPO.md",
     "CRTO/Initial access.md",
     "ActiveDirectory/img/Pasted image 20260729221809.png",
@@ -239,7 +240,6 @@
     "System/UFW.md",
     "System/Setup Docker Lab.md",
     "System/Linux Boot repair.md",
-    "System/LVM.md",
     "RedTeam/img/TGSREQGenuineVsTools.png",
     "RedTeam/img/tunnel_cloudflare_kali.png",
     "RedTeam/img/TGSREQ.png",
@@ -247,7 +247,6 @@
     "RedTeam/img/TGSRepUnc.png",
     "RedTeam/img/TGS-REQForForwardable.png",
     "RedTeam/img/socks_proxy.png",
-    "RedTeam/img/SoaPHoundAction.png",
     "RedTeam/img",
     "Misc",
     "_config.yml",

