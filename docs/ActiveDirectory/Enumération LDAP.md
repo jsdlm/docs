@@ -163,6 +163,63 @@ dig -x $rhost
 
 # Enumération automatique
 
+## BOFHound
+https://github.com/coffeegist/bofhound
+
+BOFHound is an offline BloodHound ingestor and LDAP result parser compatible with TrustedSec's [ldapsearch BOF](https://github.com/trustedsec/CS-Situational-Awareness-BOF), the Python adaptation, [pyldapsearch](https://github.com/fortalice/pyldapsearch) and Brute Ratel's [LDAP Sentinel](https://bruteratel.com/tabs/commander/badgers/#ldapsentinel). ldapsearch BOF output can also be parsed from [Havoc](https://github.com/HavocFramework/Havoc) logs, OutflankC2 logs, and [Mythic](https://github.com/its-a-feature/Mythic) callbacks.
+
+```
+ldapsearch (|(objectClass=domain)(objectClass=organizationalUnit)(objectClass=groupPolicyContainer)) --attributes *,ntsecuritydescriptor
+
+ldapsearch (|(samAccountType=805306368)(samAccountType=805306369)(samAccountType=268435456)) --attributes *,ntsecuritydescriptor
+```
+
+```
+scp -r attacker@10.0.0.5:/opt/cobaltstrike/logs .
+bofhound -i logs/
+ls -l
+
+-rwxrwxrwx 1 attacker attacker 16072 Mar 12 12:06 computers_20250312_120659.json
+-rwxrwxrwx 1 attacker attacker  1803 Mar 12 12:06 domains_20250312_120659.json
+-rwxrwxrwx 1 attacker attacker 13792 Mar 12 12:06 gpos_20250312_120659.json
+-rwxrwxrwx 1 attacker attacker 34772 Mar 12 12:06 groups_20250312_120659.json
+drwxrwxrwx 1 attacker attacker  4096 Mar 12 12:06 logs
+-rwxrwxrwx 1 attacker attacker  5690 Mar 12 12:06 ous_20250312_120659.json
+-rwxrwxrwx 1 attacker attacker 21889 Mar 12 12:06 users_20250312_120659.json
+```
+
+Every object that is only represented by a SID, or 'no name or id' means that we haven't collected any data on it yet :
+```
+ldapsearch (objectsid=[SID]) --attributes *,ntsecuritydescriptor
+```
+
+
+## SharpHound
+https://github.com/SpecterOps/SharpHound
+
+SharpHound collecte les données AD (LDAP, NetSessionEnum, Remote Registry…) et les exporte dans un ZIP analysable par BloodHound.
+
+```bash
+sudo apt install sharphound
+sharphound -h
+/usr/share/sharphound
+```
+
+**Collecte depuis la machine compromise**
+
+```
+SharpHound.exe --CollectionMethods All
+SharpHound.exe --CollectionMethods Session --Loop --Loopduration 03:09:41
+```
+
+```powershell
+Import-Module .\Sharphound.ps1
+Invoke-BloodHound -CollectionMethod All
+Invoke-BloodHound -CollectionMethod All -Loop -LoopDuration 02:00:00 -LoopInterval 00:05:00
+```
+
+- `All` : collecte tout sauf les GPO locales (groupes, sessions, ACLs, SPNs, trusts…)
+- Le résultat est un fichier ZIP à transférer sur Kali pour analyse dans BloodHound
 ## Netexec
 
 ```bash
@@ -186,13 +243,15 @@ nxc ldap 192.168.56.12 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkin
 
 ## BloodHound-ce python
 
+https://github.com/dirkjanm/BloodHound.py
+
 ```bash
 # https://github.com/dirkjanm/BloodHound.py
 pipx install bloodhound-ce
 bloodhound-ce-python --zip -c All -u 'USER' -p 'PASSWORD' -d 'DOMAIN.COM' -dc 'DC_FQDN' -ns 192.168.1.10
 ```
 
-## BloodHound (Server)
+# Server BloodHound
 https://github.com/SpecterOps/BloodHoundQueryLibrary
 
 ```bash
@@ -229,32 +288,3 @@ Chercher :
 
 Visualisation des droits dans bloodhound, check "outbound control rights" depuis notre USER et les [ACL](ACL.md).
 
-## SharpHound
-
-SharpHound collecte les données AD (LDAP, NetSessionEnum, Remote Registry…) et les exporte dans un ZIP analysable par BloodHound.
-
-```bash
-sudo apt install sharphound
-sharphound -h
-/usr/share/sharphound
-```
-
-**Collecte depuis la machine compromise**
-
-```powershell
-powershell -ep bypass
-Import-Module .\Sharphound.ps1
-
-Invoke-BloodHound -CollectionMethod All -OutputDirectory C:\Users\stephanie\Desktop\ -OutputPrefix "corp audit"
-```
-
-- `All` : collecte tout sauf les GPO locales (groupes, sessions, ACLs, SPNs, trusts…)
-- Le résultat est un fichier ZIP à transférer sur Kali pour analyse dans BloodHound
-
-> SharpHound crée aussi un fichier `.bin` (cache) -  inutile pour l'analyse, peut être supprimé.
-
-**Option looping** -  relancer la collecte en boucle pour capturer les sessions qui changent :
-
-```powershell
-Invoke-BloodHound -CollectionMethod All -Loop -LoopDuration 02:00:00 -LoopInterval 00:05:00
-```
