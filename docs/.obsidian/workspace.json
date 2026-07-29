@@ -4,24 +4,39 @@
     "type": "split",
     "children": [
       {
-        "id": "bfb39c6eb43971be",
+        "id": "6fb01667a351e6c9",
         "type": "tabs",
         "children": [
           {
-            "id": "1ffbdeb396e153e5",
+            "id": "56035b1e9976a9e3",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "RedTeam/MDI.md",
-                "mode": "source",
+                "file": "ActiveDirectory/GPO.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "MDI"
+              "title": "GPO"
+            }
+          },
+          {
+            "id": "7e326e8915f875ce",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ActiveDirectory/Forest & Domain Trusts.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Forest & Domain Trusts"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -53,7 +68,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "ss -",
+                "query": "crunch",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -78,7 +93,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 386.5
+    "width": 300
   },
   "right": {
     "id": "6df04e1ea62164f6",
@@ -156,13 +171,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "RedTeam/MDI.md",
+                "file": "ActiveDirectory/Forest & Domain Trusts.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Plan de MDI"
+              "title": "Plan de Forest & Domain Trusts"
             }
           },
           {
@@ -194,52 +209,53 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "1ffbdeb396e153e5",
+  "active": "7e326e8915f875ce",
   "lastOpenFiles": [
-    "Web/Reconnaissance.md",
-    "RedTeam/img/CanonicalizeFalse.png",
-    "RedTeam/img/AuthenticatorGenuinsVsRubeus.png",
-    "RedTeam/img/ASREQRubeus1.png",
-    "RedTeam/img/ASREQRubeus.png",
-    "RedTeam/img/ASREQGenuineVsRubeus1.png",
-    "RedTeam/img/ASREQGenuineVsRubeus.png",
-    "RedTeam/img/ASREQGenuine1.png",
-    "RedTeam/img/ASREQGenuine.png",
-    "RedTeam/img/ASREQ.png",
-    "RedTeam/img/TGSREQGenuineVsTools.png",
-    "Web/Ressources.md",
-    "RedTeam/MDI.md",
-    "MDI_Evasion/not_used",
-    "MDI_Evasion/999_ToDo.md",
-    "MDI_Evasion/MDI.md.tmp.23596.64f8c860e984",
-    "MDI_Evasion/010_References.md",
-    "MDI_Evasion/009_Conclusion.md",
-    "MDI_Evasion/008_OPSEC Golden Ticket.md",
-    "MDI_Evasion/007_OPSEC DCSync.md",
-    "MDI_Evasion/005_MDI NaaS.md",
-    "MDI_Evasion/003_OPSEC Kerberos Requests.md",
-    "MDI_Evasion/002_Opsec Recon.md",
-    "MDI_Evasion/001_Introduction.md",
-    "Pivoting/Pivoting checklist.md",
-    "Pivoting/Ligolo.md",
-    "Pivoting/HTTP Tunneling.md",
-    "Pivoting/DNS Tunneling.md",
-    "README.md",
+    "ActiveDirectory/img/6e2d2d2de4a3668a1e8fea99314d9667 1.jpg",
+    "ActiveDirectory/img/6e2d2d2de4a3668a1e8fea99314d9667.jpg",
+    "ActiveDirectory/SamAccountName.md",
+    "ActiveDirectory/Forest & Domain Trusts.md",
+    "ActiveDirectory/GPO.md",
+    "CRTO/GPO.md",
+    "CRTO/Initial access.md",
+    "ActiveDirectory/img/Pasted image 20260729221809.png",
+    "CRTO/Defense Evasion.md",
+    "CRTO/Discovery.md",
+    "CRTO/Persistance.md",
+    "CRTO/Misc.md",
+    "PrivilegeEscalation/Windows.md",
+    "Salesforce/Revue des accès.md",
+    "CRTO",
+    "Salesforce/Revue de code source.md",
+    "Salesforce/Extractions.md",
+    "Misc/DataExfiltration.md",
     "Web/XSS Injection.md",
     "Web/Webshells.md",
     "Web/SQL Injection.md",
+    "Web/Ressources.md",
+    "Web/Reconnaissance.md",
     "Web/File Inclusion.md",
     "System/Update Debian.md",
     "System/UFW.md",
     "System/Setup Docker Lab.md",
+    "System/Linux Boot repair.md",
     "System/LVM.md",
-    "PasswordAttacks",
-    "MDI_Evasion/img",
-    "MDI_Evasion",
-    "ActiveDirectory/img",
-    "ActiveDirectory",
+    "RedTeam/img/TGSREQGenuineVsTools.png",
+    "RedTeam/img/tunnel_cloudflare_kali.png",
+    "RedTeam/img/TGSREQ.png",
+    "RedTeam/img/TGSREQGenuineVsRubeus.png",
+    "RedTeam/img/TGSRepUnc.png",
+    "RedTeam/img/TGS-REQForForwardable.png",
+    "RedTeam/img/socks_proxy.png",
+    "RedTeam/img/SoaPHoundAction.png",
+    "RedTeam/img",
     "Misc",
     "_config.yml",
-    "OSCP/pre-exam.md.tmp.15528.b2855c18409a"
+    "OSCP/pre-exam.md.tmp.15528.b2855c18409a",
+    "OSCP/generate_oscp_notes.py",
+    "OSCP",
+    "AD_OSCP/img",
+    "AD_OSCP",
+    "Exploits/05_metasploit.md.tmp.19272.3bf49802b079"
   ]
 }
