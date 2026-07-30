@@ -564,9 +564,7 @@ net user
 net localgroup administrators
 ```
 
-# Abusing Other Windows Components
-
-## Scheduled Tasks
+# Scheduled Tasks
 
 Points clés à identifier sur une tâche planifiée :
 - **Principal** : sous quel compte tourne la tâche (SYSTEM, admin ?)
@@ -615,7 +613,7 @@ net localgroup administrators
 ```
 
 
-## Kernel Exploits
+# Kernel Exploits
 
 **Enumérer la version Windows et les patches de sécurité installés**
 
@@ -654,7 +652,7 @@ whoami
 
 Les kernel exploits peuvent crasher le système - tester sur un clone avant.
 
-## SeImpersonatePrivilege
+# SeImpersonatePrivilege
 
 ### Théorie
 Permet à un service de traiter une requête avec les droits du client qui s'y connecte, plutôt qu'avec ses propres droits (moindre privilège). Souvent présent sur les comptes de service IIS (LocalService, NetworkService, ApplicationPoolIdentity).
@@ -731,7 +729,7 @@ Prérequis : `SeImpersonatePrivilege` ou `SeAssignPrimaryTokenPrivilege`.
 | [GodPotato](https://github.com/BeichenDream/GodPotato)                                             | Exploite IRemUnknown2 via DCOM, fonctionne sur Windows 2012-2022. Le plus fiable actuellement. |
 | [SigmaPotato](https://github.com/tylerdotrar/SigmaPotato/releases/download/v1.2.6/SigmaPotato.exe) | Variante moderne, simple d'utilisation.                                                        |
 | [PetitPotato](https://github.com/wh0amitz/PetitPotato)                                             | + Moderne                                                                                      |
-## Backup Operator
+# Backup Operator
 
 Le groupe `Backup Operators` confère `SeBackupPrivilege` et `SeRestorePrivilege`, permettant de lire/écrire n'importe quel fichier en bypassant les ACLs - y compris les ruches de registre contenant les hashes locaux.
 
@@ -770,10 +768,17 @@ evil-winrm -i <IP> -u administrator -H NTLMhash
 hashcat -m 1000 hashes.txt /usr/share/wordlists/rockyou.txt
 ```
 
-## LOLBAS
+# LOLBAS
 [LOLBAS](https://lolbas-project.github.io)
 
-# Snaffler
+# Trouver des Creds
+
+- **PowerShell history** : `C:\Users\*\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt`
+- **Registry AutoLogon** : `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon`
+- **Saved RDP connections** : `HKCU\Software\Microsoft\Terminal Server Client\Servers`
+- **MSSQL credentials** : Si SQL Server tourne, se connecter et chercher une table creds
+- https://github.com/AlessandroZ/LaZagne
+- Snaffler
 
 https://github.com/SnaffCon/Snaffler
 https://github.com/zh54321/SnafflerParser
@@ -786,7 +791,7 @@ wget https://github.com/SnaffCon/Snaffler/releases/download/1.0.244/Snaffler.exe
 .\snafflerparser.ps1 -in snafflerout.txt
 ```
 
-**Snaffler-ng**
+- Snaffler-ng
 https://github.com/totekuh/snaffler-ng
 
 ```bash
@@ -822,13 +827,6 @@ Downloaded SAM, SYSTEM files
 impacket-secretsdump -sam SAM -system SYSTEM LOCAL
 ```
 
-# Trouver Plus de Credentials
-
-- **PowerShell history** : `C:\Users\*\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt`
-- **Registry AutoLogon** : `HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon`
-- **Saved RDP connections** : `HKCU\Software\Microsoft\Terminal Server Client\Servers`
-- **MSSQL credentials** : Si SQL Server tourne, se connecter et chercher une table creds
-- https://github.com/AlessandroZ/LaZagne
 # AlwaysInstallElevated
 
 **Détection**

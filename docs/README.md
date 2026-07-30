@@ -26,13 +26,13 @@
 
 ## Database
 - [MySQL and MariaDB](Database/MySQL and MariaDB.md)
-- [mongodb](Database/mongodb.md)
-- [mssql](Database/mssql.md)
-- [oracle](Database/oracle.md)
-- [postgresql](Database/postgresql.md)
-- [redis](Database/redis.md)
-- [snowflake](Database/snowflake.md)
-- [sqlite](Database/sqlite.md)
+- [MongoDB](Database/MongoDB.md)
+- [MSSQL](Database/MSSQL.md)
+- [Oracle](Database/Oracle.md)
+- [PostgreSQL](Database/PostgreSQL.md)
+- [Redis](Database/Redis.md)
+- [Snowflake](Database/Snowflake.md)
+- [SQLite](Database/SQLite.md)
 
 ## Exploits
 - [Buffer Overflow](Exploits/Buffer Overflow.md)

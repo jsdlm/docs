@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ActiveDirectory/Kerberos.md",
+                "file": "PrivilegeEscalation/Windows.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Kerberos"
+              "title": "Windows"
             }
           },
           {
@@ -170,13 +170,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "ActiveDirectory/Kerberos.md",
+                "file": "PrivilegeEscalation/Windows.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Plan de Kerberos"
+              "title": "Plan de Windows"
             }
           },
           {
@@ -210,34 +210,35 @@
   },
   "active": "7a3474c8a33f55f8",
   "lastOpenFiles": [
+    "PrivilegeEscalation/Linux.md",
+    "PrivilegeEscalation/Windows.md",
+    "Pivoting/Tunnel SSH.md",
+    "Pivoting/Port Forwarding.md",
+    "Pivoting/Pivoting checklist.md",
+    "Pivoting/DNS Tunneling.md",
+    "Pivoting/HTTP Tunneling.md",
+    "PasswordAttacks/Hashcat.md",
+    "PasswordAttacks/Hashcat Rules.md",
+    "PasswordAttacks/Wordlists.md",
+    "PasswordAttacks/TMUX.md",
+    "PasswordAttacks/Ressources.md",
+    "PasswordAttacks/Offline Password Cracking.md",
+    "PasswordAttacks/Bruteforce.md",
+    "OSINT/DNS.md",
+    "OSINT/Emails.md",
+    "OSCP/Standalone Machine Methodology.md",
+    "OSCP/Méthodologie.md",
+    "OSCP/Initial Access.md",
+    "OSCP/Flags.md",
+    "OSCP/Active Directory Methodology.md",
+    "Exploits/Recherche d'exploit.md",
+    "Exploits/Metasploit.md",
+    "Exploits/Buffer Overflow.md",
+    "Database/MSSQL.md",
+    "Database/MySQL-MariaDB.md",
     "ActiveDirectory/Poison and Relay.md.tmp.2832.b8a783bc4490",
     "ActiveDirectory/ADCS.md.tmp.2832.fbae2b9a225c",
-    "ActiveDirectory/Credential Access.md",
-    "ActiveDirectory/Coerce.md",
-    "ActiveDirectory/ADCS.md",
-    "ActiveDirectory/ACL.md",
-    "ActiveDirectory/Domain Dominance.md",
-    "ActiveDirectory/Kerberos.md",
-    "ActiveDirectory/Password Spraying.md",
-    "ActiveDirectory/Reconnaissance.md",
-    "ActiveDirectory/No Account.md",
-    "ActiveDirectory/NTLM.md",
-    "ActiveDirectory/DNS.md",
-    "ActiveDirectory/Enumération LDAP.md",
-    "ActiveDirectory/Poison and Relay.md",
-    "ActiveDirectory/Ressources.md",
-    "ActiveDirectory/SamAccountName.md",
-    "ActiveDirectory/User Impersonation.md",
-    "ActiveDirectory/Forest & Domain Trusts.md",
-    "ActiveDirectory/GPO.md",
-    "ActiveDirectory/Lateral Movement.md",
-    "ActiveDirectory/MSSQL.md",
-    "README.md",
-    "CRTO/Defense Evasion.md",
-    "CRTO/Misc.md",
-    "CRTO/Initial access.md",
     "Sans titre.base",
-    "PasswordAttacks/Bruteforce.md",
     "RedTeam/img/Pasted image 20260729235535.png",
     "RedTeam/img/Pasted image 20260729235423.png",
     "ActiveDirectory/img/6e2d2d2de4a3668a1e8fea99314d9667 1.jpg",
@@ -254,7 +255,6 @@
     "_config.yml",
     "OSCP/pre-exam.md.tmp.15528.b2855c18409a",
     "OSCP/generate_oscp_notes.py",
-    "OSCP",
-    "AD_OSCP/img"
+    "OSCP"
   ]
 }
