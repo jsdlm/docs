@@ -180,3 +180,10 @@ SET-itEm  VarIABLe:WyizE ([tyPe]('conVE'+'Rt') ) ;  seT-variAbLe  0eXs  (  [tYpe
 13.  Save the changes (**File > Save**).
     
 14.  Open the Cobalt Strike client and load **resources.cna** from _C:\Tools\cobaltstrike\custom-resources_.
+
+# Listeners
+
+smb
+```
+TSVCPIPE-4b2f70b3-ceba-42a5-a4b5-704e1c41337
+```

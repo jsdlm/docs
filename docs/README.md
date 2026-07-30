@@ -22,7 +22,7 @@
 ## CRTO
 - [Defense Evasion](CRTO/Defense Evasion.md)
 - [Initial access](CRTO/Initial access.md)
-- [Misc](CRTO/Misc.md)
+- [Notes](CRTO/Notes.md)
 
 ## Database
 - [MySQL and MariaDB](Database/MySQL and MariaDB.md)
