@@ -78,7 +78,7 @@ ls \\contoso.com\SysVol\contoso.com\Policies\{GUID}\Machine
 download \\contoso.com\SysVol\contoso.com\Policies\{GUID}\Machine\Registry.pol
 ```
 
-Once sync'd to your desktop, the file can be read using the `Parse-PolFile` cmdlet from the [GpRegistryPolicy](https://www.powershellgallery.com/packages/GPRegistryPolicy/0.3) module.
+Une fois synchronisé sur le bureau, le fichier peut être lu avec le cmdlet `Parse-PolFile` du module [GpRegistryPolicy](https://www.powershellgallery.com/packages/GPRegistryPolicy/0.3).
 
 ```powershell
 Parse-PolFile -Path .\Desktop\Registry.pol

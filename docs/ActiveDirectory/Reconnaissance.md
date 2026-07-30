@@ -45,10 +45,10 @@ nmap --flags <host>
 # -A : scan agressif avec détection d'OS et de versions
 # -T4 : scan rapide
 # --script vuln : utilisation des scripts nmap
-# -sC: Performs a script scan using the default set of scripts - equivalent to --script=default.
+# -sC : effectue un scan de scripts avec le set par défaut - équivalent à --script=default.
 ```
 
-**Network sweep + output grepable**
+**Balayage réseau + sortie grepable**
 
 ```bash
 # Ping sweep -  lister les hôtes actifs, sortie grepable
@@ -82,6 +82,15 @@ Générer un fichier hosts
 nxc smb ip.txt --generate-hosts-file /tmp/hosts
 ```
 
+Énumérer anonymement
+
+```bash
+nxc smb ip.txt --users
+nxc smb ip.txt -u 'a' -p '' --users
+nxc smb ip.txt --shares
+nxc smb ip.txt -u 'a' -p '' --shares
+```
+
 ## Find DC ip
 
 ```bash
@@ -101,4 +110,17 @@ onesixtyone -c community 192.168.127.0/24
 ```powershell
 # Port scan PowerShell -  sans nmap sur Windows
 1..1024 | % {echo ((New-Object Net.Sockets.TcpClient).Connect("192.168.151.151", $_)) "TCP port $_ is open"} 2>$null
+```
+
+# Tester si un compte existe (Kerberos)
+
+## Nmap
+
+```bash
+sudo nmap -p 88 --script=krb5-enum-users --script-args="krb5-enum-users.realm='sevenkingdoms.local',userdb=possible_usernames.txt" 192.168.56.10
+```
+## Netexec
+
+```bash
+nxc ldap ip.txt -u possible_usernames.txt -p '' -k
 ```

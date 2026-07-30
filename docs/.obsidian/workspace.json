@@ -8,17 +8,31 @@
         "type": "tabs",
         "children": [
           {
-            "id": "88dea781cd2bcee0",
+            "id": "7a3474c8a33f55f8",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "ActiveDirectory/Kerberos.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "Kerberos"
+            }
+          },
+          {
+            "id": "00efc4756e3ac4e8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ActiveDirectory/Credential Access.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Credential Access"
             }
           }
         ]
@@ -156,13 +170,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md",
+                "file": "ActiveDirectory/Kerberos.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Plan de README"
+              "title": "Plan de Kerberos"
             }
           },
           {
@@ -194,35 +208,36 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "88dea781cd2bcee0",
+  "active": "7a3474c8a33f55f8",
   "lastOpenFiles": [
+    "ActiveDirectory/Poison and Relay.md.tmp.2832.b8a783bc4490",
+    "ActiveDirectory/ADCS.md.tmp.2832.fbae2b9a225c",
+    "ActiveDirectory/Credential Access.md",
+    "ActiveDirectory/Coerce.md",
+    "ActiveDirectory/ADCS.md",
+    "ActiveDirectory/ACL.md",
+    "ActiveDirectory/Domain Dominance.md",
+    "ActiveDirectory/Kerberos.md",
+    "ActiveDirectory/Password Spraying.md",
+    "ActiveDirectory/Reconnaissance.md",
+    "ActiveDirectory/No Account.md",
+    "ActiveDirectory/NTLM.md",
+    "ActiveDirectory/DNS.md",
+    "ActiveDirectory/Enumération LDAP.md",
+    "ActiveDirectory/Poison and Relay.md",
+    "ActiveDirectory/Ressources.md",
+    "ActiveDirectory/SamAccountName.md",
+    "ActiveDirectory/User Impersonation.md",
+    "ActiveDirectory/Forest & Domain Trusts.md",
+    "ActiveDirectory/GPO.md",
+    "ActiveDirectory/Lateral Movement.md",
+    "ActiveDirectory/MSSQL.md",
+    "README.md",
     "CRTO/Defense Evasion.md",
     "CRTO/Misc.md",
     "CRTO/Initial access.md",
-    "README.md",
     "Sans titre.base",
     "PasswordAttacks/Bruteforce.md",
-    "PasswordAttacks/Hashcat.md",
-    "PasswordAttacks/Hashcat Rules.md",
-    "PasswordAttacks/John.md",
-    "PasswordAttacks/NTLM.md",
-    "PasswordAttacks/Wordlists.md",
-    "PasswordAttacks/TMUX.md",
-    "PasswordAttacks/Ressources.md",
-    "ActiveDirectory/Enumération LDAP.md",
-    "ActiveDirectory/Forest & Domain Trusts.md",
-    "ActiveDirectory/Lateral Movement.md",
-    "ActiveDirectory/MSSQL.md",
-    "ActiveDirectory/GPO.md",
-    "ActiveDirectory/User Impersonation.md",
-    "ActiveDirectory/SamAccountName.md",
-    "ActiveDirectory/Ressources.md",
-    "ActiveDirectory/Reconnaissance.md",
-    "ActiveDirectory/Poison and Relay.md",
-    "ActiveDirectory/Persistence.md",
-    "ActiveDirectory/No Account.md",
-    "CRTO/Discovery.md",
-    "RedTeam/Composants de sécurité Windows.md",
     "RedTeam/img/Pasted image 20260729235535.png",
     "RedTeam/img/Pasted image 20260729235423.png",
     "ActiveDirectory/img/6e2d2d2de4a3668a1e8fea99314d9667 1.jpg",
@@ -240,7 +255,6 @@
     "OSCP/pre-exam.md.tmp.15528.b2855c18409a",
     "OSCP/generate_oscp_notes.py",
     "OSCP",
-    "AD_OSCP/img",
-    "AD_OSCP"
+    "AD_OSCP/img"
   ]
 }

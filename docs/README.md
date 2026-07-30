@@ -3,7 +3,7 @@
 ## ActiveDirectory
 - [ACL](ActiveDirectory/ACL.md)
 - [ADCS](ActiveDirectory/ADCS.md)
-- [Authentification](ActiveDirectory/Authentification.md)
+- [NTLM](ActiveDirectory/NTLM.md)
 - [Coerce](ActiveDirectory/Coerce.md)
 - [DNS](ActiveDirectory/DNS.md)
 - [Enumération LDAP](ActiveDirectory/Enumération LDAP.md)
@@ -12,7 +12,7 @@
 - [Lateral Movement](ActiveDirectory/Lateral Movement.md)
 - [MSSQL](ActiveDirectory/MSSQL.md)
 - [No Account](ActiveDirectory/No Account.md)
-- [Persistence](ActiveDirectory/Persistence.md)
+- [Domain Dominance](ActiveDirectory/Domain%20Dominance.md)
 - [Poison and Relay](ActiveDirectory/Poison and Relay.md)
 - [Reconnaissance](ActiveDirectory/Reconnaissance.md)
 - [Ressources](ActiveDirectory/Ressources.md)
