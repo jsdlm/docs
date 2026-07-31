@@ -199,7 +199,9 @@ Set-DomainObject -Identity victimuser -Clear serviceprincipalname
 
 Forger un service ticket (TGS) en utilisant le hash NTLM du compte de service. L'application cible vérifie le ticket localement (chiffré avec le hash du service) sans contacter le DC → accès avec les permissions de son choix.
 
-> La validation PAC (optionnelle) est rarement activée sur les services -  l'attaque fonctionne dans la grande majorité des cas.
+**Scénario 1** : un silver ticket forgé avec le hash d'un compte de service MSSQL permet d'incarner un utilisateur sysadmin sur l'instance, ouvrant l'exécution de commandes via xp_cmdshell.
+
+**Scénario 2** : un silver ticket forgé avec le hash d'un compte de service CIFS permet, si l'utilisateur incarné est admin local, un accès complet aux partages administratifs (``C$``, ``ADMIN$``) de la machine cible.
 
 **Kali**
 
@@ -285,6 +287,18 @@ iwr -UseDefaultCredentials http://web04
 ```
 
 > Patch Microsoft (octobre 2022) : le champ `PAC_REQUESTOR` doit être validé par le DC si client et KDC sont dans le même domaine -  empêche de forger des tickets pour des users inexistants, mais pas pour des users valides.
+
+## PAC
+
+**PAC** : extension du ticket Kerberos contenant les infos d'autorisation (SID user, SID groupes). Signé par la clé du KDC et celle du service cible.
+
+**Lien silver ticket** : le ticket étant forgé sans passer par le KDC, l'attaquant construit lui-même le PAC (SID de groupes arbitraires) sans pouvoir le signer avec la clé KDC.
+
+**Pourquoi ça marche** : la plupart des services ne valident pas la signature KDC du PAC, ils font confiance au ticket présenté.
+
+**Détection** : si la validation PAC est active, le service interroge le KDC via Netlogon (`NetrLogonSamLogonWithFlags`) pour vérifier la signature, un PAC forgé est alors rejeté.
+
+> La validation PAC (optionnelle) est rarement activée sur les services -  l'attaque fonctionne dans la grande majorité des cas.
 
 ---
 # Golden Ticket

