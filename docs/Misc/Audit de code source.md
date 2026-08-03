@@ -1,5 +1,7 @@
 # Revue documentaire
 
+Prévoir un entretien avec les responsables de l'applicatif afin de demander une démonstration de l'utilisation de l'application, l'accès au code source, et l'accès à la documentation présente dans le tableau ci-dessous :
+
 | Catégorie          | Exemples de documentation                                                                                                         | Éléments à examiner                                                                                                                                                                   |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spécifications** | Cahier des charges, SFG (Spécifications Fonctionnelles Générales) et SFD (Spécifications Fonctionnelles Détaillées), user stories | Comparer le comportement attendu (fonctionnel et sécurité) au comportement réellement implémenté ; exigences de sécurité explicites (authentification, chiffrement, contrôle d'accès) |
