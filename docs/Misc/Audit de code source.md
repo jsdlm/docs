@@ -79,11 +79,11 @@ Importer les deux CSV générés (`code_review.csv` et `betterleaks_output.csv`)
 
 Ajouter 3 colonnes à la suite de celles générées par l'outil :
 
-| Colonne | Valeurs | Usage |
-|---------|---------|-------|
-| **Faux positif** | Oui / Non | Résultat de la vérification manuelle du finding |
-| **Criticité** | Critique / Élevée / Moyenne / Faible / Info | Renseignée uniquement si Faux positif = Non |
-| **Commentaire** | Texte libre | Justification, preuve (extrait de code), conditions d'exploitation |
+| Colonne          | Valeurs                              | Usage                                                              |
+| ---------------- | ------------------------------------ | ------------------------------------------------------------------ |
+| **Faux positif** | VRAI / FAUX                          | Résultat de la vérification manuelle du finding                    |
+| **Criticité**    | Critique / Élevée / Modérée / Faible | Renseignée uniquement si Faux positif = FAUX                       |
+| **Commentaire**  | Texte libre                          | Justification, preuve (extrait de code), conditions d'exploitation |
 
 Pour chaque ligne :
 1. Ouvrir le fichier source à la ligne indiquée par le finding (colonnes `Location`/`Line` pour le CSV OpenGrep, `File`/`StartLine` pour le CSV betterleaks)
