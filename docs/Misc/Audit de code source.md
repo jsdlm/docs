@@ -96,3 +96,22 @@ Ajouter 3 colonnes à la suite de celles générées par l'outil :
 | **Sanitization/validation existante**     | Y a-t-il un échappement, un encodage, une whitelist, une regex de validation, une requête paramétrée/ORM, etc. en amont ou en aval qui mitige le risque ?<br><br>Le framework/langage utilisé applique-t-il des contrôles par défaut qui mitigent le risque ?                                                                                                     |
 
 En fonction des résultats des éléments analysés, renseigner Faux positif, puis si applicable Criticité et Commentaire
+
+## Revue manuelle complémentaire
+
+En s'appuyant sur la connaissance du projet acquise durant l'analyse outillée, effectuer des contrôles manuels approfondis à partir des guides de développement sécurisé spécifiques au langage/framework utilisé, et rechercher dans le code les occurrences des patterns à risque qui y sont mentionnés.
+
+**Exemples de guides de développement sécurisé par langage :**
+
+| Langage   | Lien                                                                                                                                                             |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C         | https://cmu-sei.github.io/secure-coding-standards/sei-cert-c-coding-standard/                                                                                    |
+| C++       | https://cmu-sei.github.io/secure-coding-standards/sei-cert-cpp-coding-standard/                                                                                  |
+| Java      | https://www.oracle.com/java/technologies/javase/seccodeguide.html<br>https://cmu-sei.github.io/secure-coding-standards/sei-cert-oracle-coding-standard-for-java/ |
+| Python    | https://docs.python.org/3/library/security_warnings.html                                                                                                         |
+| Node.js   | https://nodejs.org/learn/getting-started/security-best-practices                                                                                                 |
+| Ruby      | https://guides.rubyonrails.org/security.html                                                                                                                     |
+| .NET / C# | https://learn.microsoft.com/en-us/aspnet/core/security/                                                                                                          |
+| PHP       | https://www.php.net/manual/en/security.php                                                                                                                       |
+| Go        | https://go.dev/doc/security/best-practices                                                                                                                       |
+| Perl      | https://cmu-sei.github.io/secure-coding-standards/sei-cert-perl-coding-standard/                                                                                 |
