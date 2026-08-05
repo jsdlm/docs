@@ -9,10 +9,12 @@ Prévoir un entretien avec les responsables de l'applicatif afin de demander une
 | **Implémentation** | Normes de développement sécurisé                                                                                                  | Règles de développement sécurisées ;<br><br>Prise en compte des risques propres au langage/framework utilisé                                                                          |
 | **Administration** | Guide d'exploitation, procédures de déploiement                                                                                   | Procédures de déploiement, gestion des secrets, comptes de service ;<br><br>Guides de configurations/durcissement                                                                     |
 | **Utilisation**    | Manuel utilisateur, documentation d'API (eg. Swagger)                                                                             | Fonctionnalités et actions accessibles par profil utilisateur documenté ;<br><br>Endpoints/actions exposés par l'API et méthode d'authentification attendue                           |
-| **Tests**          | Plan de tests, cahier de recette, rapports de tests (unitaires, intégration, SAST, DAST, UAT)                                     | Méthodologie et périmètre des tests réalisés (unitaires, intégration, automatisés en CI/CD, manuels) ;<br><br>Existence de tests de sécurité dédiés (SAST, DAST) et leur fréquence    |
+| **Tests**          | Plan de tests, cahier de recette, rapports de tests (unitaires, intégration, SAST, DAST, UAT)                                     | Méthodologie et périmètre des tests réalisés (unitaires, intégration, automatisés via CI/CD, manuels) ;<br><br>Existence de tests de sécurité dédiés (SAST, DAST) et leur fréquence   |
 
 ---
 # Revue technique
+
+Une fois l'accès au code source obtenu, suivre la procédure ci-dessous pour effectuer la revue technique.
 
 ## Récupération des règles - Semgrep Rules Manager
 https://github.com/iosifache/semgrep-rules-manager
@@ -39,8 +41,7 @@ semgrep-rules-manager --dir ./rules download
 ## Scan SAST - OpenGrep
 https://github.com/opengrep/opengrep
 
-OpenGrep est un outil d'analyse statique permettant de rechercher des patterns de code en utilisant le grep sémantique.
-OpenGrep supporte plus de 30 langages, dont :
+OpenGrep est un outil d'analyse statique permettant de rechercher des patterns de code, supportant plus de 30 langages, dont :
 
 Apex · Bash · C · C++ · C# · Clojure · Crystal · Dart · Dockerfile · Elixir · Go · HTML · Java · JavaScript · JSON · Jsonnet · JSX · Julia · Kotlin · Lisp · Lua · OCaml · PHP · Python · R · Ruby · Rust · Scala · Scheme · Solidity · Swift · Terraform · TSX · TypeScript · Visual Basic · XML · YAML · Generic (ERB, Jinja, etc.)
 
@@ -48,7 +49,7 @@ Télécharger le binaire correspondant à l'OS depuis la [dernière release](htt
 
 ```powershell
 $env:PYTHONUTF8=1
-.\opengrep_windows_x86.exe scan --sarif-output=code_review.sarif -f .\rules\ .\juice-shop\
+.\opengrep_windows_x86.exe scan --sarif-output=opengrep.sarif -f .\rules\ .\source_code\
 ```
 
 Le résultat est exporté au format **SARIF** (Static Analysis Results Interchange Format), un format standard permettant d'interfacer les résultats avec d'autres outils (IDE, plateformes de gestion de vulnérabilités).
@@ -60,22 +61,23 @@ Convertit les résultats SARIF en CSV afin de faciliter l'analyse manuelle des f
 
 ```bash
 pipx install sarif-tools
-sarif csv code_review.sarif --output code_review.csv
+sarif csv opengrep.sarif --output opengrep.csv
 ```
 
 ## Recherche de secrets
 https://github.com/betterleaks/betterleaks
 
-Recherche des secrets codés en dur dans le code source (clés API, identifiants, tokens, clés privées...).
+Recherche des secrets codés en dur dans le code source (clés API, identifiants, tokens, clés privées, etc...).
 
 ```bash
 go install github.com/betterleaks/betterleaks@latest
-betterleaks.exe dir .\juice-shop\ -v -f csv -r ./betterleaks_output.csv
+betterleaks.exe dir .\source_code\ -v -f csv -r ./betterleaks.csv
 ```
 
 ## Analyse des résultats
 
-Importer les deux CSV générés (`code_review.csv` et `betterleaks_output.csv`) dans un classeur Excel, un onglet par outil : **Données > À partir d'un fichier texte/CSV** > sélectionner le fichier > **Charger**.
+1. Ouvrir le code source dans un IDE.
+2. Importer les deux CSV générés (`opengrep.csv` et `betterleaks.csv`) dans un classeur Excel, un onglet par outil : **Données > À partir d'un fichier texte/CSV** > sélectionner le fichier > **Charger**.
 
 Ajouter 3 colonnes à la suite de celles générées par l'outil :
 
@@ -85,7 +87,12 @@ Ajouter 3 colonnes à la suite de celles générées par l'outil :
 | **Criticité**    | Critique / Élevée / Modérée / Faible | Renseignée uniquement si Faux positif = FAUX                       |
 | **Commentaire**  | Texte libre                          | Justification, preuve (extrait de code), conditions d'exploitation |
 
-Pour chaque ligne :
-1. Ouvrir le fichier source à la ligne indiquée par le finding (colonnes `Location`/`Line` pour le CSV OpenGrep, `File`/`StartLine` pour le CSV betterleaks)
-2. Analyser le contexte (code appelant, sanitization existante, accessibilité de la fonction) pour confirmer ou infirmer le finding
-3. Renseigner Faux positif, puis si applicable Criticité et Commentaire
+3. Pour chaque ligne du fichier Excel, ouvrir le fichier source à la ligne indiquée par le finding (colonnes `Location`/`Line` pour le l'onglet OpenGrep, `File`/`StartLine` pour l'onglet betterleaks), et analyser le contexte selon les éléments suivants :
+
+| Élément à vérifier                        | Question à se poser                                                                                                                                                                                                                                                                                                                                               |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Appelants de la fonction / Exposition** | Remonter la pile d'appels, quelles fonctions/composants appellent la fonction vulnérable ?<br><br>S'agit-il d'une fonction atteignable (code mort, feature flag désactivé, code de test) ?<br><br>La fonction est-elle exposée publiquement, ou protégée par une authentification/autorisation/contrôle de rôle avant d'y accéder (interne, authentifié, admin) ? |
+| **Nature de l'input**                     | La donnée manipulée est-elle un véritable *user input* (paramètre de requête, formulaire, upload, header...) ou une donnée interne/de confiance (constante, config, valeur générée côté serveur) ?                                                                                                                                                                |
+| **Sanitization/validation existante**     | Y a-t-il un échappement, un encodage, une whitelist, une regex de validation, une requête paramétrée/ORM, etc. en amont ou en aval qui mitige le risque ?<br><br>Le framework/langage utilisé applique-t-il des contrôles par défaut qui mitigent le risque ?                                                                                                     |
+
+En fonction des résultats des éléments analysés, renseigner Faux positif, puis si applicable Criticité et Commentaire
