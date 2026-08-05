@@ -50,7 +50,7 @@
     > The new _stage_, _post-ex_, and _process-inject_ blocks should be present.
     
 ```
-set max_size "1500000";
+set tasks_max_size "1200000";
 
 stage {
     set userwx "false";

