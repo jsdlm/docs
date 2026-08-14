@@ -300,3 +300,59 @@ Prepended loader :
 └──────────────┘ └─────────────────────────┘
   ↑ deux blobs séparés collés ensemble
 ```
+
+
+# Etapes Windows loader
+
+**Étape 0 — Le kernel crée le processus**  
+Avant même que le loader intervienne, le kernel crée un processus vide avec son propre espace mémoire virtuel et charge `ntdll.dll` dedans — c'est la seule DLL chargée par le kernel lui-même. Le loader (`LdrInitializeThunk`) qui est dans `ntdll.dll` prend ensuite le relais entièrement en user mode.
+
+**Étape 1 — Lire les headers du PE**  
+Le loader lit le DOS header → suit `e_lfanew` → trouve les NT headers → lit l'Optional Header pour récupérer `ImageBase`, `AddressOfEntryPoint`, `SizeOfImage`, et le tableau `DataDirectory`.
+
+**Étape 2 — Mapper l'image en mémoire**  
+Le loader alloue un bloc de mémoire de la taille de `SizeOfImage`. Il copie ensuite chaque section à son `VirtualAddress` (son RVA) avec les bonnes permissions :
+
+- `.text` → RX (Read + Execute)
+- `.data` → RW (Read + Write)
+- `.rdata` → R (Read seul)
+
+**Étape 3 — Enregistrer le module dans le PEB**  
+Le loader ajoute le module aux trois listes chaînées dans `PEB_LDR_DATA` :
+
+- `InLoadOrderModuleList`
+- `InMemoryOrderModuleList`
+- `InInitializationOrderModuleList`
+
+C'est ce qui rend le module visible aux outils comme Process Explorer. Un module chargé manuellement sans passer par le loader n'apparaît pas ici — c'est la base de la détection par forensique mémoire.
+
+**Étape 4 — Résoudre les imports**  
+Le loader lit l'Import Directory. Pour chaque DLL listée :
+
+- Si la DLL est déjà en mémoire → il récupère son adresse directement
+- Si elle n'est pas encore en mémoire → il la charge depuis le disque (récursivement, en recommençant depuis l'étape 1 pour cette DLL)
+
+Ensuite pour chaque fonction importée, il trouve son adresse réelle et l'écrit dans le slot IAT correspondant. Après cette étape l'IAT est entièrement remplie.
+
+**Étape 5 — Appliquer les relocations**  
+Le loader compare l'adresse réelle de chargement avec `ImageBase`. Si elles diffèrent (ce qui est quasiment toujours le cas avec l'ASLR), il lit la section `.reloc` qui liste tous les endroits dans le PE qui contiennent des adresses absolues, et ajoute le delta à chacun.
+
+**Étape 6 — Exécuter les TLS callbacks**  
+Si le PE a des TLS callbacks (dans le TLS Directory), ils sont appelés avant le point d'entrée. Utilisés par certains malwares pour exécuter du code avant qu'un débogueur puisse intercepter.
+
+**Étape 7 — Appeler le point d'entrée**  
+Le loader saute à `AddressOfEntryPoint`. Pour un `.exe` c'est le start thunk du runtime C qui finit par appeler ton `main()`. Pour une DLL c'est `DllMain` appelé avec `DLL_PROCESS_ATTACH`.
+
+**En résumé visuel**
+
+```
+Kernel crée le processus + charge ntdll
+  → Loader lit les headers PE
+    → Mappe les sections en mémoire avec les bonnes permissions
+      → Enregistre le module dans le PEB
+        → Résout les imports (charge les DLLs dépendantes si nécessaire)
+          → Remplit l'IAT avec les adresses réelles
+            → Applique les relocations si nécessaire
+              → Exécute les TLS callbacks
+                → Saute au point d'entrée
+```
