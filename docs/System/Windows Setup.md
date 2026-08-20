@@ -2,7 +2,7 @@
 
 **BASE**
 ```
-winget install Mozilla.Firefox 7zip.7zip Notepad++.Notepad++ OpenVPNTechnologies.OpenVPNConnect VideoLAN.VLC Microsoft.WindowsTerminal Microsoft.VisualStudioCode Google.Chrome DominikReichl.KeePass Microsoft.PowerShell Git.Git Greenshot.Greenshot Obsidian.Obsidian Bitwarden.Bitwarden
+winget install Mozilla.Firefox 7zip.7zip Notepad++.Notepad++ OpenVPNTechnologies.OpenVPNConnect VideoLAN.VLC Microsoft.WindowsTerminal Microsoft.VisualStudioCode Google.Chrome DominikReichl.KeePass Microsoft.PowerShell Git.Git Greenshot.Greenshot Obsidian.Obsidian Bitwarden.Bitwarden Element.Element
 ```
 
 **PERSO**
