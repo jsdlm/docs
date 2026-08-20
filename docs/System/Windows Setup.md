@@ -44,6 +44,18 @@ winget source reset --force
 winget upgrade --verbose-logs
 ```
 
+# WSL
+
+```
+wsl --install -d Debian
+```
+
+# Docker
+
+```
+winget install Docker.DockerDesktop
+```
+
 # Hardening
 
 - [ ] Dernière version de Windows 10 ou de Windows 11
