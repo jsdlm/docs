@@ -2,32 +2,27 @@
 
 **BASE**
 ```
-winget install Mozilla.Firefox 7zip.7zip Notepad++.Notepad++ OpenVPNTechnologies.OpenVPNConnect VideoLAN.VLC Microsoft.WindowsTerminal Microsoft.VisualStudioCode Google.Chrome DominikReichl.KeePass Microsoft.PowerShell Git.Git Greenshot.Greenshot Obsidian.Obsidian Bitwarden.Bitwarden Element.Element
+winget install Mozilla.Firefox 7zip.7zip Notepad++.Notepad++ OpenVPNTechnologies.OpenVPNConnect VideoLAN.VLC Microsoft.WindowsTerminal Microsoft.VisualStudioCode Google.Chrome DominikReichl.KeePass Microsoft.PowerShell Git.Git Greenshot.Greenshot Obsidian.Obsidian Bitwarden.Bitwarden Nextcloud.NextcloudDesktop Python.Python.3.13
 ```
 
 **PERSO**
 ```
-winget install Discord.Discord Nextcloud.NextcloudDesktop MullvadVPN.MullvadVPN
+winget install Discord.Discord MullvadVPN.MullvadVPN Element.Element
 ```
 
 **JEUX**
 ```
-winget install Nvidia.GeForceExperience Valve.Steam Blizzard.BattleNet RiotGames.LeagueOfLegends.EUW
+winget install Nvidia.GeForceExperience Valve.Steam Blizzard.BattleNet RiotGames.LeagueOfLegends.EUW Corsair.iCUE.5
 ```
 
 **PRO**
 ```
-winget install ShiningLight.OpenSSL.Light Python.Python.3.13 lsd-rs.lsd
+winget install ShiningLight.OpenSSL.Light lsd-rs.lsd WiresharkFoundation.Wireshark IDRIX.VeraCrypt NirSoft.WifiInfoView Oracle.JDK.21 Gyan.FFmpeg MediaArea.MediaInfo.GUI
 ```
 
-**PRO - OLD**
+**OLD**
 ```
 winget install Flameshot.Flameshot ksnip.ksnip
-```
-
-**MISC**
-```
-winget install WiresharkFoundation.Wireshark IDRIX.VeraCrypt NirSoft.WifiInfoView Oracle.JDK.21 Gyan.FFmpeg MediaArea.MediaInfo.GUI
 ```
 
 **UPGRADE**
