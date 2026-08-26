@@ -50,3 +50,32 @@ install
 vagrant plugin expunge --reinstall
 vagrant plugin install vagrant-vmware-desktop vagrant-reload
 ```
+
+# Correctif SSMS
+https://github.com/Orange-Cyberdefense/GOAD/issues/468
+
+Le provisioning bloque ou boucle indéfiniment sur `TASK [mssql_ssms : Install SSMS]`.
+
+**Cause**
+Le playbook vérifie la présence de SSMS dans un chemin correspondant à SSMS 18. Les versions récentes s'installent ailleurs, la vérification échoue donc systématiquement et la tâche se relance en boucle.
+
+**Correctif**
+Fichier : `ansible/roles/mssql_ssms/tasks/main.yml`
+Tâche `check SSMS installation already done`, remplacer :
+
+```yaml
+path: "C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 18"
+```
+par :
+```yaml
+path: "C:\\Program Files\\Microsoft SQL Server Management Studio 22"
+```
+
+Adapter le numéro de version au dossier réellement présent sur SRV02 si celui-ci diffère.
+
+**Ou désactiver le rôle.** Dans `ad/GOAD-Light/data/inventory` :
+
+```
+[mssql_ssms]
+; srv02
+```
