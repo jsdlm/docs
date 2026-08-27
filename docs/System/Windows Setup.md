@@ -70,3 +70,10 @@ winget install Docker.DockerDesktop
     - Set a PIN
     - Reboot
 
+# Firewall
+
+VM Windows pour dialoguer en host only 
+```
+Set-NetConnectionProfile -InterfaceAlias "Ethernet0" -NetworkCategory Private
+Enable-NetFirewallRule -Name FPS-ICMP4-ERQ-In
+```
