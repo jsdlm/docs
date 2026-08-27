@@ -165,6 +165,7 @@ dig -x $rhost
 
 ## BOFHound
 https://github.com/coffeegist/bofhound
+### ldapsearch
 
 BOFHound est un ingestor BloodHound hors ligne et un parser de résultats LDAP compatible avec le [ldapsearch BOF](https://github.com/trustedsec/CS-Situational-Awareness-BOF) de TrustedSec, son adaptation Python [pyldapsearch](https://github.com/fortalice/pyldapsearch), et le [LDAP Sentinel](https://bruteratel.com/tabs/commander/badgers/#ldapsentinel) de Brute Ratel. La sortie du ldapsearch BOF peut aussi être parsée depuis des logs [Havoc](https://github.com/HavocFramework/Havoc), des logs OutflankC2, et des callbacks [Mythic](https://github.com/its-a-feature/Mythic).
 
@@ -193,6 +194,19 @@ Tout objet représenté uniquement par un SID, ou marqué "no name or id", signi
 ldapsearch (objectsid=[SID]) --attributes *,ntsecuritydescriptor
 ```
 
+### pyldapseach
+
+github.com/Tw1sm/pyldapsearch
+
+```bash
+git clone https://github.com/Tw1sm/pyldapsearch.git
+cd pyldapsearch/
+pipx install .
+
+pyldapsearch north.sevenkingdoms.local/'samwell.tarly':'Heartsbane' '(objectClass=*)'
+
+bofhound -i ~/.pyldapsearch/logs/ --properties-level all
+```
 
 ## SharpHound
 https://github.com/SpecterOps/SharpHound

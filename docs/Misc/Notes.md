@@ -3,24 +3,6 @@
 ```regex
 ^[ \t]*$\r?\n
 ```
-
-# VMware
-## Latence
-
-```bash
-# mettre dans le .vmx
-keyboard.vusb.enable = "TRUE"
-```
-## NAT
-
-```bash
-C:\ProgramData\VMware\vmnetnat.conf
-[incomingtcp]
-<port_hote> = <ip_vm>:<port_vm>
-
-net stop "VMware NAT Service" && net start "VMware NAT Service"
-```
-
 # Logs parsing
 
 ```bash

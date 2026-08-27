@@ -68,19 +68,17 @@ nmap -sS 192.168.151.0/24 -p 80,443 --script http-title -oG grp1-http.txt
 
 ```bash
 nxc smb 192.168.56.0/24
-```
 
-Générer un fichier de liste d'adresses IP valides
-
-```bash
 nxc smb 192.168.56.0/24 | head -n -1 | awk '{print $2}' > ip.txt
-```
 
-Générer un fichier hosts
-
-```bash
 nxc smb ip.txt --generate-hosts-file /tmp/hosts
+
+nxc smb ip.txt --generate-hosts-file ./hosts
+sudo tee -a /etc/hosts < hosts
+
+sed 's/ .*//' hosts > ips.txt
 ```
+
 
 Énumérer anonymement
 
