@@ -73,7 +73,12 @@ winget install Docker.DockerDesktop
 # Firewall
 
 VM Windows pour dialoguer en host only 
-```
+```powershell
 Set-NetConnectionProfile -InterfaceAlias "Ethernet0" -NetworkCategory Private
 Enable-NetFirewallRule -Name FPS-ICMP4-ERQ-In
+```
+
+Ou désactiver temporairement le firewall
+```powershell
+Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled False
 ```
