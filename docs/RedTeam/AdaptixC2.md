@@ -7,7 +7,14 @@ https://github.com/Adaptix-Framework/Extension-Kit
 
 ```bash
 sudo apt update
-sudo apt install make gcc-mingw-w64-x86-64 gcc-mingw-w64-i686
+sudo apt install make
+
+# Doc adaptix
+sudo apt install g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix mingw-w64-tools
+
+sudo apt install gcc-mingw-w64-i686-posix g++-mingw-w64-i686-posix
+
+# sudo apt install gcc-mingw-w64-x86-64 gcc-mingw-w64-i686
 
 git clone https://github.com/Adaptix-Framework/Extension-Kit
 cd Extension-Kit
@@ -19,3 +26,7 @@ Load all modules in AdaptixC2 client: **Main menu** -> **AxScript** -> **Script 
 [![](https://github.com/Adaptix-Framework/Extension-Kit/raw/main/_img/01.png)](https://github.com/Adaptix-Framework/Extension-Kit/blob/main/_img/01.png)
 
 **Context menu** -> **Load new** and select the _extension-kit.axs_ file.
+
+
+# OPSEC
+https://github.com/MaorSabag/Adaptix-StealthPalace
