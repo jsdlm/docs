@@ -142,6 +142,44 @@ ls \\dc1.corp.com\sysvol\corp.com\Policies\
 **Explorer les partages non-standard** (ex: `docshare`, `backup`, `docs`…) -  les admins y laissent souvent des fichiers sensibles (emails, mots de passe en clair, scripts).
 # Enumération automatique
 
+## SharpHound
+https://github.com/SpecterOps/SharpHound
+
+SharpHound collecte les données AD (LDAP, NetSessionEnum, Remote Registry…) et les exporte dans un ZIP analysable par BloodHound.
+
+```powershell
+SharpHound.exe -d target.local --domaincontroller dc01.target.local --ldapusername user --ldappassword 'Password' -c All
+
+#Ou lancer une session avec les creds cibles puis exécuter SharpHound normalement
+runas /netonly /user:target.local\user cmd
+SharpHound.exe -d target.local -c All
+
+# Loop sur les sessions
+SharpHound.exe -c Session --Loop --Loopduration 03:09:41
+
+# Detected by MDI
+SharpHound.exe -c All
+
+# More OPSEC-friendly, but still detected by MDI
+SharpHound.exe -c Group,GPOLocalGroup,Session,Trusts,ACL,Container,ObjectProps,SPNTargets,CertServices --excludedcs
+```
+
+```powershell
+Import-Module .\Sharphound.ps1
+Invoke-BloodHound -CollectionMethod All
+Invoke-BloodHound -CollectionMethod All -Loop -LoopDuration 02:00:00 -LoopInterval 00:05:00
+```
+
+- `All` : collecte tout sauf les GPO locales (groupes, sessions, ACLs, SPNs, trusts…)
+- Le résultat est un fichier ZIP à transférer sur Kali pour analyse dans BloodHound
+
+## RustHound-CE
+https://github.com/g0h4n/RustHound-CE
+
+Télécharger la dernière release https://github.com/g0h4n/RustHound-CE/releases
+```
+./rusthound-ce -d north.sevenkingdoms.local -u 'samwell.tarly' -p 'Heartsbane' -c All -z
+```
 ## BOFHound
 https://github.com/coffeegist/bofhound
 
@@ -189,70 +227,6 @@ pyldapsearch north.sevenkingdoms.local/'samwell.tarly':'Heartsbane' '(objectClas
 bofhound -i ~/.pyldapsearch/logs/ --properties-level all
 ```
 
-## SharpHound
-https://github.com/SpecterOps/SharpHound
-
-SharpHound collecte les données AD (LDAP, NetSessionEnum, Remote Registry…) et les exporte dans un ZIP analysable par BloodHound.
-
-```bash
-sudo apt install sharphound
-sharphound -h
-/usr/share/sharphound
-```
-
-**Collecte depuis la machine compromise**
-
-```powershell
-SharpHound.exe --CollectionMethods All
-SharpHound.exe --CollectionMethods Session --Loop --Loopduration 03:09:41
-
-# Detected by MDI
-SharpHound.exe --collectionmethods All
-
-# More OPSEC-friendly, but still detected by MDI
-SharpHound.exe --collectionmethods Group,GPOLocalGroup,Session,Trusts,ACL,Container,ObjectProps,SPNTargets,CertServices --excludedcs
-```
-
-```powershell
-Import-Module .\Sharphound.ps1
-Invoke-BloodHound -CollectionMethod All
-Invoke-BloodHound -CollectionMethod All -Loop -LoopDuration 02:00:00 -LoopInterval 00:05:00
-```
-
-- `All` : collecte tout sauf les GPO locales (groupes, sessions, ACLs, SPNs, trusts…)
-- Le résultat est un fichier ZIP à transférer sur Kali pour analyse dans BloodHound
-## Netexec
-
-```bash
-# Export bloodhound
-nxc ldap 192.168.1.10 -u 'USER' -p 'PASSWORD' -d 'DOMAIN.COM' --bloodhound -c All --dns-server 192.168.1.10
-
-# share enum with user
-nxc smb 192.168.56.10-23 -u 'jon.snow' -p 'iknownothing' --shares
-
-# Get DC ip
-nxc ldap 192.168.56.11 -u 'brandon.stark' -p 'iseedeadpeople' --dc-list
-
-# Get all users from all DCs
-nxc ldap 192.168.56.10-23 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users
-
-# Export users to file for each DCs
-nxc ldap 192.168.56.10 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users-export KINGSLANDING_USERS.txt
-nxc ldap 192.168.56.11 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users-export WINTERFELL_USERS.txt
-nxc ldap 192.168.56.12 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users-export MEEREEN_USERS.txt
-```
-
-## BloodHound-ce python
-
-https://github.com/dirkjanm/BloodHound.py
-
-```bash
-# https://github.com/dirkjanm/BloodHound.py
-pipx install bloodhound-ce
-bloodhound-ce-python --zip -c All -u 'USER' -p 'PASSWORD' -d 'DOMAIN.COM' -dc 'DC_FQDN' -ns 192.168.1.10
-```
-
-
 ## ADExplorer
 
 ADExplorer (Microsoft Sysinternals) is a signed tool for AD viewing and editing - a better alternative to LDAP recon.
@@ -279,7 +253,7 @@ bofhound -i ./dc.server.com_1234567890_bofhound.log -o output
 
 > **Prefer ADWS over LDAP when possible** to avoid MDI detection.
 
-## BloodHound - ADWS
+## ADWS
 
 ### SOAPHound
 
@@ -360,3 +334,36 @@ pipx install bofhound
 bofhound -i ~/workspace/ldap_output.txt -p All --parser ldapsearch
 bofhound -i ~/workspace/certs_output.txt -p All --parser ldapsearch
 ```
+
+## BloodHound-ce python
+
+https://github.com/dirkjanm/BloodHound.py
+
+```bash
+# https://github.com/dirkjanm/BloodHound.py
+pipx install bloodhound-ce
+bloodhound-ce-python --zip -c All -u 'USER' -p 'PASSWORD' -d 'DOMAIN.COM' -dc 'DC_FQDN' -ns 192.168.1.10
+```
+
+
+## Netexec
+
+```bash
+# Export bloodhound
+nxc ldap 192.168.1.10 -u 'USER' -p 'PASSWORD' -d 'DOMAIN.COM' --bloodhound -c All --dns-server 192.168.1.10
+
+# share enum with user
+nxc smb 192.168.56.10-23 -u 'jon.snow' -p 'iknownothing' --shares
+
+# Get DC ip
+nxc ldap 192.168.56.11 -u 'brandon.stark' -p 'iseedeadpeople' --dc-list
+
+# Get all users from all DCs
+nxc ldap 192.168.56.10-23 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users
+
+# Export users to file for each DCs
+nxc ldap 192.168.56.10 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users-export KINGSLANDING_USERS.txt
+nxc ldap 192.168.56.11 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users-export WINTERFELL_USERS.txt
+nxc ldap 192.168.56.12 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users-export MEEREEN_USERS.txt
+```
+
