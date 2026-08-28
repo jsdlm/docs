@@ -200,12 +200,10 @@ ldapsearch (objectsid=[SID]) --attributes *,ntsecuritydescriptor
 
 ### pyldapseach
 
-github.com/Tw1sm/pyldapsearch
+https://github.com/Tw1sm/pyldapsearch
 
 ```bash
-git clone https://github.com/Tw1sm/pyldapsearch.git
-cd pyldapsearch/
-pipx install .
+pipx install pyldapsearch
 
 pyldapsearch north.sevenkingdoms.local/'samwell.tarly':'Heartsbane' '(objectClass=*)'
 
