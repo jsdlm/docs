@@ -91,7 +91,11 @@ Dans `Machine\Preferences\` ou `User\Preferences\` : format XML lisible directem
 - `ScheduledTasks\ScheduledTasks.xml` : tâches planifiées, peut contenir des credentials.
 - `Services\Services.xml`, `Printers\Printers.xml`, etc.
 
-Recherche de `cpassword` (mot de passe chiffré déchiffrable).
+> Les fichiers XML de Group Policy Preferences (GPP) peuvent contenir des mots de passe chiffrés (`cpassword`). La clé AES-256 est publique -  déchiffrer avec `gpp-decrypt` :
+
+```bash
+gpp-decrypt "<CPASSWORD_VALUE>"
+```
 
 ## Scripts : 
 Dans `Machine\Scripts\` et `User\Scripts\`, souvent des `.bat`, `.vbs`, `.ps1`, intéressant car peuvent contenir des credentials en clair ou des chemins vers des ressources sensibles.

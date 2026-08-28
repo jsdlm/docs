@@ -1,6 +1,6 @@
 # Enumération manuelle
 
-## Users et Groupes
+## Built-in
 
 **Utilisateurs**
 
@@ -103,28 +103,28 @@ Users logged on via resource shares:
 
 > Si un utilisateur à hauts privilèges (ex: `jeffadmin`) est connecté sur une machine où on a des droits admin locaux → vecteur d'attaque pour vol de credentials.
 
-## Service Principal Names (SPN)
+**Service Principal Names (SPN)**
 
 Un SPN associe un service (IIS, MSSQL, Exchange…) à un compte de service AD. Énumérer les SPNs permet de découvrir les services et leurs IP/ports sans port scan.
 
-```cmd
-:: Lister les SPNs d'un compte spécifique
+```powershell
+# Lister les SPNs d'un compte spécifique
 setspn -L <USERNAME>
 ```
 
 ```powershell
-:: Lister tous les comptes avec SPN dans le domaine
+# Lister tous les comptes avec SPN dans le domaine
 Get-NetUser -SPN | select samaccountname,serviceprincipalname
 ```
 
 ```powershell
-:: Résoudre le hostname associé
+# Résoudre le hostname associé
 nslookup.exe web04.corp.com
 ```
 
 > Les comptes de service ont généralement plus de privilèges qu'un user standard. Un SPN de type `HTTP/web04.corp.com` indique un serveur web -  vecteur pour Kerberoasting (voir modules suivants).
 
-## Shares
+**Shares**
 
 ```powershell
 Find-DomainShare                    # tous les partages du domaine
@@ -137,30 +137,9 @@ Find-DomainShare -CheckShareAccess  # uniquement ceux accessibles par l'utilisat
 # SYSVOL -  accessible par tous les users du domaine, contient scripts et GPO
 ls \\dc1.corp.com\sysvol\corp.com\
 ls \\dc1.corp.com\sysvol\corp.com\Policies\
-
-# Lire un fichier de politique
-cat \\dc1.corp.com\sysvol\corp.com\Policies\oldpolicy\old-policy-backup.xml
-```
-
-> Les fichiers XML de Group Policy Preferences (GPP) peuvent contenir des mots de passe chiffrés (`cpassword`). La clé AES-256 est publique -  déchiffrer avec `gpp-decrypt` :
-
-```bash
-gpp-decrypt "<CPASSWORD_VALUE>"
 ```
 
 **Explorer les partages non-standard** (ex: `docshare`, `backup`, `docs`…) -  les admins y laissent souvent des fichiers sensibles (emails, mots de passe en clair, scripts).
-
-## LDAP Enumeration
-
-```shell
-# Null bind
-ldapsearch -h $rhost -x -b "DC=domain,DC=local"
-
-# Zone transfer DNS
-dig @$rhost axfr
-dig -x $rhost
-```
-
 # Enumération automatique
 
 ## BOFHound
@@ -381,41 +360,3 @@ pipx install bofhound
 bofhound -i ~/workspace/ldap_output.txt -p All --parser ldapsearch
 bofhound -i ~/workspace/certs_output.txt -p All --parser ldapsearch
 ```
-
-# Server BloodHound
-https://github.com/SpecterOps/BloodHoundQueryLibrary
-
-```bash
-cd /opt/tools/bloodhound
-docker compose up -d
-
-# Récupérer le mot de passe initial dans les logs
-docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password"
-```
-
-Se connecter sur `http://127.0.0.1:8080` avec `admin` / `<INITIAL_PASSWORD>`.
-
-**Importer le ZIP SharpHound** -  glisser-déposer le fichier dans l'interface ou utiliser le bouton Upload.
-
-**Requêtes utiles (onglet Analysis)**
-
-| Requête | Utilité |
-|---|---|
-| Find all Domain Admins | Lister les DA et leurs relations |
-| Find Shortest Paths to Domain Admins | Chemin d'attaque le plus court vers DA |
-| Shortest Paths to Domain Admins from Owned Principals | Chemin depuis les objets qu'on contrôle |
-
-**Marquer des objets comme "owned"** -  clic droit sur un nœud → *Mark as Owned* (icône crâne). À faire pour chaque user/machine compromis afin d'affiner les chemins d'attaque.
-
-> Cliquer sur une arête entre deux nœuds → **? Help** → onglet *Abuse* : explique comment exploiter la relation concrètement.
-
-Chercher :
-- **Shortest path to Domain Admins**
-- **Users with DCSync rights**
-- **Kerberoastable users**
-- **ASREPRoastable users**
-- **ACL abuse paths** (AllExtendedRights, GenericAll, WriteDacl)
-- **GPO abuse paths**
-
-Visualisation des droits dans bloodhound, check "outbound control rights" depuis notre USER et les [ACL](ACL.md).
-

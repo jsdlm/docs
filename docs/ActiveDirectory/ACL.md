@@ -1,3 +1,34 @@
+# BloodHound
+https://github.com/specterops/bloodhound
+https://github.com/SpecterOps/BloodHoundQueryLibrary
+
+`http://127.0.0.1:8080` - `admin` / `<INITIAL_PASSWORD>`.
+
+**Importer le ZIP SharpHound** -  glisser-déposer le fichier dans l'interface ou utiliser le bouton Upload.
+
+**Requêtes utiles (onglet Analysis)**
+
+| Requête | Utilité |
+|---|---|
+| Find all Domain Admins | Lister les DA et leurs relations |
+| Find Shortest Paths to Domain Admins | Chemin d'attaque le plus court vers DA |
+| Shortest Paths to Domain Admins from Owned Principals | Chemin depuis les objets qu'on contrôle |
+
+**Marquer des objets comme "owned"** -  clic droit sur un nœud → *Mark as Owned* (icône crâne). À faire pour chaque user/machine compromis afin d'affiner les chemins d'attaque.
+
+> Cliquer sur une arête entre deux nœuds → **? Help** → onglet *Abuse* : explique comment exploiter la relation concrètement.
+
+Chercher :
+- **Shortest path to Domain Admins**
+- **Users with DCSync rights**
+- **Kerberoastable users**
+- **ASREPRoastable users**
+- **ACL abuse paths** (AllExtendedRights, GenericAll, WriteDacl)
+- **GPO abuse paths**
+
+Visualisation des droits dans bloodhound, check "outbound control rights" depuis notre USER.
+
+
 Chaque objet AD a une ACL (Access Control List) composée d'ACEs (Access Control Entries). Permissions intéressantes pour un attaquant :
 
 |Permission|Effet|

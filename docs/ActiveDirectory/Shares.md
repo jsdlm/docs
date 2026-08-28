@@ -1,6 +1,8 @@
+
+# Automatique
 https://github.com/SnaffCon/Snaffler
 https://github.com/zh54321/SnafflerParser
-https://github.com/jsdlm/SnafflerParser
+https://github.com/jsdlm/scripts
 
 ```bash
 wget https://github.com/SnaffCon/Snaffler/releases/download/1.0.244/Snaffler.exe
@@ -23,4 +25,12 @@ snaffler -u USER -p PASS --computer-file targets.txt
 
 snaffler -u USER -p PASS -d DOMAIN.LOCAL
 snaffler -k --use-kcache -d DOMAIN.LOCAL --dc-host CORP-DC02
+```
+
+# Manuel
+
+```powershell
+# SYSVOL -  accessible par tous les users du domaine, contient scripts et GPO
+ls \\dc1.corp.com\sysvol\corp.com\
+ls \\dc1.corp.com\sysvol\corp.com\Policies\
 ```
