@@ -7,15 +7,7 @@ https://github.com/Adaptix-Framework/Extension-Kit
 
 ```bash
 sudo apt update
-sudo apt install build-essential python3
-# sudo apt install make gcc
-
-# Doc adaptix
-sudo apt install g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix mingw-w64-tools
-
-sudo apt install gcc-mingw-w64-i686-posix g++-mingw-w64-i686-posix
-
-# sudo apt install gcc-mingw-w64-x86-64 gcc-mingw-w64-i686
+sudo apt install build-essential python3 mingw-w64
 
 git clone https://github.com/Adaptix-Framework/Extension-Kit
 cd Extension-Kit
