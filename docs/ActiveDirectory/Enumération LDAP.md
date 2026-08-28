@@ -165,6 +165,10 @@ dig -x $rhost
 
 ## BOFHound
 https://github.com/coffeegist/bofhound
+
+```
+pipx install bofhound
+```
 ### ldapsearch
 
 BOFHound est un ingestor BloodHound hors ligne et un parser de résultats LDAP compatible avec le [ldapsearch BOF](https://github.com/trustedsec/CS-Situational-Awareness-BOF) de TrustedSec, son adaptation Python [pyldapsearch](https://github.com/fortalice/pyldapsearch), et le [LDAP Sentinel](https://bruteratel.com/tabs/commander/badgers/#ldapsentinel) de Brute Ratel. La sortie du ldapsearch BOF peut aussi être parsée depuis des logs [Havoc](https://github.com/HavocFramework/Havoc), des logs OutflankC2, et des callbacks [Mythic](https://github.com/its-a-feature/Mythic).
@@ -221,9 +225,15 @@ sharphound -h
 
 **Collecte depuis la machine compromise**
 
-```
+```powershell
 SharpHound.exe --CollectionMethods All
 SharpHound.exe --CollectionMethods Session --Loop --Loopduration 03:09:41
+
+# Detected by MDI
+SharpHound.exe --collectionmethods All
+
+# More OPSEC-friendly, but still detected by MDI
+SharpHound.exe --collectionmethods Group,GPOLocalGroup,Session,Trusts,ACL,Container,ObjectProps,SPNTargets,CertServices --excludedcs
 ```
 
 ```powershell
@@ -263,6 +273,115 @@ https://github.com/dirkjanm/BloodHound.py
 # https://github.com/dirkjanm/BloodHound.py
 pipx install bloodhound-ce
 bloodhound-ce-python --zip -c All -u 'USER' -p 'PASSWORD' -d 'DOMAIN.COM' -dc 'DC_FQDN' -ns 192.168.1.10
+```
+
+
+## ADExplorer
+
+ADExplorer (Microsoft Sysinternals) is a signed tool for AD viewing and editing - a better alternative to LDAP recon.
+
+- Reference: [https://learn.microsoft.com/en-us/sysinternals/downloads/adexplorer](https://learn.microsoft.com/en-us/sysinternals/downloads/adexplorer)
+- A user can take a snapshot of AD and process it offline.
+- The snapshot can be converted into BloodHound JSON files: [https://github.com/c3c/ADExplorerSnapshot](https://github.com/c3c/ADExplorerSnapshot)
+```
+pipx install git+https://github.com/c3c/ADExplorerSnapshot
+pipx install bofhound
+
+ADExplorerSnapshot.py -m BOFHound snapshot.dat
+bofhound -i ./dc.server.com_1234567890_bofhound.log -o output
+```
+- Reference: [https://trustedsec.com/blog/adexplorer-on-engagements](https://trustedsec.com/blog/adexplorer-on-engagements)
+
+**Drawbacks:**
+
+- May fail in large domains with poor connectivity.
+- When ADFS is deployed, ADExplorer triggers an MDI alert by reading the ADFS LDAP container.
+![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421164605.png?1784982942041)
+
+![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421164615.png?1784982942042)
+
+> **Prefer ADWS over LDAP when possible** to avoid MDI detection.
+
+## BloodHound - ADWS
+
+### SOAPHound
+
+[SOAPHound](https://github.com/FalconForceTeam/SOAPHound) talks to Active Directory Web Services (ADWS - Port 9389) instead of sending LDAP queries.
+
+- Almost no network-based detection by MDI.
+- Retrieves all objects (`objectGuid=*`) then processes them locally.
+- Limited LDAP queries - less chance of endpoint detection.
+
+```bash
+# Build a cache with basic info about domain objects
+SOAPHound.exe --buildcache -c c:\users\vagrant\desktop\cache.txt
+
+# Collect BloodHound-compatible data
+SOAPHound.exe -c c:\users\vagrant\desktop\cache.txt --bhdump -o c:\users\vagrant\desktop\bloodhound-output --nolaps
+```
+
+**MDI detection:** MDI detected the original SOAPHound due to the LDAP filter `(!soaphound=*)`.
+The filter is hardcoded in the source:
+
+![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260417145354.png?1784982942018)
+
+After modifying `(!soaphound=*)` in the source and recompiling, SOAPHound bypasses MDI:
+
+![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260417145713.png?1784982942019)
+
+![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421171341.png?1784982942045)
+
+**Drawbacks:**
+
+- Requires introducing a binary to monitored endpoints.
+- May fail against very large domains.
+
+### ShadowHound-ADM
+
+[ShadowHound-ADM](https://github.com/Friends-Security/ShadowHound/blob/main/ShadowHound-ADM.ps1) is a PowerShell script leveraging the AD Module over ADWS.
+
+- Uses native PowerShell - no need for known-malicious binaries like SharpHound.
+- Talks to ADWS (Port 9389) instead of LDAP.
+
+```bash
+# AD Recon
+Import-Module .\ShadowHound-ADM.ps1
+ShadowHound-ADM -OutputFilePath "C:\users\consultant\documents\mhd\ldap_output.txt" -SplitSearch -LetterSplitSearch -Recurse
+
+# ADCS Recon
+ShadowHound-ADM -OutputFilePath "C:\users\consultant\documents\mhd\cert_output.txt" -Certificates
+```
+
+**MDI detection:** Detected due to specific LDAP filters in the original code.
+
+For AD Recon:
+
+![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260420111459.png?1784982942021)
+
+![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421180249.png?1784982942047)
+
+For ADCS Recon:
+
+![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421180720.png?1784982942047)
+
+![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421180754.png?1784982942048)
+
+![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421181527.png?1784982942050)
+
+After modifying the filters in the source, ShadowHound-ADM bypasses MDI:
+
+![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260420111907.png?1784982942021)
+
+![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260420132551.png?1784982942024)
+
+**Convert outputs to BloodHound JSON:**
+
+```bash
+pipx install bofhound
+
+# Convert
+bofhound -i ~/workspace/ldap_output.txt -p All --parser ldapsearch
+bofhound -i ~/workspace/certs_output.txt -p All --parser ldapsearch
 ```
 
 # Server BloodHound
