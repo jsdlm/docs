@@ -324,7 +324,6 @@ After modifying the filters in the source, ShadowHound-ADM bypasses MDI:
 
 ![](img/Pasted%20image%2020260420132551.png)
 
-
 **Convert outputs to BloodHound JSON:**
 
 ```bash

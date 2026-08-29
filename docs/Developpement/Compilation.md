@@ -123,39 +123,24 @@ i686-w64-mingw32-g++ prog.cpp -o prog32.exe -static
 - `.dll` assembly bibliothèque, `.exe` assembly exécutable
 - `.pdb` symboles de debug
 
-Deux écosystèmes : .NET Framework (Windows, jusqu'à 4.8) et .NET moderne (6/8/9, multiplateforme). MinGW-w64 / w64devkit ne fournit pas de compilateur C# : passer par le SDK .NET ou Mono.
+**Prérequis**
 
-## Linux
-
-```bash
-sudo apt install dotnet-sdk-8.0
-sudo apt install mono-complete        # pour cibler .NET Framework
+Visual Studio Community
+```
+winget install Microsoft.VisualStudio.Community
 ```
 
-```bash
-mcs prog.cs -out:prog.exe
-mcs -target:library prog.cs -out:prog.dll
-mcs -unsafe -platform:x86 prog.cs -out:prog.exe
+Puis installer la charge de travail .NET Desktop.
 
-dotnet new console -o MonApp
-cd MonApp && dotnet build -c Release
-```
+**Procédure**
 
-## Windows
+1. Cloner ou décompresser le projet.
+2. Ouvrir le `.sln` dans Visual Studio (double-clic).
+3. Si VS propose de **retarget** ou de mettre à jour, accepter.
+4. Clic droit sur le projet > **Gérer les packages NuGet**.
+5. **Restaurer** les paquets.
+6. Choisir la configuration **Release** dans la barre d'outils.
+7. **Générer > Générer la solution** (`Ctrl+Maj+B`).
 
-```powershell
-winget install Microsoft.DotNet.SDK.8
-```
-
-```powershell
-dotnet build -c Release
-```
-
-Compilateur .NET Framework présent nativement, sans installation :
-
-```cmd
-C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /out:prog.exe prog.cs
-csc.exe /target:library /out:prog.dll prog.cs
-csc.exe /unsafe /platform:x86 /out:prog.exe prog.cs
-```
-
+Le binaire sort dans `bin\Release\`.
+En cas d'échec "Erreur **Fody** ou `MsBuildMajorVersion` vide" : dans Gérer les packages NuGet, **mettre à jour** le paquet fautif (Fody/Costura), puis rebuild.
