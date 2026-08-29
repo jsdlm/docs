@@ -247,9 +247,10 @@ bofhound -i ./dc.server.com_1234567890_bofhound.log -o output
 
 - May fail in large domains with poor connectivity.
 - When ADFS is deployed, ADExplorer triggers an MDI alert by reading the ADFS LDAP container.
-![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421164605.png?1784982942041)
 
-![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421164615.png?1784982942042)
+![](img/Pasted%20image%2020260421164605.png)
+
+![](img/Pasted%20image%2020260421164615.png)
 
 > **Prefer ADWS over LDAP when possible** to avoid MDI detection.
 
@@ -274,13 +275,11 @@ SOAPHound.exe -c c:\users\vagrant\desktop\cache.txt --bhdump -o c:\users\vagrant
 **MDI detection:** MDI detected the original SOAPHound due to the LDAP filter `(!soaphound=*)`.
 The filter is hardcoded in the source:
 
-![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260417145354.png?1784982942018)
+![](img/Pasted%20image%2020260417145354.png)
 
-After modifying `(!soaphound=*)` in the source and recompiling, SOAPHound bypasses MDI:
+After modifying `(!soaphound=*)` in the source and recompiling, SOAPHound bypasses MDI:
 
-![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260417145713.png?1784982942019)
-
-![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421171341.png?1784982942045)
+![](img/Pasted%20image%2020260417145713.png)
 
 **Drawbacks:**
 
@@ -307,23 +306,24 @@ ShadowHound-ADM -OutputFilePath "C:\users\consultant\documents\mhd\cert_output.t
 
 For AD Recon:
 
-![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260420111459.png?1784982942021)
+![](img/Pasted%20image%2020260420111459.png)
 
-![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421180249.png?1784982942047)
+![](img/Pasted%20image%2020260421180249.png)
 
 For ADCS Recon:
 
-![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421180720.png?1784982942047)
+![](img/Pasted%20image%2020260421180720.png)
 
-![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421180754.png?1784982942048)
+![](img/Pasted%20image%2020260421180754.png)
 
-![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260421181527.png?1784982942050)
+![](img/Pasted%20image%2020260421181527.png)
 
 After modifying the filters in the source, ShadowHound-ADM bypasses MDI:
 
-![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260420111907.png?1784982942021)
+![](img/Pasted%20image%2020260420111907.png)
 
-![](app://d768204a59517f387194779db93cb30a37b1/C:/Users/jules/_dev/github/docs/docs/RedTeam/img/Pasted%20image%2020260420132551.png?1784982942024)
+![](img/Pasted%20image%2020260420132551.png)
+
 
 **Convert outputs to BloodHound JSON:**
 
