@@ -151,7 +151,7 @@ SharpHound collecte les données AD (LDAP, NetSessionEnum, Remote Registry…) e
 SharpHound.exe -d target.local --domaincontroller dc01.target.local --ldapusername user --ldappassword 'Password' -c All
 
 #Ou lancer une session avec les creds cibles puis exécuter SharpHound normalement
-runas /netonly /user:target.local\user cmd
+runas /netonly /user:north.sevenkingdoms.local\samwell.tarly cmd
 SharpHound.exe -d target.local -c All
 
 # Loop sur les sessions
@@ -264,12 +264,14 @@ bofhound -i ./dc.server.com_1234567890_bofhound.log -o output
 - Retrieves all objects (`objectGuid=*`) then processes them locally.
 - Limited LDAP queries - less chance of endpoint detection.
 
-```bash
+```powershell
+runas /netonly /user:north.sevenkingdoms.local\samwell.tarly cmd
+
 # Build a cache with basic info about domain objects
-SOAPHound.exe --buildcache -c c:\users\vagrant\desktop\cache.txt
+SOAPHound.exe --buildcache -c C:\Users\pentester\Desktop\cache.txt --dc 192.168.56.11 --domain north.sevenkingdoms.local
 
 # Collect BloodHound-compatible data
-SOAPHound.exe -c c:\users\vagrant\desktop\cache.txt --bhdump -o c:\users\vagrant\desktop\bloodhound-output --nolaps
+SOAPHound.exe --bhdump -o C:\Users\pentester\Desktop\SOAPHound --dc 192.168.56.11 -c C:\Users\pentester\Desktop\cache.txt --domain north.sevenkingdoms.local --nolaps
 ```
 
 **MDI detection:** MDI detected the original SOAPHound due to the LDAP filter `(!soaphound=*)`.
@@ -294,12 +296,17 @@ After modifying `(!soaphound=*)` in the source and recompiling, SOAPHound bypass
 - Talks to ADWS (Port 9389) instead of LDAP.
 
 ```bash
+# Install RSAT
+Get-WindowsCapability -Online -Name "Rsat.ActiveDirectory*" | Add-WindowsCapability -Online
+
+runas /netonly /user:north.sevenkingdoms.local\samwell.tarly powershell
+
 # AD Recon
 Import-Module .\ShadowHound-ADM.ps1
-ShadowHound-ADM -OutputFilePath "C:\users\consultant\documents\mhd\ldap_output.txt" -SplitSearch -LetterSplitSearch -Recurse
+ShadowHound-ADM -OutputFilePath "C:\users\pentester\Desktop\ldap_output.txt" -SplitSearch -LetterSplitSearch -Recurse -Server "192.168.56.11"
 
 # ADCS Recon
-ShadowHound-ADM -OutputFilePath "C:\users\consultant\documents\mhd\cert_output.txt" -Certificates
+ShadowHound-ADM -OutputFilePath "C:\users\pentester\Desktop\cert_output.txt" -Certificates -Server "192.168.56.11"
 ```
 
 **MDI detection:** Detected due to specific LDAP filters in the original code.
@@ -330,8 +337,8 @@ After modifying the filters in the source, ShadowHound-ADM bypasses MDI:
 pipx install bofhound
 
 # Convert
-bofhound -i ~/workspace/ldap_output.txt -p All --parser ldapsearch
-bofhound -i ~/workspace/certs_output.txt -p All --parser ldapsearch
+bofhound -i ./ldap_output.txt -p All --parser ldapsearch
+bofhound -i ./cert_output.txt -p All --parser ldapsearch
 ```
 
 ## BloodHound-ce python
