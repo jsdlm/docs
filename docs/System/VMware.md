@@ -40,3 +40,8 @@ C:\ProgramData\VMware\vmnetnat.conf
 net stop "VMware NAT Service" && net start "VMware NAT Service"
 ```
 
+# Share Windows
+
+```
+\\vmware-host\Shared Folders\_share
+```

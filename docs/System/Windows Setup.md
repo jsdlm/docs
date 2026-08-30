@@ -1,5 +1,9 @@
 # Install
 
+```
+winget install --exact --silent --accept-source-agreements --accept-package-agreements --disable-interactivity Mozilla.Firefox
+```
+
 **BASE**
 ```
 winget install Mozilla.Firefox 7zip.7zip Notepad++.Notepad++ OpenVPNTechnologies.OpenVPNConnect VideoLAN.VLC Microsoft.WindowsTerminal Microsoft.VisualStudioCode Google.Chrome DominikReichl.KeePass Microsoft.PowerShell Git.Git Greenshot.Greenshot Obsidian.Obsidian Bitwarden.Bitwarden Nextcloud.NextcloudDesktop Python.Python.3.13
@@ -82,3 +86,50 @@ Ou désactiver temporairement le firewall
 ```powershell
 Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled False
 ```
+
+# winlegion-vm
+
+Deploy a Windows Virtual Machine
+
+   > [Where can I find a Windows 10 Virtual Machine?](https://www.microsoft.com/en-us/software-download/windows10)
+
+   > [Where can I find a Windows 11 Virtual Machine?](https://www.microsoft.com/en-us/software-download/windows11)
+## Pre-Install Procedures
+
+**You MUST disable Windows Defender for a smooth install**. The best way to accomplish this is through Group Policy.
+In Windows versions 1909 and higher, Tamper Protection was added.
+**Tamper Protection must be disabled first, otherwise Group Policy settings are ignored.**
+
+1. Open Windows Security (type `Windows Security` in the search box)
+2. Virus & threat protection > Virus & threat protection settings > Manage settings
+3. Switch `Tamper Protection` to `Off`
+
+> It is not necessary to change any other setting (`Real Time Protection`, etc.)
+> **Important!** Tamper Protection must be disabled before changing Group Policy settings.
+
+To permanently disable Real Time Protection:
+
+1. Make sure you disabled Tamper Protection
+2. Open Local Group Policy Editor (type `gpedit` in the search box)
+3. Computer Configuration > Administrative Templates > Windows Components > Microsoft Defender Antivirus > Real-time Protection
+4. Enable `Turn off real-time protection`
+5. **Reboot**
+
+> Make sure to **reboot** before making the next change
+
+To permanently disable Microsoft Defender:
+
+1. Make sure you rebooted your machine
+2. Open Local Group Policy Editor (type `gpedit` in the search box)
+3. Computer Configuration > Administrative Templates > Windows Components > Microsoft Defender Antivirus
+4. Enable `Turn off Microsoft Defender Antivirus`
+5. **Reboot**
+## Installation
+
+1. Complete the pre-install procedures by disabling Defender
+2. Download and extract the zip of the Commando-VM repo
+3. Run PowerShell as Administrator
+4. `Set-ExecutionPolicy Unrestricted -force`
+5. `cd ./winlegion-vm`
+6. `Get-ChildItem .\ -Recurse | Unblock-File`
+7. `.\install.ps1`

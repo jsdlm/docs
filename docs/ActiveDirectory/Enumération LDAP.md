@@ -373,3 +373,19 @@ nxc ldap 192.168.56.11 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkin
 nxc ldap 192.168.56.12 -u 'brandon.stark' -p 'iseedeadpeople' -d 'north.sevenkingdoms.local' --users-export MEEREEN_USERS.txt
 ```
 
+## Comparatif
+
+**ACEs (Access Control Entries)** : entrées individuelles des DACL des objets Active Directory. Dans BloodHound, seules les ACE porteuses de droits exploitables (GenericAll, WriteDacl, ForceChangePassword, etc.) sont retenues et transformées en arêtes d'attaque.
+
+**Relationships** : total des arêtes du graphe BloodHound reliant les nœuds (utilisateurs, groupes, machines...). Cela inclut les ACE mais aussi les autres relations collectées (appartenance de groupe, sessions, délégations, liens GPO, etc.). Le nombre de Relationships est donc toujours supérieur ou égal au nombre d'ACEs.
+
+| Ingestor                | ACEs  | Relationships | ADCS (CA) |
+| ----------------------- | ----- | ------------- | --------- |
+| ADExplorer - bofhound   | 2 140 | 3 186         | OK        |
+| SharpHound              | 2 194 | 3 499         | OK        |
+| RustHound               | 1 344 | 2 133         | OK        |
+| ShadowHound - bofhound  | 1 025 | 1 528         | OK        |
+| bloodhound-python       | 694   | 1 036         | Non       |
+| NetExec                 | 694   | 1 036         | Non       |
+| pyldapsearch - bofhound | 589   | 954           | Non       |
+| SOAPHound - bofhound    | TODO  | TODO          | TODO      |
