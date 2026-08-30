@@ -96,10 +96,6 @@ Deploy a Windows Virtual Machine
    > [Where can I find a Windows 11 Virtual Machine?](https://www.microsoft.com/en-us/software-download/windows11)
 ## Pre-Install Procedures
 
-Mettre à jour la VM -> Windows Update.
-Activer Windows.
-Reboot.
-
 **You MUST disable Windows Defender for a smooth install**. The best way to accomplish this is through Group Policy.
 In Windows versions 1909 and higher, Tamper Protection was added.
 **Tamper Protection must be disabled first, otherwise Group Policy settings are ignored.**
@@ -131,9 +127,8 @@ To permanently disable Microsoft Defender:
 ## Installation
 
 1. Complete the pre-install procedures by disabling Defender
-2. Download and extract the zip of the Commando-VM repo
-3. Run PowerShell as Administrator
-4. `Set-ExecutionPolicy Unrestricted -force`
-5. `cd ./winlegion-vm`
-6. `Get-ChildItem .\ -Recurse | Unblock-File`
-7. `.\install.ps1`
+2. Run PowerShell as Administrator
+3. `Set-ExecutionPolicy Unrestricted -force`
+4. `cd .\winlegion-vm`
+5. `Get-ChildItem .\ -Recurse | Unblock-File`
+6. `.\install.ps1`
