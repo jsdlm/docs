@@ -143,4 +143,20 @@ Puis installer la charge de travail .NET Desktop.
 7. **Générer > Générer la solution** (`Ctrl+Maj+B`).
 
 Le binaire sort dans `bin\Release\`.
+
+## Troubleshooting
+
 En cas d'échec "Erreur **Fody** ou `MsBuildMajorVersion` vide" : dans Gérer les packages NuGet, **mettre à jour** le paquet fautif (Fody/Costura), puis rebuild.
+
+
+**Erreur "pack de ciblage vX.Y introuvable"**
+Vérifier les versions installées :
+
+```powershell
+Get-ChildItem "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\"
+```
+
+Fix : dans le `.csproj`, mettre `TargetFrameworkVersion` sur une version listée ci-dessus.
+```xml
+<TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+```
