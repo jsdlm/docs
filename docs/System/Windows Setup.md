@@ -96,6 +96,10 @@ Deploy a Windows Virtual Machine
    > [Where can I find a Windows 11 Virtual Machine?](https://www.microsoft.com/en-us/software-download/windows11)
 ## Pre-Install Procedures
 
+Mettre à jour la VM -> Windows Update.
+Activer Windows.
+Reboot.
+
 **You MUST disable Windows Defender for a smooth install**. The best way to accomplish this is through Group Policy.
 In Windows versions 1909 and higher, Tamper Protection was added.
 **Tamper Protection must be disabled first, otherwise Group Policy settings are ignored.**
