@@ -6,12 +6,11 @@ The high-level steps required for process injection to be successful are to:
 - Allocate a new region of memory in the process.
 - Copy the shellcode into that region.
 - Execute the shellcode (typically with a thread).
-
 # Classic injection
 
 Perhaps the most vanilla form of process injection uses the VirtualAlloc, WriteProcessMemory, and CreateThread APIs.  This will inject and execute the shellcode in the running process.
 
-```c++
+```cpp
 #include <Windows.h>
 
 int main()
@@ -61,7 +60,7 @@ int main()
 
 The same style of injection can be used on other processes as well.  An additional step is required where we must obtain a handle to the target process by its process ID (PID).
 
-```c++
+```cpp
 #include <Windows.h>
 
 int main(int argc, char* argv[])
@@ -128,7 +127,7 @@ int main(int argc, char* argv[])
 
 In the examples above, the new threads are pointing to our shellcode when they are created.  Anti-virus solutions can receive notifications when new threads are created and are able to inspect the memory the thread is pointing to.  If they find the thread is pointing to shellcode, it can block the new thread from starting and raise an alert.  A possible workaround for this is to create the thread in a suspended state but pointing to a benign location.  After some time (hopefully after the anti-virus has scanned the memory region), the context of the thread can be changed to point at the shellcode and resumed.
 
-```c++
+```cpp
 #include <Windows.h>
 
 void dummy() {
@@ -198,7 +197,7 @@ A similar variant of thread hijacking can be performed where you enumerate all o
 
 This technique is similar to above but instead of creating a new thread, we queue an [asynchronous procedure call](https://learn.microsoft.com/en-us/windows/win32/sync/asynchronous-procedure-calls) on an existing thread.  When the thread enters an 'alertable' state (e.g. when it calls an API like Sleep or WaitForSingleObject), it will run the shellcode that the APC points to.  Queuing an APC on a thread requires that we have a handle to it, and for that we need a thread ID.  To obtain a valid thread ID from a process, we must 'thread walk' it.
 
-```c++
+```cpp
 #include <Windows.h>
 #include <tlhelp32.h>
 
@@ -284,7 +283,7 @@ int main(int argc, char* argv[])
 
 The downside with the APC method is that there's no guarantee that the selected thread will become alertable, and therefore the shellcode will not run.  You could queue an APC on every thread in the process, but that would almost certainly lead to a crash.  The 'early bird' technique gets around this by spawning a new process in a suspended state, queuing the APC on its primary thread, then resuming the process.  This way, the APC is guaranteed to trigger.
 
-```c++
+```cpp
 #include <Windows.h>
 
 int main()
@@ -354,7 +353,7 @@ Finding the PE's entry point requires us to read its structure from memory while
 
 From there, we can read PE's DOS header to get the value for `e_lfanew`, and then use that to locate the NT header.  Drilling down into `OptionalHeader->AddressOfEntryPoint` gives us the relative virtual address (RVA) of the PE's entry point.
 
-```c++
+```cpp
 #include <Windows.h>
 #include <winternl.h>
 
@@ -448,4 +447,36 @@ int main()
     // resume the process
     ResumeThread(pi.hThread);
 }
+```
+
+
+# Tips
+
+**1. Lire depuis un .bin au runtime (remplace la ligne)**
+
+```cpp
+FILE* f = fopen("out.x64.bin", "rb");
+fseek(f, 0, SEEK_END);
+size_t len = ftell(f);
+rewind(f);
+unsigned char* shellcode = (unsigned char*)malloc(len);
+fread(shellcode, 1, len, f);
+fclose(f);
+// utilise shellcode et len exactement comme avant
+```
+
+---
+
+**2. Garder le format embarqué, générer depuis un .bin**
+
+```bash
+sudo apt install xxd
+xxd -i out.x64.bin
+```
+
+Sortie :
+
+```cpp
+unsigned char out_x64_bin[] = { 0x4d, 0x5a, ... };
+unsigned int out_x64_bin_len = 1234;
 ```
