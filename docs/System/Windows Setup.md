@@ -49,6 +49,13 @@ winget upgrade --verbose-logs
 wsl --install -d Debian
 ```
 
+During this process, you will need to reboot your computer once. The install will automatically resume on reboot. And, at one point, it may hang at 0% for awhile. Leave it alone. It's not broken. It's just confusing.
+If you're running Windows 10 or 11 from a Virtual Machine, make sure to enable nested virtualization (e.g., VT-x, AMD-v) for the VM.
+#### Tips
+
+- The Windows c:\ drive is available via /mnt/c
+- You can run Windows executables from the WSL Ubuntu environment
+
 # Docker
 
 ```
