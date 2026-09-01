@@ -24,4 +24,3 @@ Load all modules in AdaptixC2 client: **Main menu** -> **AxScript** -> **Script 
 # OPSEC
 https://github.com/MaorSabag/Adaptix-StealthPalace
 
-https://jmeubank.github.io/tdm-gcc/

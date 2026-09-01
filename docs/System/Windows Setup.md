@@ -132,3 +132,9 @@ To permanently disable Microsoft Defender:
 4. `cd .\winlegion-vm`
 5. `Get-ChildItem .\ -Recurse | Unblock-File`
 6. `.\install.ps1`
+
+
+# Bypass NRO
+
+Sur l'écran de configuration réseau (le choix du pays ou de la connexion internet), appuyez sur les touches **Maj + F10** (ou **Maj + Fn + F10**) de votre clavier pour ouvrir l'invite de commandes.
+Tapez la commande suivante et validez avec Entrée :  `oobe\bypassnro`
