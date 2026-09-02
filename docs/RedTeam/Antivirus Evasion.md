@@ -18,6 +18,15 @@ Manipulation de la mémoire volatile uniquement, rien n'est écrit sur disque.
 |**Reflective DLL Injection**|Chargement d'une DLL depuis la mémoire sans `LoadLibrary` (API réimplémentée par l'attaquant)|
 |**Process Hollowing**|Lancer un processus légitime suspendu → vider son image → remplacer par le payload → reprendre|
 |**Inline Hooking**|Modifier une fonction en mémoire pour rediriger vers du code malveillant, puis retour au flux normal|
+
+# Check MAJ Windows
+
+```powershell
+$s = (New-Object -ComObject Microsoft.Update.Session).CreateUpdateSearcher()
+$s.Search("IsInstalled=0 and Type='Software'").Updates | Select Title
+```
+Résultat vide = à jour.
+
 # PowerShell Thread Injection
 
 - https://github.com/darkoperator/powershell_scripts/blob/master/ps_encoder.py

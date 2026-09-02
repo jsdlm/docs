@@ -97,6 +97,9 @@ g++ -std=c++17 -static prog.cpp -o prog
 ```powershell
 g++ -std=c++17 prog.cpp -o prog.exe
 g++ -std=c++17 -static prog.cpp -o prog.exe
+
+# Process Hollowing
+g++ .\injector.cpp -o .\injector.exe -lntdll
 ```
 
 Sans `-static`, le binaire réclame `libstdc++-6.dll` et `libgcc_s_seh-1.dll`.

