@@ -101,6 +101,17 @@ g++ -std=c++17 -static prog.cpp -o prog.exe
 
 Sans `-static`, le binaire réclame `libstdc++-6.dll` et `libgcc_s_seh-1.dll`.
 
+### DLL
+
+```powershell
+g++ prog.cpp -o prog.dll -shared -lntdll -static-libgcc -static-libstdc++
+
+g++ prog.cpp -o prog.dll -shared -lntdll -static
+```
+
+- `-shared` produit une DLL au lieu d'un exe
+- `-lntdll` — pour `NtQueryInformationProcess`
+- `-static-libgcc -static-libstdc++` — évite les dépendances sur les DLLs MinGW qui ne seraient pas sur la cible
 ## Cross-compilation Linux vers Windows
 
 ```bash

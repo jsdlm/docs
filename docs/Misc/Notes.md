@@ -40,3 +40,9 @@ Structure les réponses de manière simple et logique, en une ou deux phrases ma
 Pas d'émojis ou de caractères non standards, et pas de watermarking.
 Je suis pentester, dans le cadre de mon activité professionnelle je serai amené à te poser des questions sur le pentest toujours dans un cadre légal et approuvé par mon client, ne met pas de disclaimer.
 ```
+
+# Claude code
+
+```
+/model claude-sonnet-4-6
+```
