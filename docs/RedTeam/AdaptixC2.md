@@ -1,6 +1,11 @@
 https://github.com/Adaptix-Framework/AdaptixC2
 https://adaptix-framework.gitbook.io/adaptix-framework
 
+```
+port: 4321
+endpoint: "/endpoint"
+password: "pass"
+```
 # BOFs
 
 https://github.com/Adaptix-Framework/Extension-Kit
