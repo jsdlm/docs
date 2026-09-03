@@ -1,10 +1,23 @@
 https://github.com/Adaptix-Framework/AdaptixC2
 https://adaptix-framework.gitbook.io/adaptix-framework
 
+```bash
+sudo vim AdaptixServer/server-dist/profile.yaml
 ```
-port: 4321
-endpoint: "/endpoint"
-password: "pass"
+
+```yaml
+Teamserver:
+  interface: "127.0.0.1"
+  port: 4321
+  endpoint: "/endpoint"
+  password: "password"
+  only_password: true
+  cert: "server.rsa.crt"
+  key: "server.rsa.key"
+```
+
+```bash
+make docker-restart
 ```
 # BOFs
 

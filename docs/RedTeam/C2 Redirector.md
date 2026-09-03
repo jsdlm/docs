@@ -119,3 +119,29 @@ server {
     }
 }
 ```
+
+
+# TeamServer
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name _;
+
+    ssl_certificate /etc/nginx/ssl/cert.pem;
+    ssl_certificate_key /etc/nginx/ssl/key.pem;
+
+    location /QzTYvl3wNMcR88j5Imoe66h4oCV5KqbzJac8WgwMlVv1pXez {
+        proxy_pass https://127.0.0.1:4321/endpoint;
+        proxy_ssl_verify off;
+        include proxy_params;
+        proxy_http_version 1.1; 
+        proxy_set_header Upgrade $http_upgrade; 
+        proxy_set_header Connection "upgrade";
+    }
+
+    location / {
+        return 404;
+    }
+}
+```
