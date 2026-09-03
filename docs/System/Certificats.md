@@ -77,35 +77,35 @@ openssl pkcs12 -export -inkey key.pem -in cert.pem -out cert.p12
 
 ```bash
 openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \
-  -keyout demo-ca.key -out demo-ca.crt -subj "/CN=demo-ca" \
+  -keyout ca.key -out ca.crt -subj "/CN=ca" \
   -addext "basicConstraints=critical,CA:TRUE,pathlen:0" \
   -addext "keyUsage=critical,keyCertSign,cRLSign"
 ```
 
-Produit : `demo-ca.key` (clé CA) et `demo-ca.crt` (certificat racine, à importer dans le magasin de confiance des clients).
+Produit : `ca.key` (clé CA) et `ca.crt` (certificat racine, à importer dans le magasin de confiance des clients).
 
 ## 2. Générer la clé serveur et la CSR
 
 ```bash
 openssl req -new -nodes -newkey rsa:2048 \
-  -keyout demo-key.pem -out demo.csr -config cert.cnf
+  -keyout key.pem -out csr.pem -config cert.cnf
 ```
 
 ## 3. Signer la CSR avec la CA
 
 ```bash
-openssl x509 -req -sha256 -days 825 -in demo.csr \
-  -CA demo-ca.crt -CAkey demo-ca.key -CAcreateserial \
-  -out demo-cert.pem -extensions v3_req -extfile cert.cnf
+openssl x509 -req -sha256 -days 825 -in csr.pem \
+  -CA ca.crt -CAkey ca.key -CAcreateserial \
+  -out cert.pem -extensions v3_req -extfile cert.cnf
 ```
 
-Produit : `demo-cert.pem` (certificat serveur) et `demo-ca.srl` (compteur de numéros de série).
+Produit : `cert.pem` (certificat serveur) et `ca.srl` (compteur de numéros de série).
 
 ## 4. Vérifier
 
 ```bash
-openssl x509 -in demo-cert.pem -noout -text
-openssl verify -CAfile demo-ca.crt demo-cert.pem
+openssl x509 -in cert.pem -noout -text
+openssl verify -CAfile ca.crt cert.pem
 ```
 
 ## 5. Formats de sortie complémentaires
@@ -113,12 +113,12 @@ openssl verify -CAfile demo-ca.crt demo-cert.pem
 Chaîne complète (serveur + CA) pour les serveurs qui l'exigent :
 
 ```bash
-cat demo-cert.pem demo-ca.crt > demo-fullchain.pem
+cat cert.pem ca.crt > fullchain.pem
 ```
 
 PKCS#12 :
 
 ```bash
-openssl pkcs12 -export -inkey demo-key.pem -in demo-cert.pem \
-  -certfile demo-ca.crt -out demo.p12
+openssl pkcs12 -export -inkey key.pem -in cert.pem \
+  -certfile ca.crt -out cert.p12
 ```
