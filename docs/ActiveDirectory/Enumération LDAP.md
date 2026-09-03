@@ -256,6 +256,7 @@ bofhound -i ./dc.server.com_1234567890_bofhound.log -o output
 
 ## ADWS
 
+ADWS (Active Directory Web Services) est un service Windows qui expose une interface SOAP/HTTPS (port 9389) permettant d'interroger et de gérer Active Directory via des web services, utilisé notamment par les cmdlets PowerShell du module ActiveDirectory (`Get-ADUser`, etc.).
 ### SOAPHound
 
 [SOAPHound](https://github.com/FalconForceTeam/SOAPHound) talks to Active Directory Web Services (ADWS - Port 9389) instead of sending LDAP queries.
@@ -339,6 +340,14 @@ pipx install bofhound
 # Convert
 bofhound -i ./ldap_output.txt -p All --parser ldapsearch
 bofhound -i ./cert_output.txt -p All --parser ldapsearch
+```
+
+### ADWSDomainDump
+
+https://github.com/mverschu/adwsdomaindump
+
+```bash
+pipx install git+https://github.com/mverschu/adwsdomaindump
 ```
 
 ## BloodHound-ce python
