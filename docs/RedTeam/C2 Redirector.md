@@ -27,6 +27,8 @@ sudo vim /etc/nginx/sites-enabled/default
 server {
     listen 80;
     server_name _;
+    
+    server_tokens off;
 
     # !~ : ne correspond pas à la regex (sensible à la casse)
     # !~* : ne correspond pas à la regex (insensible à la casse)
@@ -78,6 +80,9 @@ server {
 
     ssl_certificate /etc/nginx/ssl/cert.pem;
     ssl_certificate_key /etc/nginx/ssl/key.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    server_tokens off;
 
     # !~ : ne correspond pas à la regex (sensible à la casse)
     # !~* : ne correspond pas à la regex (insensible à la casse)
