@@ -58,6 +58,8 @@ while (n > 0) {
 Découpage d'un programme (jeu du nombre secret) en fonctions avec ou sans retour.
 
 ```cpp
+#include <cstdlib> // rand()
+
 // void : ne retourne rien
 void afficherBienvenue() {
     std::cout << "=== Jeu du nombre secret ===" << std::endl;
@@ -83,6 +85,8 @@ Le jeu complet avec boucle `while (true)` + `break` reprend les mêmes fonctions
 Tableau classique = taille fixe. `std::vector` = taille dynamique.
 
 ```cpp
+#include <vector>
+
 int notes[5] = {14, 17, 9, 12, 18};
 
 std::vector<int> scores;
@@ -119,6 +123,8 @@ alice.notes = {14, 16, 12, 18};
 Écriture/lecture avec `ofstream` / `ifstream`.
 
 ```cpp
+#include <fstream>
+
 std::ofstream writer("test.txt");
 writer << "Ligne 1 : bonjour" << std::endl;
 writer.close();
@@ -199,14 +205,29 @@ public:
 };
 
 class Etudiant : public Personne {
+    std::vector<int> notes;
+
 public:
     Etudiant(std::string p, int a) : Personne(p, a) {}
+
+    void ajouterNote(int note) { notes.push_back(note); }
+
+    double getMoyenne() {
+        if (notes.empty()) return 0;
+        int total = 0;
+        for (int note : notes) total += note;
+        return total / (double)notes.size();
+    }
 
     void afficher() override {
         Personne::afficher();
         std::cout << " - etudiant - moyenne : " << getMoyenne() << std::endl;
     }
 };
+
+Personne bob("Bob", 40);
+Etudiant alice("Alice", 20);
+alice.ajouterNote(14); alice.ajouterNote(16);
 
 // polymorphisme : un pointeur de base peut désigner n'importe quelle classe fille
 std::vector<Personne*> liste = {&alice, &bob};
@@ -220,6 +241,15 @@ for (Personne* p : liste) {
 Gestion automatique de la mémoire, plus de `delete` manuel.
 
 ```cpp
+#include <memory>
+
+class Robot {
+    std::string nom;
+public:
+    Robot(std::string n) : nom(n) { std::cout << nom << " cree" << std::endl; }
+    ~Robot() { std::cout << nom << " detruit" << std::endl; }
+};
+
 // unique_ptr : un seul propriétaire, détruit automatiquement en fin de bloc
 std::unique_ptr<Robot> r2 = std::make_unique<Robot>("R2");
 std::unique_ptr<Robot> r3 = std::move(r2); // transfert de propriété (pas de copie possible)
@@ -236,6 +266,8 @@ std::cout << s1.use_count() << std::endl; // 2
 Manipuler fichiers/dossiers avec `std::filesystem`.
 
 ```cpp
+#include <filesystem>
+
 namespace fs = std::filesystem;
 
 fs::path p = "C:/Users";
@@ -262,6 +294,10 @@ for (const fs::directory_entry& entry : fs::recursive_directory_iterator(".")) {
 Trois niveaux, du plus simple au plus contrôlé.
 
 ```cpp
+#include <windows.h> // STARTUPINFOA, PROCESS_INFORMATION, CreateProcessA, Sleep, TerminateProcess, CloseHandle
+#include <cstdio>    // _popen, _pclose, fgets
+#include <cstdlib>   // system
+
 // Niveau 1 : system() — bloque, mais pas de lecture de la sortie
 int code = system("echo Bonjour depuis system()");
 
@@ -271,16 +307,19 @@ char buffer[256];
 while (fgets(buffer, sizeof(buffer), pipe)) {
     std::cout << "  > " << buffer;
 }
-_pclose(pipe);
+_pclose(pipe); // toujours fermer le pipe, comme un fichier
 
 // Niveau 3 : CreateProcess() — API Windows, contrôle total (PID, arrêt forcé...)
-STARTUPINFOA si = { sizeof(si) };
-PROCESS_INFORMATION pi;
-char commande[] = "mspaint.exe";
+STARTUPINFOA si = { sizeof(si) };  // sizeof obligatoire : l'API en a besoin pour valider la structure
+PROCESS_INFORMATION pi;            // rempli par CreateProcessA : contient le PID, le handle du process...
+char commande[] = "mspaint.exe";   // doit être modifiable (char[], pas const char*) : l'API peut réécrire le buffer
 
+// paramètres : pas de module explicite (NULL) -> on passe tout dans la ligne de commande,
+// pas d'héritage d'attributs de sécurité/handles (NULL, NULL, FALSE),
+// pas de flags de création (0), environnement/répertoire courant hérités (NULL, NULL)
 CreateProcessA(NULL, commande, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
-Sleep(3000);
-TerminateProcess(pi.hProcess, 0);
-CloseHandle(pi.hProcess);
+Sleep(3000);                        // laisse tourner le process 3 secondes
+TerminateProcess(pi.hProcess, 0);   // arrêt forcé, code de sortie 0
+CloseHandle(pi.hProcess);           // toujours fermer les handles renvoyés par pi, sinon fuite de handles
 CloseHandle(pi.hThread);
 ```
