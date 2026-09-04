@@ -936,7 +936,7 @@ shellcode  // adresse des données, c'est ce qu'il faut
 ```cpp
 CreateProcessW(
 	L"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
-	(LPWSTR)L"\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --type=gpu-process",
+	(LPWSTR)L"\"C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe\" --no-startup-window --type=gpu-process",
 	NULL,
 	NULL,
 	FALSE,
