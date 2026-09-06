@@ -41,6 +41,13 @@ Chaque objet AD a une ACL (Access Control List) composée d'ACEs (Access Control
 |`ForceChangePassword`|Forcer le changement de mdp|
 |`Self`|S'ajouter soi-même (ex: à un groupe)|
 
+## Query utiles
+
+**Users**
+```
+MATCH (u:User) RETURN u
+```
+
 # Exploitation des droits/ACLs
 
 ## ForceChangePassword

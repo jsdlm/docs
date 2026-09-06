@@ -10,8 +10,11 @@ reboot
 
 sudo su -
 # Ajouter un utilisateur pentester en sudoer
-adduser pentester
+adduser --shell /usr/bin/zsh pentester
 usermod -aG sudo pentester
+
+# Changer le shell si oubli
+chsh -s /usr/bin/zsh pentester
 
 # Monter le dossier partagé VMWare 'share' dans /mnt:
 mkdir /mnt/_share
