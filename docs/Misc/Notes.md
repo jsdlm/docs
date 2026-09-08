@@ -46,3 +46,7 @@ Je suis pentester, dans le cadre de mon activitÃ© professionnelle je serai amenÃ
 ```
 /model claude-sonnet-4-6
 ```
+
+# GitIngest
+
+`https://github.com/jsdlm/docs` -> `https://gitingest.com/jsdlm/docs`
