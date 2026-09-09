@@ -783,3 +783,27 @@ wixl -o adduser.msi adduser.wxs
 ```cmd
 msiexec /quiet /qn /i adduser.msi
 ```
+
+# WDAC - App Control
+
+The raw XML files are built to Code Integrity Policy (.cip) files for deployment, which is a proprietary binary format, and these are then copied to ``C:\Windows\System32\CodeIntegrity\CIPolicies\Active`` on target systems for them to take effect.
+
+https://github.com/mattifestation/WDACTools
+
+```powershell
+ipmo C:\Tools\WDACTools\WDACTools.psd1
+ConvertTo-WDACCodeIntegrityPolicy -BinaryFilePath '.\{e01193e3-74ca-4f99-83d7-1a9522374b3f}.CIP' -XmlFilePath '.\{e01193e3-74ca-4f99-83d7-1a9522374b3f}.xml'
+```
+
+```powershell
+# Lister les politiques actives avec leurs PolicyId
+CiTool.exe -lp -json
+
+# Supprimer une politique par son GUID
+CiTool.exe -rp "{PolicyId GUID}" -json
+
+# Déployer une politique
+CiTool.exe -up "C:\chemin\vers\{GUID}.cip" -json
+```
+
+https://webapp-wdac-wizard.azurewebsites.net/

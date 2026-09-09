@@ -21,7 +21,7 @@ winget install Nvidia.GeForceExperience Valve.Steam Blizzard.BattleNet RiotGames
 
 **PRO**
 ```
-winget install ShiningLight.OpenSSL.Light lsd-rs.lsd WiresharkFoundation.Wireshark IDRIX.VeraCrypt NirSoft.WifiInfoView Oracle.JDK.21 Gyan.FFmpeg MediaArea.MediaInfo.GUI Microsoft.Sysinternals.Suite
+winget install ShiningLight.OpenSSL.Light lsd-rs.lsd WiresharkFoundation.Wireshark IDRIX.VeraCrypt NirSoft.WifiInfoView Oracle.JDK.21 Gyan.FFmpeg MediaArea.MediaInfo.GUI Microsoft.Sysinternals.Suite Microsoft.DotNet.Framework.Runtime
 ```
 
 **OLD**
