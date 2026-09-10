@@ -199,3 +199,10 @@ upload C:\Users\Attacker\Desktop\rto2.txt
 `link lon-sql-1`
 
 Un beacon SMB est passif : il crée son named pipe (défini par le listener) et attend, il ne se link jamais seul. Ton cradle MSSQL a bien spawné le beacon dans `powershell.exe`, mais sans `link` derrière il restait orphelin et invisible. Le `jump scshell64` a échoué à la livraison mais son étape `link` s'est connectée au pipe déjà ouvert : même listener = même nom de pipe, donc il a récupéré le beacon orphelin du cradle. Méthode propre : ne pas re-livrer, juste `link lon-sql-1`.
+
+The beacons of these listeners don’t need to talk to the C2 directly, they can communicate to it through other beacons.
+
+`Cobalt Strike -> Listeners -> Add/Edit` then you need to select the TCP or SMB beacons
+
+- The **TCP beacon will set a listener in the port selected**. To connect to a TCP beacon use the command `connect <ip> <port>` from another beacon
+- The **smb beacon will listen in a pipename with the selected name**. To connect to a SMB beacon you need to use the command `link [target] [pipe]`.
