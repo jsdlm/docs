@@ -77,4 +77,11 @@ cd 127.0.6533.99
 sudo chown -R root:root chrome-sandbox
 sudo chmod 4755 chrome-sandbox
 ```
+# Logs parsing
 
+```bash
+less -R session.log > clean.log
+
+sudo apt install colorized-logs
+cat session.log | ansi2txt > clean.log
+```
