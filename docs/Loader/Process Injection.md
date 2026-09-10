@@ -869,22 +869,7 @@ namespace AppDomainHijack
     }
 }
 ```
-# ShellCode integration
-
-**1. Lire depuis un .bin au runtime (remplace la ligne)**
-
-```cpp
-FILE* f = fopen("out.x64.bin", "rb");
-fseek(f, 0, SEEK_END);
-size_t len = ftell(f);
-rewind(f);
-unsigned char* shellcode = (unsigned char*)malloc(len);
-fread(shellcode, 1, len, f);
-fclose(f);
-// utilise shellcode et len exactement comme avant
-```
-
-**2. Garder le format embarqué, générer depuis un .bin**
+# ShellCode embarqué
 
 ```bash
 sudo apt install xxd

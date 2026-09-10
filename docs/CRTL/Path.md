@@ -206,3 +206,10 @@ The beacons of these listeners don’t need to talk to the C2 directly, they can
 
 - The **TCP beacon will set a listener in the port selected**. To connect to a TCP beacon use the command `connect <ip> <port>` from another beacon
 - The **smb beacon will listen in a pipename with the selected name**. To connect to a SMB beacon you need to use the command `link [target] [pipe]`.
+
+# NextSteps
+
+- [ ] Tester avec full Crystal-Kit last version github sur les labs
+- [ ] Faire un nouveau shellcode runner (process hollowing ou APC en .NET), le tester en condition réelle sur la VM avec service csvc.exe et ysoserial
+- [ ] Tester dans le lab les exploits mssql avec beacon smb/tcp listener avec connect/link
+- [ ] Relire les 4 points perdus et chercher ce qui a pu causer ces erreurs
