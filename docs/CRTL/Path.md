@@ -193,3 +193,9 @@ cd \\lon-paw-1\c$
 pwd
 upload C:\Users\Attacker\Desktop\rto2.txt
 ```
+
+# DEBUG
+
+`link lon-sql-1`
+
+Un beacon SMB est passif : il crée son named pipe (défini par le listener) et attend, il ne se link jamais seul. Ton cradle MSSQL a bien spawné le beacon dans `powershell.exe`, mais sans `link` derrière il restait orphelin et invisible. Le `jump scshell64` a échoué à la livraison mais son étape `link` s'est connectée au pipe déjà ouvert : même listener = même nom de pipe, donc il a récupéré le beacon orphelin du cradle. Méthode propre : ne pas re-livrer, juste `link lon-sql-1`.
