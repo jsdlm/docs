@@ -1,6 +1,6 @@
 # 1. Préparer la clé bootable
 
-Télécharger l'ISO sur systemrescue.org, puis flasher la clé :
+Télécharger l'ISO sur [system-rescue.org](https://www.system-rescue.org/), puis flasher la clé :
 ```bash
 dd if=systemrescue-*.iso of=/dev/sdX bs=4M status=progress oflag=sync
 ```
@@ -9,43 +9,34 @@ Remplacer `/dev/sdX` par ta clé USB (vérifier avec `lsblk`).
 
 # 2. Booter et identifier le disque
 
-Booter sur la clé, puis :
+Repérer le disque cible par sa taille et son numéro de série.
 ```bash
+loadkeys fr
 lsblk -o NAME,SIZE,MODEL,SERIAL
 ```
 
-Repérer le disque cible par sa taille et son numéro de série. Ne pas se tromper de device.
-
 # 3. Wipe
 
-Choisir selon le type de disque.
-
-**HDD (magnétique) — passe unique de zéros :**
+### HDD
+```bash
+dd if=/dev/zero of=/dev/sdX bs=4M status=progress
+```
 
 ```bash
 shred -v -n 0 -z /dev/sdX
 ```
 
-Ou avec dd :
-
-```bash
-dd if=/dev/zero of=/dev/sdX bs=4M status=progress
-```
-
-**SSD / NVMe — Secure Erase natif (recommandé, plus fiable que shred sur SSD) :**
-
-SATA :
+### SSD SATA
 ```bash
 hdparm --user-master u --security-set-pass p /dev/sdX
 hdparm --user-master u --security-erase p /dev/sdX
 ```
 
-NVMe :
+### SSD NVMe
 ```bash
 nvme format /dev/nvmeXn1 --ses=1
+# --ses=2 pour un Cryptographic Erase si supporté.
 ```
-
-`--ses=2` pour un Cryptographic Erase si supporté.
 
 # 4. Vérifier
 
