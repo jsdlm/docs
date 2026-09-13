@@ -26,6 +26,16 @@ gdb --version
 ```
 
 ---
+
+# Clang - LLVM
+
+```
+winget install LLVM.LLVM
+[System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\Program Files\LLVM\bin", "Machine")
+clang++ --version
+```
+
+---
 # C
 
 **Extensions**
