@@ -187,3 +187,7 @@ smb
 ```
 TSVCPIPE-4b2f70b3-ceba-42a5-a4b5-704e1c41337
 ```
+
+tcp -> port 4444
+
+tcp-local : 127.0.0.1:1337
