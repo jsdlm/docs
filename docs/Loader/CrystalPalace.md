@@ -251,3 +251,8 @@ int main()
     CloseHandle(pi.hProcess);
 }
 ```
+
+# Bypass new elastic alerts
+
+Search in discord : SYNTHETIC_STACK_FRAME
+https://discord.com/channels/866726468989354004/866727536503554068/1496129314671034529
