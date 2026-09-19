@@ -2,7 +2,7 @@
 
 ```
 pipx install impacket
-impacket-mssqlclient user:pass@$target -windows-auth
+mssqlclient.py user:pass@$target -windows-auth
 ```
 ## Navigation
 ```sql

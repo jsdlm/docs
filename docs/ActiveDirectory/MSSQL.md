@@ -1,6 +1,6 @@
 
 ```shell
-impacket-mssqlclient 'user'@127.0.0.1 -windows-auth
+mssqlclient.py 'user'@127.0.0.1 -windows-auth
 
 # Énumérer
 SQL> SELECT name FROM sys.databases;

