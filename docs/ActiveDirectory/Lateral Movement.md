@@ -1,5 +1,19 @@
 > Rappel RPC : Le port 135 est l'Endpoint Mapper : le client s'y connecte pour demander sur quel port dynamique joindre le service cible. Dans Windows, une grande partie du RPC passe en réalité par des named pipes transportés sur SMB (port 445), ce qui explique pourquoi le 445 est omniprésent dans le trafic d'administration réseau.
 
+# RDP
+
+```bash
+xfreerdp /dynamic-resolution /cert:ignore /u:'user' /p:'pass' /v:<IP>
+```
+
+```bash
+xfreerdp /dynamic-resolution /d:corp.com /u:'user' /p:'pass' /v:<IP>
+```
+
+```bash
+sudo apt install remmina
+```
+
 # WinRM
 
 Protocole WS-Management sur TCP **5985** (HTTP) / **5986** (HTTPS). Nécessite d'être membre de **Administrators** ou **Remote Management Users** sur la cible.

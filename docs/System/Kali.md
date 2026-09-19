@@ -45,9 +45,10 @@ Persistant, dans `/etc/network/interfaces` :
 ```
 auto eth1
 iface eth1 inet static
-    address 192.168.56.1
+    address 192.168.56.200
     netmask 255.255.255.0
-    gateway 192.168.56.1
+    gateway 192.168.56.10
+    dns-nameservers 192.168.56.10
 ```
 
 Puis `sudo ifup eth1`.

