@@ -20,7 +20,7 @@ sudo apt -y install nginx
 ```
 
 ```
-sudo vim /etc/nginx/sites-enabled/default
+sudo vim /etc/nginx/sites-available/default
 ```
 
 ```nginx
@@ -144,4 +144,48 @@ server {
         return 404;
     }
 }
+```
+
+# File Download
+
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name _;
+
+    ssl_certificate /etc/nginx/ssl/cert.pem;
+    ssl_certificate_key /etc/nginx/ssl/key.pem;
+
+    location /files/ {
+        alias /opt/files/;
+        autoindex on;
+        autoindex_exact_size off;
+        autoindex_localtime on;
+    }
+
+    location / {
+        return 404;
+    }
+}
+
+server {
+    listen 8080;
+    server_name _;
+
+    location /files/ {
+        alias /opt/files/;
+        autoindex on;
+        autoindex_exact_size off;
+        autoindex_localtime on;
+    }
+
+    location / {
+        return 404;
+    }
+}
+```
+
+```powershell
+iwr https://192.168.204.140/files/test.txt -OutFile test.txt -SkipCertificateCheck
 ```
