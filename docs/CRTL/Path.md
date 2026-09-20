@@ -317,7 +317,7 @@ upload C:\Users\Attacker\Desktop\rto2.txt
 
 Un beacon SMB est passif : il crée son named pipe (défini par le listener) et attend, il ne se link jamais seul. Ton cradle MSSQL a bien spawné le beacon dans `powershell.exe`, mais sans `link` derrière il restait orphelin et invisible. Le `jump scshell64` a échoué à la livraison mais son étape `link` s'est connectée au pipe déjà ouvert : même listener = même nom de pipe, donc il a récupéré le beacon orphelin du cradle. Méthode propre : ne pas re-livrer, juste `link lon-sql-1`.
 
-The beacons of these listeners don’t need to talk to the C2 directly, they can communicate to it through other beacons.
+The beacons of these listeners don't need to talk to the C2 directly, they can communicate to it through other beacons.
 
 `Cobalt Strike -> Listeners -> Add/Edit` then you need to select the TCP or SMB beacons
 
@@ -379,14 +379,14 @@ sudo /usr/bin/docker restart cobalt
 - Load `C:\Tools\Crystal-Kit-main\crystalkit.cna`
 # Feedback score
 
-**Cobalt Strike in memory** — Tes chaînes caractéristiques du beacon (named pipes, commandes, metadata) sont probablement restées en clair en mémoire. Le feedback le confirme : il te manque du string replacement dans le profil Malleable C2 et une technique de sleep obfuscation (sleep mask kit ou équivalent) pour chiffrer le beacon entre les callbacks.
+**Cobalt Strike in memory** - Tes chaînes caractéristiques du beacon (named pipes, commandes, metadata) sont probablement restées en clair en mémoire. Le feedback le confirme : il te manque du string replacement dans le profil Malleable C2 et une technique de sleep obfuscation (sleep mask kit ou équivalent) pour chiffrer le beacon entre les callbacks.
 > Revoir Crystal-Kit
 
-**Network Module Loaded from Suspicious Unbacked Memory** — Ton beacon charge des DLL réseau (wininet.dll, winhttp.dll, ws2_32.dll) depuis une région mémoire non mappée à un fichier sur disque. C'est typique d'un shellcode injecté en RWX sans backing. Il faut soit utiliser du module stomping, soit charger le beacon dans une région mémoire backed par un fichier légitime.
+**Network Module Loaded from Suspicious Unbacked Memory** - Ton beacon charge des DLL réseau (wininet.dll, winhttp.dll, ws2_32.dll) depuis une région mémoire non mappée à un fichier sur disque. C'est typique d'un shellcode injecté en RWX sans backing. Il faut soit utiliser du module stomping, soit charger le beacon dans une région mémoire backed par un fichier légitime.
 > ?
 
-**Remote Thread Context Manipulation** — Tu utilises probablement une injection par manipulation de contexte de thread (GetThreadContext/SetThreadContext ou NtContinue) dans un processus distant. L'EDR surveille ces appels croisés entre processus. Il faut envisager des techniques d'exécution qui évitent la manipulation directe du contexte d'un thread remote (callbacks via APC dans le même processus, threadless injection, etc.).
+**Remote Thread Context Manipulation** - Tu utilises probablement une injection par manipulation de contexte de thread (GetThreadContext/SetThreadContext ou NtContinue) dans un processus distant. L'EDR surveille ces appels croisés entre processus. Il faut envisager des techniques d'exécution qui évitent la manipulation directe du contexte d'un thread remote (callbacks via APC dans le même processus, threadless injection, etc.).
 > Améliorer l'initial loader C#
 
-**Spawned Processes (suspended)** — Tu lances des processus en état suspendu (CREATE_SUSPENDED) pour y injecter, ce qui est le fork&run classique de Cobalt Strike. L'EDR détecte la combinaison création suspendue + injection. Il faut passer en mode inline (BOF) autant que possible et, quand le fork&run est inévitable, utiliser des processus cohérents avec le contexte utilisateur et éviter l'état suspendu explicite.
+**Spawned Processes (suspended)** - Tu lances des processus en état suspendu (CREATE_SUSPENDED) pour y injecter, ce qui est le fork&run classique de Cobalt Strike. L'EDR détecte la combinaison création suspendue + injection. Il faut passer en mode inline (BOF) autant que possible et, quand le fork&run est inévitable, utiliser des processus cohérents avec le contexte utilisateur et éviter l'état suspendu explicite.
 > Ne pas utiliser `execute-assembly`, si absolument besoin patch etw-ti avec BYOVD

@@ -45,7 +45,7 @@ df -h | grep /opt/docker
 systemctl stop docker
 ```
 
-# Monter le disque si ce n’est pas déjà fait
+# Monter le disque si ce n'est pas déjà fait
 
 ```bash
 mount /dev/xvdb1 /opt/docker

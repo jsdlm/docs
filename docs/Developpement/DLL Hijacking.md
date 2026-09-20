@@ -108,7 +108,7 @@ extern "C" __declspec(dllexport) BOOL WINAPI SnmpUtilOidCpy(void* pOidDst, void*
 |`HANDLE` / pointeur|`NULL`|
 |`void`|_(rien)_|
 
-Pour les **signatures inconnues** (tu ne sais pas les paramètres exacts), cherche sur [learn.microsoft.com](https://learn.microsoft.com/) avec le nom de la fonction, ou utilise cette astuce : passe tout en `LPVOID` si tu ne l'utilises pas vraiment — BGInfo appellera la vraie implémentation de toute façon.
+Pour les **signatures inconnues** (tu ne sais pas les paramètres exacts), cherche sur [learn.microsoft.com](https://learn.microsoft.com/) avec le nom de la fonction, ou utilise cette astuce : passe tout en `LPVOID` si tu ne l'utilises pas vraiment - BGInfo appellera la vraie implémentation de toute façon.
 
 ---
 # 5. Compiler

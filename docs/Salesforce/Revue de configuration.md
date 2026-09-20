@@ -14,7 +14,7 @@
 - Accéder à (Setup > Identity > Identity Verification)
 - Vérifier que MFA est :
   - Obligatoire pour tous les utilisateurs → sinon **FINDING**
-  - Activé au niveau de l’organisation (et non optionnel)
+  - Activé au niveau de l'organisation (et non optionnel)
 - Vérifier que les administrateurs utilisent des méthodes fortes
 
 ## Single Sign-On (SSO)
@@ -62,7 +62,7 @@
 - Accéder à (Setup > Process Automation > Flows)
 - Identifier :
   - Flows actifs avec accès système
-- Vérifier contrôles d’accès → sinon **FINDING**
+- Vérifier contrôles d'accès → sinon **FINDING**
 
 ## Packages installés
 - Accéder à (Setup > Apps > Installed Packages)

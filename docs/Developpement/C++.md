@@ -298,10 +298,10 @@ Trois niveaux, du plus simple au plus contrôlé.
 #include <cstdio>    // _popen, _pclose, fgets
 #include <cstdlib>   // system
 
-// Niveau 1 : system() — bloque, mais pas de lecture de la sortie
+// Niveau 1 : system() - bloque, mais pas de lecture de la sortie
 int code = system("echo Bonjour depuis system()");
 
-// Niveau 2 : _popen() — lit la sortie de la commande via un pipe
+// Niveau 2 : _popen() - lit la sortie de la commande via un pipe
 FILE* pipe = _popen("dir /b", "r");
 char buffer[256];
 while (fgets(buffer, sizeof(buffer), pipe)) {
@@ -309,7 +309,7 @@ while (fgets(buffer, sizeof(buffer), pipe)) {
 }
 _pclose(pipe); // toujours fermer le pipe, comme un fichier
 
-// Niveau 3 : CreateProcess() — API Windows, contrôle total (PID, arrêt forcé...)
+// Niveau 3 : CreateProcess() - API Windows, contrôle total (PID, arrêt forcé...)
 STARTUPINFOA si = { sizeof(si) };  // sizeof obligatoire : l'API en a besoin pour valider la structure
 PROCESS_INFORMATION pi;            // rempli par CreateProcessA : contient le PID, le handle du process...
 char commande[] = "mspaint.exe";   // doit être modifiable (char[], pas const char*) : l'API peut réécrire le buffer

@@ -119,8 +119,8 @@ CreateThread(loader) → loader termine → hThread signalé
 
 Avec `Sleep(INFINITE)`, le process reste en vie peu importe ce que fait le thread initial - le beacon thread survit et fonctionne normalement.
 
-**Avec un .bin brut** (AdaptixC2) : le shellcode **est** la boucle beacon — le thread ne finit jamais, `WaitForSingleObject` attend indéfiniment → process reste en vie.
-**Avec Crystal Palace (RDLL)** : le shellcode est un _reflective loader_ — il charge la DLL en mémoire, lance le beacon dans son **propre thread**, puis **retourne**. Donc :
+**Avec un .bin brut** (AdaptixC2) : le shellcode **est** la boucle beacon - le thread ne finit jamais, `WaitForSingleObject` attend indéfiniment → process reste en vie.
+**Avec Crystal Palace (RDLL)** : le shellcode est un _reflective loader_ - il charge la DLL en mémoire, lance le beacon dans son **propre thread**, puis **retourne**. Donc :
 1. Le thread créé par `CreateThread` termine rapidement
 2. `WaitForSingleObject(hThread, ...)` revient immédiatement
 3. `main()` se termine → process exit → ton beacon meurt avec lui

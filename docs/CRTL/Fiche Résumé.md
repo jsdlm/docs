@@ -14,19 +14,19 @@
 
 # Les trois cas d'exécution
 
-**Cas 1 — Double-clic sur .exe CS**
+**Cas 1 - Double-clic sur .exe CS**
 
 ```
 Windows loader → Shellcode runner → Loader → Beacon DLL
 ```
 
-**Cas 2 — spawn/inject depuis Beacon existant**
+**Cas 2 - spawn/inject depuis Beacon existant**
 
 ```
 Beacon injecte le blob → Loader → Beacon DLL
 ```
 
-**Cas 3 — Dropper/injecteur custom (process hollowing...)**
+**Cas 3 - Dropper/injecteur custom (process hollowing...)**
 
 ```
 Ton dropper → injecte le blob → Loader → Beacon DLL
@@ -43,8 +43,8 @@ Ton dropper → injecte le blob → Loader → Beacon DLL
 |Injecteur|Code qui injecte un payload dans un processus (process hollowing, injection classique...)|
 |Loader réflectif|Code qui charge une DLL depuis la mémoire sans Windows loader|
 |Blob / Shellcode (.bin)|Loader + Beacon DLL combinés, format brut|
-|PICO|Position-Independent Code Object — Crystal Palace|
-|PIC|Position-Independent Code — code sans adresses fixes|
+|PICO|Position-Independent Code Object - Crystal Palace|
+|PIC|Position-Independent Code - code sans adresses fixes|
 
 ---
 
@@ -59,7 +59,7 @@ Ton dropper → injecte le blob → Loader → Beacon DLL
 |Malleable C2 `process-inject {}`|Comportement d'injection de Beacon|Contrôler méthodes et permissions d'injection|
 |ThreatCheck|Shellcode runner|Identifier les signatures détectées par Defender|
 
-**Important** : quand Crystal Palace est utilisé, il remplace entièrement le loader — les options `stage {}` de Malleable C2 qui concernent le loader deviennent caduques. C'est pour ça qu'on configure un bloc `stage {}` minimal qui désactive ces fonctionnalités au début du CRTL.
+**Important** : quand Crystal Palace est utilisé, il remplace entièrement le loader - les options `stage {}` de Malleable C2 qui concernent le loader deviennent caduques. C'est pour ça qu'on configure un bloc `stage {}` minimal qui désactive ces fonctionnalités au début du CRTL.
 
 ---
 
@@ -159,7 +159,7 @@ Au niveau kernel
 
 # App Control (WDAC)
 
-**Enforced par le kernel** — plus robuste qu'AppLocker.
+**Enforced par le kernel** - plus robuste qu'AppLocker.
 
 **Misconfigurations exploitables** :
 
@@ -197,15 +197,15 @@ Isole les secrets (hashes NTLM, TGTs) dans une enclave virtuelle `LSAIso.exe`. L
 
 ### Le problème de base
 
-Une DLL normale ne peut pas s'exécuter depuis la mémoire seule — elle a besoin du Windows loader pour résoudre ses imports, mapper ses sections, etc. Le loader réflectif résout ça en embarquant cette logique directement dans la DLL.
+Une DLL normale ne peut pas s'exécuter depuis la mémoire seule - elle a besoin du Windows loader pour résoudre ses imports, mapper ses sections, etc. Le loader réflectif résout ça en embarquant cette logique directement dans la DLL.
 
 ### Comment ça fonctionne
 
-**1. La DLL exporte `ReflectiveLoader`** C'est une fonction dans la section `.text` qui contient toute la logique pour se recharger elle-même en mémoire — mapper les sections, résoudre les imports, appliquer les relocations, appeler le point d'entrée. Elle réimplémente manuellement ce que le Windows loader fait normalement.
+**1. La DLL exporte `ReflectiveLoader`** C'est une fonction dans la section `.text` qui contient toute la logique pour se recharger elle-même en mémoire - mapper les sections, résoudre les imports, appliquer les relocations, appeler le point d'entrée. Elle réimplémente manuellement ce que le Windows loader fait normalement.
 
 **2. Le stub shellcode dans le DOS Header** Quand CS génère le blob, il écrase les premiers octets de la DLL (le DOS Header) avec un petit stub assembleur. Ce stub a un seul rôle : trouver et appeler `ReflectiveLoader`.
 
-Pourquoi écraser le DOS Header ? Parce que quand le blob est injecté en mémoire et qu'on saute au début, il faut exécuter quelque chose immédiatement. Le DOS Header d'origine ne contient rien d'utile — autant le remplacer par du code exécutable.
+Pourquoi écraser le DOS Header ? Parce que quand le blob est injecté en mémoire et qu'on saute au début, il faut exécuter quelque chose immédiatement. Le DOS Header d'origine ne contient rien d'utile - autant le remplacer par du code exécutable.
 
 **3. Séquence d'exécution**
 
@@ -225,7 +225,7 @@ Blob injecté en mémoire
 
 - Le DOS Header est corrompu → signature détectable
 - La DLL doit obligatoirement exporter `ReflectiveLoader` → signature connue
-- Le loader est lié à cette DLL spécifique — il ne peut pas charger autre chose
+- Le loader est lié à cette DLL spécifique - il ne peut pas charger autre chose
 - Peu de flexibilité pour obfusquer la DLL car le loader doit connaître sa structure exacte
 
 ---
@@ -251,7 +251,7 @@ Le loader est un blob PIC complètement indépendant, placé **avant** la DLL. L
 
 **2. Le loader sait où est la DLL** Comme on l'a vu avec Crystal Palace, le loader a un marqueur (`_DLL_`) qui pointe vers ce qui est collé juste derrière lui en mémoire. Il sait donc exactement où commence la DLL Beacon.
 
-**3. La DLL peut être transformée** Avant d'être collée au loader, la DLL peut être chiffrée, compressée, encodée — peu importe. Le loader sait comment la décoder avant de la charger. C'est impossible avec le stomped loader car le loader est dans la DLL elle-même et doit pouvoir s'exécuter directement.
+**3. La DLL peut être transformée** Avant d'être collée au loader, la DLL peut être chiffrée, compressée, encodée - peu importe. Le loader sait comment la décoder avant de la charger. C'est impossible avec le stomped loader car le loader est dans la DLL elle-même et doit pouvoir s'exécuter directement.
 
 **4. Séquence d'exécution**
 
@@ -276,7 +276,7 @@ Blob injecté en mémoire
 - Pas de DOS Header corrompu → moins de signatures
 - Pas de `ReflectiveLoader` exporté → moins de signatures
 - La DLL peut être chiffrée → les scanners mémoire ne trouvent rien pendant le sleep
-- Le loader est réutilisable pour n'importe quelle DLL — c'est pour ça que Crystal Palace peut charger aussi bien Beacon que les DLLs post-ex avec le même code
+- Le loader est réutilisable pour n'importe quelle DLL - c'est pour ça que Crystal Palace peut charger aussi bien Beacon que les DLLs post-ex avec le même code
 
 ---
 
@@ -304,29 +304,29 @@ Prepended loader :
 
 # Etapes Windows loader
 
-**Étape 0 — Le kernel crée le processus**  
-Avant même que le loader intervienne, le kernel crée un processus vide avec son propre espace mémoire virtuel et charge `ntdll.dll` dedans — c'est la seule DLL chargée par le kernel lui-même. Le loader (`LdrInitializeThunk`) qui est dans `ntdll.dll` prend ensuite le relais entièrement en user mode.
+**Étape 0 - Le kernel crée le processus**  
+Avant même que le loader intervienne, le kernel crée un processus vide avec son propre espace mémoire virtuel et charge `ntdll.dll` dedans - c'est la seule DLL chargée par le kernel lui-même. Le loader (`LdrInitializeThunk`) qui est dans `ntdll.dll` prend ensuite le relais entièrement en user mode.
 
-**Étape 1 — Lire les headers du PE**  
+**Étape 1 - Lire les headers du PE**  
 Le loader lit le DOS header → suit `e_lfanew` → trouve les NT headers → lit l'Optional Header pour récupérer `ImageBase`, `AddressOfEntryPoint`, `SizeOfImage`, et le tableau `DataDirectory`.
 
-**Étape 2 — Mapper l'image en mémoire**  
+**Étape 2 - Mapper l'image en mémoire**  
 Le loader alloue un bloc de mémoire de la taille de `SizeOfImage`. Il copie ensuite chaque section à son `VirtualAddress` (son RVA) avec les bonnes permissions :
 
 - `.text` → RX (Read + Execute)
 - `.data` → RW (Read + Write)
 - `.rdata` → R (Read seul)
 
-**Étape 3 — Enregistrer le module dans le PEB**  
+**Étape 3 - Enregistrer le module dans le PEB**  
 Le loader ajoute le module aux trois listes chaînées dans `PEB_LDR_DATA` :
 
 - `InLoadOrderModuleList`
 - `InMemoryOrderModuleList`
 - `InInitializationOrderModuleList`
 
-C'est ce qui rend le module visible aux outils comme Process Explorer. Un module chargé manuellement sans passer par le loader n'apparaît pas ici — c'est la base de la détection par forensique mémoire.
+C'est ce qui rend le module visible aux outils comme Process Explorer. Un module chargé manuellement sans passer par le loader n'apparaît pas ici - c'est la base de la détection par forensique mémoire.
 
-**Étape 4 — Résoudre les imports**  
+**Étape 4 - Résoudre les imports**  
 Le loader lit l'Import Directory. Pour chaque DLL listée :
 
 - Si la DLL est déjà en mémoire → il récupère son adresse directement
@@ -334,13 +334,13 @@ Le loader lit l'Import Directory. Pour chaque DLL listée :
 
 Ensuite pour chaque fonction importée, il trouve son adresse réelle et l'écrit dans le slot IAT correspondant. Après cette étape l'IAT est entièrement remplie.
 
-**Étape 5 — Appliquer les relocations**  
+**Étape 5 - Appliquer les relocations**  
 Le loader compare l'adresse réelle de chargement avec `ImageBase`. Si elles diffèrent (ce qui est quasiment toujours le cas avec l'ASLR), il lit la section `.reloc` qui liste tous les endroits dans le PE qui contiennent des adresses absolues, et ajoute le delta à chacun.
 
-**Étape 6 — Exécuter les TLS callbacks**  
+**Étape 6 - Exécuter les TLS callbacks**  
 Si le PE a des TLS callbacks (dans le TLS Directory), ils sont appelés avant le point d'entrée. Utilisés par certains malwares pour exécuter du code avant qu'un débogueur puisse intercepter.
 
-**Étape 7 — Appeler le point d'entrée**  
+**Étape 7 - Appeler le point d'entrée**  
 Le loader saute à `AddressOfEntryPoint`. Pour un `.exe` c'est le start thunk du runtime C qui finit par appeler ton `main()`. Pour une DLL c'est `DllMain` appelé avec `DLL_PROCESS_ATTACH`.
 
 **En résumé visuel**

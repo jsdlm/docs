@@ -21,12 +21,12 @@ sudo gzip -d rockyou.txt.gz
 /usr/share/seclists/Usernames/Names/familynames-usa-top1000.txt
 ```
 
-- [SecLists - The Pentester’s Companion](https://github.com/danielmiessler/SecLists)
+- [SecLists - The Pentester's Companion](https://github.com/danielmiessler/SecLists)
 - [Probable Wordlists](https://github.com/berzerk0/Probable-Wordlists)
 - [WordList Compendium](https://github.com/Dormidera/WordList-Compendium)
 - [Jhaddix Content Discovery All](https://gist.github.com/jhaddix/b80ea67d85c13206125806f0828f4d10)
 - [Google Fuzzing Forum](https://github.com/google/fuzzing)
-- [CrackStation’s Password Cracking Dictionary](https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm)
+- [CrackStation's Password Cracking Dictionary](https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm)
 
 # Default Credentials
 

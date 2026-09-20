@@ -104,7 +104,7 @@
 ---
 # Rescanning
 
-- [ ] Rescanner si bloqué — la précision de l'enum compte
+- [ ] Rescanner si bloqué - la précision de l'enum compte
 - [ ] Ajuster le timing Nmap (T2/T3 vs T4/T5)
 - [ ] Essayer des scanners ou wordlists différents
 - [ ] Vérifier :
@@ -118,7 +118,7 @@
 
 # Mental Rules OSCP
 
-- [ ] Ne pas sauter de machines au hasard — finir l'enum complète d'abord
+- [ ] Ne pas sauter de machines au hasard - finir l'enum complète d'abord
 - [ ] Documenter TOUT, surtout les anomalies
 - [ ] Si bloqué : refaire la recon, élargir l'enum, rester systématique
 - [ ] Mémo : Enumeration → Enumeration → Enumeration

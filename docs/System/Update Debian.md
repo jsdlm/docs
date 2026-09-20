@@ -19,7 +19,7 @@ cp /etc/apt/sources.list /root/sources.list.bullseye.backup
 sudo sed -i 's/bullseye/bookworm/g' /etc/apt/sources.list
 ```
 
-# 4. Mettre à jour l’index et effectuer la migration
+# 4. Mettre à jour l'index et effectuer la migration
 
 ```bash
 sudo apt update

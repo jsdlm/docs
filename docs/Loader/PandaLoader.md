@@ -1,11 +1,11 @@
 https://github.com/chainski/PandaLoader
 ### 1. Anti-analyse (`junk_code`)
 
-Une boucle de calculs inutiles — son seul but est de faire perdre du temps à un sandbox qui analyse le binaire avec un timeout court.
+Une boucle de calculs inutiles - son seul but est de faire perdre du temps à un sandbox qui analyse le binaire avec un timeout court.
 
 ### 2. ETW Patching (`ETWPATCH`)
 
-Patch les fonctions `EtwEventWrite`, `EtwEventWriteTransfer`, etc. dans `ntdll.dll` avec `xor rax, rax; ret` — elles retournent immédiatement sans rien loguer. C'est une des techniques dont je t'avais parlé : ça aveugle Windows Event Tracing, utilisé par certains EDR pour la télémétrie interne.
+Patch les fonctions `EtwEventWrite`, `EtwEventWriteTransfer`, etc. dans `ntdll.dll` avec `xor rax, rax; ret` - elles retournent immédiatement sans rien loguer. C'est une des techniques dont je t'avais parlé : ça aveugle Windows Event Tracing, utilisé par certains EDR pour la télémétrie interne.
 
 ### 3. Checks optionnels
 
@@ -20,7 +20,7 @@ Patch les fonctions `EtwEventWrite`, `EtwEventWriteTransfer`, etc. dans `ntdll.d
 HTTP GET sur SHELLCODE_URL → XOR decrypt avec XOR_DECRYPTION_KEY → payload en mémoire
 ```
 
-Le shellcode n'est pas embarqué dans le binaire — il est téléchargé au runtime depuis une URL. Ça rend l'analyse statique du binaire inutile.
+Le shellcode n'est pas embarqué dans le binaire - il est téléchargé au runtime depuis une URL. Ça rend l'analyse statique du binaire inutile.
 
 ### 5. Injection (Early Bird APC)
 
@@ -41,7 +41,7 @@ Toutes les fonctions sensibles sont résolues via `GetProcAddress` au lieu d'êt
 (WriteProcessMemoryFunc)GetProcAddress(GetModuleHandleA("kernel32.dll"), "WriteProcessMemory")
 ```
 
-Combiné avec `OBF()` (obfuscation des strings), les strings `"VirtualAllocEx"`, `"WriteProcessMemory"` n'apparaissent pas en clair dans le binaire — ça contourne la détection statique par IAT.
+Combiné avec `OBF()` (obfuscation des strings), les strings `"VirtualAllocEx"`, `"WriteProcessMemory"` n'apparaissent pas en clair dans le binaire - ça contourne la détection statique par IAT.
 
 ### 7. Persistence + autodestruction (optionnels)
 

@@ -123,8 +123,8 @@ g++ prog.cpp -o prog.dll -shared -lntdll -static
 ```
 
 - `-shared` produit une DLL au lieu d'un exe
-- `-lntdll` — pour `NtQueryInformationProcess`
-- `-static-libgcc -static-libstdc++` — évite les dépendances sur les DLLs MinGW qui ne seraient pas sur la cible
+- `-lntdll` - pour `NtQueryInformationProcess`
+- `-static-libgcc -static-libstdc++` - évite les dépendances sur les DLLs MinGW qui ne seraient pas sur la cible
 ## Cross-compilation Linux vers Windows
 
 ```bash

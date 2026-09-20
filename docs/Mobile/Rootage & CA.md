@@ -1,10 +1,10 @@
 # Outils
 
 - **platform-tools** (`adb`, `fastboot`)
-- **Frija** (ou Samloader) — téléchargement firmware Samsung
-- **lz4** — décompression du boot
-- **Magisk** (APK) — patch du `boot.img`
-- **Odin** (Windows) — flash Samsung
+- **Frija** (ou Samloader) - téléchargement firmware Samsung
+- **lz4** - décompression du boot
+- **Magisk** (APK) - patch du `boot.img`
+- **Odin** (Windows) - flash Samsung
 - **Genymotion** + VirtualBox
 - **Burp**, **openssl**
 

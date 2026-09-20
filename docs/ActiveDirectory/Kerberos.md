@@ -46,9 +46,9 @@ Protocole par défaut depuis Windows Server 2003. Basé sur un système de **tic
 # AS-REP Roasting
 
 > Attaque sur les étapes KRB_AS_REQ et KRB_AS_REP du protocole Kerberos  
-Si un utilisateur possède l’attribut DONT_REQ_PREAUTH dans l’UAC  
-Alors l’envoi du timestamp lors de KRB_AS_REQ n’est pas nécessaire  
-N’importe qui peut forger une demande KRB_AS_REQ pour un utilisateur arbitraire
+Si un utilisateur possède l'attribut DONT_REQ_PREAUTH dans l'UAC  
+Alors l'envoi du timestamp lors de KRB_AS_REQ n'est pas nécessaire  
+N'importe qui peut forger une demande KRB_AS_REQ pour un utilisateur arbitraire
 
 Si un compte AD a l'option **"Do not require Kerberos preauthentication"** activée, un attaquant peut demander un AS-REP sans s'authentifier → la réponse contient un hash crackable offline.
 
@@ -90,10 +90,10 @@ sudo hashcat -m 18200 hashes.asreproast /usr/share/wordlists/rockyou.txt -r /usr
 ---
 # Kerberoasting
 
-> Attaque sur l’étape **KRB\_TGS\_REP**\
+> Attaque sur l'étape **KRB\_TGS\_REP**\
 > Nécessite un compte utilisateur sans privilèges particulier\
 > Basé sur le mécanisme de ticket de service\
-> N’importe quel utilisateur du domaine peut demander un ticket de service pour un compte possédant un SPN (Service Principal Name) à partir de son TGT\
+> N'importe quel utilisateur du domaine peut demander un ticket de service pour un compte possédant un SPN (Service Principal Name) à partir de son TGT\
 > Le KDC va alors vérifier la validité du TGT en le déchiffrant et répondre avec un message KRB\_TGS\_REP dont une partie de la réponse est chiffrée avec le hash du compte de service.\
 > La réponse peut être ensuite cassée hors-ligne.
 

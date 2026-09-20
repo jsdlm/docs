@@ -53,7 +53,7 @@ Les attributs importants sont :
 
 Dans un même realm, un principal obtient un TGT auprès de son KDC et l'utilise pour demander des tickets de service. Entre deux realms, ça ne fonctionne pas directement : un TGT émis par le realm approuvé ne peut pas être déchiffré par le realm approbateur, puisqu'il ne connaît pas le secret krbtgt. C'est pour combler cet écart qu'une clé inter-realm est utilisée.
 
-Toutes les relations parent/enfant d'une forêt partagent la même clé inter-realm — c'est ce qui rend les relations transitives. Chaque relation non transitive a sa propre clé.
+Toutes les relations parent/enfant d'une forêt partagent la même clé inter-realm - c'est ce qui rend les relations transitives. Chaque relation non transitive a sa propre clé.
 
 Le client envoie d'abord un TGS-REQ à son propre KDC, avec son TGT normal, en visant un SPN du realm approbateur.
 
@@ -348,7 +348,7 @@ ls \\par-jmp-1.partner.com\c$
 ---
 # Outbound Trusts
 
-Un attaquant peut aussi se retrouver du « mauvais » côté d'une relation à sens unique : le domaine approbateur. Il est alors à contre-sens de l'accès et ne peut pas, par design, atteindre le domaine approuvé — ces forest trusts sont de vraies frontières de sécurité.
+Un attaquant peut aussi se retrouver du « mauvais » côté d'une relation à sens unique : le domaine approbateur. Il est alors à contre-sens de l'accès et ne peut pas, par design, atteindre le domaine approuvé - ces forest trusts sont de vraies frontières de sécurité.
 
 ```
 beacon> ldapsearch (objectClass=trustedDomain)

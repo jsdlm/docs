@@ -10,7 +10,7 @@ SHELL=/bin/bash script -q /dev/null
 
 # Python PTY Module
 
-Spawn `/bin/bash` using [Python’s PTY module](https://docs.python.org/3/library/pty.html), and connect the controlling shell with its standard I/O.
+Spawn `/bin/bash` using [Python's PTY module](https://docs.python.org/3/library/pty.html), and connect the controlling shell with its standard I/O.
 
 ```sh
 python -c 'import pty; pty.spawn("/bin/bash")'

@@ -98,7 +98,7 @@ Puis dans l'onglet **Listeners**, cliquer droit sur le listener et cliquer sur `
 
 Nous utiliserons ici la technique décrite dans ce [post](https://specterops.io/blog/2024/08/01/relay-your-heart-away-an-opsec-conscious-approach-to-445-takeover/?source=rss----f05f8696e3cc---4).
 
-Le but étant d'utiliser une méthode OPSEC pour prendre temporairement le contrôle du port TCP 445 sur une machine Windows compromise, afin de faciliter des attaques de relay NTLM à partir d’un infrastructure C2, sans les inconvénients classiques (détection, instabilité).
+Le but étant d'utiliser une méthode OPSEC pour prendre temporairement le contrôle du port TCP 445 sur une machine Windows compromise, afin de faciliter des attaques de relay NTLM à partir d'un infrastructure C2, sans les inconvénients classiques (détection, instabilité).
 
 En effet le service LanmanServer s'occupe de l'écoute sur le port 445 et cela empêche un attaquant de binder son propre service pour capturer ou relayer des authentifications SMB entrantes.
 
