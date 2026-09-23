@@ -96,45 +96,44 @@ Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled False
 
 # winlegion-vm
 
-Deploy a Windows Virtual Machine
+Déployer une machine virtuelle Windows
 
-   > [Where can I find a Windows 10 Virtual Machine?](https://www.microsoft.com/en-us/software-download/windows10)
+   > [Où puis-je trouver une machine virtuelle Windows 10 ?](https://www.microsoft.com/en-us/software-download/windows10)
 
-   > [Where can I find a Windows 11 Virtual Machine?](https://www.microsoft.com/en-us/software-download/windows11)
-## Pre-Install Procedures
+   > [Où puis-je trouver une machine virtuelle Windows 11 ?](https://www.microsoft.com/en-us/software-download/windows11)
 
-**You MUST disable Windows Defender for a smooth install**. The best way to accomplish this is through Group Policy.
-In Windows versions 1909 and higher, Tamper Protection was added.
-**Tamper Protection must be disabled first, otherwise Group Policy settings are ignored.**
+## Pré-requis
 
-1. Open Windows Security (type `Windows Security` in the search box)
-2. Virus & threat protection > Virus & threat protection settings > Manage settings
-3. Switch `Tamper Protection` to `Off`
+**Vous DEVEZ désactiver Windows Defender pour une installation sans accroc**. La meilleure façon d'y parvenir est via la stratégie de groupe (Group Policy).
+Dans les versions de Windows 1909 et supérieures, la protection contre les falsifications (Tamper Protection) a été ajoutée.
+**La protection contre les falsifications doit être désactivée en premier, sinon les paramètres de stratégie de groupe sont ignorés.**
 
-> It is not necessary to change any other setting (`Real Time Protection`, etc.)
-> **Important!** Tamper Protection must be disabled before changing Group Policy settings.
+1. Ouvrez la Sécurité Windows (tapez `Windows Security` dans la barre de recherche)
+2. Protection contre les virus et menaces > Paramètres de protection contre les virus et menaces > Gérer les paramètres
+3. Basculez `Protection contre les falsifications` sur `Désactivé`
 
-To permanently disable Real Time Protection:
+> **Important !** Ne désactiver aucun autre paramètre (`Protection en temps réel`, etc.)
+> **Important !** La protection contre les falsifications doit être désactivée avant de modifier les paramètres de stratégie de groupe.
 
-1. Make sure you disabled Tamper Protection
-2. Open Local Group Policy Editor (type `gpedit` in the search box)
-3. Computer Configuration > Administrative Templates > Windows Components > Microsoft Defender Antivirus > Real-time Protection
-4. Enable `Turn off real-time protection`
-5. **Reboot**
+Pour désactiver définitivement la protection en temps réel :
+1. Assurez-vous d'avoir désactivé la protection contre les falsifications
+2. Ouvrez l'Éditeur de stratégie de groupe locale (tapez `gpedit` dans la barre de recherche)
+3. Configuration ordinateur > Modèles d'administration > Composants Windows > Antivirus Microsoft Defender > Protection en temps réel
+4. Activez `Désactiver la protection en temps réel`
+5. **Redémarrez**
+> Assurez-vous de **redémarrer** avant d'effectuer la modification suivante
 
-> Make sure to **reboot** before making the next change
-
-To permanently disable Microsoft Defender:
-
-1. Make sure you rebooted your machine
-2. Open Local Group Policy Editor (type `gpedit` in the search box)
-3. Computer Configuration > Administrative Templates > Windows Components > Microsoft Defender Antivirus
-4. Enable `Turn off Microsoft Defender Antivirus`
-5. **Reboot**
+Pour désactiver définitivement Microsoft Defender :
+1. Assurez-vous d'avoir redémarré votre machine
+2. Ouvrez l'Éditeur de stratégie de groupe locale (tapez `gpedit` dans la barre de recherche)
+3. Configuration ordinateur > Modèles d'administration > Composants Windows > Antivirus Microsoft Defender
+4. Activez `Désactiver l'antivirus Microsoft Defender`
+5. **Redémarrez**
+> Assurez-vous de **redémarrer** avant d'effectuer la modification suivante
 ## Installation
 
-1. Complete the pre-install procedures by disabling Defender
-2. Run PowerShell as Administrator
+1. Effectuez les procédures de pré-installation en désactivant Defender
+2. Exécutez PowerShell en tant qu'administrateur
 3. `Set-ExecutionPolicy Unrestricted -force`
 4. `cd .\winlegion-vm`
 5. `Get-ChildItem .\ -Recurse | Unblock-File`
