@@ -1,4 +1,4 @@
-# Scan
+# Nmap
 
 ```bash
 nmap --flags <host>
@@ -35,6 +35,32 @@ nmap -T4 -Pn -sU -sC -sV --open -p $ports -oN nmap_udp_detailed.txt -iL ip.txt
 **Liste d'adresse IP**
 ```bash
 grep open nmap_full_G.txt | cut -d" " -f2
+```
+
+## NSE
+
+```bash
+# Scripts
+# https://www.it-connect.fr/chapitres/nmap-utilisation-des-scripts-nse/
+
+# Lister tous les scripts dont le nom commence par “ftp-”
+nmap --script-help=ftp-*
+
+# Lister tous les scripts de la catégorie “discovery”
+nmap --script-help=discovery
+
+# Lister les scripts ciblant le service “ssh”
+ls -al /usr/share/nmap/scripts/ssh*
+
+# Lister les scripts de la catérogie “dos”
+grep -rl 'dos' /usr/share/nmap/scripts/
+
+# Scripts http
+nmap -p80 --script='http-enum' <host>
+
+# Detect WAF - https://nmap.org/nsedoc/scripts/http-waf-detect.html
+nmap -p80 --script http-waf-detect <host>
+nmap -p80 --script http-waf-detect --script-args="http-waf-detect.aggro,http-waf-detect.uri=/testphp.vulnweb.com/artists.php" www.modsecurity.org
 ```
 
 # FTP (21)
