@@ -14,11 +14,8 @@ wsl --install -d Debian
 
 
 ```bash
-sudo apt-get update  
-sudo apt-get install mingw-w64  
-sudo apt-get install make  
-sudo apt install default-jdk
-sudo apt-get install zip
+sudo apt update  
+sudo apt install build-essential mingw-w64 make default-jdk zip
 ```
 
 ## Step 3. WindowsTerminal
