@@ -1,23 +1,18 @@
 ## 1. Spécifications de la VM
 
-| Composant | Valeur |
-|-----------|--------|
-| **OS** | Ubuntu Server 24.04 LTS |
-| **Disque OS** | 60 GB (ext4 / LVM) - thin provisioned |
+| Composant       | Valeur                                                 |
+| --------------- | ------------------------------------------------------ |
+| **OS**          | Ubuntu Server 24.04 LTS                                |
+| **Disque OS**   | 60 GB (ext4 / LVM) - thin provisioned                  |
 | **Disque DATA** | 100 GB / 500 GB / 1 TB / 2 TB (ZFS) - thin provisioned |
-| **RAM** | 4 GB (min. 2 GB) |
-| **CPU** | 2 cores, 1 socket |
-| **BIOS** | UEFI (OVMF) avec Secure Boot |
-| **Réseau** | Mode bridgé (IP séparée de l'hôte) |
-| **IP** | `192.168.42.50` |
-| **DNS** | `drive.delobel.net` |
-
+| **IP**          | `192.168.42.50`                                        |
+| **DNS**         | `drive.delobel.net`                                    |
 **Dépendances incluses :**
 - Apache 2.4
 - PostgreSQL 18
 - PHP-FPM 8.5
 - Redis (memcache)
-- Nextcloud Server (dernière version)
+- Nextcloud Server
 
 **Version VMware minimale :** ESXi 6.7+
 
