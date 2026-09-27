@@ -1,12 +1,12 @@
 ## 1. Spécifications de la VM
 
-| Composant       | Valeur                                                 |
-| --------------- | ------------------------------------------------------ |
-| **OS**          | Ubuntu Server 24.04 LTS                                |
-| **Disque OS**   | 60 GB (ext4 / LVM) - thin provisioned                  |
-| **Disque DATA** | 100 GB / 500 GB / 1 TB / 2 TB (ZFS) - thin provisioned |
-| **IP**          | `192.168.42.50`                                        |
-| **DNS**         | `drive.delobel.net`                                    |
+| Composant       | Valeur                                |
+| --------------- | ------------------------------------- |
+| **OS**          | Ubuntu Server 24.04 LTS               |
+| **Disque OS**   | 60 GB (ext4 / LVM) - thin provisioned |
+| **Disque DATA** | 100 GB (ZFS) - thin provisioned       |
+| **IP**          | `192.168.42.50`                       |
+| **DNS**         | `drive.delobel.net`                   |
 **Dépendances incluses :**
 - Apache 2.4
 - PostgreSQL 18
