@@ -1,8 +1,8 @@
 # Ressources
-https://www.it-connect.fr/comment-durcir-la-configuration-de-keepass/
-https://github.com/onSec-fr/Keepass-Enhanced-Security-Configuration
-https://keepass.info/help/kb/config_enf.html
-https://keepass.info/help/kb/sec_desk.html
+- https://www.it-connect.fr/comment-durcir-la-configuration-de-keepass/
+- https://github.com/onSec-fr/Keepass-Enhanced-Security-Configuration
+- https://keepass.info/help/kb/config_enf.html
+- https://keepass.info/help/kb/sec_desk.html
 
 # Config XML
 ```
