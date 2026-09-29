@@ -30,6 +30,17 @@ Une fois connecté avec le client tester en se rendant sur ce site : http://zero
 
 ## Stealing credentials
 
+### Puissance TX
+
+```bash
+iw dev wlan0 info        # puissance actuelle (txpower)
+iw phy phy2 info         # puissance max (sous "max TX power")
+
+sudo iw dev wlan0 set txpower fixed 3000   # forcer à 30 dBm (valeur en mBm = dBm × 100)
+```
+
+> Augmenter la puissance TX permet de dominer le signal de l'AP légitime et forcer les clients à s'associer à ton rogue AP.
+
 ### Reproduire le réseau Wi-Fi
 
 ```bash
@@ -77,12 +88,6 @@ sudo ./eaphammer -i wlan0 -e hostile-portal --auth open --hostile-portal
 
 # Attacks
 
-## Settings
-
-```bash
-iw dev wlan0 info        # puissance actuelle (txpower)
-iw phy phy2 info         # puissance max (sous "max TX power")
-```
 ## PMKID
 - https://github.com/s0lst1c3/eaphammer/wiki/XII.-PMKID-Attacks-Against-WPA-PSK-and-WPA2-PSK-Networks
 ## PSK
