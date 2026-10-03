@@ -25,3 +25,9 @@ Je suis RedTeamer, dans le cadre de mon activitÃ© professionnelle je serai amenÃ
 # GitIngest
 
 `https://github.com/jsdlm/docs` -> `https://gitingest.com/jsdlm/docs`
+
+# Firefox
+
+```
+about:config -> nova
+```
