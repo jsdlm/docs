@@ -114,8 +114,7 @@ g++ .\injector.cpp -o .\injector.exe -lntdll
 
 Sans `-static`, le binaire réclame `libstdc++-6.dll` et `libgcc_s_seh-1.dll`.
 
-### DLL
-
+**DLL**
 ```powershell
 g++ prog.cpp -o prog.dll -shared -lntdll -static-libgcc -static-libstdc++
 
@@ -128,7 +127,7 @@ g++ prog.cpp -o prog.dll -shared -lntdll -static
 ## Cross-compilation Linux vers Windows
 
 ```bash
-sudo apt install mingw-w64
+sudo apt install mingw-w64 mingw-w64-common mingw-w64-x86-64-dev
 ```
 
 ```bash
@@ -136,6 +135,10 @@ x86_64-w64-mingw32-g++ prog.cpp -o prog.exe -static
 i686-w64-mingw32-g++ prog.cpp -o prog32.exe -static
 ```
 
+**DLL**
+```bash
+x86_64-w64-mingw32-gcc -shared -o prog.dll prog.c -static
+```
 ---
 
 # C\#
