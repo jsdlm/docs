@@ -1,4 +1,7 @@
 {
   "showViewHeader": true,
-  "showRibbon": true
+  "showRibbon": true,
+  "enabledCssSnippets": [
+    "code-wrap"
+  ]
 }

