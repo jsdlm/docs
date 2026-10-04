@@ -27,3 +27,9 @@ SELECT version();
 SELECT user, authentication_string FROM mysql.user;
 SELECT * FROM <table> LIMIT 10;
 ```
+
+# mysqldump
+```powershell
+cd C:\xampp\mysql\bin\
+.\mysqldump.exe -A -u root > output.txt
+```
