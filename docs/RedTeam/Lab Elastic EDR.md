@@ -69,3 +69,14 @@ Pour la dernière (`.\elastic-agent.exe install ...`), la copier et ajouter à l
 - Activer les règles Windows en masse : **Detection rules**, filtre tag `Windows`, **Bulk actions > Enable**.
 - Vérifier la remontée des données : Discover, data view `logs-endpoint.alerts-*`.
 - Vue par machine : **Security > Manage > Endpoints**, puis **Policy Response**.
+
+### Réduire la latence
+1. Raccourcir l’intervalle des règles : **Security > Rules > Detection rules**, ouvrir la règle (par exemple **Endpoint Security**), **Edit rule settings > Schedule**, et mettre **Runs every** à `1 minute` avec un **Additional look-back time** de `1 minute`. Le minimum autorisé est 1 minute par défaut.
+2. Passer l’envoi de l’agent en mode latence : **Fleet > Settings > Outputs > default**, puis **Performance tuning** : **Optimize for latency**.
+3. Rafraîchissement de la page Alerts : activer l’auto-refresh en haut à droite (par exemple 5 secondes).
+### Alertes schedule
+1. **Security > Rules > Detection rules**.
+2. Filtrer sur les règles activées (**Enabled rules**), ou sur un tag comme `Windows`.
+3. Cocher la case d’en-tête du tableau pour sélectionner toutes les règles (puis **Select all N rules** si tout n’est pas sur la page).
+4. **Bulk actions > Update rule schedules**.
+5. Renseigner **Runs every** = `1 minute` et **Additional look-back time** = `1 minute`, puis **Update rules**.
