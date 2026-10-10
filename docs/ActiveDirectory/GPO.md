@@ -1,4 +1,4 @@
-# Structure d'un GPT dans SYSVOL
+# Structure SYSVOL
 
 Format : `\\domaine.com\SYSVOL\domaine.com\Policies\{GUID}`
 
