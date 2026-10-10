@@ -27,6 +27,9 @@ Attendre le message "Browse to https://localhost:5601".
 2. **Stack Management > License Management** : démarrer l'essai de 30 jours (nécessaire pour Elastic Defend).
 3. **Management > Fleet** : si Kibana demande d'ajouter un Fleet Server, ne rien installer. Il est déjà déployé par le script, il suffit de vérifier dans **Fleet > Settings > Fleet Server hosts** que l'adresse est `https://IP_SERVEUR:8220`.
 
+Output Elasticsearch : **Fleet > Settings > Outputs > default**, Hosts = `https://IP_SERVEUR:9200`.
+Si l’agent est Unhealthy avec “Elasticsearch connection failure” : l’IP de l’output est mauvaise ou injoignable.
+
 ## 3. Ajouter l'agent
 
 1. **Fleet > Agents > Add agent**
@@ -52,3 +55,17 @@ Pour la dernière (`.\elastic-agent.exe install ...`), la copier et ajouter à l
 
 - **Fleet > Agents** : le Windows est **Healthy**.
 - **Security > Manage > Endpoints** : la machine est **Healthy**.
+
+## Astuces
+
+### Policy Elastic Defend
+- **Security > Manage > Policies**, onglet **Windows**.
+- Prévention : **Prevent**. Détection seule (sans blocage) : **Detect**.
+- Un changement de policy s’applique à l’agent en une à deux minutes, sans réinstallation.
+- Fenêtre Elastic Defend visible dans Windows Security : **Register as antivirus** = **Enabled** (en Detect, elle disparaît sinon, car Elastic se désinscrit comme antivirus).
+### Alertes
+- **Security > Alerts** (ou `/app/security/alerts`)
+- La règle **Endpoint Security** doit être activée dans **Security > Rules > Detection rules**, sinon les alertes de l’agent n’apparaissent pas.
+- Activer les règles Windows en masse : **Detection rules**, filtre tag `Windows`, **Bulk actions > Enable**.
+- Vérifier la remontée des données : Discover, data view `logs-endpoint.alerts-*`.
+- Vue par machine : **Security > Manage > Endpoints**, puis **Policy Response**.
