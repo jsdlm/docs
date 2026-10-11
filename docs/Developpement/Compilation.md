@@ -5,7 +5,7 @@
 winget install -e --id Microsoft.VisualStudio.BuildTools --override "--passive --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --installPath C:\BuildTools"
 ```
 
-Ajouter `C:\BuildTools\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64` au `PATH`
+Pour compiler ouvrir -> `x64 Native Tools Command Prompt for VS`
 # MinGW-w64 via w64devkit
 
 **Téléchargement**
@@ -31,16 +31,6 @@ gcc --version
 g++ --version
 make --version
 gdb --version
-```
-
----
-
-# Clang - LLVM
-
-```
-winget install LLVM.LLVM
-[System.Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\Program Files\LLVM\bin", "Machine")
-clang++ --version
 ```
 
 ---
