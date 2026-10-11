@@ -1,3 +1,11 @@
+
+# MSVC
+
+```powershell
+winget install -e --id Microsoft.VisualStudio.BuildTools --override "--passive --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --installPath C:\BuildTools"
+```
+
+Ajouter `C:\BuildTools\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64` au `PATH`
 # MinGW-w64 via w64devkit
 
 **Téléchargement**
