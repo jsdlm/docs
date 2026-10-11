@@ -1,4 +1,4 @@
-## Installation
+# Architecture
 
 | Outil          | Installation                                                            |
 | -------------- | ----------------------------------------------------------------------- |
@@ -7,8 +7,6 @@
 | Detect It Easy | https://github.com/horsicq/detect-it-easy                               |
 | CFF Explorer   | https://ntcore.com/explorer-suite/                                      |
 | objdump        | Inclus avec MinGW (`x86_64-w64-mingw32-objdump`)                        |
-
-## Commandes rapides
 
 ```bash
 # IAT
@@ -27,8 +25,6 @@ objdump -h loader.exe
 strings loader.exe | findstr /i "Virtual Alloc Process Thread"
 ```
 
-## Quoi regarder
-
 | Outil | Usage principal |
 |-------|----------------|
 | PE-bear | IAT visuelle, sections, headers PE |
@@ -36,3 +32,37 @@ strings loader.exe | findstr /i "Virtual Alloc Process Thread"
 | DiE | Compilateur, packer, entropie globale |
 | CFF Explorer | Edition de headers PE, vue detaillee des directories |
 | objdump | Check rapide en CLI sans quitter le terminal |
+
+---
+# ThreatCheck
+
+**Setup**
+
+- Cloner et compiler : https://github.com/rasta-mouse/ThreatCheck (Visual Studio, Release x64)
+- Activer Defender et le mettre à jour
+- Ajouter une exclusion Defender sur le dossier de travail :
+
+```powershell
+Add-MpPreference -ExclusionPath "C:\Temp"
+```
+
+**Usage**
+
+```cmd
+.\ThreatCheck.exe -f .\loader.exe
+```
+
+---
+
+# YARA-X
+
+**Setup**
+
+- Télécharger la release : https://github.com/VirusTotal/yara-x
+- Télécharger les règles Elastic : https://github.com/elastic/protections-artifacts/tree/main/yara/rules
+
+**Usage**
+
+```cmd
+yr.exe scan .\protections-artifacts-main\yara\rules\ .\loader.exe --print-strings --print-namespace --disable-warnings
+```
